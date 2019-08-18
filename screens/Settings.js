@@ -10,7 +10,11 @@ const Settings = props => {
 
   return (
     <Block>
-      <Text>Setting</Text>
+      <Block flex={false} row center space="between" style={styles.header}>
+        <Text h1 bold>
+          Settings
+        </Text>
+      </Block>
     </Block>
   );
 };

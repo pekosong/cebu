@@ -206,22 +206,23 @@ function Welcome(props) {
   };
   return (
     <Block>
-      <Block center bottom flex={0.7}>
+      <Block center bottom flex={1}>
         <Text h2 center bold>
           좌담회 알바,
-          <Text h1 primary>
-            김징고 어플
+          <Text>{"  "}</Text>
+          <Text primary style={{ fontSize: 50, fontFamily: "BMHANNAPro" }}>
+            김징고
           </Text>
         </Text>
         <Text h3 gray2 style={{ marginTop: theme.sizes.padding / 2 }}>
           쉽게 돈 벌기
         </Text>
       </Block>
-      <Block center middle margin={[theme.sizes.padding * 2, 0]}>
+      <Block flex={1.5} center middle margin={[theme.sizes.padding * 2, 0]}>
         {renderIllustrations()}
         {renderSteps()}
       </Block>
-      <Block middle flex={0.6} margin={[0, theme.sizes.padding * 2]}>
+      <Block middle flex={1} margin={[0, theme.sizes.padding * 2]}>
         <Button gradient onPress={() => navigation.navigate("Login")}>
           <Text center semibold white>
             Login

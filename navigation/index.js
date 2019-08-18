@@ -1,5 +1,5 @@
 import React from "react";
-import { Image } from "react-native";
+import { Platform, Image } from "react-native";
 import { createAppContainer, createStackNavigator } from "react-navigation";
 
 import Welcome from "../screens/Welcome";
@@ -22,7 +22,7 @@ const screens = createStackNavigator(
     Forgot,
     Signup,
     Settings
-    // Browse, Explore, Settings, Product
+    // Explore, Product
   },
   {
     defaultNavigationOptions: {
@@ -36,7 +36,8 @@ const screens = createStackNavigator(
       headerBackTitle: null,
       headerLeftContainerStyle: {
         alignItems: "center",
-        marginLeft: theme.sizes.base * 2,
+        marginLeft:
+          Platform.OS === "ios" ? theme.sizes.base * 2 : theme.sizes.base,
         paddingRight: theme.sizes.base
       },
       headerRightContainerStyle: {

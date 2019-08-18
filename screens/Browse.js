@@ -34,7 +34,7 @@ const Browse = props => {
         <Text h1 bold>
           Browse
         </Text>
-        <Button>
+        <Button onPress={() => navigation.navigate("Settings", { profiles })}>
           <Image source={profiles.avatar} style={styles.avatar} />
         </Button>
       </Block>
@@ -52,7 +52,11 @@ const Browse = props => {
               onPress={() => navigation.navigate("Explore", { category })}
             >
               <Card center middle shadow style={styles.category}>
-                <Badge margin={[0, 0, 15]} size={50} color="#55efc4">
+                <Badge
+                  margin={[0, 0, 15]}
+                  size={50}
+                  color={theme.colors.primary}
+                >
                   <Image source={category.image} />
                 </Badge>
                 <Text medium height={20}>

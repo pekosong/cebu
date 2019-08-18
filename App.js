@@ -1,6 +1,8 @@
-import React, { useState } from "react";
-import { StyleSheet, Text, View } from "react-native";
-import { AppLoading, Asset } from "expo";
+import React, { useState, useEffect } from "react";
+import { StyleSheet } from "react-native";
+import { AppLoading } from "expo";
+import * as Font from "expo-font";
+import { Asset } from "expo-asset";
 
 import Navigation from "./navigation";
 import { Block } from "./components";
@@ -28,24 +30,31 @@ const images = [
 
 export default function App(props) {
   const [isLoadingComplete, setIsLoadingComplete] = useState(false);
+  const [isFontComplete, setIsFontComplete] = useState(false);
 
   const handleResourcesAsync = async () => {
     const cacheImages = images.map(img => {
-      return Asset.fromModule(image).downloadAsync();
+      return Asset.fromModule(img).downloadAsync();
+    });
+    await Font.loadAsync({
+      BMHANNAPro: require("./assets/fonts/BMHANNAPro.ttf")
     });
     return Promise.all(cacheImages);
   };
 
-  return !isLoadingComplete && props.skipLoadingScreen ? (
-    <AppLoading
-      startAsync={handleResourcesAsync}
-      onError={error => console.warn(error)}
-      onFinish={() => setIsLoadingComplete(true)}
-    />
-  ) : (
+  return isLoadingComplete && isFontComplete ? (
     <Block style={styles.container}>
       <Navigation />
     </Block>
+  ) : (
+    <AppLoading
+      startAsync={handleResourcesAsync}
+      onError={error => console.warn(error)}
+      onFinish={() => {
+        setIsFontComplete(true);
+        setIsLoadingComplete(true);
+      }}
+    />
   );
 }
 

@@ -1,12 +1,14 @@
 const colors = {
   accent: "#F3534A",
-  primary: "#0AC4BA",
-  secondary: "#2BDA8E",
+  // primary: "#0AC4BA",
+  // secondary: "#2BDA8E",
+  primary: "#cb2d3e",
+  secondary: "#ef473a",
   tertiary: "#FFE358",
   black: "#323643",
   white: "#FFFFFF",
   gray: "#9DA3B4",
-  gray2: "#C5CCD6",
+  gray2: "#C5CCD6"
 };
 
 const sizes = {
@@ -23,7 +25,7 @@ const sizes = {
   title: 18,
   header: 16,
   body: 14,
-  caption: 12,
+  caption: 12
 };
 
 const fonts = {
@@ -47,7 +49,7 @@ const fonts = {
   },
   caption: {
     fontSize: sizes.caption
-  },
+  }
 };
 
 export { colors, sizes, fonts };
