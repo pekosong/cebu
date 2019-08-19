@@ -1,9 +1,14 @@
-import React, { useState } from "react";
-import { Dimensions, StyleSheet, Image, TouchableOpacity } from "react-native";
+import React, { useState, useEffect } from "react";
+import {
+  Dimensions,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity
+} from "react-native";
 
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
-import { ScrollView } from "react-native-gesture-handler";
 import { categories } from "../constants/mocks";
 
 const { width } = Dimensions.get("window");
@@ -11,15 +16,26 @@ const { width } = Dimensions.get("window");
 const Browse = props => {
   const { navigation, profiles, categories } = props;
   const [active, setActive] = useState("Products");
+  const [cates, setCates] = useState([]);
   const tabs = ["Products", "Inspirations", "Shop"];
 
+  useEffect(() => {
+    setCates(categories);
+  }, []);
+  const handleTab = tab => {
+    const filtered = categories.filter(category =>
+      category.tags.includes(tab.toLowerCase())
+    );
+    setActive(tab);
+    setCates(filtered);
+  };
   const renderTab = tab => {
     const isActive = active == tab;
 
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => setActive(tab)}
+        onPress={() => handleTab(tab)}
         style={[styles.tab, isActive ? styles.active : null]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -46,7 +62,7 @@ const Browse = props => {
         style={{ paddingVertical: theme.sizes.base }}
       >
         <Block flex={false} row space="between" style={styles.categories}>
-          {categories.map(category => (
+          {cates.map(category => (
             <TouchableOpacity
               key={category.name}
               onPress={() => navigation.navigate("Explore", { category })}

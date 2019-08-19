@@ -8,7 +8,7 @@ import Browse from "../screens/Browse";
 import Forgot from "../screens/Forgot";
 import Signup from "../screens/Signup";
 import Settings from "../screens/Settings";
-// import Explore from "../screens/Explore";
+import Explore from "../screens/Explore";
 
 // import Product from "../screens/Product";
 
@@ -21,8 +21,9 @@ const screens = createStackNavigator(
     Browse,
     Forgot,
     Signup,
-    Settings
-    // Explore, Product
+    Settings,
+    Explore
+    // Product
   },
   {
     defaultNavigationOptions: {
