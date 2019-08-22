@@ -1,17 +1,33 @@
 import React, { useState } from "react";
-import { Dimensions, Image, StyleSheet, TouchableOpacity } from "react-native";
+import { useAnimation } from "react-native-animation-hooks";
+
+import {
+  Animated,
+  Dimensions,
+  Image,
+  StyleSheet,
+  TouchableOpacity
+} from "react-native";
 import { Input, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 import Icon from "react-native-vector-icons/FontAwesome";
 import { ScrollView } from "react-native-gesture-handler";
+import { LinearGradient } from "expo-linear-gradient";
 
 const { width, height } = Dimensions.get("window");
 
 const Explore = props => {
   const [searchString, setSearchString] = useState(null);
+  const [searchFocus, setSearchFocus] = useState(false);
+  // const animatedOpacity = useAnimation({
+  //   toValue: searchFocus ? 0.8 : 0.6
+  // });
 
   const { images, navigation } = props;
 
+  // const handleSearchFocus = status => {
+  //   setSearchFocus(status);
+  // };
   const renderImage = (img, index) => {
     const sizes = Image.resolveAssetSource(img);
     const fullWidth = width - theme.sizes.padding * 2.5;
@@ -50,24 +66,36 @@ const Explore = props => {
 
   const renderFooter = () => {
     return (
-      <Block style={styles.footer}>
-        <Text>Render footer</Text>
-      </Block>
+      <LinearGradient
+        locations={[0.5, 1]}
+        style={styles.footer}
+        colors={["rgba(255,255,255,0)", "rgba(255,255,255,0.6)"]}
+      >
+        <Button gradient style={{ width: width / 2.678 }}>
+          <Text bold white center>
+            Filter
+          </Text>
+        </Button>
+      </LinearGradient>
     );
   };
   const renderSearch = () => {
+    const isEditing = searchFocus && searchString;
     return (
-      <Block middle flex={0.6} style={styles.search}>
+      <Block middle flex={0.8} style={styles.search}>
         <Input
           placeholder="Search"
-          placeholderTextColor={theme.colors.gray}
+          placeholderTextColor={theme.colors.gray2}
           style={styles.searchInput}
+          // onFocus={() => handleSearchFocus(true)}
+          // onBlur={() => handleSearchFocus(false)}
           onChangeText={text => setSearchString(text)}
+          onRightPress={() => (isEditing ? setSearchString(null) : null)}
           value={searchString}
           rightStyle={styles.searchRight}
           rightLabel={
             <Icon
-              name="search"
+              name={isEditing ? "close" : "search"}
               size={theme.sizes.base / 1.6}
               color={theme.colors.gray2}
               style={styles.searchIcon}

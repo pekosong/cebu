@@ -9,8 +9,7 @@ import Forgot from "../screens/Forgot";
 import Signup from "../screens/Signup";
 import Settings from "../screens/Settings";
 import Explore from "../screens/Explore";
-
-// import Product from "../screens/Product";
+import Product from "../screens/Product";
 
 import { theme } from "../constants";
 
@@ -22,8 +21,8 @@ const screens = createStackNavigator(
     Forgot,
     Signup,
     Settings,
-    Explore
-    // Product
+    Explore,
+    Product
   },
   {
     defaultNavigationOptions: {

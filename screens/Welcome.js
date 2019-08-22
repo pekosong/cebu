@@ -16,7 +16,6 @@ const { width, height } = Dimensions.get("window");
 
 function Welcome(props) {
   const { navigation } = props;
-
   const [showTerms, setShowTerms] = useState(false);
   scrollX = new Animated.Value(0);
 
