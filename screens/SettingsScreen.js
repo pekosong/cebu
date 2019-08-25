@@ -13,7 +13,7 @@ import {
 export default function SettingsScreen() {
   return (
     <View style={styles.container}>
-      <Text style={styles.myfont}>Setting</Text>
+      <Text style={styles.myfont}>???</Text>
     </View>
   );
 }

@@ -162,7 +162,7 @@ ProfileScreen.defaultProps = {
 };
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 2.5,
+    marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {

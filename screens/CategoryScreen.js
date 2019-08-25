@@ -22,18 +22,18 @@ const cateMap = {
 const CategoryScreen = props => {
   const { navigation, lists } = props;
   const [active, setActive] = useState("추천");
-  const [selectedlists, setSelectedlists] = useState([]);
+  const [selectedLists, setSelectedLists] = useState([]);
   const tabs = ["추천", "리뷰수", "거리"];
 
   useEffect(() => {
-    setSelectedlists(lists[cateMap[navigation.getParam("category")]]);
+    setSelectedLists(lists[cateMap[navigation.getParam("category")]]);
   }, []);
   const handleTab = tab => {
     const filtered = categories.filter(category =>
       category.tags.includes(tab.toLowerCase())
     );
     setActive(tab);
-    setSelectedlists(filtered);
+    setSelectedLists(filtered);
   };
   const renderTab = tab => {
     const isActive = active == tab;
@@ -72,21 +72,21 @@ const CategoryScreen = props => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block flex={false} row space="between" style={styles.categories}>
-          {selectedlists.map(list => (
+          {selectedLists.map(list => (
             <TouchableOpacity
               key={list.name}
               onPress={() => navigation.navigate("Shop", { shop: list })}
             >
               <Card middle shadow style={styles.category}>
                 <Block middle flex={1}>
-                  <Badge margin={[0, 0]} size={50} color={theme.colors.primary}>
+                  <Badge margin={[0, 10]} size={50}>
                     <Image
                       style={{ width: 70, height: 70 }}
                       source={list.source}
                     />
                   </Badge>
                 </Block>
-                <Block middle flex={3.2}>
+                <Block middle margin={[0, 0, 0, 5]} flex={2.8}>
                   <Text h3 bold medium height={25}>
                     {list.name} <Text caption>{list.engname}</Text>
                   </Text>
@@ -107,7 +107,7 @@ const CategoryScreen = props => {
                     ))}
                   </Text>
                 </Block>
-                <Block middle center flex={0.5}>
+                <Block middle center flex={0.4}>
                   <Text>1.5</Text>
                   <Text>km</Text>
                 </Block>
@@ -128,7 +128,7 @@ CategoryScreen.defaultProps = {
 };
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 2.5,
+    marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
@@ -151,13 +151,13 @@ const styles = StyleSheet.create({
   },
   categories: {
     flexWrap: "wrap",
-    paddingHorizontal: theme.sizes.padding,
+    marginHorizontal: theme.sizes.base * 1.5,
     marginBottom: theme.sizes.base * 1
   },
   category: {
     flexDirection: "row",
-    padding: theme.sizes.padding / 2,
-    width: width - theme.sizes.padding * 2
+    padding: theme.sizes.base / 2,
+    width: width - theme.sizes.base * 3
   }
 });
 

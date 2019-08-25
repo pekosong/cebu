@@ -8,7 +8,8 @@ import {
 } from "react-navigation";
 
 import HomeScreen from "../screens/HomeScreen";
-import LinksScreen from "../screens/LinksScreen";
+import MyTripScreen from "../screens/MyTripScreen";
+import SearchScreen from "../screens/SearchScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CategoryScreen from "../screens/CategoryScreen";
@@ -31,37 +32,56 @@ const HomeStack = createStackNavigator(
 );
 
 HomeStack.navigationOptions = {
-  tabBarLabel: "내 일정",
+  tabBarLabel: "홈",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? `md-pin` : "md-information-circle"}
+      name={Platform.OS === "ios" ? `md-home` : "md-home"}
     />
   )
 };
 
 HomeStack.path = "";
 
-const LinksStack = createStackNavigator(
+const MyTripStack = createStackNavigator(
   {
-    Links: LinksScreen,
+    MyTrip: MyTripScreen
+  },
+  config
+);
+
+MyTripStack.navigationOptions = {
+  tabBarLabel: "내 일정",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? `md-pin` : "md-pin"}
+    />
+  )
+};
+
+MyTripStack.path = "";
+
+const SearchStack = createStackNavigator(
+  {
+    Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen
   },
   config
 );
 
-LinksStack.navigationOptions = {
+SearchStack.navigationOptions = {
   tabBarLabel: "찾기",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-search" : "md-link"}
+      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
     />
   )
 };
 
-LinksStack.path = "";
+SearchStack.path = "";
 
 const SettingsStack = createStackNavigator(
   {
@@ -71,11 +91,11 @@ const SettingsStack = createStackNavigator(
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: "Settings",
+  tabBarLabel: "???",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-options" : "md-options"}
+      name={Platform.OS === "ios" ? "md-outlet" : "md-outlet"}
     />
   )
 };
@@ -94,7 +114,7 @@ ProfileStack.navigationOptions = {
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "md-person" : "md-options"}
+      name={Platform.OS === "ios" ? "md-person" : "md-person"}
     />
   )
 };
@@ -104,7 +124,8 @@ SettingsStack.path = "";
 const tabNavigator = createBottomTabNavigator(
   {
     HomeStack,
-    LinksStack,
+    MyTripStack,
+    SearchStack,
     SettingsStack,
     ProfileStack
   },

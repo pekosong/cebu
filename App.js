@@ -11,22 +11,16 @@ import { Block } from "./components";
 import * as constants from "./constants";
 
 const images = [
-  require("./assets/icons/back.png"),
-  require("./assets/icons/plants.png"),
-  require("./assets/icons/seeds.png"),
-  require("./assets/icons/flowers.png"),
-  require("./assets/icons/sprayers.png"),
-  require("./assets/icons/pots.png"),
-  require("./assets/icons/fertilizers.png"),
-  require("./assets/images/plants_1.png"),
-  require("./assets/images/plants_2.png"),
-  require("./assets/images/plants_3.png"),
-  require("./assets/images/explore_1.png"),
-  require("./assets/images/explore_2.png"),
-  require("./assets/images/explore_3.png"),
-  require("./assets/images/explore_4.png"),
-  require("./assets/images/explore_5.png"),
-  require("./assets/images/explore_6.png"),
+  require("./assets/images/cebu_food1.jpg"),
+  require("./assets/images/cebu_food2.jpeg"),
+  require("./assets/images/cebu_food3.jpeg"),
+  require("./assets/images/cebu_food4.jpg"),
+  require("./assets/images/cebu_massage1.jpg"),
+  require("./assets/images/cebu_massage2.jpeg"),
+  require("./assets/images/cebu_massage3.jpg"),
+  require("./assets/images/cebu_massage4.jpg"),
+  require("./assets/images/hello.jpg"),
+  require("./assets/images/weather.png"),
   require("./assets/images/avatar.png")
 ];
 

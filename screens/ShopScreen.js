@@ -10,7 +10,7 @@ import {
 import { Ionicons } from "@expo/vector-icons";
 
 import { Card, Badge, Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
+import { theme } from "../constants";
 
 const { width } = Dimensions.get("window");
 
@@ -23,7 +23,6 @@ export default function ShopScreen(props) {
   }, []);
 
   const renderStar = () => {
-    console.log(shop.review);
     return [...Array(5).keys()].map(e => (
       <Ionicons key={e} size={30} color={theme.colors.accent} name="md-star" />
     ));
@@ -45,8 +44,8 @@ export default function ShopScreen(props) {
           </Text>
         </Button>
       </Block>
-      <ScrollView flex={false} showsVerticalScrollIndicator={false}>
-        <Block center flex={false}>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Block center>
           <Text>{shop ? renderStar() : null}</Text>
           <Text h2>{shop.review}</Text>
           <Image
@@ -71,11 +70,10 @@ ShopScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 2.5,
+    marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   categories: {
-    flexWrap: "wrap",
     paddingHorizontal: theme.sizes.base * 1.5,
     marginBottom: theme.sizes.base * 3.5
   }

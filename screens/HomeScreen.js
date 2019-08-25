@@ -24,123 +24,102 @@ const dayMap = {
 };
 
 function HomeScreen(props) {
-  const { profiles, plans } = props;
-  const [active, setActive] = useState("ALL");
-  const [selectedPlans, setSelectedPlans] = useState([]);
-
-  useEffect(() => {
-    setSelectedPlans(Object.keys(plans));
-  }, []);
-
-  const renderTab = tab => {
-    const isActive = active == tab;
-
-    return (
-      <TouchableOpacity
-        key={`tab-${tab}`}
-        onPress={() => handleTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}
-      >
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {dayMap[tab]}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
-  const handleTab = tab => {
-    if (tab == "ALL") {
-      setSelectedPlans(Object.keys(plans));
-    } else {
-      setSelectedPlans([tab]);
-    }
-    setActive(tab);
-  };
+  const { profiles } = props;
 
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
-        <Text h1 bold>
-          내 일정
+        <Text h3>
+          헬로우,{" "}
+          <Text h1 bold color={theme.colors.primary}>
+            CEBU
+          </Text>
         </Text>
         <Button onPress={() => navigation.navigate("Settings", { profiles })}>
           <Image source={profiles.avatar} style={styles.avatar} />
         </Button>
       </Block>
-      <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTab(tab))}
-      </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        {selectedPlans.map(myplan => (
-          <Block
-            key={myplan}
-            flex={false}
-            row
-            space="between"
-            style={styles.categories}
-          >
-            <Text h2 bold height={40}>
-              {dayMap[myplan]}
-              <Text>{"  " + plans[myplan]["date"]}</Text>
-              <Text>{"  "}</Text>
-              <Ionicons size={14} name="ios-arrow-forward"></Ionicons>
-            </Text>
-            {plans[myplan]["plan"].map(todo => (
-              <TouchableOpacity key={todo.location} onPress={() => {}}>
-                <Card middle shadow style={styles.category}>
-                  <Block middle flex={1.3}>
-                    <Badge
-                      margin={[0, 0]}
-                      size={50}
-                      color={theme.colors.primary}
-                    >
-                      <Ionicons size={30} color="white" name={todo.category} />
-                    </Badge>
-                  </Block>
-                  <Block middle flex={3}>
-                    <Text h3 bold medium height={25}>
-                      {todo.time}
-                    </Text>
-
-                    <Text h4 medium height={25}>
-                      {todo.location}
-                    </Text>
-                  </Block>
-                  {todo.pickup ? (
-                    <Block center middle flex={1.5}>
-                      <Badge
-                        margin={[0, 0]}
-                        size={25}
-                        color={theme.colors.secondary}
-                      >
-                        <Ionicons size={15} color="white" name="md-car" />
-                      </Badge>
-                      <Text medium caption height={20}>
-                        {todo.pickup.location}
-                      </Text>
-                      <Text medium caption>
-                        {todo.pickup.time}
-                      </Text>
-                    </Block>
-                  ) : (
-                    <Block center middle flex={1.5}>
-                      <Badge
-                        margin={[0, 0]}
-                        size={25}
-                        color={theme.colors.gray}
-                      >
-                        <Ionicons size={15} color="white" name="md-car" />
-                      </Badge>
-                      <Text medium caption height={20}>
-                        No Pickup
-                      </Text>
-                    </Block>
-                  )}
-                </Card>
-              </TouchableOpacity>
-            ))}
+      <Image
+        style={{ width: width, height: 200 }}
+        resizeMode="contain"
+        resizeMethod="resize"
+        source={require("../assets/images/hello.jpg")}
+      ></Image>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={styles.categories}
+      >
+        <Text h4 bold>
+          <Ionicons color={theme.colors.primary} size={30} name="md-sunny" />
+          {"  "}오늘의 날씨
+        </Text>
+        <Card shadow style={styles.nal}>
+          <Block flex={0.9}>
+            <Image
+              style={{ width: 80, height: 80 }}
+              resizeMode="contain"
+              resizeMethod="resize"
+              source={require("../assets/images/weather.png")}
+            ></Image>
           </Block>
-        ))}
+          <Block flex={1}>
+            <Text color={theme.colors.primary} style={styles.cc}>
+              34<Text h1>℃</Text>
+            </Text>
+            <Text style={{ textAlign: "center" }}>온도</Text>
+          </Block>
+          <Block flex={1}>
+            <Text color={theme.colors.primary} style={styles.cc}>
+              76<Text h1>%</Text>
+            </Text>
+            <Text style={{ textAlign: "center" }}>습도</Text>
+          </Block>
+        </Card>
+        <Text h4 bold>
+          <Ionicons color={theme.colors.primary} size={30} name="md-card" />
+          {"  "}
+          오늘의 환율
+        </Text>
+        <Card shadow style={styles.nal}>
+          <Block flex={1}>
+            <Text color={theme.colors.primary} style={styles.cc}>
+              23.12<Text h1> 페소</Text>
+            </Text>
+            <Text caption style={{ textAlign: "center" }}>
+              10,000원 = 432.54페소
+            </Text>
+          </Block>
+        </Card>
+        <Text h4 bold>
+          <Ionicons color={theme.colors.primary} size={30} name="md-heart" />
+          {"  "}
+          세부 할인 정보
+        </Text>
+        <Card shadow style={styles.nal}>
+          <Block flex={1}>
+            <Text>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,
+              magnam. Officia architecto fuga inventore sequi adip
+            </Text>
+          </Block>
+        </Card>
+        <Text h4 bold>
+          <Ionicons
+            color={theme.colors.primary}
+            size={30}
+            name="md-pricetags"
+          />
+          {"  "}
+          세부 뉴스
+        </Text>
+        <Card shadow style={styles.nal}>
+          <Block flex={1}>
+            <Text>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,
+              magnam. Officia architecto fuga inventore sequi adip
+            </Text>
+          </Block>
+        </Card>
       </ScrollView>
     </Block>
   );
@@ -158,45 +137,23 @@ HomeScreen.defaultProps = {
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 2.5,
+    marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
     width: theme.sizes.base * 2.2,
     height: theme.sizes.base * 2.2
   },
-  tabs: {
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.base * 1.5
-  },
-  tab: {
-    marginRight: theme.sizes.base * 1.5,
-    paddingBottom: theme.sizes.base
-  },
-  active: {
-    borderBottomColor: theme.colors.secondary,
-    borderBottomWidth: 3
-  },
-  shadow: {
-    flexDirection: "row",
-    justifyContent: "center",
-    padding: 5,
-    backgroundColor: "white",
-    marginBottom: theme.sizes.base / 4,
-    paddingHorizontal: 10,
-    borderBottomColor: "red"
-  },
   categories: {
-    flexWrap: "wrap",
-    paddingHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 1
+    paddingHorizontal: theme.sizes.base * 1.5
   },
-  category: {
+  nal: {
     flexDirection: "row",
-    padding: theme.sizes.padding / 2,
-    width: width - theme.sizes.padding * 2
+    marginVertical: 5
+  },
+  cc: {
+    fontSize: 60,
+    textAlign: "center"
   }
 });
 

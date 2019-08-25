@@ -21,7 +21,7 @@ const cateCat = {
   AESTHETIC: "힐링"
 };
 
-const LinksScreen = props => {
+const SearchScreen = props => {
   const { navigation, profiles, categories } = props;
   const [active, setActive] = useState("ALL");
   const [cates, setCates] = useState([]);
@@ -102,16 +102,16 @@ const LinksScreen = props => {
   );
 };
 
-LinksScreen.navigationOptions = {
+SearchScreen.navigationOptions = {
   header: null
 };
-LinksScreen.defaultProps = {
+SearchScreen.defaultProps = {
   profiles: mocks.profiles,
   categories: mocks.categories
 };
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 2.5,
+    marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
@@ -138,10 +138,10 @@ const styles = StyleSheet.create({
     marginBottom: theme.sizes.base * 3.5
   },
   category: {
-    minWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
-    maxWidth: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2,
-    maxHeight: (width - theme.sizes.padding * 2.4 - theme.sizes.base) / 2
+    minWidth: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2,
+    maxWidth: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2,
+    maxHeight: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2
   }
 });
 
-export default LinksScreen;
+export default SearchScreen;

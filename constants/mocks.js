@@ -20,7 +20,7 @@ const lists = {
     },
     {
       id: "restaurant2",
-      name: "란타우 코르도바",
+      name: "란타 코르도바",
       engname: "Lantaw Cordova",
       source: require("../assets/images/cebu_food3.jpeg"),
       review: 4.5,
@@ -194,35 +194,37 @@ const plans = {
         pickup: ""
       }
     ]
-  }
-};
-
-const products = [
-  {
-    id: 1,
-    name: "16 Best Plants That Thrive In Your Bedroom",
-    description:
-      "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dolorem, repellendus.",
-    tags: ["Interior", "27m", "Ideas"],
-    gallery: [
-      require("../assets/images/plants_1.png"),
-      require("../assets/images/plants_2.png"),
-      require("../assets/images/plants_3.png"),
-      require("../assets/images/plants_1.png"),
-      require("../assets/images/plants_2.png"),
-      require("../assets/images/plants_3.png")
+  },
+  third: {
+    date: "9월 12일 (토)",
+    plan: [
+      {
+        time: "11:30 ~ 13:00",
+        location: "세부 XXX 식당",
+        category: "ios-pizza",
+        pickup: {
+          location: "xx호텔 입구",
+          time: "11:30"
+        }
+      },
+      {
+        time: "13:00 ~ 15:00",
+        location: "세부 xxx 마사지",
+        category: "ios-hand",
+        pickup: {
+          location: "세부 XXX 식당",
+          time: "13:00"
+        }
+      },
+      {
+        time: "15:00 ~ 18:00",
+        location: "워터 스포츠",
+        category: "ios-boat",
+        pickup: ""
+      }
     ]
   }
-];
-
-const explore = [
-  require("../assets/images/explore_1.png"),
-  require("../assets/images/explore_2.png"),
-  require("../assets/images/explore_3.png"),
-  require("../assets/images/explore_4.png"),
-  require("../assets/images/explore_5.png"),
-  require("../assets/images/explore_6.png")
-];
+};
 
 const profiles = {
   username: "김징고",
@@ -235,4 +237,4 @@ const profiles = {
   newsletter: false
 };
 
-export { categories, explore, products, profiles, plans, lists };
+export { categories, profiles, plans, lists };

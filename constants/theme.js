@@ -2,8 +2,8 @@ const colors = {
   accent: "#F3534A",
   // primary: "#0AC4BA",
   // secondary: "#2BDA8E",
-  primary: "#6ab04c",
-  secondary: "#badc58",
+  primary: "#1e90ff",
+  secondary: "#70a1ff",
   tertiary: "#FFE358",
   black: "#323643",
   white: "#FFFFFF",
@@ -13,7 +13,7 @@ const colors = {
 
 const sizes = {
   // global sizes
-  base: 16,
+  base: 14,
   font: 14,
   radius: 6,
   padding: 25,
