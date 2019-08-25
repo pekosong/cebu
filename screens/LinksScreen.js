@@ -7,17 +7,25 @@ import {
   TouchableOpacity
 } from "react-native";
 
+import { Ionicons } from "@expo/vector-icons";
+
 import { Card, Badge, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
-import { categories } from "../constants/mocks";
 
 const { width } = Dimensions.get("window");
 
-const Browse = props => {
+const cateCat = {
+  ALL: "전체",
+  EAT: "먹거리",
+  ACTIVITY: "놀거리",
+  AESTHETIC: "힐링"
+};
+
+const LinksScreen = props => {
   const { navigation, profiles, categories } = props;
-  const [active, setActive] = useState("Products");
+  const [active, setActive] = useState("ALL");
   const [cates, setCates] = useState([]);
-  const tabs = ["Products", "Inspirations", "Shop"];
+  const tabs = ["ALL", "EAT", "ACTIVITY", "AESTHETIC"];
 
   useEffect(() => {
     setCates(categories);
@@ -39,7 +47,7 @@ const Browse = props => {
         style={[styles.tab, isActive ? styles.active : null]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {tab}
+          {cateCat[tab]}
         </Text>
       </TouchableOpacity>
     );
@@ -48,7 +56,7 @@ const Browse = props => {
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
         <Text h1 bold>
-          Browse
+          찾기
         </Text>
         <Button onPress={() => navigation.navigate("Settings", { profiles })}>
           <Image source={profiles.avatar} style={styles.avatar} />
@@ -65,7 +73,9 @@ const Browse = props => {
           {cates.map(category => (
             <TouchableOpacity
               key={category.name}
-              onPress={() => navigation.navigate("Explore", { category })}
+              onPress={() =>
+                navigation.navigate("Category", { category: category.name })
+              }
             >
               <Card center middle shadow style={styles.category}>
                 <Badge
@@ -73,13 +83,15 @@ const Browse = props => {
                   size={50}
                   color={theme.colors.primary}
                 >
-                  <Image source={category.image} />
+                  <Badge margin={[0, 0]} size={50} color={theme.colors.primary}>
+                    <Ionicons size={30} color="white" name={category.icon} />
+                  </Badge>
                 </Badge>
                 <Text medium height={20}>
                   {category.name}
                 </Text>
                 <Text gray caption>
-                  {category.count} products
+                  {category.count} shops
                 </Text>
               </Card>
             </TouchableOpacity>
@@ -90,14 +102,17 @@ const Browse = props => {
   );
 };
 
-Browse.navigationOptions = {};
-Browse.defaultProps = {
+LinksScreen.navigationOptions = {
+  header: null
+};
+LinksScreen.defaultProps = {
   profiles: mocks.profiles,
   categories: mocks.categories
 };
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: theme.sizes.base * 2
+    marginTop: theme.sizes.base * 2.5,
+    paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
     width: theme.sizes.base * 2.2,
@@ -107,10 +122,10 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.base * 2
+    marginHorizontal: theme.sizes.base * 1.5
   },
   tab: {
-    marginRight: theme.sizes.base * 2,
+    marginRight: theme.sizes.base * 1.5,
     paddingBottom: theme.sizes.base
   },
   active: {
@@ -119,7 +134,7 @@ const styles = StyleSheet.create({
   },
   categories: {
     flexWrap: "wrap",
-    paddingHorizontal: theme.sizes.base * 2,
+    paddingHorizontal: theme.sizes.base * 1.5,
     marginBottom: theme.sizes.base * 3.5
   },
   category: {
@@ -129,4 +144,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Browse;
+export default LinksScreen;

@@ -1,47 +1,201 @@
+const lists = {
+  restaurant: [
+    {
+      id: "restaurant1",
+      name: "점보 7",
+      engname: "jumbo7",
+      source: require("../assets/images/cebu_food1.jpg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["랍스타", "새우요리"]
+    },
+    {
+      id: "restaurant2",
+      name: "부레 레스토랑",
+      engname: "Buffet ",
+      source: require("../assets/images/cebu_food2.jpeg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["부페", "전통음식"]
+    },
+    {
+      id: "restaurant2",
+      name: "란타우 코르도바",
+      engname: "Lantaw Cordova",
+      source: require("../assets/images/cebu_food3.jpeg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["동동", "전통음식"]
+    },
+    {
+      id: "restaurant4",
+      name: "아인 레스토랑",
+      engname: "Ain ",
+      source: require("../assets/images/cebu_food4.jpg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["스테이크", "전통음식"]
+    }
+  ],
+  massage: [
+    {
+      id: "massage1",
+      name: "메디핑거",
+      engname: "Medi Finger",
+      source: require("../assets/images/cebu_massage1.jpg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["전통태국마사지"]
+    },
+    {
+      id: "massage2",
+      name: "프라나 스파",
+      engname: "Prana Spa",
+      source: require("../assets/images/cebu_massage2.jpeg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["전통태국마사지"]
+    },
+    {
+      id: "massage3",
+      name: "오션 스파",
+      engname: "Ocean Spa",
+      source: require("../assets/images/cebu_massage3.jpg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["전통태국마사지"]
+    },
+    {
+      id: "restaurant4",
+      name: "에코 스파",
+      engname: "Eco Spa",
+      source: require("../assets/images/cebu_massage4.jpg"),
+      review: 4.5,
+      reviewcnt: 100,
+      tags: ["전통태국마사지"]
+    }
+  ]
+};
+
 const categories = [
   {
-    id: "plants",
-    name: "Plants",
-    tags: ["products", "inspirations"],
+    id: "resto",
+    name: "식당",
+    tags: ["all", "eat"],
     count: 147,
-    image: require("../assets/icons/plants.png")
+    icon: "ios-pizza"
   },
   {
-    id: "seeds",
-    name: "Seeds",
-    tags: ["products", "inspirations"],
-    count: 16,
-    image: require("../assets/icons/seeds.png")
-  },
-  {
-    id: "flowers",
-    name: "Flowers",
-    tags: ["products", "inspirations"],
-    count: 68,
-    image: require("../assets/icons/flowers.png")
-  },
-  {
-    id: "sprayers",
-    name: "Sprayers",
-    tags: ["products", "shop"],
+    id: "beer",
+    name: "술집",
+    tags: ["all", "eat"],
     count: 17,
-    image: require("../assets/icons/sprayers.png")
+    icon: "ios-beer"
   },
   {
-    id: "pots",
-    name: "Pots",
-    tags: ["products", "shop"],
+    id: "cafe",
+    name: "카페",
+    tags: ["all", "eat"],
     count: 47,
-    image: require("../assets/icons/pots.png")
+    icon: "md-cafe"
   },
   {
-    id: "fertilizers",
-    name: "Fertilizers",
-    tags: ["products", "inspirations"],
+    id: "masage",
+    name: "마사지",
+    tags: ["all", "aesthetic"],
+    count: 16,
+    icon: "ios-hand"
+  },
+  {
+    id: "nail",
+    name: "네일",
+    tags: ["all", "aesthetic"],
+    count: 16,
+    icon: "ios-hand"
+  },
+  {
+    id: "sea",
+    name: "수상스포츠",
+    tags: ["all", "activity"],
+    count: 68,
+    icon: "ios-boat"
+  },
+  {
+    id: "moutaion",
+    name: "스포츠",
+    tags: ["all", "activity"],
     count: 47,
-    image: require("../assets/icons/fertilizers.png")
+    icon: "ios-bicycle"
+  },
+  {
+    id: "shopping",
+    name: "쇼핑",
+    tags: ["all", "activity"],
+    count: 47,
+    icon: "ios-basket"
   }
 ];
+
+const plans = {
+  first: {
+    date: "9월 10일 (목)",
+    plan: [
+      {
+        time: "11:30 ~ 13:00",
+        location: "세부 XXX 식당",
+        category: "ios-pizza",
+        pickup: {
+          location: "xx호텔 입구",
+          time: "11:30"
+        }
+      },
+      {
+        time: "13:00 ~ 15:00",
+        location: "세부 xxx 마사지",
+        category: "ios-hand",
+        pickup: {
+          location: "세부 XXX 식당",
+          time: "13:00"
+        }
+      },
+      {
+        time: "15:00 ~ 18:00",
+        location: "워터 스포츠",
+        category: "ios-boat",
+        pickup: ""
+      }
+    ]
+  },
+  second: {
+    date: "9월 11일 (금)",
+    plan: [
+      {
+        time: "11:30 ~ 13:00",
+        location: "세부 XXX 식당",
+        category: "ios-pizza",
+        pickup: {
+          location: "xx호텔 입구",
+          time: "11:30"
+        }
+      },
+      {
+        time: "13:00 ~ 15:00",
+        location: "세부 xxx 마사지",
+        category: "ios-hand",
+        pickup: {
+          location: "세부 XXX 식당",
+          time: "13:00"
+        }
+      },
+      {
+        time: "15:00 ~ 18:00",
+        location: "워터 스포츠",
+        category: "ios-boat",
+        pickup: ""
+      }
+    ]
+  }
+};
 
 const products = [
   {
@@ -71,9 +225,9 @@ const explore = [
 ];
 
 const profiles = {
-  username: "react-ui-kit",
-  location: "Europe",
-  email: "contact@react-ui.ki.com",
+  username: "김징고",
+  location: "세부 동동 호텔",
+  email: "peko22@naver.com",
   avatar: require("../assets/images/avatar.png"),
   budget: 1000,
   monthly_cap: 5000,
@@ -81,4 +235,4 @@ const profiles = {
   newsletter: false
 };
 
-export { categories, explore, products, profiles };
+export { categories, explore, products, profiles, plans, lists };

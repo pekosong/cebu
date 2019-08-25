@@ -4,7 +4,7 @@ import { Divider, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 import Slider from "react-native-slider";
 
-const Settings = props => {
+const ProfileScreen = props => {
   const { profiles } = props;
   const [budget, setBudget] = useState(850);
   const [monthly_cap, setMonthly_cap] = useState(1700);
@@ -41,7 +41,7 @@ const Settings = props => {
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
         <Text h1 bold>
-          Settings
+          내 정보
         </Text>
         <Button>
           <Image source={profiles.avatar} style={styles.avatar} />
@@ -51,8 +51,8 @@ const Settings = props => {
         <Block style={styles.inputs}>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
-              <Text gray2 style={{ marginBottom: 10 }}>
-                Username
+              <Text h4 gray style={{ marginBottom: 10 }}>
+                이름
               </Text>
               {renderEdit("username")}
             </Block>
@@ -62,8 +62,8 @@ const Settings = props => {
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
-              <Text gray2 style={{ marginBottom: 10 }}>
-                Location
+              <Text h4 gray style={{ marginBottom: 10 }}>
+                숙박정보
               </Text>
               {renderEdit("location")}
             </Block>
@@ -73,7 +73,7 @@ const Settings = props => {
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
-              <Text gray2 style={{ marginBottom: 10 }}>
+              <Text h4 gray style={{ marginBottom: 10 }}>
                 E-mail
               </Text>
               <Text bold>{profiles.email}</Text>
@@ -84,8 +84,8 @@ const Settings = props => {
         <Divider margin={[theme.sizes.base, theme.sizes.base * 2]} />
         <Block style={styles.sliders}>
           <Block margin={[10, 0]}>
-            <Text gray2 style={{ marginBottom: 10 }}>
-              Budget
+            <Text h4 gray style={{ marginBottom: 10 }}>
+              예산
             </Text>
             <Slider
               minimumValue={0}
@@ -98,12 +98,12 @@ const Settings = props => {
               value={budget}
               onValueChange={value => setBudget(value)}
             />
-            <Text caption gray2 right>
+            <Text h4 caption gray right>
               ${budget.toFixed(0)}
             </Text>
           </Block>
           <Block margin={[10, 0]}>
-            <Text gray2 style={{ marginBottom: 10 }}>
+            <Text h4 gray style={{ marginBottom: 10 }}>
               Monthly Cap
             </Text>
             <Slider
@@ -117,7 +117,7 @@ const Settings = props => {
               value={monthly_cap}
               onValueChange={value => setMonthly_cap(value)}
             />
-            <Text caption gray2 right>
+            <Text h4 caption gray right>
               ${monthly_cap.toFixed(0)}
             </Text>
           </Block>
@@ -130,7 +130,7 @@ const Settings = props => {
             space="between"
             style={{ marginBottom: theme.sizes.base * 2 }}
           >
-            <Text gray2>Notifications</Text>
+            <Text gray>알림설정</Text>
             <Switch
               value={notifications}
               onValueChange={value => setNotifications(value)}
@@ -142,7 +142,7 @@ const Settings = props => {
             space="between"
             style={{ marginBottom: theme.sizes.base * 2 }}
           >
-            <Text gray2>Newsletters</Text>
+            <Text gray>새정보받기</Text>
             <Switch
               value={newsletters}
               onValueChange={value => setNewsletters(value)}
@@ -154,13 +154,16 @@ const Settings = props => {
   );
 };
 
-Settings.navigationOptions = {};
-Settings.defaultProps = {
+ProfileScreen.navigationOptions = {
+  header: null
+};
+ProfileScreen.defaultProps = {
   profiles: mocks.profiles
 };
 const styles = StyleSheet.create({
   header: {
-    paddingHorizontal: theme.sizes.base * 2
+    marginTop: theme.sizes.base * 2.5,
+    paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
     width: theme.sizes.base * 2.2,
@@ -190,4 +193,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default Settings;
+export default ProfileScreen;

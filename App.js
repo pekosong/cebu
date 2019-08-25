@@ -4,7 +4,9 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 
-import Navigation from "./navigation";
+// import Navigation from "./navigation";
+import AppNavigator from "./navigation/AppNavigator";
+
 import { Block } from "./components";
 import * as constants from "./constants";
 
@@ -44,7 +46,7 @@ export default function App(props) {
 
   return isLoadingComplete && isFontComplete ? (
     <Block style={styles.container}>
-      <Navigation />
+      <AppNavigator />
     </Block>
   ) : (
     <AppLoading
