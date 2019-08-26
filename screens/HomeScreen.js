@@ -40,9 +40,9 @@ function HomeScreen(props) {
         </Button>
       </Block>
       <Image
-        style={{ width: width, height: 200 }}
+        style={{ width: width, height: 240, marginBottom: 10 }}
         resizeMode="contain"
-        resizeMethod="resize"
+        resizeMethod="auto"
         source={require("../assets/images/hello.jpg")}
       ></Image>
       <ScrollView
