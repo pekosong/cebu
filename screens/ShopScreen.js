@@ -52,7 +52,7 @@ export default function ShopScreen(props) {
             {shop.review} reviews
           </Text>
           <Image
-            style={{ width: width, height: 280 }}
+            style={{ width: width, height: 295 }}
             resizeMode="contain"
             resizeMethod="resize"
             source={shop.source}
@@ -60,7 +60,7 @@ export default function ShopScreen(props) {
         </Block>
         <Block style={styles.categories}>
           <Text bold h3>
-            {shop.name} ( {shop.engname} )
+            {shop.name} <Text gray> ( {shop.engname} )</Text>
           </Text>
           <Text h4 bold style={styles.content}>
             <Ionicons size={16} name="md-home" />
@@ -94,7 +94,7 @@ export default function ShopScreen(props) {
             <Ionicons size={16} name="md-book" />
             {"  "}주요 메뉴 및 가격
           </Text>
-          <Text>
+          <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
             recusandae voluptate numquam consectetur quibusdam, pariatur
             reprehenderit enim quia totam, quam repellat repudiandae nam eum
@@ -105,14 +105,14 @@ export default function ShopScreen(props) {
             <Ionicons size={16} name="md-pie" />
             {"  "}기타정보
           </Text>
-          <Text>
+          <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
             recusandae voluptate numquam consectetur quibusdam, pariatur
             reprehenderit enim quia totam, quam repellat repudiandae nam eum
             dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
             Voluptates est iure dolorem dignissimos!
           </Text>
-          <Button gradient onPress={() => {}}>
+          <Button gradient style={{ marginTop: 15 }} onPress={() => {}}>
             {false ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
@@ -126,7 +126,7 @@ export default function ShopScreen(props) {
               카카오톡 문의 하기
             </Text>
             <Image
-              style={{ position: "absolute", right: 5, width: 35, height: 35 }}
+              style={{ position: "absolute", right: 5, width: 32, height: 32 }}
               source={require("../assets/icons/cacao.png")}
             ></Image>
           </Button>
@@ -153,13 +153,11 @@ const styles = StyleSheet.create({
     shadowOffset: { width: 0, height: 2 },
     shadowOpacity: 0.1,
     shadowRadius: 10,
-    backgroundColor: "#dfe6e9",
+    backgroundColor: "#fff",
     position: "relative"
   },
   content: {
-    borderBottomColor: theme.colors.gray,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingVertical: theme.sizes.base,
-    marginBottom: theme.sizes.base / 2
+    marginTop: theme.sizes.base * 1.5,
+    marginBottom: 8
   }
 });

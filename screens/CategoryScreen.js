@@ -130,8 +130,8 @@ const CategoryScreen = props => {
                     >
                       <Image
                         style={{
-                          height: 25,
-                          width: 25
+                          height: 22,
+                          width: 22
                         }}
                         source={require("../assets/icons/car.png")}
                       ></Image>
