@@ -22,7 +22,7 @@ const sizes = {
   h1: 26,
   h2: 20,
   h3: 18,
-  h4: 16,
+  h4: 15,
 
   title: 18,
   header: 16,

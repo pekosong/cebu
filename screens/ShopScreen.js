@@ -4,12 +4,13 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Card, Badge, Button, Block, Text } from "../components";
+import { Card, Badge, Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
 
 const { width } = Dimensions.get("window");
@@ -40,24 +41,95 @@ export default function ShopScreen(props) {
         </Text>
         <Button>
           <Text h1 bold>
-            {shop.name}
+            {shop.name} <Text h4>- {shop.engname}</Text>
           </Text>
         </Button>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block center>
           <Text>{shop ? renderStar() : null}</Text>
-          <Text h2>{shop.review}</Text>
+          <Text gray h3>
+            {shop.review} reviews
+          </Text>
           <Image
-            style={{ width: width, height: 300 }}
+            style={{ width: width, height: 280 }}
             resizeMode="contain"
             resizeMethod="resize"
             source={shop.source}
           />
         </Block>
         <Block style={styles.categories}>
-          <Text h3>{shop.name}</Text>
-          <Text h4>{shop.engname}</Text>
+          <Text bold h3>
+            {shop.name} ( {shop.engname} )
+          </Text>
+          <Text h4 bold style={styles.content}>
+            <Ionicons size={16} name="md-home" />
+            {"  "}업체정보
+          </Text>
+          <Block style={{ flexDirection: "row" }}>
+            <Block gray2 flex={1}>
+              <Text>영업시간</Text>
+            </Block>
+            <Block gray flex={2.5}>
+              <Text>11:00 ~ 24:00</Text>
+            </Block>
+          </Block>
+          <Block margin={[10, 0]} style={{ flexDirection: "row" }}>
+            <Block gray2 flex={1}>
+              <Text>전화번호</Text>
+            </Block>
+            <Block gray flex={2.5}>
+              <Text>010-9141-9090</Text>
+            </Block>
+          </Block>
+          <Block style={{ flexDirection: "row" }}>
+            <Block gray2 flex={1}>
+              <Text>주소</Text>
+            </Block>
+            <Block gray flex={2.5}>
+              <Text>세부 막탄 000-000</Text>
+            </Block>
+          </Block>
+          <Text h4 bold style={styles.content}>
+            <Ionicons size={16} name="md-book" />
+            {"  "}주요 메뉴 및 가격
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
+            recusandae voluptate numquam consectetur quibusdam, pariatur
+            reprehenderit enim quia totam, quam repellat repudiandae nam eum
+            dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
+            Voluptates est iure dolorem dignissimos!
+          </Text>
+          <Text h4 bold style={styles.content}>
+            <Ionicons size={16} name="md-pie" />
+            {"  "}기타정보
+          </Text>
+          <Text>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
+            recusandae voluptate numquam consectetur quibusdam, pariatur
+            reprehenderit enim quia totam, quam repellat repudiandae nam eum
+            dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
+            Voluptates est iure dolorem dignissimos!
+          </Text>
+          <Button gradient onPress={() => {}}>
+            {false ? (
+              <ActivityIndicator size="small" color="white" />
+            ) : (
+              <Text bold white center>
+                예약 하기
+              </Text>
+            )}
+          </Button>
+          <Button shadow style={styles.shadow}>
+            <Text center semibold onPress={() => navigation.navigate("Signup")}>
+              카카오톡 문의 하기
+            </Text>
+            <Image
+              style={{ position: "absolute", right: 5, width: 35, height: 35 }}
+              source={require("../assets/icons/cacao.png")}
+            ></Image>
+          </Button>
         </Block>
       </ScrollView>
     </Block>
@@ -74,7 +146,20 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 1.5
   },
   categories: {
-    paddingHorizontal: theme.sizes.base * 1.5,
-    marginBottom: theme.sizes.base * 3.5
+    paddingHorizontal: theme.sizes.base * 1.5
+  },
+  shadow: {
+    shadowColor: theme.colors.black,
+    shadowOffset: { width: 0, height: 2 },
+    shadowOpacity: 0.1,
+    shadowRadius: 10,
+    backgroundColor: "#dfe6e9",
+    position: "relative"
+  },
+  content: {
+    borderBottomColor: theme.colors.gray,
+    borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingVertical: theme.sizes.base,
+    marginBottom: theme.sizes.base / 2
   }
 });

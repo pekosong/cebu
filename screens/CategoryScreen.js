@@ -87,7 +87,7 @@ const CategoryScreen = props => {
                   </Badge>
                 </Block>
                 <Block middle margin={[0, 0, 0, 5]} flex={2.8}>
-                  <Text h3 bold medium height={25}>
+                  <Text h4 bold medium height={25}>
                     {list.name} <Text caption>{list.engname}</Text>
                   </Text>
                   <Text h4 medium height={25}>
@@ -107,9 +107,38 @@ const CategoryScreen = props => {
                     ))}
                   </Text>
                 </Block>
-                <Block middle center flex={0.4}>
+                <Block
+                  middle
+                  center
+                  flex={0.4}
+                  style={{ position: "relative" }}
+                >
                   <Text>1.5</Text>
                   <Text>km</Text>
+                  {list.pickup ? (
+                    <Badge
+                      margin={[0, 0, 15]}
+                      size={50}
+                      style={{
+                        position: "absolute",
+                        height: 30,
+                        width: 30,
+                        bottom: -28,
+                        right: -12
+                      }}
+                      color={theme.colors.accent}
+                    >
+                      <Image
+                        style={{
+                          height: 25,
+                          width: 25
+                        }}
+                        source={require("../assets/icons/car.png")}
+                      ></Image>
+                    </Badge>
+                  ) : (
+                    <Block></Block>
+                  )}
                 </Block>
               </Card>
             </TouchableOpacity>

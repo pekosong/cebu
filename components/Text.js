@@ -10,6 +10,7 @@ export default class Typography extends Component {
       h1,
       h2,
       h3,
+      h4,
       title,
       body,
       caption,
@@ -48,6 +49,7 @@ export default class Typography extends Component {
       h1 && styles.h1,
       h2 && styles.h2,
       h3 && styles.h3,
+      h4 && styles.h4,
       title && styles.title,
       body && styles.body,
       caption && styles.caption,
@@ -95,19 +97,19 @@ const styles = StyleSheet.create({
   },
   // variations
   regular: {
-    fontWeight: "normal",
+    fontWeight: "normal"
   },
   bold: {
-    fontWeight: "bold",
+    fontWeight: "bold"
   },
   semibold: {
-    fontWeight: "500",
+    fontWeight: "500"
   },
   medium: {
-    fontWeight: "500",
+    fontWeight: "500"
   },
   light: {
-    fontWeight: "200",
+    fontWeight: "200"
   },
   // position
   center: { textAlign: "center" },
@@ -125,6 +127,7 @@ const styles = StyleSheet.create({
   h1: theme.fonts.h1,
   h2: theme.fonts.h2,
   h3: theme.fonts.h3,
+  h4: theme.fonts.h4,
   title: theme.fonts.title,
   body: theme.fonts.body,
   caption: theme.fonts.caption,

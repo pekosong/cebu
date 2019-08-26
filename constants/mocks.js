@@ -7,7 +7,8 @@ const lists = {
       source: require("../assets/images/cebu_food1.jpg"),
       review: 4.5,
       reviewcnt: 100,
-      tags: ["랍스타", "새우요리"]
+      tags: ["랍스타", "새우요리"],
+      pickup: true
     },
     {
       id: "restaurant2",
@@ -16,7 +17,8 @@ const lists = {
       source: require("../assets/images/cebu_food2.jpeg"),
       review: 4.5,
       reviewcnt: 100,
-      tags: ["부페", "전통음식"]
+      tags: ["부페", "전통음식"],
+      pickup: false
     },
     {
       id: "restaurant2",
@@ -25,7 +27,8 @@ const lists = {
       source: require("../assets/images/cebu_food3.jpeg"),
       review: 4.5,
       reviewcnt: 100,
-      tags: ["동동", "전통음식"]
+      tags: ["동동", "전통음식"],
+      pickup: false
     },
     {
       id: "restaurant4",
@@ -34,7 +37,8 @@ const lists = {
       source: require("../assets/images/cebu_food4.jpg"),
       review: 4.5,
       reviewcnt: 100,
-      tags: ["스테이크", "전통음식"]
+      tags: ["스테이크", "전통음식"],
+      pickup: true
     }
   ],
   massage: [

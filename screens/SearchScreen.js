@@ -83,9 +83,7 @@ const SearchScreen = props => {
                   size={50}
                   color={theme.colors.primary}
                 >
-                  <Badge margin={[0, 0]} size={50} color={theme.colors.primary}>
-                    <Ionicons size={30} color="white" name={category.icon} />
-                  </Badge>
+                  <Ionicons size={30} color="white" name={category.icon} />
                 </Badge>
                 <Text medium height={20}>
                   {category.name}

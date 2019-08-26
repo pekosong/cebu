@@ -62,16 +62,16 @@ function MyTripScreen(props) {
       <TouchableOpacity key={todo.location} onPress={() => {}}>
         <Card middle shadow style={styles.category}>
           <Block middle flex={1.3}>
-            <Badge margin={[0, 0]} size={50} color={theme.colors.primary}>
+            <Badge margin={[0, 0]} size={45} color={theme.colors.primary}>
               <Ionicons size={30} color="white" name={todo.category} />
             </Badge>
           </Block>
           <Block middle flex={3}>
-            <Text h3 bold medium height={25}>
+            <Text h4 bold medium height={25}>
               {todo.time}
             </Text>
 
-            <Text h4 medium height={25}>
+            <Text gray medium height={25}>
               {todo.location}
             </Text>
           </Block>
