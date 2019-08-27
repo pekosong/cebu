@@ -1,20 +1,10 @@
 import React, { useState, useEffect } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  Image,
-  ScrollView,
-  TouchableOpacity,
-  ActivityIndicator
-} from "react-native";
+import { StyleSheet, Image, ScrollView } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Card, Badge, Button, Block, Text, Divider } from "../components";
+import { Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
-import { plans } from "../constants/mocks";
-
-const { width } = Dimensions.get("window");
 
 export default function TripScreen(props) {
   const { navigation } = props;
@@ -37,11 +27,9 @@ export default function TripScreen(props) {
             onPress={() => navigation.goBack()}
           />
         </Text>
-        <Button>
-          <Text h1 bold>
-            {trip.location}{" "}
-          </Text>
-        </Button>
+        <Text h1 bold>
+          {trip.location}{" "}
+        </Text>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block style={styles.categories}>

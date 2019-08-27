@@ -2,11 +2,9 @@ import React, { useState, useEffect } from "react";
 import {
   Image,
   Dimensions,
-  Platform,
   ScrollView,
   StyleSheet,
-  TouchableOpacity,
-  View
+  TouchableOpacity
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";

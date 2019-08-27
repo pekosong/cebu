@@ -1,27 +1,12 @@
-import React, { useState, useEffect } from "react";
-import {
-  Image,
-  Dimensions,
-  Platform,
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  View
-} from "react-native";
+import React from "react";
+import { Image, Dimensions, ScrollView, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Card, Badge, Button, Block, Text, Divider } from "../components";
+import { Card, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 
 const { width } = Dimensions.get("window");
-const tabs = ["ALL", "first", "second"];
-const dayMap = {
-  ALL: "전체",
-  first: "1일차",
-  second: "2일차",
-  third: "3일차"
-};
 
 function HomeScreen(props) {
   const { profiles } = props;

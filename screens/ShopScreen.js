@@ -4,13 +4,12 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Card, Badge, Button, Block, Text, Divider } from "../components";
+import { Badge, Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
 
 const { width } = Dimensions.get("window");
