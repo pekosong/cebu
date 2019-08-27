@@ -23,6 +23,16 @@ function AuthScreen(props) {
           </Text>
         </Button>
       </Block>
+      <Block flex={false}>
+        <Button
+          color={theme.colors.accent}
+          onPress={() => navigation.navigate("Main")}
+        >
+          <Text h2 center white>
+            Go Home
+          </Text>
+        </Button>
+      </Block>
     </Block>
   );
 }
