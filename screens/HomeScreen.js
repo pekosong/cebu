@@ -40,7 +40,7 @@ function HomeScreen(props) {
         </Button>
       </Block>
       <Image
-        style={{ width: width, height: 240, marginBottom: 10 }}
+        style={{ width: width, height: 237, marginBottom: 5 }}
         resizeMode="contain"
         resizeMethod="auto"
         source={require("../assets/images/hello.jpg")}

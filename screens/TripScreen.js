@@ -12,22 +12,20 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { Card, Badge, Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
+import { plans } from "../constants/mocks";
 
 const { width } = Dimensions.get("window");
 
-export default function ShopScreen(props) {
+export default function TripScreen(props) {
   const { navigation } = props;
-  const [shop, setShop] = useState({});
+  const [trip, setTrip] = useState({});
+  const [isPick, setIsPick] = useState(false);
 
   useEffect(() => {
-    setShop(navigation.getParam("shop"));
+    setTrip(navigation.getParam("trip"));
+    setIsPick(true);
   }, []);
 
-  const renderStar = () => {
-    return [...Array(5).keys()].map(e => (
-      <Ionicons key={e} size={30} color={theme.colors.accent} name="md-star" />
-    ));
-  };
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
@@ -41,55 +39,32 @@ export default function ShopScreen(props) {
         </Text>
         <Button>
           <Text h1 bold>
-            {shop.name} <Text h4>- {shop.engname}</Text>
+            {trip.location}{" "}
           </Text>
         </Button>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block center>
-          <Text>{shop ? renderStar() : null}</Text>
-          <Text gray h3>
-            {shop.review} reviews
-          </Text>
-          <Image
-            style={{ width: width, height: 295 }}
-            resizeMode="contain"
-            resizeMethod="resize"
-            source={shop.source}
-          />
-          {shop.pickup ? (
-            <Block
-              center
-              middle
-              row
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10
-              }}
-            >
-              <Badge size={40} color={theme.colors.accent}>
-                <Image
-                  style={{
-                    height: 30,
-                    width: 30
-                  }}
-                  source={require("../assets/icons/car.png")}
-                ></Image>
-              </Badge>
-              <Text h4 bold>
-                {" "}
-                픽업
-              </Text>
-            </Block>
-          ) : (
-            <Block></Block>
-          )}
-        </Block>
         <Block style={styles.categories}>
-          <Text bold h3>
-            {shop.name} <Text gray> ( {shop.engname} )</Text>
+          <Text h4 bold style={styles.content}>
+            <Ionicons size={16} name="md-book" />
+            {"  "}예약정보
           </Text>
+          <Block row>
+            <Block gray2 flex={1}>
+              <Text>시간</Text>
+            </Block>
+            <Block gray flex={2.5}>
+              <Text>{trip.time}</Text>
+            </Block>
+          </Block>
+          <Block row margin={[5, 0]}>
+            <Block gray2 flex={1}>
+              <Text>장소</Text>
+            </Block>
+            <Block gray flex={2.5}>
+              <Text>{trip.location}</Text>
+            </Block>
+          </Block>
           <Divider margin={[theme.sizes.base, 0]} />
           <Text h4 bold style={styles.content}>
             <Ionicons size={16} name="md-home" />
@@ -120,18 +95,34 @@ export default function ShopScreen(props) {
             </Block>
           </Block>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-book" />
-            {"  "}주요 메뉴 및 가격
-          </Text>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam, pariatur
-            reprehenderit enim quia totam, quam repellat repudiandae nam eum
-            dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
-            Voluptates est iure dolorem dignissimos!
-          </Text>
-          <Divider margin={[theme.sizes.base, 0]} />
+          {trip.pickup != undefined ? (
+            <React.Fragment>
+              <Text h4 bold style={styles.content}>
+                <Ionicons size={16} name="md-car" />
+                {"  "}픽업
+              </Text>
+              <Block row>
+                <Block gray2 flex={1}>
+                  <Text>픽업시간</Text>
+                </Block>
+                <Block gray flex={2.5}>
+                  <Text>{trip.pickup.time}</Text>
+                </Block>
+              </Block>
+              <Block row margin={[5, 0]}>
+                <Block gray2 flex={1}>
+                  <Text>픽업장소</Text>
+                </Block>
+                <Block gray flex={2.5}>
+                  <Text>{trip.pickup.location}</Text>
+                </Block>
+              </Block>
+              <Divider margin={[theme.sizes.base, 0]} />
+            </React.Fragment>
+          ) : (
+            <Block></Block>
+          )}
+
           <Text h4 bold style={styles.content}>
             <Ionicons size={16} name="md-pie" />
             {"  "}기타정보
@@ -144,14 +135,14 @@ export default function ShopScreen(props) {
             Voluptates est iure dolorem dignissimos!
           </Text>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Button gradient style={{ marginTop: 5 }} onPress={() => {}}>
-            {false ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <Text bold white center>
-                예약 하기
-              </Text>
-            )}
+          <Button
+            color={theme.colors.accent}
+            style={{ marginTop: 5 }}
+            onPress={() => {}}
+          >
+            <Text bold white center>
+              예약 변경 하기
+            </Text>
           </Button>
           <Button shadow style={styles.shadow}>
             <Text center semibold onPress={() => navigation.navigate("Signup")}>
@@ -168,7 +159,7 @@ export default function ShopScreen(props) {
   );
 }
 
-ShopScreen.navigationOptions = {
+TripScreen.navigationOptions = {
   header: null
 };
 

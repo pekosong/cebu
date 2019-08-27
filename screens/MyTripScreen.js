@@ -24,7 +24,7 @@ const dayMap = {
 };
 
 function MyTripScreen(props) {
-  const { profiles, plans } = props;
+  const { profiles, plans, navigation } = props;
   const [active, setActive] = useState("ALL");
   const [selectedPlans, setSelectedPlans] = useState([]);
 
@@ -59,7 +59,10 @@ function MyTripScreen(props) {
 
   const renderPlan = plan => {
     return plan.map(todo => (
-      <TouchableOpacity key={todo.location} onPress={() => {}}>
+      <TouchableOpacity
+        key={todo.location}
+        onPress={() => navigation.navigate("Trip", { trip: todo })}
+      >
         <Card middle shadow style={styles.category}>
           <Block middle flex={1.3}>
             <Badge margin={[0, 0]} size={45} color={theme.colors.primary}>

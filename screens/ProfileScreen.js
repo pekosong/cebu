@@ -171,7 +171,7 @@ const styles = StyleSheet.create({
   },
   inputs: {
     marginTop: theme.sizes.base * 0.5,
-    paddingHorizontal: theme.sizes.base * 2
+    paddingHorizontal: theme.sizes.base * 1.5
   },
   inputRow: {
     alignItems: "flex-end"

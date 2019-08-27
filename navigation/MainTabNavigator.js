@@ -9,6 +9,8 @@ import {
 
 import HomeScreen from "../screens/HomeScreen";
 import MyTripScreen from "../screens/MyTripScreen";
+import TripSceen from "../screens/TripScreen";
+
 import SearchScreen from "../screens/SearchScreen";
 import SettingsScreen from "../screens/SettingsScreen";
 import ProfileScreen from "../screens/ProfileScreen";
@@ -45,7 +47,8 @@ HomeStack.path = "";
 
 const MyTripStack = createStackNavigator(
   {
-    MyTrip: MyTripScreen
+    MyTrip: MyTripScreen,
+    Trip: TripSceen
   },
   config
 );
@@ -91,11 +94,11 @@ const SettingsStack = createStackNavigator(
 );
 
 SettingsStack.navigationOptions = {
-  tabBarLabel: "???",
+  tabBarLabel: "예약 관리",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "md-outlet" : "md-outlet"}
+      name={Platform.OS === "ios" ? "md-book" : "md-book"}
     />
   )
 };
