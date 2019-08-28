@@ -8,6 +8,7 @@ import {
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+import firebase from "../constants/store";
 
 const EMAIL = "peko22@naver.com";
 const PASSWORD = "1q2w3e4r";
@@ -18,9 +19,16 @@ const SignupScreen = props => {
 
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
-  const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
 
+  const signUp = async () => {
+    await firebase
+      .auth()
+      .createUserWithEmailAndPassword(email, password)
+      .catch(err => {
+        console.log(err);
+      });
+  };
   const handleSignup = () => {
     if (step == 1) {
       return (
@@ -75,16 +83,12 @@ const SignupScreen = props => {
             <Input
               label="출발일"
               style={[styles.input]}
-              onChangeText={text => {
-                setEmail(text);
-              }}
+              onChangeText={text => {}}
             />
             <Input
               label="도착일"
               style={[styles.input]}
-              onChangeText={text => {
-                setPassword(text);
-              }}
+              onChangeText={text => {}}
             />
 
             <Button
@@ -115,9 +119,7 @@ const SignupScreen = props => {
             <Input
               label="Hotel"
               style={[styles.input]}
-              onChangeText={text => {
-                setEmail(text);
-              }}
+              onChangeText={text => {}}
             />
             <Button
               gradient

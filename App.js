@@ -4,6 +4,8 @@ import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
 
+import firebase from "./constants/store";
+
 // import Navigation from "./navigation";
 import AppNavigator from "./navigation/AppNavigator";
 

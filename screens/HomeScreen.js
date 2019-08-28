@@ -11,7 +11,7 @@ const { width } = Dimensions.get("window");
 function HomeScreen(props) {
   return (
     <Block>
-      <Block flex={0.3}>
+      <Block flex={0.25}>
         <Image
           style={{
             width: width,
