@@ -23,7 +23,7 @@ export default function TripScreen(props) {
           <Ionicons
             color={theme.colors.gray}
             size={35}
-            name="md-arrow-back"
+            name="ios-arrow-back"
             onPress={() => navigation.goBack()}
           />
         </Text>
@@ -157,6 +157,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 1.5
   },
   categories: {
+    paddingTop: theme.sizes.base * 1.5,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   shadow: {

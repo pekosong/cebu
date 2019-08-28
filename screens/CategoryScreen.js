@@ -57,7 +57,7 @@ const CategoryScreen = props => {
           <Ionicons
             color={theme.colors.gray}
             size={35}
-            name="md-arrow-back"
+            name="ios-arrow-back"
             onPress={() => navigation.goBack()}
           />
         </Text>

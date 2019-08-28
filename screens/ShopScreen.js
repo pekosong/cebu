@@ -34,7 +34,7 @@ export default function ShopScreen(props) {
           <Ionicons
             color={theme.colors.gray}
             size={35}
-            name="md-arrow-back"
+            name="ios-arrow-back"
             onPress={() => navigation.goBack()}
           />
         </Text>
@@ -44,14 +44,17 @@ export default function ShopScreen(props) {
           </Text>
         </Button>
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 55 }}
+      >
         <Block center>
           <Text>{shop ? renderStar() : null}</Text>
           <Text gray h3>
             {shop.review} reviews
           </Text>
           <Image
-            style={{ width: width, height: 295 }}
+            style={{ width: width, height: 315 }}
             resizeMode="contain"
             resizeMethod="resize"
             source={shop.source}
@@ -142,27 +145,35 @@ export default function ShopScreen(props) {
             dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
             Voluptates est iure dolorem dignissimos!
           </Text>
-          <Divider margin={[theme.sizes.base, 0]} />
-          <Button gradient style={{ marginTop: 5 }} onPress={() => {}}>
-            {false ? (
-              <ActivityIndicator size="small" color="white" />
-            ) : (
-              <Text bold white center>
-                예약 하기
-              </Text>
-            )}
+        </Block>
+      </ScrollView>
+      <Block
+        row
+        style={{
+          position: "absolute",
+          bottom: 0,
+          paddingHorizontal: theme.sizes.base * 1.5
+        }}
+      >
+        <Block flex={1} style={{ marginRight: 5 }}>
+          <Button color={theme.colors.primary} onPress={() => {}}>
+            <Text bold white center>
+              예약 하기
+            </Text>
           </Button>
+        </Block>
+        <Block flex={1}>
           <Button shadow style={styles.shadow}>
             <Text center semibold onPress={() => navigation.navigate("Signup")}>
-              카카오톡 문의 하기
+              카카오톡 문의{"    "}
             </Text>
             <Image
-              style={{ position: "absolute", right: 5, width: 32, height: 32 }}
+              style={{ position: "absolute", right: 5, width: 25, height: 25 }}
               source={require("../assets/icons/cacao.png")}
             ></Image>
           </Button>
         </Block>
-      </ScrollView>
+      </Block>
     </Block>
   );
 }

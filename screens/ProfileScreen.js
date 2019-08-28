@@ -5,7 +5,7 @@ import { theme, mocks } from "../constants";
 import Slider from "react-native-slider";
 
 const ProfileScreen = props => {
-  const { profiles } = props;
+  const { profiles, navigation } = props;
   const [budget, setBudget] = useState(850);
   const [monthly_cap, setMonthly_cap] = useState(1700);
   const [notifications, setNotifications] = useState(true);
@@ -43,8 +43,8 @@ const ProfileScreen = props => {
         <Text h1 bold>
           내 정보
         </Text>
-        <Button>
-          <Image source={profiles.avatar} style={styles.avatar} />
+        <Button onPress={() => navigation.navigate("Auth")}>
+          <Text>Logout</Text>
         </Button>
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>
