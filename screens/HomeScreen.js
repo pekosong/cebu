@@ -13,23 +13,13 @@ function HomeScreen(props) {
 
   return (
     <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Text h3>
-          헬로우,{" "}
-          <Text h1 bold color={theme.colors.primary}>
-            CEBU
-          </Text>
-        </Text>
-        <Button onPress={() => navigation.navigate("Settings", { profiles })}>
-          <Image source={profiles.avatar} style={styles.avatar} />
-        </Button>
-      </Block>
       <Image
-        style={{ width: width, height: 237, marginBottom: 5 }}
+        style={{ width: width, height: 208 }}
         resizeMode="contain"
         resizeMethod="auto"
         source={require("../assets/images/hello.jpg")}
       ></Image>
+      <Text h1 white bold style={{position:"absolute", top: 160, left:10}}>CEBU</Text>
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={styles.categories}
@@ -121,15 +111,8 @@ HomeScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.base * 1.5
-  },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
-  },
   categories: {
+    paddingTop: theme.sizes.base,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   nal: {
