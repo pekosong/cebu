@@ -21,7 +21,6 @@ const SignupScreen = props => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-
   const [step, setStep] = useState(1);
 
   const signUp = async () => {

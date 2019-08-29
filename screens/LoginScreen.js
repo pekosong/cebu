@@ -9,6 +9,7 @@ import {
 
 import { Button, Block, Input, Text } from "../components";
 import { theme } from "../constants";
+import firebase from "../constants/store";
 
 const EMAIL = "peko22@naver.com";
 const PASSWORD = "1q2w3e4r";
@@ -17,7 +18,7 @@ const LoginScreen = props => {
 
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
-  const [errors, setErrors] = useState([]);
+  const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   _storeData = async () => {
@@ -28,42 +29,26 @@ const LoginScreen = props => {
     }
   };
 
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("email");
-      if (value !== null) {
-        console.log(value);
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
-  const handleLogin = () => {
+  const hasErrors = () => (isError ? styles.hasErrors : null);
+  const handleLogin = async () => {
     setLoading(true);
-    setErrors([]);
-    let myErrors = [];
 
     Keyboard.dismiss();
 
-    setTimeout(() => {
-      if (email !== EMAIL) {
-        myErrors.push("email");
-      }
-
-      if (password !== PASSWORD) {
-        myErrors.push("password");
-      }
-
-      setErrors(myErrors);
-      setLoading(false);
-
-      if (!myErrors.length) {
+    await firebase
+      .auth()
+      .signInWithEmailAndPassword(email, password)
+      .then(() => {
+        setIsError(false);
+        setLoading(false);
         _storeData();
         navigation.navigate("Home");
-      }
-    }, 500);
+      })
+      .catch(err => {
+        console.log(err);
+        setIsError(true);
+        setLoading(false);
+      });
   };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
@@ -74,8 +59,8 @@ const LoginScreen = props => {
           </Text>
           <Input
             label="Email"
-            error={hasErrors("email")}
-            style={[styles.input, hasErrors("email")]}
+            error={hasErrors()}
+            style={[styles.input, hasErrors()]}
             defaultValue={email}
             onChangeText={text => {
               setEmail(text);
@@ -84,8 +69,8 @@ const LoginScreen = props => {
           <Input
             secure
             label="Password"
-            error={hasErrors("password")}
-            style={[styles.input, hasErrors("password")]}
+            error={hasErrors()}
+            style={[styles.input, hasErrors()]}
             defaultValue={password}
             onChangeText={text => {
               setPassword(text);

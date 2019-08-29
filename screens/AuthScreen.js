@@ -146,7 +146,7 @@ function Welcome(props) {
         <Text h2 center bold>
           Hello,
           <Text>{"  "}</Text>
-          <Text primary style={{ fontSize: 65, fontFamily: "BMHANNAPro" }}>
+          <Text primary style={{ fontSize: 65 }}>
             Cebu
           </Text>
         </Text>

@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  Image,
   ScrollView,
   Switch,
   TextInput,
@@ -60,6 +59,20 @@ const ProfileScreen = props => {
     setEditing(!editing ? name : null);
   };
 
+  const handleLogout = () => {
+    firebase
+      .auth()
+      .signOut()
+      .then(function() {
+        navigation.navigate("Auth");
+        AsyncStorage.removeItem("email");
+        _retrieveData();
+      })
+      .catch(function(error) {
+        // An error happened.
+      });
+  };
+
   useEffect(() => {
     setProfile(profiles);
     _retrieveData();
@@ -71,7 +84,7 @@ const ProfileScreen = props => {
         <Text h1 bold>
           내 정보
         </Text>
-        <Button onPress={() => navigation.navigate("Auth")}>
+        <Button onPress={() => handleLogout()}>
           <Text color={theme.colors.accent} bold>
             Logout
           </Text>
