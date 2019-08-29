@@ -3,7 +3,8 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator
+  ActivityIndicator,
+  AsyncStorage
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../components";
@@ -18,6 +19,25 @@ const LoginScreen = props => {
   const [password, setPassword] = useState(PASSWORD);
   const [errors, setErrors] = useState([]);
   const [loading, setLoading] = useState(false);
+
+  _storeData = async () => {
+    try {
+      await AsyncStorage.setItem("email", email);
+    } catch (err) {
+      console.log(err);
+    }
+  };
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("email");
+      if (value !== null) {
+        console.log(value);
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const hasErrors = key => (errors.includes(key) ? styles.hasErrors : null);
   const handleLogin = () => {
@@ -40,6 +60,7 @@ const LoginScreen = props => {
       setLoading(false);
 
       if (!myErrors.length) {
+        _storeData();
         navigation.navigate("Home");
       }
     }, 500);

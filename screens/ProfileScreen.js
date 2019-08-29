@@ -1,8 +1,16 @@
 import React, { useState, useEffect } from "react";
-import { StyleSheet, Image, ScrollView, Switch, TextInput } from "react-native";
+import {
+  StyleSheet,
+  Image,
+  ScrollView,
+  Switch,
+  TextInput,
+  AsyncStorage
+} from "react-native";
 import { Divider, Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 import Slider from "react-native-slider";
+import firebase from "../constants/store";
 
 const ProfileScreen = props => {
   const { profiles, navigation } = props;
@@ -12,6 +20,25 @@ const ProfileScreen = props => {
   const [newsletters, setNewsletters] = useState(false);
   const [editing, setEditing] = useState(null);
   const [profile, setProfile] = useState({});
+
+  _retrieveData = async () => {
+    try {
+      const value = await AsyncStorage.getItem("email");
+      if (value !== null) {
+        firebase
+          .firestore()
+          .collection("users")
+          .where("email", "==", value)
+          .get()
+          .then(doc => {
+            console.log(doc);
+          })
+          .catch(err => console.log(err));
+      }
+    } catch (err) {
+      console.log(err);
+    }
+  };
 
   const handleEdit = (name, text) => {
     profile[name] = text;
@@ -35,6 +62,7 @@ const ProfileScreen = props => {
 
   useEffect(() => {
     setProfile(profiles);
+    _retrieveData();
   }, []);
 
   return (
@@ -44,7 +72,9 @@ const ProfileScreen = props => {
           내 정보
         </Text>
         <Button onPress={() => navigation.navigate("Auth")}>
-          <Text>Logout</Text>
+          <Text color={theme.colors.accent} bold>
+            Logout
+          </Text>
         </Button>
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>
