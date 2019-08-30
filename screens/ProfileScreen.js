@@ -12,7 +12,7 @@ import Slider from "react-native-slider";
 import firebase from "../constants/store";
 
 const ProfileScreen = props => {
-  const { profiles, navigation } = props;
+  const { navigation } = props;
   const [budget, setBudget] = useState(850);
   const [monthly_cap, setMonthly_cap] = useState(1700);
   const [notifications, setNotifications] = useState(true);
@@ -22,17 +22,9 @@ const ProfileScreen = props => {
 
   _retrieveData = async () => {
     try {
-      const value = await AsyncStorage.getItem("email");
+      const value = await AsyncStorage.getItem("profile");
       if (value !== null) {
-        firebase
-          .firestore()
-          .collection("users")
-          .where("email", "==", value)
-          .get()
-          .then(doc => {
-            console.log(doc);
-          })
-          .catch(err => console.log(err));
+        setProfile(JSON.parse(value));
       }
     } catch (err) {
       console.log(err);
@@ -68,13 +60,12 @@ const ProfileScreen = props => {
         AsyncStorage.removeItem("email");
         _retrieveData();
       })
-      .catch(function(error) {
-        // An error happened.
+      .catch(function(err) {
+        console.log(err);
       });
   };
 
   useEffect(() => {
-    setProfile(profiles);
     _retrieveData();
   }, []);
 
@@ -95,12 +86,12 @@ const ProfileScreen = props => {
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
               <Text h4 gray style={{ marginBottom: 10 }}>
-                이름
+                이메일
               </Text>
-              {renderEdit("username")}
+              {renderEdit("email")}
             </Block>
-            <Text medium secondary onPress={() => toggleEdit("username")}>
-              {editing === "username" ? "Save" : "Edit"}
+            <Text medium secondary onPress={() => toggleEdit("email")}>
+              {editing === "email" ? "Save" : "Edit"}
             </Text>
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
@@ -108,18 +99,26 @@ const ProfileScreen = props => {
               <Text h4 gray style={{ marginBottom: 10 }}>
                 숙박정보
               </Text>
-              {renderEdit("location")}
+              {renderEdit("hotel")}
             </Block>
-            <Text medium secondary onPress={() => toggleEdit("location")}>
-              {editing === "location" ? "Save" : "Edit"}
+            <Text medium secondary onPress={() => toggleEdit("hotel")}>
+              {editing === "hotel" ? "Save" : "Edit"}
             </Text>
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
               <Text h4 gray style={{ marginBottom: 10 }}>
-                E-mail
+                Start Date
               </Text>
-              <Text bold>{profiles.email}</Text>
+              <Text bold>{profile.startDate}</Text>
+            </Block>
+          </Block>
+          <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
+            <Block>
+              <Text h4 gray style={{ marginBottom: 10 }}>
+                End Date
+              </Text>
+              <Text bold>{profile.endDate}</Text>
             </Block>
           </Block>
         </Block>
@@ -200,9 +199,7 @@ const ProfileScreen = props => {
 ProfileScreen.navigationOptions = {
   header: null
 };
-ProfileScreen.defaultProps = {
-  profiles: mocks.profiles
-};
+ProfileScreen.defaultProps = {};
 const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.base * 3,

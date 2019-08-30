@@ -12,7 +12,7 @@ import { theme } from "../constants";
 import firebase from "../constants/store";
 
 const EMAIL = "peko22@naver.com";
-const PASSWORD = "1q2w3e4r";
+const PASSWORD = "thdckdrms1";
 const LoginScreen = props => {
   const { navigation } = props;
 
@@ -23,7 +23,17 @@ const LoginScreen = props => {
 
   _storeData = async () => {
     try {
-      await AsyncStorage.setItem("email", email);
+      await firebase
+        .firestore()
+        .collection("users")
+        .where("email", "==", email)
+        .get()
+        .then(querySnapshot => {
+          querySnapshot.docs.map(doc => {
+            AsyncStorage.setItem("profile", JSON.stringify(doc.data()));
+          });
+        })
+        .catch(err => console.log(err));
     } catch (err) {
       console.log(err);
     }

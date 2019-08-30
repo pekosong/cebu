@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet } from "react-native";
+import { Platform, StatusBar, StyleSheet, YellowBox } from "react-native";
 import { AppLoading } from "expo";
 import * as Font from "expo-font";
 import { Asset } from "expo-asset";
@@ -7,6 +7,8 @@ import AppNavigator from "./navigation/AppNavigator";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Block } from "./components";
+
+YellowBox.ignoreWarnings(["Warning: ..."]);
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
