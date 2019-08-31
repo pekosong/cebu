@@ -9,24 +9,46 @@ import { theme } from "../constants";
 export default function TripScreen(props) {
   const { navigation } = props;
   const [trip, setTrip] = useState({});
+  const [title, setTitle] = useState("");
+
   const [isPick, setIsPick] = useState(false);
 
   useEffect(() => {
     setTrip(navigation.getParam("trip"));
+    setTitle(navigation.getParam("title"));
     setIsPick(true);
   }, []);
 
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
-        <Text h1 bold>
-          <Ionicons
-            color={theme.colors.gray}
-            size={35}
-            name="ios-arrow-back"
-            onPress={() => navigation.goBack()}
-          />
-        </Text>
+        <Button
+          h1
+          bold
+          onPress={() => navigation.goBack()}
+          style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
+        >
+          <Block center row>
+            <Ionicons
+              name={title}
+              size={35}
+              color={theme.colors.gray}
+              name="ios-arrow-back"
+            />
+            <Text gray bold h2 style={{ marginLeft: 10 }}>
+              {title}
+            </Text>
+          </Block>
+        </Button>
+        <Block style={{ marginBottom: 20 }}>
+          <Text bold white style={{ fontSize: 30 }}>
+            {trip.name}
+          </Text>
+          <Text white h2>
+            {trip.engname}
+          </Text>
+        </Block>
+
         <Text h1 bold>
           {trip.location}{" "}
         </Text>

@@ -59,7 +59,9 @@ function MyTripScreen(props) {
     return plan.map(todo => (
       <TouchableOpacity
         key={todo.location}
-        onPress={() => navigation.navigate("Trip", { trip: todo })}
+        onPress={() =>
+          navigation.navigate("Trip", { title: "내 일정", trip: todo })
+        }
       >
         <Card middle shadow style={styles.category}>
           <Block middle flex={1.3}>

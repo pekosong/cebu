@@ -21,12 +21,14 @@ const cateMap = {
 
 const CategoryScreen = props => {
   const { navigation, lists } = props;
+  const [title, setTitle] = useState("");
   const [active, setActive] = useState("추천");
   const [selectedLists, setSelectedLists] = useState([]);
   const tabs = ["추천", "리뷰수", "거리"];
 
   useEffect(() => {
     setSelectedLists(lists[cateMap[navigation.getParam("category")]]);
+    setTitle(navigation.getParam("title"));
   }, []);
   const handleTab = tab => {
     const filtered = categories.filter(category =>
@@ -50,17 +52,47 @@ const CategoryScreen = props => {
       </TouchableOpacity>
     );
   };
+
+  const renderStar = cnt => {
+    let string = String(cnt);
+    let fullStar = parseInt(string.split(".")[0]);
+    let halfStar = parseInt(string.split(".")[1]);
+    return (
+      <Text>
+        {Array.from(Array(fullStar).keys()).map(key => (
+          <Ionicons
+            key={key}
+            size={16}
+            color={theme.colors.accent}
+            name="md-star"
+          />
+        ))}
+        {halfStar == 5 ? (
+          <Ionicons size={16} color={theme.colors.accent} name="md-star-half" />
+        ) : null}
+      </Text>
+    );
+  };
+
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
-        <Text h1 bold>
-          <Ionicons
-            color={theme.colors.gray}
-            size={35}
-            name="ios-arrow-back"
-            onPress={() => navigation.goBack()}
-          />
-        </Text>
+        <Button
+          style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
+          onPress={() => navigation.goBack()}
+        >
+          <Block center row>
+            <Ionicons
+              name={title}
+              size={35}
+              color={theme.colors.gray}
+              name="ios-arrow-back"
+            />
+            <Text gray bold h2 style={{ marginLeft: 10 }}>
+              {title}
+            </Text>
+          </Block>
+        </Button>
         <Button>
           <Text h1 bold>
             {navigation.getParam("category")}
@@ -75,36 +107,35 @@ const CategoryScreen = props => {
           {selectedLists.map(list => (
             <TouchableOpacity
               key={list.name}
-              onPress={() => navigation.navigate("Shop", { shop: list })}
+              onPress={() =>
+                navigation.navigate("Shop", {
+                  title: navigation.getParam("category"),
+                  shop: list
+                })
+              }
             >
               <Card middle shadow style={styles.category}>
-                <Block middle flex={1}>
-                  <Badge margin={[0, 10]} size={50}>
-                    <Image
-                      style={{ width: 70, height: 70 }}
-                      source={list.source}
-                    />
-                  </Badge>
+                <Block flex={1.3}>
+                  <Image
+                    style={{ width: 90, height: 70, borderRadius: 5 }}
+                    source={list.source}
+                  />
                 </Block>
-                <Block middle margin={[0, 0, 0, 5]} flex={2.8}>
+                <Block flex={2.8}>
                   <Text h4 bold medium height={25}>
-                    {list.name} <Text caption>{list.engname}</Text>
+                    {list.name}
                   </Text>
-                  <Text h4 medium height={25}>
-                    <Ionicons
-                      size={16}
-                      color={theme.colors.accent}
-                      name="md-star"
-                    />
-                    {list.review}
-                    <Text caption> - 리뷰 {list.reviewcnt}</Text>
-                  </Text>
-                  <Text h4 medium height={20}>
+                  <Text h4>
                     {list.tags.map(tag => (
                       <Text key={tag} caption>
-                        {" " + tag}
+                        {"" + tag}
                       </Text>
                     ))}
+                  </Text>
+                  <Text h4 height={25}>
+                    {renderStar(list.review)}
+                    {"  " + list.review}
+                    <Text caption> - 리뷰 {list.reviewcnt}</Text>
                   </Text>
                 </Block>
                 <Block

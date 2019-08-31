@@ -74,7 +74,10 @@ const SearchScreen = props => {
             <TouchableOpacity
               key={category.name}
               onPress={() =>
-                navigation.navigate("Category", { category: category.name })
+                navigation.navigate("Category", {
+                  title: "찾기",
+                  category: category.name
+                })
               }
             >
               <Card center middle shadow style={styles.category}>

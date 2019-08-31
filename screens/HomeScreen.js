@@ -31,11 +31,16 @@ function HomeScreen(props) {
           </Text>
         </Text>
       </Block>
-      <Block flex={1} padding={[15, 0, 0, 0]}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={styles.categories}
-        >
+      <Block
+        flex={1}
+        padding={10}
+        margin={[0, 5]}
+        style={{
+          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          borderRadius: 10
+        }}
+      >
+        <ScrollView showsVerticalScrollIndicator={false}>
           <Text h4 bold>
             <Ionicons color={theme.colors.primary} size={30} name="md-sunny" />
             {"  "}오늘의 날씨
@@ -124,9 +129,6 @@ HomeScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  categories: {
-    paddingHorizontal: theme.sizes.base * 1.5
-  },
   nal: {
     flexDirection: "row",
     marginVertical: 5

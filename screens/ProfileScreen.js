@@ -7,9 +7,10 @@ import {
   AsyncStorage
 } from "react-native";
 import { Divider, Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
+import { theme } from "../constants";
 import Slider from "react-native-slider";
 import firebase from "../constants/store";
+import { Ionicons } from "@expo/vector-icons";
 
 const ProfileScreen = props => {
   const { navigation } = props;
@@ -77,7 +78,7 @@ const ProfileScreen = props => {
         </Text>
         <Button onPress={() => handleLogout()}>
           <Text color={theme.colors.accent} bold>
-            Logout
+            <Ionicons size={25} name="md-log-out"></Ionicons>
           </Text>
         </Button>
       </Block>
@@ -88,11 +89,8 @@ const ProfileScreen = props => {
               <Text h4 gray style={{ marginBottom: 10 }}>
                 이메일
               </Text>
-              {renderEdit("email")}
+              <Text bold>{profile.email}</Text>
             </Block>
-            <Text medium secondary onPress={() => toggleEdit("email")}>
-              {editing === "email" ? "Save" : "Edit"}
-            </Text>
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
@@ -108,18 +106,24 @@ const ProfileScreen = props => {
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
               <Text h4 gray style={{ marginBottom: 10 }}>
-                Start Date
+                여행 시작일
               </Text>
-              <Text bold>{profile.startDate}</Text>
+              {renderEdit("startDate")}
             </Block>
+            <Text medium secondary onPress={() => toggleEdit("startDate")}>
+              {editing === "startDate" ? "Save" : "Edit"}
+            </Text>
           </Block>
           <Block row space="between" margin={[10, 0]} style={styles.inputRow}>
             <Block>
               <Text h4 gray style={{ marginBottom: 10 }}>
-                End Date
+                여행 종료일
               </Text>
-              <Text bold>{profile.endDate}</Text>
+              {renderEdit("endDate")}
             </Block>
+            <Text medium secondary onPress={() => toggleEdit("endDate")}>
+              {editing === "endDate" ? "Save" : "Edit"}
+            </Text>
           </Block>
         </Block>
 

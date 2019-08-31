@@ -4,7 +4,8 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  ActivityIndicator
+  ActivityIndicator,
+  ImageBackground
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -17,9 +18,11 @@ const { width } = Dimensions.get("window");
 export default function ShopScreen(props) {
   const { navigation } = props;
   const [shop, setShop] = useState({});
+  const [title, setTitle] = useState("");
 
   useEffect(() => {
     setShop(navigation.getParam("shop"));
+    setTitle(navigation.getParam("title"));
   }, []);
 
   const renderStar = () => {
@@ -29,36 +32,52 @@ export default function ShopScreen(props) {
   };
   return (
     <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Text h1 bold>
-          <Ionicons
-            color={theme.colors.gray}
-            size={35}
-            name="ios-arrow-back"
-            onPress={() => navigation.goBack()}
-          />
-        </Text>
-        <Button>
-          <Text h1 bold>
-            {shop.name} <Text h4>- {shop.engname}</Text>
-          </Text>
-        </Button>
+      <Block>
+        <ImageBackground
+          source={shop.source}
+          style={{ width: width, height: 190 }}
+        >
+          <Block style={styles.header}>
+            <Block space="between">
+              <Button
+                h1
+                bold
+                onPress={() => navigation.goBack()}
+                style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
+              >
+                <Block center row>
+                  <Ionicons
+                    name={title}
+                    size={35}
+                    color={theme.colors.white}
+                    name="ios-arrow-back"
+                  />
+                  <Text white bold h2 style={{ marginLeft: 10 }}>
+                    {title}
+                  </Text>
+                </Block>
+              </Button>
+              <Block style={{ marginBottom: 20 }}>
+                <Text bold white style={{ fontSize: 30 }}>
+                  {shop.name}
+                </Text>
+                <Text white h2>
+                  {shop.engname}
+                </Text>
+              </Block>
+            </Block>
+          </Block>
+        </ImageBackground>
       </Block>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginBottom: 55 }}
+        style={{ marginTop: 200, marginBottom: 55 }}
       >
         <Block center>
           <Text>{shop ? renderStar() : null}</Text>
           <Text gray h3>
             {shop.review} reviews
           </Text>
-          <Image
-            style={{ width: width, height: 315 }}
-            resizeMode="contain"
-            resizeMethod="resize"
-            source={shop.source}
-          />
           {shop.pickup ? (
             <Block
               center
@@ -89,9 +108,6 @@ export default function ShopScreen(props) {
           )}
         </Block>
         <Block style={styles.categories}>
-          <Text bold h3>
-            {shop.name} <Text gray> ( {shop.engname} )</Text>
-          </Text>
           <Divider margin={[theme.sizes.base, 0]} />
           <Text h4 bold style={styles.content}>
             <Ionicons size={16} name="md-home" />
@@ -102,7 +118,9 @@ export default function ShopScreen(props) {
               <Text>영업시간</Text>
             </Block>
             <Block gray flex={2.5}>
-              <Text>11:00 ~ 24:00</Text>
+              <Text>
+                {shop.openTime} ~ {shop.closeTime}
+              </Text>
             </Block>
           </Block>
           <Block row margin={[5, 0]}>
@@ -110,7 +128,7 @@ export default function ShopScreen(props) {
               <Text>전화번호</Text>
             </Block>
             <Block gray flex={2.5}>
-              <Text>010-9141-9090</Text>
+              <Text>{shop.phone}</Text>
             </Block>
           </Block>
           <Block row>
@@ -118,7 +136,7 @@ export default function ShopScreen(props) {
               <Text>주소</Text>
             </Block>
             <Block gray flex={2.5}>
-              <Text>세부 막탄 000-000</Text>
+              <Text>{shop.address}</Text>
             </Block>
           </Block>
           <Divider margin={[theme.sizes.base, 0]} />
@@ -155,7 +173,7 @@ export default function ShopScreen(props) {
           paddingHorizontal: theme.sizes.base * 1.5
         }}
       >
-        <Block flex={1} style={{ marginRight: 5 }}>
+        <Block flex={1} style={{ marginRight: 10 }}>
           <Button color={theme.colors.primary} onPress={() => {}}>
             <Text bold white center>
               예약 하기
@@ -184,8 +202,9 @@ ShopScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingTop: theme.sizes.base * 3,
+    paddingHorizontal: theme.sizes.base * 1.5,
+    backgroundColor: "rgba(0, 0, 0, 0.5)"
   },
   categories: {
     paddingHorizontal: theme.sizes.base * 1.5
