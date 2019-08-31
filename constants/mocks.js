@@ -3,13 +3,13 @@ const lists = {
     {
       id: "restaurant1",
       name: "점보 7",
-      engname: "jumbo7",
+      engName: "jumbo7",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_food1.jpg"),
       review: 3.5,
-      reviewcnt: 100,
+      reviewCnt: 1212,
       tags: ["랍스타", "새우요리"],
       pickup: true,
       openTime: "11:00",
@@ -18,13 +18,13 @@ const lists = {
     {
       id: "restaurant2",
       name: "부레 레스토랑",
-      engname: "Buffet ",
+      engName: "Buffet ",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_food2.jpeg"),
-      review: 4.5,
-      reviewcnt: 100,
+      review: 2.5,
+      reviewCnt: 231,
       tags: ["부페", "전통음식"],
       pickup: false,
       openTime: "11:00",
@@ -33,13 +33,13 @@ const lists = {
     {
       id: "restaurant2",
       name: "란타 코르도바",
-      engname: "Lantaw Cordova",
+      engName: "Lantaw Cordova",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_food3.jpeg"),
       review: 4.0,
-      reviewcnt: 100,
+      reviewCnt: 342,
       tags: ["동동", "전통음식"],
       pickup: false,
       openTime: "11:00",
@@ -48,16 +48,16 @@ const lists = {
     {
       id: "restaurant4",
       name: "아인 레스토랑",
-      engname: "Ain ",
+      engName: "Ain ",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_food4.jpg"),
       review: 4,
-      reviewcnt: 100,
+      reviewCnt: 545,
       tags: ["스테이크", "전통음식"],
       pickup: true,
-      opentime: "11:00",
+      openTime: "11:00",
       closeTime: "24:00"
     }
   ],
@@ -65,13 +65,13 @@ const lists = {
     {
       id: "massage1",
       name: "메디핑거",
-      engname: "Medi Finger",
+      engName: "Medi Finger",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_massage1.jpg"),
-      review: 4.5,
-      reviewcnt: 100,
+      review: 4,
+      reviewCnt: 200,
       tags: ["전통태국마사지"],
       openTime: "11:00",
       closeTime: "24:00"
@@ -79,13 +79,13 @@ const lists = {
     {
       id: "massage2",
       name: "프라나 스파",
-      engname: "Prana Spa",
+      engName: "Prana Spa",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_massage2.jpeg"),
       review: 4.5,
-      reviewcnt: 100,
+      reviewCnt: 234,
       tags: ["전통태국마사지"],
       openTime: "11:00",
       closeTime: "24:00"
@@ -93,13 +93,13 @@ const lists = {
     {
       id: "massage3",
       name: "오션 스파",
-      engname: "Ocean Spa",
+      engName: "Ocean Spa",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_massage3.jpg"),
-      review: 4.5,
-      reviewcnt: 100,
+      review: 5,
+      reviewCnt: 156,
       tags: ["전통태국마사지"],
       openTime: "11:00",
       closeTime: "24:00"
@@ -107,30 +107,36 @@ const lists = {
     {
       id: "restaurant4",
       name: "에코 스파",
-      engname: "Eco Spa",
+      engName: "Eco Spa",
       address: "세부 막탄",
-      endaddress: "cebu maktan",
+      engAddress: "cebu maktan",
       phone: "010-9141-9090",
       source: require("../assets/images/cebu_massage4.jpg"),
-      review: 4.5,
-      reviewcnt: 100,
+      review: 3.5,
+      reviewCnt: 270,
       tags: ["전통태국마사지"],
       openTime: "11:00",
       closeTime: "24:00"
     }
-  ]
+  ],
+  cafe: [],
+  bar: [],
+  nail: [],
+  seaSports: [],
+  sports: [],
+  shopping: []
 };
 
 const categories = [
   {
-    id: "resto",
+    id: "restaurant",
     name: "식당",
     tags: ["all", "eat"],
     count: 147,
     icon: "ios-pizza"
   },
   {
-    id: "beer",
+    id: "bar",
     name: "술집",
     tags: ["all", "eat"],
     count: 17,
@@ -144,7 +150,7 @@ const categories = [
     icon: "md-cafe"
   },
   {
-    id: "masage",
+    id: "message",
     name: "마사지",
     tags: ["all", "aesthetic"],
     count: 16,
@@ -158,14 +164,14 @@ const categories = [
     icon: "ios-hand"
   },
   {
-    id: "sea",
+    id: "seaSports",
     name: "수상스포츠",
     tags: ["all", "activity"],
     count: 68,
     icon: "ios-boat"
   },
   {
-    id: "moutaion",
+    id: "sports",
     name: "스포츠",
     tags: ["all", "activity"],
     count: 47,

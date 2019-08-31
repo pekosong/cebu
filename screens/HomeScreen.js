@@ -34,7 +34,7 @@ function HomeScreen(props) {
       <Block
         flex={1}
         padding={10}
-        margin={[0, 5]}
+        margin={[0, 10]}
         style={{
           backgroundColor: "rgba(255, 255, 255, 0.7)",
           borderRadius: 10

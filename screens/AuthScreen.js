@@ -85,49 +85,6 @@ function Welcome(props) {
               exploit any portion of the Service, use of the Service, or access
               to the Service without the express written permission by Expo.
             </Text>
-            <Text
-              caption
-              gray
-              height={24}
-              style={{ marginBottom: theme.sizes.base }}
-            >
-              7. We may, but have no obligation to, remove Content and Accounts
-              containing Content that we determine in our sole discretion are
-              unlawful, offensive, threatening, libelous, defamatory,
-              pornographic, obscene or otherwise objectionable or violates any
-              party's intellectual property or these Terms of Service.
-            </Text>
-            <Text
-              caption
-              gray
-              height={24}
-              style={{ marginBottom: theme.sizes.base }}
-            >
-              8. Verbal, physical, written or other abuse (including threats of
-              abuse or retribution) of any Expo customer, employee, member, or
-              officer will result in immediate account termination.
-            </Text>
-            <Text
-              caption
-              gray
-              height={24}
-              style={{ marginBottom: theme.sizes.base }}
-            >
-              9. You understand that the technical processing and transmission
-              of the Service, including your Content, may be transferred
-              unencrypted and involve (a) transmissions over various networks;
-              and (b) changes to conform and adapt to technical requirements of
-              connecting networks or devices.
-            </Text>
-            <Text
-              caption
-              gray
-              height={24}
-              style={{ marginBottom: theme.sizes.base }}
-            >
-              10. You must not upload, post, host, or transmit unsolicited
-              e-mail, SMSs, or "spam" messages.
-            </Text>
           </ScrollView>
           <Block middle padding={[theme.sizes.base / 2, 0]}>
             <Button gradient onPress={() => setShowTerms(false)}>

@@ -4,13 +4,15 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  ActivityIndicator,
-  ImageBackground
+  ImageBackground,
+  Picker,
+  TextInput
 } from "react-native";
+import Modal from "react-native-modal";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Badge, Button, Block, Text, Divider } from "../components";
+import { Input, Badge, Button, Block, Text, Divider } from "../components";
 import { theme } from "../constants";
 
 const { width } = Dimensions.get("window");
@@ -19,23 +21,128 @@ export default function ShopScreen(props) {
   const { navigation } = props;
   const [shop, setShop] = useState({});
   const [title, setTitle] = useState("");
+  const [date, setDate] = useState("");
+  const [people, setPeople] = useState("");
+  const [time, setTime] = useState("");
+  const [text, setText] = useState("");
+  const [showReservation, setShowReservation] = useState(false);
 
   useEffect(() => {
     setShop(navigation.getParam("shop"));
     setTitle(navigation.getParam("title"));
   }, []);
 
-  const renderStar = () => {
-    return [...Array(5).keys()].map(e => (
-      <Ionicons key={e} size={30} color={theme.colors.accent} name="md-star" />
-    ));
+  const renderStar = cnt => {
+    let string = String(cnt);
+    let fullStar = parseInt(string.split(".")[0]);
+    let halfStar = parseInt(string.split(".")[1]);
+    let restStar = parseInt(String(5 - cnt));
+    return (
+      <Text>
+        {Array.from(Array(fullStar).keys()).map(key => (
+          <Ionicons
+            key={key}
+            size={30}
+            color={theme.colors.accent}
+            name="md-star"
+          />
+        ))}
+        {halfStar == 5 ? (
+          <Ionicons size={30} color={theme.colors.accent} name="md-star-half" />
+        ) : null}
+        {Array.from(Array(restStar).keys()).map(key => (
+          <Ionicons
+            key={key}
+            size={30}
+            color={theme.colors.accent}
+            name="md-star-outline"
+          />
+        ))}
+      </Text>
+    );
   };
+
+  const handleReservation = () => {
+    return (
+      <Modal
+        animationType="slide"
+        isVisible={showReservation}
+        backdropOpacity={0.2}
+        onRequestClose={() => setShowReservation(false)}
+        style={{ backgroundColor: "white", borderRadius: 10 }}
+      >
+        <Block
+          flex={1}
+          padding={[theme.sizes.base, theme.sizes.base]}
+          space="between"
+        >
+          <Text bold h2>
+            예약 신청
+          </Text>
+          <ScrollView showsVerticalScrollIndicator={false}>
+            <Block style={{ marginTop: theme.sizes.base }}>
+              <Text caption gray>
+                예약일
+              </Text>
+              <Picker selectedValue={date} onValueChange={e => setDate(e)}>
+                <Picker.Item label="10월 1일" value="2019-10-01" />
+                <Picker.Item label="10월 2일" value="2019-10-02" />
+                <Picker.Item label="10월 3일" value="2019-10-03" />
+              </Picker>
+              <Text caption gray>
+                예약시간
+              </Text>
+              <Picker selectedValue={time} onValueChange={e => setTime(e)}>
+                <Picker.Item label="10:00" value="10:00" />
+                <Picker.Item label="11:00" value="11:00" />
+                <Picker.Item label="12:00" value="12:00" />
+              </Picker>
+              <Text caption gray>
+                방문인원
+              </Text>
+              <Input
+                style={styles.input}
+                defaultValue={people}
+                onChangeText={e => {
+                  setPeople(e);
+                }}
+              />
+              <Text caption gray>
+                추가 요청 사항
+              </Text>
+              <Input
+                style={styles.input}
+                defaultValue={text}
+                onChangeText={e => {
+                  setText(e);
+                }}
+              />
+            </Block>
+            <Button gradient onPress={() => setShowReservation(false)}>
+              <Text center white>
+                예약하기
+              </Text>
+            </Button>
+            <Button
+              color={theme.colors.accent}
+              onPress={() => setShowReservation(false)}
+            >
+              <Text center white>
+                취소
+              </Text>
+            </Button>
+          </ScrollView>
+        </Block>
+      </Modal>
+    );
+  };
+
   return (
     <Block>
       <Block>
         <ImageBackground
           source={shop.source}
-          style={{ width: width, height: 190 }}
+          style={{ width: width, height: 205 }}
         >
           <Block style={styles.header}>
             <Block space="between">
@@ -57,12 +164,12 @@ export default function ShopScreen(props) {
                   </Text>
                 </Block>
               </Button>
-              <Block style={{ marginBottom: 20 }}>
+              <Block bottom style={{ marginBottom: 10 }}>
                 <Text bold white style={{ fontSize: 30 }}>
                   {shop.name}
                 </Text>
                 <Text white h2>
-                  {shop.engname}
+                  {shop.engName}
                 </Text>
               </Block>
             </Block>
@@ -71,12 +178,12 @@ export default function ShopScreen(props) {
       </Block>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 200, marginBottom: 55 }}
+        style={{ marginTop: 215, marginBottom: 55 }}
       >
         <Block center>
-          <Text>{shop ? renderStar() : null}</Text>
+          <Text>{shop.review ? renderStar(shop.review) : null}</Text>
           <Text gray h3>
-            {shop.review} reviews
+            {shop.reviewCnt} Reviews
           </Text>
           {shop.pickup ? (
             <Block
@@ -174,15 +281,18 @@ export default function ShopScreen(props) {
         }}
       >
         <Block flex={1} style={{ marginRight: 10 }}>
-          <Button color={theme.colors.primary} onPress={() => {}}>
+          <Button
+            color={theme.colors.primary}
+            onPress={() => setShowReservation(true)}
+          >
             <Text bold white center>
-              예약 하기
+              예약 신청
             </Text>
           </Button>
         </Block>
         <Block flex={1}>
           <Button shadow style={styles.shadow}>
-            <Text center semibold onPress={() => navigation.navigate("Signup")}>
+            <Text center semibold>
               카카오톡 문의{"    "}
             </Text>
             <Image
@@ -192,6 +302,7 @@ export default function ShopScreen(props) {
           </Button>
         </Block>
       </Block>
+      {handleReservation()}
     </Block>
   );
 }
@@ -219,5 +330,11 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 10
+  },
+  input: {
+    borderRadius: 0,
+    borderWidth: 0,
+    borderBottomColor: theme.colors.gray2,
+    borderBottomWidth: StyleSheet.hairlineWidth
   }
 });

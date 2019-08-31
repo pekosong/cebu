@@ -16,7 +16,19 @@ const { width } = Dimensions.get("window");
 
 const cateMap = {
   식당: "restaurant",
-  마사지: "massage"
+  마사지: "massage",
+  카페: "cafe",
+  술집: "bar",
+  네일: "nail",
+  수상스포츠: "seaSports",
+  스포츠: "sports",
+  쇼핑: "shopping"
+};
+
+const filerMap = {
+  추천: "review",
+  리뷰수: "reviewCnt",
+  거리: "hello"
 };
 
 const CategoryScreen = props => {
@@ -27,16 +39,25 @@ const CategoryScreen = props => {
   const tabs = ["추천", "리뷰수", "거리"];
 
   useEffect(() => {
-    setSelectedLists(lists[cateMap[navigation.getParam("category")]]);
+    let myList = lists[cateMap[navigation.getParam("category")]];
+    myList = myList.sort(function(a, b) {
+      return b[filerMap["추천"]] - a[filerMap["추천"]];
+    });
+    setSelectedLists(myList);
     setTitle(navigation.getParam("title"));
   }, []);
+
   const handleTab = tab => {
-    const filtered = categories.filter(category =>
-      category.tags.includes(tab.toLowerCase())
-    );
+    let sortedLists = selectedLists.sort(function(a, b) {
+      // 내림차순
+      return b[filerMap[tab]] - a[filerMap[tab]];
+      // 44, 25, 21, 13
+    });
+
     setActive(tab);
-    setSelectedLists(filtered);
+    setSelectedLists(sortedLists);
   };
+
   const renderTab = tab => {
     const isActive = active == tab;
 
@@ -57,30 +78,88 @@ const CategoryScreen = props => {
     let string = String(cnt);
     let fullStar = parseInt(string.split(".")[0]);
     let halfStar = parseInt(string.split(".")[1]);
+    let restStar = parseInt(String(5 - cnt));
     return (
       <Text>
         {Array.from(Array(fullStar).keys()).map(key => (
           <Ionicons
             key={key}
-            size={16}
+            size={18}
             color={theme.colors.accent}
             name="md-star"
           />
         ))}
         {halfStar == 5 ? (
-          <Ionicons size={16} color={theme.colors.accent} name="md-star-half" />
+          <Ionicons size={18} color={theme.colors.accent} name="md-star-half" />
         ) : null}
+        {Array.from(Array(restStar).keys()).map(key => (
+          <Ionicons
+            key={key}
+            size={18}
+            color={theme.colors.accent}
+            name="md-star-outline"
+          />
+        ))}
       </Text>
     );
   };
 
+  const renderShopList = () => {
+    return selectedLists.map(list => (
+      <TouchableOpacity
+        key={list.name}
+        onPress={() =>
+          navigation.navigate("Shop", {
+            title: navigation.getParam("category"),
+            shop: list
+          })
+        }
+      >
+        <Card middle shadow style={styles.category}>
+          <Block flex={1.3}>
+            <Image
+              style={{ width: "100%", height: 70, borderRadius: 5 }}
+              source={list.source}
+            />
+          </Block>
+          <Block flex={2.8} style={{ paddingLeft: 10 }}>
+            <Text h4 bold medium height={25}>
+              {list.name}
+            </Text>
+            <Text caption h4>
+              {list.tags.join(", ")}
+            </Text>
+            <Text h4>
+              {renderStar(list.review)}
+              {"  " + list.review}
+              <Text caption> - 리뷰 {list.reviewCnt}</Text>
+            </Text>
+          </Block>
+          <Block middle center flex={0.4} style={{ position: "relative" }}>
+            <Text>1.5</Text>
+            <Text>km</Text>
+            {list.pickup ? (
+              <Badge
+                size={18}
+                style={{
+                  position: "absolute",
+                  top: -5,
+                  right: -5
+                }}
+                color={theme.colors.primary}
+              >
+                <Ionicons color={theme.colors.white} size={12} name="md-car" />
+              </Badge>
+            ) : null}
+          </Block>
+        </Card>
+      </TouchableOpacity>
+    ));
+  };
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
-        <Button
-          style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
-          onPress={() => navigation.goBack()}
-        >
+        <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons
               name={title}
@@ -104,76 +183,7 @@ const CategoryScreen = props => {
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block flex={false} row space="between" style={styles.categories}>
-          {selectedLists.map(list => (
-            <TouchableOpacity
-              key={list.name}
-              onPress={() =>
-                navigation.navigate("Shop", {
-                  title: navigation.getParam("category"),
-                  shop: list
-                })
-              }
-            >
-              <Card middle shadow style={styles.category}>
-                <Block flex={1.3}>
-                  <Image
-                    style={{ width: 90, height: 70, borderRadius: 5 }}
-                    source={list.source}
-                  />
-                </Block>
-                <Block flex={2.8}>
-                  <Text h4 bold medium height={25}>
-                    {list.name}
-                  </Text>
-                  <Text h4>
-                    {list.tags.map(tag => (
-                      <Text key={tag} caption>
-                        {"" + tag}
-                      </Text>
-                    ))}
-                  </Text>
-                  <Text h4 height={25}>
-                    {renderStar(list.review)}
-                    {"  " + list.review}
-                    <Text caption> - 리뷰 {list.reviewcnt}</Text>
-                  </Text>
-                </Block>
-                <Block
-                  middle
-                  center
-                  flex={0.4}
-                  style={{ position: "relative" }}
-                >
-                  <Text>1.5</Text>
-                  <Text>km</Text>
-                  {list.pickup ? (
-                    <Badge
-                      margin={[0, 0, 15]}
-                      size={50}
-                      style={{
-                        position: "absolute",
-                        height: 30,
-                        width: 30,
-                        bottom: -28,
-                        right: -12
-                      }}
-                      color={theme.colors.accent}
-                    >
-                      <Image
-                        style={{
-                          height: 22,
-                          width: 22
-                        }}
-                        source={require("../assets/icons/car.png")}
-                      ></Image>
-                    </Badge>
-                  ) : (
-                    <Block></Block>
-                  )}
-                </Block>
-              </Card>
-            </TouchableOpacity>
-          ))}
+          {renderShopList()}
         </Block>
       </ScrollView>
     </Block>

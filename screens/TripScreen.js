@@ -53,7 +53,10 @@ export default function TripScreen(props) {
           {trip.location}{" "}
         </Text>
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 55 }}
+      >
         <Block style={styles.categories}>
           <Text h4 bold style={styles.content}>
             <Ionicons size={16} name="md-book" />
@@ -145,26 +148,35 @@ export default function TripScreen(props) {
             Voluptates est iure dolorem dignissimos!
           </Text>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Button
-            color={theme.colors.accent}
-            style={{ marginTop: 5 }}
-            onPress={() => {}}
-          >
+        </Block>
+      </ScrollView>
+      <Block
+        row
+        style={{
+          position: "absolute",
+          bottom: 0,
+          paddingHorizontal: theme.sizes.base * 1.5
+        }}
+      >
+        <Block flex={1} style={{ marginRight: 10 }}>
+          <Button color={theme.colors.accent} onPress={() => {}}>
             <Text bold white center>
               예약 변경 하기
             </Text>
           </Button>
+        </Block>
+        <Block flex={1}>
           <Button shadow style={styles.shadow}>
             <Text center semibold onPress={() => navigation.navigate("Signup")}>
-              카카오톡 문의 하기
+              카카오톡 문의{"    "}
             </Text>
             <Image
-              style={{ position: "absolute", right: 5, width: 32, height: 32 }}
+              style={{ position: "absolute", right: 5, width: 25, height: 25 }}
               source={require("../assets/icons/cacao.png")}
             ></Image>
           </Button>
         </Block>
-      </ScrollView>
+      </Block>
     </Block>
   );
 }
