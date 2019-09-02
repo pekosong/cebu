@@ -58,9 +58,8 @@ export default function TripScreen(props) {
         style={{ marginBottom: 55 }}
       >
         <Block style={styles.categories}>
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-book" />
-            {"  "}예약정보
+          <Text h3 bold style={styles.content}>
+            예약정보
           </Text>
           <Block row>
             <Block gray2 flex={1}>
@@ -79,9 +78,34 @@ export default function TripScreen(props) {
             </Block>
           </Block>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-home" />
-            {"  "}업체정보
+          {trip.pickup != undefined ? (
+            <React.Fragment>
+              <Text h3 bold style={styles.content}>
+                픽업정보
+              </Text>
+              <Block row>
+                <Block gray2 flex={1}>
+                  <Text>픽업시간</Text>
+                </Block>
+                <Block gray flex={2.5}>
+                  <Text>{trip.pickup.time}</Text>
+                </Block>
+              </Block>
+              <Block row margin={[5, 0]}>
+                <Block gray2 flex={1}>
+                  <Text>픽업장소</Text>
+                </Block>
+                <Block gray flex={2.5}>
+                  <Text>{trip.pickup.location}</Text>
+                </Block>
+              </Block>
+              <Divider margin={[theme.sizes.base, 0]} />
+            </React.Fragment>
+          ) : (
+            <Block></Block>
+          )}
+          <Text h3 bold style={styles.content}>
+            업체정보
           </Text>
           <Block row>
             <Block gray2 flex={1}>
@@ -108,37 +132,9 @@ export default function TripScreen(props) {
             </Block>
           </Block>
           <Divider margin={[theme.sizes.base, 0]} />
-          {trip.pickup != undefined ? (
-            <React.Fragment>
-              <Text h4 bold style={styles.content}>
-                <Ionicons size={16} name="md-car" />
-                {"  "}픽업
-              </Text>
-              <Block row>
-                <Block gray2 flex={1}>
-                  <Text>픽업시간</Text>
-                </Block>
-                <Block gray flex={2.5}>
-                  <Text>{trip.pickup.time}</Text>
-                </Block>
-              </Block>
-              <Block row margin={[5, 0]}>
-                <Block gray2 flex={1}>
-                  <Text>픽업장소</Text>
-                </Block>
-                <Block gray flex={2.5}>
-                  <Text>{trip.pickup.location}</Text>
-                </Block>
-              </Block>
-              <Divider margin={[theme.sizes.base, 0]} />
-            </React.Fragment>
-          ) : (
-            <Block></Block>
-          )}
 
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-pie" />
-            {"  "}기타정보
+          <Text h3 bold style={styles.content}>
+            기타정보
           </Text>
           <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
@@ -203,6 +199,6 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   content: {
-    marginBottom: 10
+    marginBottom: 20
   }
 });

@@ -139,9 +139,9 @@ const styles = StyleSheet.create({
     marginBottom: theme.sizes.base * 3.5
   },
   category: {
-    minWidth: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2,
-    maxWidth: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2,
-    maxHeight: (width - theme.sizes.padding * 2 - theme.sizes.base) / 2
+    minWidth: (width - theme.sizes.padding * 1.5 - theme.sizes.base) / 2,
+    maxWidth: (width - theme.sizes.padding * 1.5 - theme.sizes.base) / 2,
+    maxHeight: (width - theme.sizes.padding * 1.5 - theme.sizes.base) / 2
   }
 });
 

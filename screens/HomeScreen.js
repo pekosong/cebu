@@ -17,18 +17,16 @@ function HomeScreen(props) {
             width: width,
             height: 247,
             position: "absolute",
-            top: -5,
             left: 0
           }}
           source={require("../assets/images/hello.jpg")}
         ></Image>
         <Text
+          white
           bold
-          style={{ fontSize: 30, position: "absolute", bottom: 10, left: 10 }}
+          style={{ fontSize: 50, position: "absolute", bottom: 10, left: 10 }}
         >
-          <Text white bold style={{ fontSize: 50 }}>
-            CEBU
-          </Text>
+          CEBU!
         </Text>
       </Block>
       <Block
@@ -36,7 +34,7 @@ function HomeScreen(props) {
         padding={10}
         margin={[0, 10]}
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.7)",
+          backgroundColor: "rgba(255, 255, 255, 0.5)",
           borderRadius: 10
         }}
       >

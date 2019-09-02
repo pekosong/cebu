@@ -122,7 +122,7 @@ const CategoryScreen = props => {
               source={list.source}
             />
           </Block>
-          <Block flex={2.8} style={{ paddingLeft: 10 }}>
+          <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
             <Text h4 bold medium height={25}>
               {list.name}
             </Text>

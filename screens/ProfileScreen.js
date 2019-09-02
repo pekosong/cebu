@@ -57,9 +57,8 @@ const ProfileScreen = props => {
       .auth()
       .signOut()
       .then(function() {
-        navigation.navigate("Auth");
         AsyncStorage.removeItem("email");
-        _retrieveData();
+        navigation.navigate("Auth");
       })
       .catch(function(err) {
         console.log(err);

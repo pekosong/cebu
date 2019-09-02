@@ -13,6 +13,7 @@ import Modal from "react-native-modal";
 import { Ionicons } from "@expo/vector-icons";
 
 import { Input, Badge, Button, Block, Text, Divider } from "../components";
+import DateTimePicker from "react-native-modal-datetime-picker";
 import { theme } from "../constants";
 
 const { width } = Dimensions.get("window");
@@ -22,10 +23,12 @@ export default function ShopScreen(props) {
   const [shop, setShop] = useState({});
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
-  const [people, setPeople] = useState("");
   const [time, setTime] = useState("");
+  const [people, setPeople] = useState("");
   const [text, setText] = useState("");
   const [showReservation, setShowReservation] = useState(false);
+  const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
+  const [isTimePickerVisible, setIsTimePickerVisible] = useState(false);
 
   useEffect(() => {
     setShop(navigation.getParam("shop"));
@@ -62,6 +65,18 @@ export default function ShopScreen(props) {
     );
   };
 
+  const handleDatePicked = d => {
+    setDate(d);
+    console.log(date);
+    setIsDatePickerVisible(false);
+  };
+
+  const handleTimePicked = t => {
+    setTime(t);
+    console.log(time);
+    setIsTimePickerVisible(false);
+  };
+
   const handleReservation = () => {
     return (
       <Modal
@@ -69,7 +84,7 @@ export default function ShopScreen(props) {
         isVisible={showReservation}
         backdropOpacity={0.2}
         onRequestClose={() => setShowReservation(false)}
-        style={{ backgroundColor: "white", borderRadius: 10 }}
+        style={{ backgroundColor: "white", marginTop: 300, borderRadius: 10 }}
       >
         <Block
           flex={1}
@@ -81,22 +96,40 @@ export default function ShopScreen(props) {
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block style={{ marginTop: theme.sizes.base }}>
-              <Text caption gray>
-                예약일
+              <Button
+                title="Show DatePicker"
+                onPress={() => setIsDatePickerVisible(true)}
+              >
+                <Text>예약일</Text>
+              </Button>
+              <DateTimePicker
+                confirmTextIOS="선택"
+                cancelTextIOS="취소"
+                titleIOS="예약일 선택"
+                isVisible={isDatePickerVisible}
+                onConfirm={handleDatePicked}
+                onCancel={() => setIsDatePickerVisible(false)}
+              />
+              <Text>
+                {date ? `${date.getMonth()}월 ${date.getDate()}일` : null}
               </Text>
-              <Picker selectedValue={date} onValueChange={e => setDate(e)}>
-                <Picker.Item label="10월 1일" value="2019-10-01" />
-                <Picker.Item label="10월 2일" value="2019-10-02" />
-                <Picker.Item label="10월 3일" value="2019-10-03" />
-              </Picker>
-              <Text caption gray>
-                예약시간
+
+              <Button
+                title="Show DatePicker"
+                onPress={() => setIsTimePickerVisible(true)}
+              >
+                <Text>예약시간</Text>
+              </Button>
+              <DateTimePicker
+                mode="time"
+                isVisible={isTimePickerVisible}
+                onConfirm={handleTimePicked}
+                onCancel={() => setIsTimePickerVisible(false)}
+              />
+
+              <Text>
+                {time ? `${time.getHours()}시 ${time.getMinutes()}분` : null}
               </Text>
-              <Picker selectedValue={time} onValueChange={e => setTime(e)}>
-                <Picker.Item label="10:00" value="10:00" />
-                <Picker.Item label="11:00" value="11:00" />
-                <Picker.Item label="12:00" value="12:00" />
-              </Picker>
               <Text caption gray>
                 방문인원
               </Text>
@@ -216,9 +249,8 @@ export default function ShopScreen(props) {
         </Block>
         <Block style={styles.categories}>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-home" />
-            {"  "}업체정보
+          <Text h3 bold style={styles.content}>
+            업체정보
           </Text>
           <Block row>
             <Block gray2 flex={1}>
@@ -247,9 +279,8 @@ export default function ShopScreen(props) {
             </Block>
           </Block>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-book" />
-            {"  "}주요 메뉴 및 가격
+          <Text h3 bold style={styles.content}>
+            주요 메뉴 및 가격
           </Text>
           <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
@@ -259,9 +290,8 @@ export default function ShopScreen(props) {
             Voluptates est iure dolorem dignissimos!
           </Text>
           <Divider margin={[theme.sizes.base, 0]} />
-          <Text h4 bold style={styles.content}>
-            <Ionicons size={16} name="md-pie" />
-            {"  "}기타정보
+          <Text h3 bold style={styles.content}>
+            기타정보
           </Text>
           <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
@@ -329,7 +359,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   content: {
-    marginBottom: 10
+    marginBottom: 20
   },
   input: {
     borderRadius: 0,
