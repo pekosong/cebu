@@ -9,6 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Block } from "./components";
 
 YellowBox.ignoreWarnings(["Warning: ..."]);
+console.ignoredYellowBox = ["Setting a timer"];
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);

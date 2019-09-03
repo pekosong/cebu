@@ -67,13 +67,11 @@ export default function ShopScreen(props) {
 
   const handleDatePicked = d => {
     setDate(d);
-    console.log(date);
     setIsDatePickerVisible(false);
   };
 
   const handleTimePicked = t => {
     setTime(t);
-    console.log(time);
     setIsTimePickerVisible(false);
   };
 
@@ -97,10 +95,12 @@ export default function ShopScreen(props) {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block style={{ marginTop: theme.sizes.base }}>
               <Button
-                title="Show DatePicker"
+                color={theme.colors.accent}
                 onPress={() => setIsDatePickerVisible(true)}
               >
-                <Text>예약일</Text>
+                <Text white center>
+                  예약일
+                </Text>
               </Button>
               <DateTimePicker
                 confirmTextIOS="선택"
@@ -110,15 +110,17 @@ export default function ShopScreen(props) {
                 onConfirm={handleDatePicked}
                 onCancel={() => setIsDatePickerVisible(false)}
               />
-              <Text>
+              <Text bold h2 center>
                 {date ? `${date.getMonth()}월 ${date.getDate()}일` : null}
               </Text>
 
               <Button
-                title="Show DatePicker"
+                color={theme.colors.accent}
                 onPress={() => setIsTimePickerVisible(true)}
               >
-                <Text>예약시간</Text>
+                <Text center white>
+                  예약시간
+                </Text>
               </Button>
               <DateTimePicker
                 mode="time"
@@ -127,7 +129,7 @@ export default function ShopScreen(props) {
                 onCancel={() => setIsTimePickerVisible(false)}
               />
 
-              <Text>
+              <Text bold h2 center>
                 {time ? `${time.getHours()}시 ${time.getMinutes()}분` : null}
               </Text>
               <Text caption gray>
