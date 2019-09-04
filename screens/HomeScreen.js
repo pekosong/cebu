@@ -39,53 +39,98 @@ function HomeScreen(props) {
         }}
       >
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Text h4 bold>
-            <Ionicons color={theme.colors.primary} size={30} name="md-sunny" />
-            {"  "}오늘의 날씨
-          </Text>
-          <Card shadow style={styles.nal}>
-            <Block flex={0.9}>
-              <Image
-                style={{ width: 80, height: 80 }}
-                resizeMode="contain"
-                resizeMethod="resize"
-                source={require("../assets/images/weather.png")}
-              ></Image>
+          <Card shadow>
+            <Block style={styles.nal}>
+              <Block flex={1}>
+                <Text h2 bold>
+                  세부 날씨
+                </Text>
+              </Block>
+              <Block row right center>
+                <Text color={theme.colors.gray} right h4 bold>
+                  더 보기{" "}
+                </Text>
+                <Ionicons
+                  color={theme.colors.gray}
+                  size={20}
+                  name="ios-arrow-forward"
+                />
+              </Block>
             </Block>
-            <Block flex={1}>
-              <Text color={theme.colors.primary} style={styles.cc}>
-                34<Text h1>℃</Text>
-              </Text>
-              <Text style={{ textAlign: "center" }}>온도</Text>
-            </Block>
-            <Block flex={1}>
-              <Text color={theme.colors.primary} style={styles.cc}>
-                76<Text h1>%</Text>
-              </Text>
-              <Text style={{ textAlign: "center" }}>습도</Text>
+            <Block style={styles.nal}>
+              <Block center flex={0.9}>
+                <Image
+                  style={{ width: 60, height: 60 }}
+                  resizeMode="contain"
+                  resizeMethod="resize"
+                  source={require("../assets/images/weather.png")}
+                ></Image>
+              </Block>
+              <Block flex={1}>
+                <Text color={theme.colors.primary} style={styles.cc}>
+                  34<Text h1>℃</Text>
+                </Text>
+                <Text style={{ textAlign: "center" }}>온도</Text>
+              </Block>
+              <Block flex={1}>
+                <Text color={theme.colors.primary} style={styles.cc}>
+                  76<Text h1>%</Text>
+                </Text>
+                <Text style={{ textAlign: "center" }}>습도</Text>
+              </Block>
             </Block>
           </Card>
-          <Text h4 bold>
-            <Ionicons color={theme.colors.primary} size={30} name="md-card" />
-            {"  "}
-            오늘의 환율
-          </Text>
-          <Card shadow style={styles.nal}>
+
+          <Card shadow>
+            <Block style={styles.nal}>
+              <Block flex={1}>
+                <Text h2 bold>
+                  오늘의 환율
+                </Text>
+              </Block>
+              <Block row right center>
+                <Text color={theme.colors.gray} right h4 bold>
+                  더 보기{" "}
+                </Text>
+                <Ionicons
+                  color={theme.colors.gray}
+                  size={20}
+                  name="ios-arrow-forward"
+                />
+              </Block>
+            </Block>
             <Block flex={1}>
               <Text color={theme.colors.primary} style={styles.cc}>
                 23.12<Text h1> 페소</Text>
               </Text>
-              <Text caption style={{ textAlign: "center" }}>
+              <Text
+                color={theme.colors.gray}
+                caption
+                style={{ textAlign: "center" }}
+              >
                 10,000원 = 432.54페소
               </Text>
             </Block>
           </Card>
-          <Text h4 bold>
-            <Ionicons color={theme.colors.primary} size={30} name="md-heart" />
-            {"  "}
-            세부 할인 정보
-          </Text>
-          <Card shadow style={styles.nal}>
+
+          <Card shadow>
+            <Block style={styles.nal}>
+              <Block flex={1}>
+                <Text h2 bold>
+                  세부 할인 정보
+                </Text>
+              </Block>
+              <Block row right center>
+                <Text color={theme.colors.gray} right h4 bold>
+                  더 보기{" "}
+                </Text>
+                <Ionicons
+                  color={theme.colors.gray}
+                  size={20}
+                  name="ios-arrow-forward"
+                />
+              </Block>
+            </Block>
             <Block flex={1}>
               <Text>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,
@@ -93,16 +138,25 @@ function HomeScreen(props) {
               </Text>
             </Block>
           </Card>
-          <Text h4 bold>
-            <Ionicons
-              color={theme.colors.primary}
-              size={30}
-              name="md-pricetags"
-            />
-            {"  "}
-            세부 뉴스
-          </Text>
-          <Card shadow style={styles.nal}>
+
+          <Card shadow>
+            <Block style={styles.nal}>
+              <Block flex={1}>
+                <Text h2 bold>
+                  세부 뉴스
+                </Text>
+              </Block>
+              <Block row right center>
+                <Text color={theme.colors.gray} right h4 bold>
+                  더 보기{" "}
+                </Text>
+                <Ionicons
+                  color={theme.colors.gray}
+                  size={20}
+                  name="ios-arrow-forward"
+                />
+              </Block>
+            </Block>
             <Block flex={1}>
               <Text>
                 Lorem ipsum dolor sit amet consectetur adipisicing elit. Alias,
@@ -129,10 +183,12 @@ HomeScreen.defaultProps = {
 const styles = StyleSheet.create({
   nal: {
     flexDirection: "row",
-    marginVertical: 5
+    marginVertical: 5,
+    justifyContent: "space-between"
   },
   cc: {
-    fontSize: 60,
+    fontSize: 30,
+    fontWeight: "bold",
     textAlign: "center"
   }
 });

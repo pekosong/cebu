@@ -95,6 +95,7 @@ export default function ShopScreen(props) {
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block style={{ marginTop: theme.sizes.base }}>
               <Button
+                style={{ marginVertical: 0 }}
                 color={theme.colors.accent}
                 onPress={() => setIsDatePickerVisible(true)}
               >
@@ -115,6 +116,7 @@ export default function ShopScreen(props) {
               </Text>
 
               <Button
+                style={{ marginVertical: 0 }}
                 color={theme.colors.accent}
                 onPress={() => setIsTimePickerVisible(true)}
               >

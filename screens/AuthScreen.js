@@ -1,6 +1,5 @@
 import React, { useState } from "react";
 import { Animated, StyleSheet, Modal, ScrollView } from "react-native";
-
 import { Button, Block, Text } from "../components";
 import { theme } from "../constants";
 
