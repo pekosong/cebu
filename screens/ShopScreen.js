@@ -12,7 +12,9 @@ import Modal from "react-native-modal";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Input, Badge, Button, Block, Text, Divider } from "../components";
+import { Input, Badge, Block, Text, Divider } from "../components";
+import Button from "apsl-react-native-button";
+
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { theme } from "../constants";
 
@@ -94,15 +96,81 @@ export default function ShopScreen(props) {
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block style={{ marginTop: theme.sizes.base }}>
-              <Button
-                style={{ marginVertical: 0 }}
-                color={theme.colors.accent}
-                onPress={() => setIsDatePickerVisible(true)}
+              <Block row>
+                <Block flex={1}>
+                  <Button
+                    style={{
+                      backgroundColor: "white",
+                      borderColor: "#333",
+                      borderWidth: 1,
+                      borderRadius: 10
+                    }}
+                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
+                    onPress={() => setIsDatePickerVisible(true)}
+                  >
+                    예약일 설정
+                  </Button>
+                </Block>
+                <Block middle center flex={1}>
+                  <Text bold h4>
+                    {date ? `${date.getMonth()}월 ${date.getDate()}일` : null}
+                  </Text>
+                </Block>
+              </Block>
+              <Block row>
+                <Block flex={1}>
+                  <Button
+                    style={{
+                      backgroundColor: "white",
+                      borderColor: "#333",
+                      borderWidth: 1,
+                      borderRadius: 10
+                    }}
+                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
+                    onPress={() => setIsTimePickerVisible(true)}
+                  >
+                    예약시간 설정
+                  </Button>
+                </Block>
+                <Block center flex={1}>
+                  <Text bold h4>
+                    {time
+                      ? `${time.getHours()}시 ${time.getMinutes()}분`
+                      : null}
+                  </Text>
+                </Block>
+              </Block>
+              <Block row>
+                <Block flex={1}>
+                  <Button
+                    style={{
+                      backgroundColor: "white",
+                      borderColor: "#333",
+                      borderWidth: 1,
+                      borderRadius: 10
+                    }}
+                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
+                    onPress={() => setIsTimePickerVisible(true)}
+                  >
+                    방문인원 설정
+                  </Button>
+                </Block>
+                <Block center flex={1}>
+                  <Text bold h4>
+                    {time
+                      ? `${time.getHours()}시 ${time.getMinutes()}분`
+                      : null}
+                  </Text>
+                </Block>
+              </Block>
+              <Picker
+                selectedValue={"language"}
+                style={{ height: 50, width: 100 }}
+                onValueChange={(itemValue, itemIndex) => {}}
               >
-                <Text white center>
-                  예약일
-                </Text>
-              </Button>
+                <Picker.Item label="Java" value="java" />
+                <Picker.Item label="JavaScript" value="js" />
+              </Picker>
               <DateTimePicker
                 confirmTextIOS="선택"
                 cancelTextIOS="취소"
@@ -111,19 +179,7 @@ export default function ShopScreen(props) {
                 onConfirm={handleDatePicked}
                 onCancel={() => setIsDatePickerVisible(false)}
               />
-              <Text bold h2 center>
-                {date ? `${date.getMonth()}월 ${date.getDate()}일` : null}
-              </Text>
 
-              <Button
-                style={{ marginVertical: 0 }}
-                color={theme.colors.accent}
-                onPress={() => setIsTimePickerVisible(true)}
-              >
-                <Text center white>
-                  예약시간
-                </Text>
-              </Button>
               <DateTimePicker
                 mode="time"
                 isVisible={isTimePickerVisible}
@@ -131,19 +187,6 @@ export default function ShopScreen(props) {
                 onCancel={() => setIsTimePickerVisible(false)}
               />
 
-              <Text bold h2 center>
-                {time ? `${time.getHours()}시 ${time.getMinutes()}분` : null}
-              </Text>
-              <Text caption gray>
-                방문인원
-              </Text>
-              <Input
-                style={styles.input}
-                defaultValue={people}
-                onChangeText={e => {
-                  setPeople(e);
-                }}
-              />
               <Text caption gray>
                 추가 요청 사항
               </Text>
@@ -155,18 +198,23 @@ export default function ShopScreen(props) {
                 }}
               />
             </Block>
-            <Button gradient onPress={() => setShowReservation(false)}>
-              <Text center white>
-                예약하기
-              </Text>
-            </Button>
             <Button
-              color={theme.colors.accent}
+              style={{
+                borderColor: "#16a085",
+                backgroundColor: theme.colors.primary
+              }}
               onPress={() => setShowReservation(false)}
             >
-              <Text center white>
-                취소
-              </Text>
+              예약하기
+            </Button>
+            <Button
+              style={{
+                borderColor: "#16a085",
+                backgroundColor: theme.colors.primary
+              }}
+              onPress={() => setShowReservation(false)}
+            >
+              취소
             </Button>
           </ScrollView>
         </Block>
@@ -187,7 +235,11 @@ export default function ShopScreen(props) {
                 h1
                 bold
                 onPress={() => navigation.goBack()}
-                style={{ backgroundColor: "rgba(255, 255, 255, 0)" }}
+                style={{
+                  backgroundColor: "rgba(255, 255, 255, 0)",
+                  borderWidth: 0,
+                  width: 100
+                }}
               >
                 <Block center row>
                   <Ionicons
@@ -212,10 +264,62 @@ export default function ShopScreen(props) {
             </Block>
           </Block>
         </ImageBackground>
+        <Block
+          row
+          style={{
+            paddingHorizontal: theme.sizes.base * 1.5,
+            marginTop: 7
+          }}
+        >
+          <Block flex={1}>
+            <Button
+              style={{
+                borderWidth: 0
+              }}
+              textStyle={{
+                fontSize: 14
+              }}
+              onPress={() => setShowReservation(true)}
+            >
+              <Block center>
+                <Ionicons color={theme.colors.gray} size={25} name="md-book" />
+                <Text caption>예약 신청</Text>
+              </Block>
+            </Button>
+          </Block>
+          <Block flex={1}>
+            <Button
+              style={{
+                borderWidth: 0
+              }}
+              textStyle={{
+                color: theme.colors.black,
+                fontSize: 14
+              }}
+            >
+              <Block center>
+                <Image
+                  style={{
+                    width: 24,
+                    height: 24
+                  }}
+                  source={require("../assets/icons/cacao.png")}
+                ></Image>
+                <Text caption style={{ marginTop: 5 }}>
+                  카카오톡 문의
+                </Text>
+              </Block>
+            </Button>
+          </Block>
+        </Block>
+        <Divider
+          margin={[47, 0, 0, 0]}
+          style={{ borderBottomWidth: 1, borderBottomColor: theme.colors.gray }}
+        />
       </Block>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 215, marginBottom: 55 }}
+        style={{ marginTop: 265 }}
       >
         <Block center>
           <Text>{shop.review ? renderStar(shop.review) : null}</Text>
@@ -306,36 +410,7 @@ export default function ShopScreen(props) {
           </Text>
         </Block>
       </ScrollView>
-      <Block
-        row
-        style={{
-          position: "absolute",
-          bottom: 0,
-          paddingHorizontal: theme.sizes.base * 1.5
-        }}
-      >
-        <Block flex={1} style={{ marginRight: 10 }}>
-          <Button
-            color={theme.colors.primary}
-            onPress={() => setShowReservation(true)}
-          >
-            <Text bold white center>
-              예약 신청
-            </Text>
-          </Button>
-        </Block>
-        <Block flex={1}>
-          <Button shadow style={styles.shadow}>
-            <Text center semibold>
-              카카오톡 문의{"    "}
-            </Text>
-            <Image
-              style={{ position: "absolute", right: 5, width: 25, height: 25 }}
-              source={require("../assets/icons/cacao.png")}
-            ></Image>
-          </Button>
-        </Block>
-      </Block>
+
       {handleReservation()}
     </Block>
   );

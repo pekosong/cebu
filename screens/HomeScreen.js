@@ -24,7 +24,7 @@ function HomeScreen(props) {
         <Text
           white
           bold
-          style={{ fontSize: 50, position: "absolute", bottom: 10, left: 10 }}
+          style={{ fontSize: 50, position: "absolute", bottom: 10, left: 13 }}
         >
           CEBU!
         </Text>
@@ -32,9 +32,8 @@ function HomeScreen(props) {
       <Block
         flex={1}
         padding={10}
-        margin={[0, 10]}
+        margin={[0, 5]}
         style={{
-          backgroundColor: "rgba(255, 255, 255, 0.5)",
           borderRadius: 10
         }}
       >
@@ -47,9 +46,6 @@ function HomeScreen(props) {
                 </Text>
               </Block>
               <Block row right center>
-                <Text color={theme.colors.gray} right h4 bold>
-                  더 보기{" "}
-                </Text>
                 <Ionicons
                   color={theme.colors.gray}
                   size={20}
@@ -89,9 +85,6 @@ function HomeScreen(props) {
                 </Text>
               </Block>
               <Block row right center>
-                <Text color={theme.colors.gray} right h4 bold>
-                  더 보기{" "}
-                </Text>
                 <Ionicons
                   color={theme.colors.gray}
                   size={20}
@@ -121,9 +114,6 @@ function HomeScreen(props) {
                 </Text>
               </Block>
               <Block row right center>
-                <Text color={theme.colors.gray} right h4 bold>
-                  더 보기{" "}
-                </Text>
                 <Ionicons
                   color={theme.colors.gray}
                   size={20}
@@ -142,14 +132,11 @@ function HomeScreen(props) {
           <Card shadow>
             <Block style={styles.nal}>
               <Block flex={1}>
-                <Text h2 bold>
+                <Text h3 bold>
                   세부 뉴스
                 </Text>
               </Block>
               <Block row right center>
-                <Text color={theme.colors.gray} right h4 bold>
-                  더 보기{" "}
-                </Text>
                 <Ionicons
                   color={theme.colors.gray}
                   size={20}
@@ -183,7 +170,7 @@ HomeScreen.defaultProps = {
 const styles = StyleSheet.create({
   nal: {
     flexDirection: "row",
-    marginVertical: 5,
+    margin: 5,
     justifyContent: "space-between"
   },
   cc: {

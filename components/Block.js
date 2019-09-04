@@ -192,7 +192,7 @@ export const styles = StyleSheet.create({
   },
   shadow: {
     shadowColor: theme.colors.black,
-    shadowOffset: { width: 0, height: 2 },
+    shadowOffset: { width: 1, height: 1 },
     shadowOpacity: 0.1,
     shadowRadius: 13,
     elevation: 2
