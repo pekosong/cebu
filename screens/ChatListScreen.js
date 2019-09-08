@@ -15,12 +15,11 @@ const { width } = Dimensions.get("window");
 
 const cateCat = {
   ALL: "전체",
-  EAT: "먹거리",
-  ACTIVITY: "놀거리",
-  AESTHETIC: "힐링"
+  EAT: "오픈챗",
+  ACTIVITY: "예약챗"
 };
 
-const SearchScreen = props => {
+const ChatListScreen = props => {
   const { navigation, profiles, categories } = props;
   const [active, setActive] = useState("ALL");
   const [cates, setCates] = useState([]);
@@ -29,22 +28,20 @@ const SearchScreen = props => {
   useEffect(() => {
     setCates(categories);
   }, []);
-
-  handleSearchTab = tab => {
-    let filtered = categories.filter(category =>
+  const handleTab = tab => {
+    const filtered = categories.filter(category =>
       category.tags.includes(tab.toLowerCase())
     );
     setActive(tab);
     setCates(filtered);
   };
-
-  renderSearchTab = tab => {
+  const renderTab = tab => {
     const isActive = active == tab;
 
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => handleSearchTab(tab)}
+        onPress={() => handleTab(tab)}
         style={[styles.tab, isActive ? styles.active : null]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -53,63 +50,27 @@ const SearchScreen = props => {
       </TouchableOpacity>
     );
   };
-
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
         <Text h1 bold>
-          찾기
+          채팅
         </Text>
         <Button onPress={() => navigation.navigate("Settings", { profiles })}>
           <Image source={profiles.avatar} style={styles.avatar} />
         </Button>
       </Block>
       <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderSearchTab(tab))}
+        {tabs.map(tab => renderTab(tab))}
       </Block>
-      <ScrollView
-        showsVerticalScrollIndicator={false}
-        style={{ paddingVertical: theme.sizes.base }}
-      >
-        <Block flex={false} row space="between" style={styles.categories}>
-          {cates.map(category => (
-            <TouchableOpacity
-              key={category.name}
-              onPress={() =>
-                navigation.navigate("Category", {
-                  title: "찾기",
-                  category: category.id
-                })
-              }
-            >
-              <Block center middle shadow style={styles.category}>
-                <ImageBackground
-                  source={category.src}
-                  style={{ width: "100%", height: 100 }}
-                >
-                  <Block
-                    center
-                    middle
-                    style={{ backgroundColor: "rgba(0, 0, 0, 0.5)" }}
-                  >
-                    <Text h3 white>
-                      {category.id}
-                    </Text>
-                  </Block>
-                </ImageBackground>
-              </Block>
-            </TouchableOpacity>
-          ))}
-        </Block>
-      </ScrollView>
     </Block>
   );
 };
 
-SearchScreen.navigationOptions = {
+ChatListScreen.navigationOptions = {
   header: null
 };
-SearchScreen.defaultProps = {
+ChatListScreen.defaultProps = {
   profiles: mocks.profiles,
   categories: mocks.categories
 };
@@ -149,4 +110,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SearchScreen;
+export default ChatListScreen;

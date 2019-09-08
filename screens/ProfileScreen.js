@@ -32,6 +32,10 @@ const ProfileScreen = props => {
     }
   };
 
+  useEffect(() => {
+    _retrieveData();
+  }, []);
+
   const handleEdit = (name, text) => {
     profile[name] = text;
     setProfile(profile);
@@ -64,10 +68,6 @@ const ProfileScreen = props => {
         console.log(err);
       });
   };
-
-  useEffect(() => {
-    _retrieveData();
-  }, []);
 
   return (
     <Block>

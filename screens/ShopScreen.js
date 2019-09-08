@@ -4,21 +4,20 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  ImageBackground,
-  Picker,
-  TextInput
+  ImageBackground
 } from "react-native";
 import Modal from "react-native-modal";
+import MapView from "react-native-maps";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Input, Badge, Block, Text, Divider } from "../components";
+import { Input, Badge, Block, Text } from "../components";
 import Button from "apsl-react-native-button";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
 import { theme } from "../constants";
 
-const { width } = Dimensions.get("window");
+const { height, width } = Dimensions.get("window");
 
 export default function ShopScreen(props) {
   const { navigation } = props;
@@ -26,7 +25,7 @@ export default function ShopScreen(props) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState("");
   const [time, setTime] = useState("");
-  const [people, setPeople] = useState("");
+  const [people, setPeople] = useState(1);
   const [text, setText] = useState("");
   const [showReservation, setShowReservation] = useState(false);
   const [isDatePickerVisible, setIsDatePickerVisible] = useState(false);
@@ -83,94 +82,106 @@ export default function ShopScreen(props) {
         animationType="slide"
         isVisible={showReservation}
         backdropOpacity={0.2}
-        onRequestClose={() => setShowReservation(false)}
-        style={{ backgroundColor: "white", marginTop: 300, borderRadius: 10 }}
+        onBackdropPress={() => setShowReservation(false)}
+        style={{
+          backgroundColor: "white",
+          marginTop: height - 420,
+          borderRadius: 10
+        }}
       >
-        <Block
-          flex={1}
-          padding={[theme.sizes.base, theme.sizes.base]}
-          space="between"
-        >
-          <Text bold h2>
-            예약 신청
-          </Text>
+        <Block padding={[theme.sizes.base]}>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Block style={{ marginTop: theme.sizes.base }}>
-              <Block row>
-                <Block flex={1}>
-                  <Button
-                    style={{
-                      backgroundColor: "white",
-                      borderColor: "#333",
-                      borderWidth: 1,
-                      borderRadius: 10
-                    }}
-                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
-                    onPress={() => setIsDatePickerVisible(true)}
-                  >
-                    예약일 설정
-                  </Button>
-                </Block>
-                <Block middle center flex={1}>
-                  <Text bold h4>
-                    {date ? `${date.getMonth()}월 ${date.getDate()}일` : null}
-                  </Text>
-                </Block>
+            <Block space="between" row style={{ marginBottom: 20 }}>
+              <Block flex={false}>
+                <Text bold h2>
+                  예약 신청
+                </Text>
               </Block>
-              <Block row>
-                <Block flex={1}>
-                  <Button
-                    style={{
-                      backgroundColor: "white",
-                      borderColor: "#333",
-                      borderWidth: 1,
-                      borderRadius: 10
-                    }}
-                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
-                    onPress={() => setIsTimePickerVisible(true)}
-                  >
-                    예약시간 설정
-                  </Button>
-                </Block>
-                <Block center flex={1}>
-                  <Text bold h4>
-                    {time
-                      ? `${time.getHours()}시 ${time.getMinutes()}분`
-                      : null}
-                  </Text>
-                </Block>
-              </Block>
-              <Block row>
-                <Block flex={1}>
-                  <Button
-                    style={{
-                      backgroundColor: "white",
-                      borderColor: "#333",
-                      borderWidth: 1,
-                      borderRadius: 10
-                    }}
-                    textStyle={{ color: theme.colors.black, fontSize: 12 }}
-                    onPress={() => setIsTimePickerVisible(true)}
-                  >
-                    방문인원 설정
-                  </Button>
-                </Block>
-                <Block center flex={1}>
-                  <Text bold h4>
-                    {time
-                      ? `${time.getHours()}시 ${time.getMinutes()}분`
-                      : null}
-                  </Text>
-                </Block>
-              </Block>
-              <Picker
-                selectedValue={"language"}
-                style={{ height: 50, width: 100 }}
-                onValueChange={(itemValue, itemIndex) => {}}
+              <Button
+                style={{
+                  position: "absolute",
+                  right: 0,
+                  top: -10,
+                  borderWidth: 0,
+                  borderRadius: 10
+                }}
+                onPress={() => setShowReservation(false)}
               >
-                <Picker.Item label="Java" value="java" />
-                <Picker.Item label="JavaScript" value="js" />
-              </Picker>
+                <Ionicons
+                  name={title}
+                  size={30}
+                  color={theme.colors.primary}
+                  name="ios-arrow-down"
+                />
+              </Button>
+            </Block>
+
+            <Block>
+              <Button
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  borderWidth: 0,
+                  borderRadius: 10
+                }}
+                textStyle={{ color: theme.colors.white, fontSize: 16 }}
+                onPress={() => setIsDatePickerVisible(true)}
+              >
+                {date
+                  ? `${date.getMonth()}월 ${date.getDate()}일`
+                  : "예약일 선택"}
+              </Button>
+              <Button
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  borderWidth: 0,
+                  borderRadius: 10
+                }}
+                textStyle={{ color: theme.colors.white, fontSize: 16 }}
+                onPress={() => setIsTimePickerVisible(true)}
+              >
+                {time
+                  ? `${time.getHours()}시 ${time.getMinutes()}분`
+                  : "예약시간 선택"}
+              </Button>
+              <Block
+                style={{
+                  backgroundColor: theme.colors.primary,
+                  borderRadius: 10,
+                  marginBottom: 15,
+                  height: 45
+                }}
+                row
+              >
+                <Button
+                  style={{
+                    borderWidth: 0,
+                    flex: 0.3
+                  }}
+                  textStyle={{ color: theme.colors.white, fontSize: 30 }}
+                  onPress={() => setPeople(people - 1)}
+                >
+                  -
+                </Button>
+                <Button
+                  style={{
+                    borderWidth: 0,
+                    flex: 1
+                  }}
+                  textStyle={{ color: theme.colors.white, fontSize: 16 }}
+                >
+                  {people + "명"}
+                </Button>
+                <Button
+                  style={{
+                    borderWidth: 0,
+                    flex: 0.3
+                  }}
+                  textStyle={{ color: theme.colors.white, fontSize: 30 }}
+                  onPress={() => setPeople(people + 1)}
+                >
+                  +
+                </Button>
+              </Block>
               <DateTimePicker
                 confirmTextIOS="선택"
                 cancelTextIOS="취소"
@@ -181,15 +192,15 @@ export default function ShopScreen(props) {
               />
 
               <DateTimePicker
+                confirmTextIOS="선택"
+                cancelTextIOS="취소"
                 mode="time"
                 isVisible={isTimePickerVisible}
                 onConfirm={handleTimePicked}
                 onCancel={() => setIsTimePickerVisible(false)}
               />
 
-              <Text caption gray>
-                추가 요청 사항
-              </Text>
+              <Text h4>추가 요청 사항</Text>
               <Input
                 style={styles.input}
                 defaultValue={text}
@@ -201,20 +212,15 @@ export default function ShopScreen(props) {
             <Button
               style={{
                 borderColor: "#16a085",
-                backgroundColor: theme.colors.primary
+                borderWidth: 0,
+                backgroundColor: theme.colors.secondary
+              }}
+              textStyle={{
+                color: theme.colors.white
               }}
               onPress={() => setShowReservation(false)}
             >
               예약하기
-            </Button>
-            <Button
-              style={{
-                borderColor: "#16a085",
-                backgroundColor: theme.colors.primary
-              }}
-              onPress={() => setShowReservation(false)}
-            >
-              취소
             </Button>
           </ScrollView>
         </Block>
@@ -227,10 +233,10 @@ export default function ShopScreen(props) {
       <Block>
         <ImageBackground
           source={shop.source}
-          style={{ width: width, height: 205 }}
+          style={{ width: width, height: 250 }}
         >
-          <Block style={styles.header}>
-            <Block space="between">
+          <Block row space="between" style={styles.header}>
+            <Block>
               <Button
                 h1
                 bold
@@ -253,73 +259,61 @@ export default function ShopScreen(props) {
                   </Text>
                 </Block>
               </Button>
-              <Block bottom style={{ marginBottom: 10 }}>
-                <Text bold white style={{ fontSize: 30 }}>
-                  {shop.name}
-                </Text>
-                <Text white h2>
-                  {shop.engName}
-                </Text>
+            </Block>
+
+            <Block row right>
+              <Block flex={false}>
+                <Button
+                  style={{
+                    width: 35,
+                    borderWidth: 0,
+                    marginRight: 10
+                  }}
+                  onPress={() => setShowReservation(true)}
+                >
+                  <Block center>
+                    <Badge size={35} color={"rgba(255, 255, 255, 0.5)"}>
+                      <Ionicons
+                        size={25}
+                        color={theme.colors.primary}
+                        name="md-time"
+                      />
+                    </Badge>
+                  </Block>
+                </Button>
+              </Block>
+              <Block flex={false}>
+                <Button
+                  style={{
+                    borderWidth: 0,
+                    marginRight: 0,
+                    width: 35
+                  }}
+                  onPress={() =>
+                    navigation.navigate("Chat", {
+                      title: shop.name,
+                      engName: shop.engName
+                    })
+                  }
+                >
+                  <Block center>
+                    <Badge size={35} color={"rgba(255, 255, 255, 0.5)"}>
+                      <Ionicons
+                        size={25}
+                        color={theme.colors.primary}
+                        name="ios-chatbubbles"
+                      />
+                    </Badge>
+                  </Block>
+                </Button>
               </Block>
             </Block>
           </Block>
         </ImageBackground>
-        <Block
-          row
-          style={{
-            paddingHorizontal: theme.sizes.base * 1.5,
-            marginTop: 7
-          }}
-        >
-          <Block flex={1}>
-            <Button
-              style={{
-                borderWidth: 0
-              }}
-              textStyle={{
-                fontSize: 14
-              }}
-              onPress={() => setShowReservation(true)}
-            >
-              <Block center>
-                <Ionicons color={theme.colors.gray} size={25} name="md-book" />
-                <Text caption>예약 신청</Text>
-              </Block>
-            </Button>
-          </Block>
-          <Block flex={1}>
-            <Button
-              style={{
-                borderWidth: 0
-              }}
-              textStyle={{
-                color: theme.colors.black,
-                fontSize: 14
-              }}
-            >
-              <Block center>
-                <Image
-                  style={{
-                    width: 24,
-                    height: 24
-                  }}
-                  source={require("../assets/icons/cacao.png")}
-                ></Image>
-                <Text caption style={{ marginTop: 5 }}>
-                  카카오톡 문의
-                </Text>
-              </Block>
-            </Button>
-          </Block>
-        </Block>
-        <Divider
-          margin={[47, 0, 0, 0]}
-          style={{ borderBottomWidth: 1, borderBottomColor: theme.colors.gray }}
-        />
       </Block>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 265 }}
+        style={{ marginTop: 260, marginBottom: 10 }}
       >
         <Block center>
           <Text>{shop.review ? renderStar(shop.review) : null}</Text>
@@ -355,58 +349,89 @@ export default function ShopScreen(props) {
             <Block></Block>
           )}
         </Block>
+
+        <Block style={[styles.categories, { marginTop: 20 }]}>
+          <Text bold style={{ fontSize: 25 }}>
+            {shop.name}
+          </Text>
+          <Text h3 gray style={styles.content}>
+            {shop.engName}
+          </Text>
+          <Text gray>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
+            recusandae voluptate numquam consectetur quibusdam
+          </Text>
+        </Block>
+
         <Block style={styles.categories}>
-          <Divider margin={[theme.sizes.base, 0]} />
           <Text h3 bold style={styles.content}>
             업체정보
           </Text>
-          <Block row>
-            <Block gray2 flex={1}>
-              <Text>영업시간</Text>
+          <Block style={{ marginLeft: 10 }}>
+            <Block row>
+              <Block flex={1}>
+                <Text>영업시간</Text>
+              </Block>
+              <Block flex={1}>
+                <Text gray>
+                  {shop.openTime} ~ {shop.closeTime}
+                </Text>
+              </Block>
             </Block>
-            <Block gray flex={2.5}>
-              <Text>
-                {shop.openTime} ~ {shop.closeTime}
-              </Text>
+            <Block row margin={[5, 0]}>
+              <Block flex={1}>
+                <Text>전화번호</Text>
+              </Block>
+              <Block flex={1}>
+                <Text gray>{shop.phone}</Text>
+              </Block>
+            </Block>
+            <Block row>
+              <Block flex={1}>
+                <Text>주소</Text>
+              </Block>
+              <Block flex={1}>
+                <Text gray>{shop.address}</Text>
+              </Block>
             </Block>
           </Block>
-          <Block row margin={[5, 0]}>
-            <Block gray2 flex={1}>
-              <Text>전화번호</Text>
-            </Block>
-            <Block gray flex={2.5}>
-              <Text>{shop.phone}</Text>
-            </Block>
-          </Block>
-          <Block row>
-            <Block gray2 flex={1}>
-              <Text>주소</Text>
-            </Block>
-            <Block gray flex={2.5}>
-              <Text>{shop.address}</Text>
-            </Block>
-          </Block>
-          <Divider margin={[theme.sizes.base, 0]} />
+        </Block>
+        <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             주요 메뉴 및 가격
           </Text>
           <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
             recusandae voluptate numquam consectetur quibusdam, pariatur
-            reprehenderit enim quia totam, quam repellat repudiandae nam eum
-            dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
-            Voluptates est iure dolorem dignissimos!
+            reprehenderit enim quia totam,
           </Text>
-          <Divider margin={[theme.sizes.base, 0]} />
+        </Block>
+        <Block style={styles.categories}>
+          <Text h3 bold>
+            위치
+          </Text>
+        </Block>
+        <MapView
+          style={{ flex: 1, height: 200 }}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421
+          }}
+        >
+          <MapView.Marker
+            coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+          />
+        </MapView>
+        <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             기타정보
           </Text>
           <Text gray>
             Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
             recusandae voluptate numquam consectetur quibusdam, pariatur
-            reprehenderit enim quia totam, quam repellat repudiandae nam eum
-            dolores rerum dolorum rem suscipit nobis cum harum perferendis eos?
-            Voluptates est iure dolorem dignissimos!
+            reprehenderit enim quia
           </Text>
         </Block>
       </ScrollView>
@@ -422,12 +447,13 @@ ShopScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: theme.sizes.base * 3,
+    paddingTop: theme.sizes.base * 3.5,
     paddingHorizontal: theme.sizes.base * 1.5,
-    backgroundColor: "rgba(0, 0, 0, 0.5)"
+    backgroundColor: "rgba(0, 0, 0, 0.2)"
   },
   categories: {
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingHorizontal: theme.sizes.base * 1.5,
+    marginVertical: 15
   },
   shadow: {
     shadowColor: theme.colors.black,
@@ -438,7 +464,7 @@ const styles = StyleSheet.create({
     position: "relative"
   },
   content: {
-    marginBottom: 20
+    marginBottom: 15
   },
   input: {
     borderRadius: 0,

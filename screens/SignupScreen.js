@@ -64,7 +64,8 @@ const SignupScreen = props => {
     await firebase
       .firestore()
       .collection("users")
-      .add(newCus)
+      .doc(email)
+      .set(newCus)
       .then(() => {
         console.log("Document successfully written!");
         setLoading(false);

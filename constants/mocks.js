@@ -1,5 +1,5 @@
 const lists = {
-  restaurant: [
+  Restaurant: [
     {
       id: "restaurant1",
       name: "점보 7",
@@ -18,7 +18,7 @@ const lists = {
     {
       id: "restaurant2",
       name: "부레 레스토랑",
-      engName: "Buffet ",
+      engName: "Buffet",
       address: "세부 막탄",
       engAddress: "cebu maktan",
       phone: "010-9141-9090",
@@ -31,7 +31,7 @@ const lists = {
       closeTime: "24:00"
     },
     {
-      id: "restaurant2",
+      id: "restaurant3",
       name: "란타 코르도바",
       engName: "Lantaw Cordova",
       address: "세부 막탄",
@@ -48,7 +48,7 @@ const lists = {
     {
       id: "restaurant4",
       name: "아인 레스토랑",
-      engName: "Ain ",
+      engName: "Ain",
       address: "세부 막탄",
       engAddress: "cebu maktan",
       phone: "010-9141-9090",
@@ -61,9 +61,9 @@ const lists = {
       closeTime: "24:00"
     }
   ],
-  massage: [
+  Message: [
     {
-      id: "massage1",
+      id: "message1",
       name: "메디핑거",
       engName: "Medi Finger",
       address: "세부 막탄",
@@ -77,7 +77,7 @@ const lists = {
       closeTime: "24:00"
     },
     {
-      id: "massage2",
+      id: "message2",
       name: "프라나 스파",
       engName: "Prana Spa",
       address: "세부 막탄",
@@ -91,7 +91,7 @@ const lists = {
       closeTime: "24:00"
     },
     {
-      id: "massage3",
+      id: "message3",
       name: "오션 스파",
       engName: "Ocean Spa",
       address: "세부 막탄",
@@ -105,7 +105,7 @@ const lists = {
       closeTime: "24:00"
     },
     {
-      id: "restaurant4",
+      id: "message4",
       name: "에코 스파",
       engName: "Eco Spa",
       address: "세부 막탄",
@@ -119,81 +119,93 @@ const lists = {
       closeTime: "24:00"
     }
   ],
-  cafe: [],
-  bar: [],
-  nail: [],
-  seaSports: [],
-  sports: [],
-  shopping: []
+  Cafe: [],
+  Bar: [],
+  Nail: [],
+  SeaSports: [],
+  Activity: [],
+  Shopping: []
 };
 
 const categories = [
   {
-    id: "restaurant",
+    id: "Restaurant",
     name: "식당",
     tags: ["all", "eat"],
     count: 147,
-    icon: "ios-pizza"
+    icon: "ios-pizza",
+    src: require("../assets/images/search/restaurant.jpg")
   },
   {
-    id: "bar",
+    id: "Bar",
     name: "술집",
     tags: ["all", "eat"],
     count: 17,
-    icon: "ios-beer"
+    icon: "ios-beer",
+    src: require("../assets/images/search/bar.jpg")
   },
   {
-    id: "cafe",
+    id: "Cafe",
     name: "카페",
     tags: ["all", "eat"],
     count: 47,
-    icon: "md-cafe"
+    icon: "md-cafe",
+    src: require("../assets/images/search/cafe.jpg")
   },
   {
-    id: "message",
+    id: "Message",
     name: "마사지",
     tags: ["all", "aesthetic"],
     count: 16,
-    icon: "ios-hand"
+    icon: "ios-hand",
+    src: require("../assets/images/search/massage.jpg")
   },
   {
-    id: "nail",
+    id: "Nail",
     name: "네일",
     tags: ["all", "aesthetic"],
     count: 16,
-    icon: "ios-hand"
+    icon: "ios-hand",
+    src: require("../assets/images/search/nail.jpg")
   },
   {
-    id: "seaSports",
+    id: "SeaSports",
     name: "수상스포츠",
     tags: ["all", "activity"],
     count: 68,
-    icon: "ios-boat"
+    icon: "ios-boat",
+    src: require("../assets/images/search/seasports.jpg")
   },
   {
-    id: "sports",
-    name: "스포츠",
+    id: "Activity",
+    name: "액티비티",
     tags: ["all", "activity"],
     count: 47,
-    icon: "ios-bicycle"
+    icon: "ios-bicycle",
+    src: require("../assets/images/search/activity.jpg")
   },
   {
-    id: "shopping",
+    id: "Shopping",
     name: "쇼핑",
     tags: ["all", "activity"],
     count: 47,
-    icon: "ios-basket"
+    icon: "ios-basket",
+    src: require("../assets/images/search/shopping.jpg")
   }
 ];
 
-const plans = {
-  first: {
+const plans = [
+  {
     date: "9월 10일 (목)",
+    nDay: "1일차",
     plan: [
       {
         time: "11:30 ~ 13:00",
-        location: "세부 XXX 식당",
-        category: "ios-pizza",
+        people: 2,
+        category: "Restaurant",
+        shopId: "restaurant2",
+        shopName: "부레 레스토랑",
+        icon: "ios-pizza",
         pickup: {
           location: "xx호텔 입구",
           time: "11:30"
@@ -201,8 +213,11 @@ const plans = {
       },
       {
         time: "13:00 ~ 15:00",
-        location: "세부 xxx 마사지",
-        category: "ios-hand",
+        people: 2,
+        category: "Message",
+        shopId: "message1",
+        shopName: "메디핑거",
+        icon: "ios-hand",
         pickup: {
           location: "세부 XXX 식당",
           time: "13:00"
@@ -210,19 +225,26 @@ const plans = {
       },
       {
         time: "15:00 ~ 18:00",
-        location: "워터 스포츠",
-        category: "ios-boat",
+        people: 2,
+        category: "Message",
+        shopId: "message2",
+        shopName: "프라나 스파",
+        icon: "ios-boat",
         pickup: ""
       }
     ]
   },
-  second: {
+  {
     date: "9월 11일 (금)",
+    nDay: "2일차",
     plan: [
       {
         time: "11:30 ~ 13:00",
-        location: "세부 XXX 식당",
-        category: "ios-pizza",
+        people: 2,
+        category: "Restaurant",
+        shopId: "restaurant3",
+        shopName: "란타 코르도바",
+        icon: "ios-pizza",
         pickup: {
           location: "xx호텔 입구",
           time: "11:30"
@@ -230,8 +252,11 @@ const plans = {
       },
       {
         time: "13:00 ~ 15:00",
-        location: "세부 xxx 마사지",
-        category: "ios-hand",
+        people: 2,
+        category: "Message",
+        shopId: "message4",
+        shopName: "에코 스파",
+        icon: "ios-hand",
         pickup: {
           location: "세부 XXX 식당",
           time: "13:00"
@@ -239,42 +264,16 @@ const plans = {
       },
       {
         time: "15:00 ~ 18:00",
-        location: "워터 스포츠",
-        category: "ios-boat",
-        pickup: ""
-      }
-    ]
-  },
-  third: {
-    date: "9월 12일 (토)",
-    plan: [
-      {
-        time: "11:30 ~ 13:00",
-        location: "세부 XXX 식당",
-        category: "ios-pizza",
-        pickup: {
-          location: "xx호텔 입구",
-          time: "11:30"
-        }
-      },
-      {
-        time: "13:00 ~ 15:00",
-        location: "세부 xxx 마사지",
-        category: "ios-hand",
-        pickup: {
-          location: "세부 XXX 식당",
-          time: "13:00"
-        }
-      },
-      {
-        time: "15:00 ~ 18:00",
-        location: "워터 스포츠",
-        category: "ios-boat",
+        people: 2,
+        category: "Restaurant",
+        shopId: "restaurant1",
+        shopName: "점보 7",
+        icon: "ios-pizza",
         pickup: ""
       }
     ]
   }
-};
+];
 
 const profiles = {
   username: "김징고",

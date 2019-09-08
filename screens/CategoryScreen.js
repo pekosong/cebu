@@ -4,25 +4,26 @@ import {
   StyleSheet,
   Image,
   ScrollView,
-  TouchableOpacity
+  TouchableOpacity,
+  ActivityIndicator
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-
-import { Card, Badge, Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
+import { Badge, Button, Block, Text } from "../components";
+import { theme } from "../constants";
+import firebase from "../constants/store";
 
 const { width } = Dimensions.get("window");
 
 const cateMap = {
-  식당: "restaurant",
-  마사지: "massage",
-  카페: "cafe",
-  술집: "bar",
-  네일: "nail",
-  수상스포츠: "seaSports",
-  스포츠: "sports",
-  쇼핑: "shopping"
+  Restaurant: "식당",
+  Message: "마사지",
+  Cafe: "카페",
+  Bar: "술집",
+  Nail: "네일",
+  SeaSports: "수상스포츠",
+  Activity: "액티비티",
+  Shopping: "쇼핑"
 };
 
 const filerMap = {
@@ -32,39 +33,53 @@ const filerMap = {
 };
 
 const CategoryScreen = props => {
-  const { navigation, lists } = props;
+  const { navigation } = props;
   const [title, setTitle] = useState("");
   const [active, setActive] = useState("추천");
   const [selectedLists, setSelectedLists] = useState([]);
+  const [isLoaded, setisLoaded] = useState(false);
   const tabs = ["추천", "리뷰수", "거리"];
 
   useEffect(() => {
-    let myList = lists[cateMap[navigation.getParam("category")]];
-    myList = myList.sort(function(a, b) {
-      return b[filerMap["추천"]] - a[filerMap["추천"]];
-    });
-    setSelectedLists(myList);
     setTitle(navigation.getParam("title"));
+    let docRef = firebase
+      .firestore()
+      .collection("shops")
+      .doc(navigation.getParam("category"));
+
+    docRef
+      .get()
+      .then(doc => {
+        let myList = doc.data().lists;
+        myList = myList.sort(function(a, b) {
+          return b["review"] - a["review"];
+        });
+        setSelectedLists(myList);
+        setisLoaded(true);
+      })
+      .catch(err => console.log(err));
+    return () => {
+      setSelectedLists([]);
+      setisLoaded(false);
+      setSelectedLists("");
+    };
   }, []);
 
-  const handleTab = tab => {
+  handleCatTab = tab => {
     let sortedLists = selectedLists.sort(function(a, b) {
-      // 내림차순
       return b[filerMap[tab]] - a[filerMap[tab]];
-      // 44, 25, 21, 13
     });
-
     setActive(tab);
     setSelectedLists(sortedLists);
   };
 
-  const renderTab = tab => {
+  renderCatTab = tab => {
     const isActive = active == tab;
 
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => handleTab(tab)}
+        onPress={() => handleCatTab(tab)}
         style={[styles.tab, isActive ? styles.active : null]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -74,7 +89,7 @@ const CategoryScreen = props => {
     );
   };
 
-  const renderStar = cnt => {
+  renderStar = cnt => {
     let string = String(cnt);
     let fullStar = parseInt(string.split(".")[0]);
     let halfStar = parseInt(string.split(".")[1]);
@@ -104,26 +119,23 @@ const CategoryScreen = props => {
     );
   };
 
-  const renderShopList = () => {
+  renderShopList = () => {
     return selectedLists.map(list => (
       <TouchableOpacity
         key={list.name}
         onPress={() =>
           navigation.navigate("Shop", {
-            title: navigation.getParam("category"),
+            title: cateMap[navigation.getParam("category")],
             shop: list
           })
         }
       >
-        <Card middle shadow style={styles.category}>
-          <Block flex={1.3}>
-            <Image
-              style={{ width: "100%", height: 70, borderRadius: 5 }}
-              source={list.source}
-            />
+        <Block middle shadow style={styles.category}>
+          <Block flex={1}>
+            <Image style={{ width: "100%", height: 70 }} source={list.source} />
           </Block>
           <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
-            <Text h4 bold medium height={25}>
+            <Text h4 bold height={25}>
               {list.name}
             </Text>
             <Text caption h4>
@@ -152,10 +164,11 @@ const CategoryScreen = props => {
               </Badge>
             ) : null}
           </Block>
-        </Card>
+        </Block>
       </TouchableOpacity>
     ));
   };
+
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
@@ -164,28 +177,37 @@ const CategoryScreen = props => {
             <Ionicons
               name={title}
               size={35}
-              color={theme.colors.gray}
+              color={theme.colors.primary}
               name="ios-arrow-back"
             />
-            <Text gray bold h2 style={{ marginLeft: 10 }}>
+            <Text primary bold h2 style={{ marginLeft: 10 }}>
               {title}
             </Text>
           </Block>
         </Button>
         <Button>
           <Text h1 bold>
-            {navigation.getParam("category")}
+            {cateMap[navigation.getParam("category")]}
           </Text>
         </Button>
       </Block>
       <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTab(tab))}
+        {tabs.map(tab => renderCatTab(tab))}
       </Block>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block flex={false} row space="between" style={styles.categories}>
-          {renderShopList()}
+      {isLoaded ? (
+        <ScrollView showsVerticalScrollIndicator={false}>
+          <Block flex={false} row space="between" style={styles.categories}>
+            {renderShopList()}
+          </Block>
+        </ScrollView>
+      ) : (
+        <Block style={styles.full}>
+          <ActivityIndicator
+            size="large"
+            color={theme.colors.primary}
+          ></ActivityIndicator>
         </Block>
-      </ScrollView>
+      )}
     </Block>
   );
 };
@@ -193,10 +215,12 @@ const CategoryScreen = props => {
 CategoryScreen.navigationOptions = {
   header: null
 };
-CategoryScreen.defaultProps = {
-  lists: mocks.lists
-};
+CategoryScreen.defaultProps = {};
 const styles = StyleSheet.create({
+  full: {
+    flex: 1,
+    justifyContent: "center"
+  },
   header: {
     marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.base * 1.5
@@ -226,7 +250,7 @@ const styles = StyleSheet.create({
   },
   category: {
     flexDirection: "row",
-    padding: theme.sizes.base / 2,
+    paddingVertical: theme.sizes.base / 2,
     width: width - theme.sizes.base * 3
   }
 });

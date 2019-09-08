@@ -6,12 +6,13 @@ import {
   createBottomTabNavigator
 } from "react-navigation";
 
-import HomeScreen from "../screens/HomeScreen";
+import EtcScreen from "../screens/EtcScreen";
 import MyTripScreen from "../screens/MyTripScreen";
 import TripSceen from "../screens/TripScreen";
 
 import SearchScreen from "../screens/SearchScreen";
-import SettingsScreen from "../screens/SettingsScreen";
+import ChatListScreen from "../screens/ChatListScreen";
+import ChatScreen from "../screens/ChatScreen";
 import ProfileScreen from "../screens/ProfileScreen";
 import CategoryScreen from "../screens/CategoryScreen";
 import ShopScreen from "../screens/ShopScreen";
@@ -25,50 +26,12 @@ const config = Platform.select({
   default: {}
 });
 
-const HomeStack = createStackNavigator(
-  {
-    Home: HomeScreen
-  },
-  config
-);
-
-HomeStack.navigationOptions = {
-  tabBarLabel: "홈",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? `md-home` : "md-home"}
-    />
-  )
-};
-
-HomeStack.path = "";
-
-const MyTripStack = createStackNavigator(
-  {
-    MyTrip: MyTripScreen,
-    Trip: TripSceen
-  },
-  config
-);
-
-MyTripStack.navigationOptions = {
-  tabBarLabel: "내 일정",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === "ios" ? `md-pin` : "md-pin"}
-    />
-  )
-};
-
-MyTripStack.path = "";
-
 const SearchStack = createStackNavigator(
   {
     Search: SearchScreen,
     Category: CategoryScreen,
-    Shop: ShopScreen
+    Shop: ShopScreen,
+    Chat: ChatScreen
   },
   config
 );
@@ -85,24 +48,68 @@ SearchStack.navigationOptions = {
 
 SearchStack.path = "";
 
-const SettingsStack = createStackNavigator(
+const ChatStack = createStackNavigator(
   {
-    Settings: SettingsScreen
+    ChatLists: ChatListScreen,
+    Chat: ChatScreen
+  },
+  config
+);
+const MyTripStack = createStackNavigator(
+  {
+    MyTrip: MyTripScreen,
+    Trip: TripSceen,
+    Chat: ChatScreen
   },
   config
 );
 
-SettingsStack.navigationOptions = {
-  tabBarLabel: "예약 관리",
+MyTripStack.navigationOptions = {
+  tabBarLabel: "내 일정",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "md-book" : "md-book"}
+      name={Platform.OS === "ios" ? `ios-list` : "ios-list"}
     />
   )
 };
 
-SettingsStack.path = "";
+MyTripStack.path = "";
+
+ChatStack.navigationOptions = {
+  tabBarLabel: "메시지",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? "ios-chatbubbles" : "ios-chatbubbles"}
+    />
+  )
+};
+
+ChatStack.path = "";
+
+const EtcStack = createStackNavigator(
+  {
+    Home: EtcScreen
+  },
+  config
+);
+
+EtcStack.navigationOptions = {
+  tabBarLabel: "정보",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={
+        Platform.OS === "ios"
+          ? `ios-information-circle`
+          : "ios-information-circle"
+      }
+    />
+  )
+};
+
+EtcStack.path = "";
 
 const ProfileStack = createStackNavigator(
   {
@@ -121,14 +128,14 @@ ProfileStack.navigationOptions = {
   )
 };
 
-SettingsStack.path = "";
+ChatStack.path = "";
 
 const tabNavigator = createBottomTabNavigator(
   {
-    HomeStack,
-    MyTripStack,
     SearchStack,
-    SettingsStack,
+    MyTripStack,
+    ChatStack,
+    EtcStack,
     ProfileStack
   },
   {
