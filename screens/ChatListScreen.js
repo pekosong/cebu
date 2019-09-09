@@ -5,7 +5,7 @@ import {
   Image,
   ScrollView,
   TouchableOpacity,
-  ImageBackground
+  FlatList
 } from "react-native";
 
 import { Button, Block, Text } from "../components";
@@ -13,40 +13,46 @@ import { theme, mocks } from "../constants";
 
 const { width } = Dimensions.get("window");
 
-const cateCat = {
-  ALL: "전체",
-  EAT: "오픈챗",
-  ACTIVITY: "예약챗"
-};
-
 const ChatListScreen = props => {
   const { navigation, profiles, categories } = props;
   const [active, setActive] = useState("ALL");
-  const [cates, setCates] = useState([]);
-  const tabs = ["ALL", "EAT", "ACTIVITY", "AESTHETIC"];
 
-  useEffect(() => {
-    setCates(categories);
-  }, []);
-  const handleTab = tab => {
-    const filtered = categories.filter(category =>
-      category.tags.includes(tab.toLowerCase())
-    );
-    setActive(tab);
-    setCates(filtered);
-  };
-  const renderTab = tab => {
-    const isActive = active == tab;
+  useEffect(() => {}, []);
 
+  renderList = ({ item }) => {
     return (
       <TouchableOpacity
-        key={`tab-${tab}`}
-        onPress={() => handleTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}
+        onPress={() =>
+          navigation.navigate("Chat", {
+            title: item.key,
+            engName: item.key
+          })
+        }
       >
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {cateCat[tab]}
-        </Text>
+        <Block
+          row
+          style={{
+            marginVertical: 10,
+            paddingBottom: 5,
+            borderBottomWidth: 0.3,
+            borderBottomColor: theme.colors.gray
+          }}
+        >
+          <Block left flex={1}>
+            <Image source={{ uri: item.avatar }} style={styles.avatar} />
+          </Block>
+          <Block flex={3.5} style={{ marginTop: 15, height: 40 }}>
+            <Block middle row space="between">
+              <Text h4 bold>
+                {item.key}
+              </Text>
+              <Text caption>{item.lastDate}</Text>
+            </Block>
+            <Block bottom>
+              <Text>{item.msg}</Text>
+            </Block>
+          </Block>
+        </Block>
       </TouchableOpacity>
     );
   };
@@ -60,9 +66,52 @@ const ChatListScreen = props => {
           <Image source={profiles.avatar} style={styles.avatar} />
         </Button>
       </Block>
-      <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTab(tab))}
-      </Block>
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginHorizontal: theme.sizes.base * 1.5 }}
+      >
+        <FlatList
+          data={[
+            {
+              key: "Sophia",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            },
+            {
+              key: "Isabella",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            },
+            {
+              key: "Emma",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            },
+            {
+              key: "Madison",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            },
+            {
+              key: "Mason",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            },
+            {
+              key: "Matthew",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/300"
+            }
+          ]}
+          renderItem={item => renderList(item)}
+        />
+      </ScrollView>
     </Block>
   );
 };
@@ -77,11 +126,13 @@ ChatListScreen.defaultProps = {
 const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.base * 3,
+    marginBottom: theme.sizes.base,
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
+    width: theme.sizes.base * 4,
+    height: theme.sizes.base * 4,
+    borderRadius: theme.sizes.base * 2
   },
   tabs: {
     borderBottomColor: theme.colors.gray2,

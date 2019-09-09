@@ -15,6 +15,7 @@ import { Input, Badge, Block, Text } from "../components";
 import Button from "apsl-react-native-button";
 
 import DateTimePicker from "react-native-modal-datetime-picker";
+import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 import { theme } from "../constants";
 
 const { height, width } = Dimensions.get("window");
@@ -85,7 +86,7 @@ export default function ShopScreen(props) {
         onBackdropPress={() => setShowReservation(false)}
         style={{
           backgroundColor: "white",
-          marginTop: height - 420,
+          marginTop: height - 600,
           borderRadius: 10
         }}
       >
@@ -117,19 +118,31 @@ export default function ShopScreen(props) {
             </Block>
 
             <Block>
-              <Button
-                style={{
-                  backgroundColor: theme.colors.primary,
-                  borderWidth: 0,
-                  borderRadius: 10
+              <Text bold h3 style={{ marginVertical: 15 }}>
+                예약일
+              </Text>
+              <Calendar
+                onDayPress={day => {
+                  console.log("selected day", day);
                 }}
-                textStyle={{ color: theme.colors.white, fontSize: 16 }}
-                onPress={() => setIsDatePickerVisible(true)}
-              >
-                {date
-                  ? `${date.getMonth()}월 ${date.getDate()}일`
-                  : "예약일 선택"}
-              </Button>
+                // Handler which gets executed on day long press. Default = undefined
+                onDayLongPress={day => {
+                  console.log("selected day", day);
+                }}
+                monthFormat={"yyyy MM"}
+                onMonthChange={month => {
+                  console.log("month changed", month);
+                }}
+                hideExtraDays={true}
+                disableMonthChange={true}
+                firstDay={1}
+                hideDayNames={true}
+                onPressArrowLeft={substractMonth => substractMonth()}
+                onPressArrowRight={addMonth => addMonth()}
+              />
+              <Text bold h3 style={{ marginVertical: 15 }}>
+                예약시간
+              </Text>
               <Button
                 style={{
                   backgroundColor: theme.colors.primary,
@@ -143,6 +156,9 @@ export default function ShopScreen(props) {
                   ? `${time.getHours()}시 ${time.getMinutes()}분`
                   : "예약시간 선택"}
               </Button>
+              <Text bold h3 style={{ marginVertical: 15 }}>
+                예약인원
+              </Text>
               <Block
                 style={{
                   backgroundColor: theme.colors.primary,
@@ -182,6 +198,7 @@ export default function ShopScreen(props) {
                   +
                 </Button>
               </Block>
+
               <DateTimePicker
                 confirmTextIOS="선택"
                 cancelTextIOS="취소"
@@ -200,7 +217,9 @@ export default function ShopScreen(props) {
                 onCancel={() => setIsTimePickerVisible(false)}
               />
 
-              <Text h4>추가 요청 사항</Text>
+              <Text bold h3 style={{ marginVertical: 15 }}>
+                추가 요청 사항
+              </Text>
               <Input
                 style={styles.input}
                 defaultValue={text}
