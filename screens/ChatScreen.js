@@ -112,7 +112,7 @@ export default function ChatScreen(props) {
           dateFormat="ll"
           // bottomOffset={50}
         />
-        {Platform.OS === "android" ? <KeyboardSpacer /> : null}
+        {Platform.OS === "android" ? <KeyboardSpacer topSpacing={-15} /> : null}
       </Block>
     );
   };

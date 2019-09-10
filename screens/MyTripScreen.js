@@ -7,7 +7,8 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
-  AsyncStorage
+  AsyncStorage,
+  FlatList
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
@@ -134,11 +135,11 @@ function MyTripScreen(props) {
             })
           }
         >
-          <Block middle shadow style={styles.category}>
+          <Block row middle shadow style={styles.category}>
             <Block
               middle
               center
-              flex={1}
+              flex={0.7}
               style={{ backgroundColor: theme.colors.primary, marginRight: 15 }}
             >
               <Ionicons size={40} color="white" name={todo.icon} />
@@ -157,9 +158,6 @@ function MyTripScreen(props) {
                 <Badge margin={[0, 0]} size={25} color={theme.colors.secondary}>
                   <Ionicons size={15} color="white" name="md-car" />
                 </Badge>
-                <Text medium caption height={20}>
-                  {todo.pickup.location}
-                </Text>
               </Block>
             ) : (
               <Block center middle flex={1.5}>
@@ -177,6 +175,61 @@ function MyTripScreen(props) {
     });
   };
 
+  renderList = ({ item }) => {
+    return (
+      <Block key={item.date} style={styles.categories}>
+        <Text h2 bold height={40}>
+          {item.date}
+          <Text>{"   "}</Text>
+          <Text>{item.nDay}</Text>
+          <Text>{"  "}</Text>
+          <Ionicons size={14} name="ios-arrow-forward"></Ionicons>
+        </Text>
+        {item.plan.map((todo, idx) => {
+          const shop = lists[todo.category].filter(e => e.id == todo.shopId)[0];
+          return shop ? (
+            <TouchableOpacity
+              key={todo.shopId + idx}
+              onPress={() =>
+                navigation.navigate("Trip", {
+                  title: "내 일정",
+                  trip: todo,
+                  shop: shop,
+                  shopId: todo.shopId,
+                  category: todo.category
+                })
+              }
+            >
+              <Block
+                row
+                style={{
+                  marginVertical: 10,
+                  paddingBottom: 5,
+                  borderBottomWidth: 0.3,
+                  borderBottomColor: theme.colors.gray
+                }}
+              >
+                <Block left flex={1}>
+                  <Image source={shop.source} style={styles.avatarChat} />
+                </Block>
+                <Block flex={3.5} style={{ marginTop: 5, height: 48 }}>
+                  <Block middle row space="between">
+                    <Text h3 bold>
+                      {shop.name}
+                    </Text>
+                    <Text caption>{todo.time}</Text>
+                  </Block>
+                  <Block bottom style={{ marginTop: 6 }}>
+                    <Text>{shop.engName}</Text>
+                  </Block>
+                </Block>
+              </Block>
+            </TouchableOpacity>
+          ) : null;
+        })}
+      </Block>
+    );
+  };
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
@@ -192,24 +245,11 @@ function MyTripScreen(props) {
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {selectedPlans.map(plan => (
-            <Block
-              key={plan.date}
-              flex={false}
-              row
-              space="between"
-              style={styles.categories}
-            >
-              <Text h2 bold height={40}>
-                {plan.date}
-                <Text>{"   "}</Text>
-                <Text>{plan.nDay}</Text>
-                <Text>{"  "}</Text>
-                <Ionicons size={14} name="ios-arrow-forward"></Ionicons>
-              </Text>
-              {renderPlan(plan["plan"])}
-            </Block>
-          ))}
+          <FlatList
+            data={selectedPlans}
+            keyExtractor={(item, index) => "key" + index}
+            renderItem={item => renderList(item)}
+          />
         </ScrollView>
       ) : (
         <Block style={styles.full}>
@@ -246,6 +286,11 @@ const styles = StyleSheet.create({
     width: theme.sizes.base * 2.2,
     height: theme.sizes.base * 2.2
   },
+  avatarChat: {
+    width: theme.sizes.base * 4,
+    height: theme.sizes.base * 4,
+    borderRadius: theme.sizes.base * 2
+  },
   tabs: {
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
@@ -276,7 +321,6 @@ const styles = StyleSheet.create({
     marginBottom: theme.sizes.base * 1
   },
   category: {
-    flexDirection: "row",
     paddingVertical: theme.sizes.padding / 4,
     width: width - theme.sizes.base * 3
   }
