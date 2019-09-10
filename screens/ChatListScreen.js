@@ -39,7 +39,7 @@ const ChatListScreen = props => {
           }}
         >
           <Block left flex={1}>
-            <Image source={{ uri: item.avatar }} style={styles.avatar} />
+            <Image source={{ uri: item.avatar }} style={styles.avatarChat} />
           </Block>
           <Block flex={3.5} style={{ marginTop: 15, height: 40 }}>
             <Block middle row space="between">
@@ -60,7 +60,7 @@ const ChatListScreen = props => {
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
         <Text h1 bold>
-          채팅
+          메시지
         </Text>
         <Button onPress={() => navigation.navigate("Settings", { profiles })}>
           <Image source={profiles.avatar} style={styles.avatar} />
@@ -82,31 +82,67 @@ const ChatListScreen = props => {
               key: "Isabella",
               msg: "Lorem ipsum dolor, sit amet con...",
               lastDate: "2019-10-01",
-              avatar: "https://i.pravatar.cc/300"
+              avatar: "https://i.pravatar.cc/301"
             },
             {
               key: "Emma",
               msg: "Lorem ipsum dolor, sit amet con...",
               lastDate: "2019-10-01",
-              avatar: "https://i.pravatar.cc/300"
+              avatar: "https://i.pravatar.cc/302"
             },
             {
               key: "Madison",
               msg: "Lorem ipsum dolor, sit amet con...",
               lastDate: "2019-10-01",
-              avatar: "https://i.pravatar.cc/300"
+              avatar: "https://i.pravatar.cc/303"
             },
             {
               key: "Mason",
               msg: "Lorem ipsum dolor, sit amet con...",
               lastDate: "2019-10-01",
-              avatar: "https://i.pravatar.cc/300"
+              avatar: "https://i.pravatar.cc/304"
             },
             {
               key: "Matthew",
               msg: "Lorem ipsum dolor, sit amet con...",
               lastDate: "2019-10-01",
-              avatar: "https://i.pravatar.cc/300"
+              avatar: "https://i.pravatar.cc/305"
+            },
+            {
+              key: "Jacob",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/306"
+            },
+            {
+              key: "William",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/307"
+            },
+            {
+              key: "Elijah",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/308"
+            },
+            {
+              key: "James",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/309"
+            },
+            {
+              key: "Jackson",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/310"
+            },
+            {
+              key: "David",
+              msg: "Lorem ipsum dolor, sit amet con...",
+              lastDate: "2019-10-01",
+              avatar: "https://i.pravatar.cc/311"
             }
           ]}
           renderItem={item => renderList(item)}
@@ -130,6 +166,10 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.base * 1.5
   },
   avatar: {
+    width: theme.sizes.base * 2.2,
+    height: theme.sizes.base * 2.2
+  },
+  avatarChat: {
     width: theme.sizes.base * 4,
     height: theme.sizes.base * 4,
     borderRadius: theme.sizes.base * 2

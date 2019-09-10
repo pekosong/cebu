@@ -1,4 +1,17 @@
-let song = require("./constants/store.js");
+let firebase = require("firebase");
+let firebaseConfig = {
+  apiKey: "AIzaSyCPpjFnNk1TKksDdjfloXAHKFkrReHydq8",
+  authDomain: "cabu-c030d.firebaseapp.com",
+  databaseURL: "https://cabu-c030d.firebaseio.com",
+  projectId: "cabu-c030d",
+  storageBucket: "",
+  messagingSenderId: "31520463311",
+  appId: "1:31520463311:web:5455973a89b2c0dc"
+};
+// Initialize Firebase
+firebase.initializeApp(firebaseConfig);
+
+let db = firebase.firestore();
 
 const plans = [
   {
@@ -75,9 +88,19 @@ const plans = [
   }
 ];
 
-console.log(plans);
-// firebase
-//   .firestore()
-//   .doc("peko22@naver.com")
-//   .set({ plans: plans })
-//   .then(() => console.log("done"));
+db.collection("shops")
+  .where("id", "==", "Message")
+  .get()
+  .then(querySnapshot =>
+    querySnapshot.forEach(doc => {
+      data = doc.data();
+      data.lists.forEach(d => {
+        if (d.id == "message2") {
+          console.log(d);
+        }
+      });
+    })
+  )
+  .catch(err => {
+    console.log(err);
+  });
