@@ -48,13 +48,6 @@ SearchStack.navigationOptions = {
 
 SearchStack.path = "";
 
-const ChatStack = createStackNavigator(
-  {
-    ChatLists: ChatListScreen,
-    Chat: ChatScreen
-  },
-  config
-);
 const MyTripStack = createStackNavigator(
   {
     MyTrip: MyTripScreen,
@@ -76,6 +69,14 @@ MyTripStack.navigationOptions = {
 
 MyTripStack.path = "";
 
+const ChatStack = createStackNavigator(
+  {
+    ChatLists: ChatListScreen,
+    Chat: ChatScreen
+  },
+  config
+);
+
 ChatStack.navigationOptions = {
   tabBarLabel: "메시지",
   tabBarIcon: ({ focused }) => (
@@ -90,7 +91,7 @@ ChatStack.path = "";
 
 const EtcStack = createStackNavigator(
   {
-    Home: EtcScreen
+    Etc: EtcScreen
   },
   config
 );
@@ -128,7 +129,7 @@ ProfileStack.navigationOptions = {
   )
 };
 
-ChatStack.path = "";
+ProfileStack.path = "";
 
 const tabNavigator = createBottomTabNavigator(
   {

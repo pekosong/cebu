@@ -52,7 +52,7 @@ const LoginScreen = props => {
         setIsError(false);
         setLoading(false);
         _storeData();
-        navigation.navigate("Home");
+        navigation.navigate("Search");
       })
       .catch(err => {
         console.log(err);

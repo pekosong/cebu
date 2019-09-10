@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import {
-  Dimensions,
   StyleSheet,
   Image,
   ScrollView,
@@ -11,10 +10,8 @@ import {
 import { Button, Block, Text } from "../components";
 import { theme, mocks } from "../constants";
 
-const { width } = Dimensions.get("window");
-
 const ChatListScreen = props => {
-  const { navigation, profiles, categories } = props;
+  const { navigation, profiles } = props;
   const [active, setActive] = useState("ALL");
 
   useEffect(() => {}, []);
@@ -56,6 +53,7 @@ const ChatListScreen = props => {
       </TouchableOpacity>
     );
   };
+
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
@@ -156,8 +154,7 @@ ChatListScreen.navigationOptions = {
   header: null
 };
 ChatListScreen.defaultProps = {
-  profiles: mocks.profiles,
-  categories: mocks.categories
+  profiles: mocks.profiles
 };
 const styles = StyleSheet.create({
   header: {
@@ -173,31 +170,6 @@ const styles = StyleSheet.create({
     width: theme.sizes.base * 4,
     height: theme.sizes.base * 4,
     borderRadius: theme.sizes.base * 2
-  },
-  tabs: {
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.base * 1.5
-  },
-  tab: {
-    marginRight: theme.sizes.base * 1.5,
-    paddingBottom: theme.sizes.base
-  },
-  active: {
-    borderBottomColor: theme.colors.secondary,
-    borderBottomWidth: 3
-  },
-  categories: {
-    flexWrap: "wrap",
-    paddingHorizontal: theme.sizes.base * 1.5,
-    marginBottom: theme.sizes.base * 3.5
-  },
-  category: {
-    paddingVertical: theme.sizes.base / 4,
-    minWidth: width - theme.sizes.padding * 1.5 - theme.sizes.base / 3,
-    maxWidth: width - theme.sizes.padding * 1.5 - theme.sizes.base / 3,
-    maxHeight: width - theme.sizes.padding * 1.5 - theme.sizes.base
   }
 });
 

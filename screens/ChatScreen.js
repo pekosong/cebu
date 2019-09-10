@@ -3,7 +3,6 @@ import {
   StyleSheet,
   AsyncStorage,
   Keyboard,
-  KeyboardAvoidingView,
   ActivityIndicator,
   Platform
 } from "react-native";
