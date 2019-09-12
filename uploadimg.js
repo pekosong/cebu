@@ -11,7 +11,7 @@ let firebaseConfig = {
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
 
-let db = firebase.firestore();
+let db = firebase.storage().ref();
 
 const lists = [
   {
@@ -22,7 +22,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food1.jpg'",
+    source: "../assets/images/cebu_food1.jpg",
     review: 3.5,
     reviewCnt: 1212,
     tags: ["랍스타", "새우요리"],
@@ -38,7 +38,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food2.jpeg'",
+    source: "../assets/images/cebu_food2.jpeg",
     review: 2.5,
     reviewCnt: 231,
     tags: ["부페", "전통음식"],
@@ -54,7 +54,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food3.jpeg'",
+    source: "../assets/images/cebu_food3.jpeg",
     review: 4.0,
     reviewCnt: 342,
     tags: ["동동", "전통음식"],
@@ -70,7 +70,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food4.jpg'",
+    source: "../assets/images/cebu_food4.jpg",
     review: 4,
     reviewCnt: 545,
     tags: ["스테이크", "전통음식"],
@@ -86,7 +86,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage1.jpg'",
+    source: "../assets/images/cebu_massage1.jpg",
     review: 4,
     reviewCnt: 200,
     tags: ["전통태국마사지"],
@@ -101,7 +101,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage2.jpg'",
+    source: "../assets/images/cebu_massage2.jpg",
     review: 4.5,
     reviewCnt: 234,
     tags: ["전통태국마사지"],
@@ -116,7 +116,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage3.jpg'",
+    source: "../assets/images/cebu_massage3.jpg",
     review: 5,
     reviewCnt: 156,
     tags: ["전통태국마사지"],
@@ -131,7 +131,7 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage4.jpg'",
+    source: "../assets/images/cebu_massage4.jpg",
     review: 3.5,
     reviewCnt: 270,
     tags: ["전통태국마사지"],

@@ -23,11 +23,11 @@ function MyTripScreen(props) {
   const [active, setActive] = useState("");
   const [plans, setPlans] = useState([]);
   const [selectedPlans, setSelectedPlans] = useState([]);
-  const [isLoaded, setisLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
     let unsubscribePlans;
-    setActive("ALL");
+    setActive("전체");
 
     _retrieveData().then(email => {
       unsubscribePlans = firebase
@@ -38,8 +38,8 @@ function MyTripScreen(props) {
           let myPlans = doc.data().plans;
           setPlans(myPlans);
           setSelectedPlans(myPlans);
-          setTabs(["ALL"].concat(myPlans.map(e => e.nDay)));
-          setisLoaded(true);
+          setTabs(["전체"].concat(myPlans.map(e => e.nDay)));
+          setIsLoaded(true);
         });
     });
     return () => {
@@ -95,7 +95,7 @@ function MyTripScreen(props) {
   };
 
   handleTab = tab => {
-    if (tab == "ALL") {
+    if (tab == "전체") {
       setSelectedPlans(plans);
     } else {
       setSelectedPlans(plans.filter(plan => plan.nDay == tab));

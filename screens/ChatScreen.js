@@ -37,8 +37,10 @@ export default function ChatScreen(props) {
       roomName = email + "_" + engName;
       unsubscribe = firebase
         .firestore()
-        .collection("chats")
-        .doc(roomName)
+        .collection("users")
+        .doc(email)
+        .collection("messages")
+        .doc(engName)
         .onSnapshot(doc => {
           try {
             let msgs = doc.data().message;
@@ -56,8 +58,10 @@ export default function ChatScreen(props) {
           } catch (err) {
             firebase
               .firestore()
-              .collection("chats")
-              .doc(roomName)
+              .collection("users")
+              .doc(email)
+              .collection("messages")
+              .doc(engName)
               .set({ email: email, shop: engName, message: [] });
           }
         });

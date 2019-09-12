@@ -12,6 +12,8 @@ import { theme } from "../constants";
 import firebase from "../constants/store";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 
+import moment from "moment";
+
 const { height, width } = Dimensions.get("window");
 
 LocaleConfig.locales["kor"] = {
@@ -62,36 +64,15 @@ const SignupScreen = props => {
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
-  const [date, setDate] = useState({
-    "2019-09-20": {
-      startingDay: true,
-      color: theme.colors.primary,
-      textColor: "white"
-    },
-    "2019-09-21": {
-      selected: true,
-      color: theme.colors.primary,
-      textColor: "white"
-    },
-    "2019-09-22": {
-      selected: true,
-      color: theme.colors.primary,
-      textColor: "white"
-    },
-    "2019-09-23": {
-      selected: true,
-      endingDay: true,
-      color: theme.colors.primary,
-      textColor: "white"
-    }
-  });
+  const [date, setDate] = useState({});
   const [startDate, setStartDate] = useState("");
   const [endDate, setEndDate] = useState("");
+  const [dates, setDates] = useState([]);
   const [hotel, setHotel] = useState("");
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(2);
+  const [step, setStep] = useState(1);
 
   signUp = async () => {
     setLoading(true);
@@ -116,16 +97,53 @@ const SignupScreen = props => {
 
   hasErrors = () => (isError ? styles.hasErrors : null);
 
+  _getDates = (start, stop) => {
+    let startDate = new Date(start.year, start.month - 1, start.day);
+    let stopDate = new Date(stop.year, stop.month - 1, stop.day);
+    let dateArray = new Array();
+    let currentDate = startDate;
+    while (currentDate <= stopDate) {
+      dateArray.push(moment(currentDate).format("YYYY-MM-DD"));
+      currentDate = moment(currentDate).add(1, "days");
+    }
+    return dateArray;
+  };
+
   handleDate = day => {
-    newDate = new Object();
-    newDate[day.dateString] = {
-      selected: true,
-      selectedColor: "red",
-      marked: true,
-      dotColor: "red",
-      selectedDotColor: "blue"
-    };
-    setDate(newDate);
+    let myDates = dates;
+    myDates.push(day);
+
+    if (myDates.length == 1) {
+      newDate = new Object();
+      newDate[day.dateString] = {
+        startingDay: true,
+        color: theme.colors.primary,
+        textColor: theme.colors.white,
+        endingDay: true
+      };
+      setDate(newDate);
+    }
+
+    if (myDates.length == 2) {
+      newDates = _getDates(myDates[0], myDates[1]);
+      newDate = new Object();
+      newDates.forEach((e, idx) => {
+        option = new Object();
+        if (idx == 0) {
+          option["startingDay"] = true;
+        } else if (idx == newDates.length - 1) {
+          option["endingDay"] = true;
+        } else {
+          option["selected"] = true;
+        }
+        option["color"] = theme.colors.primary;
+        (option["textColor"] = theme.colors.white), (newDate[e] = option);
+      });
+      setStartDate(myDates[0].dateString);
+      setEndDate(myDates[1].dateString);
+      setDate(newDate);
+      setDates([]);
+    }
   };
 
   handleSignUp = async () => {
@@ -234,11 +252,19 @@ const SignupScreen = props => {
             onPressArrowLeft={substractMonth => substractMonth()}
             onPressArrowRight={addMonth => addMonth()}
             markedDates={date}
-            markingType={"period"}
+            markingType="period"
             theme={{
               arrowColor: theme.colors.primary,
               todayTextColor: theme.colors.primary,
-              mondayTextColor: theme.colors.primary
+              mondayTextColor: theme.colors.primary,
+              "stylesheet.day.period": {
+                base: {
+                  overflow: "hidden",
+                  height: 34,
+                  alignItems: "center",
+                  width: 38
+                }
+              }
             }}
           />
 

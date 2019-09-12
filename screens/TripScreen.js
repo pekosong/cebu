@@ -381,7 +381,7 @@ export default function TripScreen(props) {
         scrollEventThrottle={360}
         pagingEnabled
         onScroll={handleScroll}
-        style={{ position: "absolute", top: 0, zIndex: -1 }}
+        style={{ position: "absolute", top: 0, zIndex: -10 }}
       >
         {[1, 2, 3].map(e => (
           <ImageBackground
@@ -621,8 +621,7 @@ TripScreen.navigationOptions = {
 const styles = StyleSheet.create({
   header: {
     paddingTop: theme.sizes.base * 3.5,
-    paddingHorizontal: theme.sizes.base * 1.5,
-    backgroundColor: "rgba(0, 0, 0, 0.2)"
+    paddingHorizontal: theme.sizes.base * 1.5
   },
   categories: {
     paddingHorizontal: theme.sizes.base * 1.5,

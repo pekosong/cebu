@@ -37,7 +37,7 @@ const CategoryScreen = props => {
   const [title, setTitle] = useState("");
   const [active, setActive] = useState("추천");
   const [selectedLists, setSelectedLists] = useState([]);
-  const [isLoaded, setisLoaded] = useState(false);
+  const [isLoaded, setIsLoaded] = useState(false);
   const tabs = ["추천", "리뷰수", "거리"];
 
   useEffect(() => {
@@ -45,22 +45,25 @@ const CategoryScreen = props => {
     let docRef = firebase
       .firestore()
       .collection("shops")
-      .doc(navigation.getParam("category"));
+      .where("category", "==", navigation.getParam("category"));
 
     docRef
       .get()
-      .then(doc => {
-        let myList = doc.data().lists;
+      .then(querySnapshot => {
+        let myList = [];
+        querySnapshot.forEach(doc => {
+          myList.push(doc.data());
+        });
         myList = myList.sort(function(a, b) {
           return b["review"] - a["review"];
         });
         setSelectedLists(myList);
-        setisLoaded(true);
+        setIsLoaded(true);
       })
       .catch(err => console.log(err));
     return () => {
       setSelectedLists([]);
-      setisLoaded(false);
+      setIsLoaded(false);
       setSelectedLists("");
     };
   }, []);
@@ -132,7 +135,10 @@ const CategoryScreen = props => {
       >
         <Block middle shadow style={styles.category}>
           <Block flex={1}>
-            <Image style={{ width: "100%", height: 70 }} source={list.source} />
+            <Image
+              style={{ width: "100%", height: 70 }}
+              source={require("../assets/images/cebu_food1.jpg")}
+            />
           </Block>
           <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
             <Text h4 bold height={25}>

@@ -321,7 +321,7 @@ export default function ShopScreen(props) {
         {[1, 2, 3].map(e => (
           <ImageBackground
             key={e}
-            source={shop.source}
+            source={require("../assets/images/search/cafe.jpg")}
             style={{
               width: width,
               height: 250,
