@@ -39,8 +39,8 @@ const LoginScreen = props => {
     }
   };
 
-  const hasErrors = () => (isError ? styles.hasErrors : null);
-  const handleLogin = async () => {
+  hasErrors = () => (isError ? styles.hasErrors : null);
+  handleLogin = async () => {
     setLoading(true);
 
     Keyboard.dismiss();

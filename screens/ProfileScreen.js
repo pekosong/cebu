@@ -36,11 +36,11 @@ const ProfileScreen = props => {
     _retrieveData();
   }, []);
 
-  const handleEdit = (name, text) => {
+  handleEdit = (name, text) => {
     profile[name] = text;
     setProfile(profile);
   };
-  const renderEdit = name => {
+  renderEdit = name => {
     if (editing === name) {
       return (
         <TextInput
@@ -52,11 +52,11 @@ const ProfileScreen = props => {
     return <Text bold>{profile[name]}</Text>;
   };
 
-  const toggleEdit = name => {
+  toggleEdit = name => {
     setEditing(!editing ? name : null);
   };
 
-  const handleLogout = () => {
+  handleLogout = () => {
     firebase
       .auth()
       .signOut()
