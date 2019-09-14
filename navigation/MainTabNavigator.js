@@ -6,16 +6,25 @@ import {
   createBottomTabNavigator
 } from "react-navigation";
 
-import EtcScreen from "../screens/EtcScreen";
-import MyTripScreen from "../screens/MyTripScreen";
-import TripSceen from "../screens/TripScreen";
+import SearchScreen from "../screens/Search/SearchScreen";
+import CategoryScreen from "../screens/Search/CategoryScreen";
 
-import SearchScreen from "../screens/SearchScreen";
-import ChatListScreen from "../screens/ChatListScreen";
-import ChatScreen from "../screens/ChatScreen";
-import ProfileScreen from "../screens/ProfileScreen";
-import CategoryScreen from "../screens/CategoryScreen";
-import ShopScreen from "../screens/ShopScreen";
+import MyTripScreen from "../screens/MyTrip/MyTripScreen";
+import TripSceen from "../screens/MyTrip/TripScreen";
+
+import ChatListScreen from "../screens/ChatList/ChatListScreen";
+import ChatScreen from "../screens/ChatList/ChatScreen";
+
+import FavoritesScreen from "../screens/Favorites/FavoritesScreen";
+
+import ProfileScreen from "../screens/Profile/ProfileScreen";
+import PersonalScreen from "../screens/Profile/PersonalScreen";
+import NoticeScreen from "../screens/Profile/NoticeScreen";
+import TripInfosScreen from "../screens/Profile/TripInfosScreen";
+import TripInfoScreen from "../screens/Profile/TripInfoScreen";
+import MyShopScreen from "../screens/Profile/MyShopScreen";
+
+import ShopScreen from "../screens/Search/ShopScreen";
 
 import TabBarIcon from "../components/TabBarIcon";
 
@@ -57,12 +66,30 @@ const MyTripStack = createStackNavigator(
   config
 );
 
+const FavoritesStack = createStackNavigator(
+  {
+    Favorites: FavoritesScreen
+  },
+  config
+);
+
+FavoritesStack.navigationOptions = {
+  tabBarLabel: "저장소",
+  tabBarIcon: ({ focused }) => (
+    <TabBarIcon
+      focused={focused}
+      name={Platform.OS === "ios" ? `ios-heart` : "ios-heart"}
+    />
+  )
+};
+
+FavoritesStack.path = "";
 MyTripStack.navigationOptions = {
   tabBarLabel: "내 일정",
   tabBarIcon: ({ focused }) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? `ios-list` : "ios-list"}
+      name={Platform.OS === "ios" ? `logo-google` : "logo-google"}
     />
   )
 };
@@ -89,32 +116,14 @@ ChatStack.navigationOptions = {
 
 ChatStack.path = "";
 
-const EtcStack = createStackNavigator(
-  {
-    Etc: EtcScreen
-  },
-  config
-);
-
-EtcStack.navigationOptions = {
-  tabBarLabel: "정보",
-  tabBarIcon: ({ focused }) => (
-    <TabBarIcon
-      focused={focused}
-      name={
-        Platform.OS === "ios"
-          ? `ios-information-circle`
-          : "ios-information-circle"
-      }
-    />
-  )
-};
-
-EtcStack.path = "";
-
 const ProfileStack = createStackNavigator(
   {
-    Profile: ProfileScreen
+    Profile: ProfileScreen,
+    Personal: PersonalScreen,
+    Notice: NoticeScreen,
+    TripInfos: TripInfosScreen,
+    TripInfo: TripInfoScreen,
+    MyShop: MyShopScreen
   },
   config
 );
@@ -134,9 +143,9 @@ ProfileStack.path = "";
 const tabNavigator = createBottomTabNavigator(
   {
     SearchStack,
+    FavoritesStack,
     MyTripStack,
     ChatStack,
-    EtcStack,
     ProfileStack
   },
   {

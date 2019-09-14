@@ -7,9 +7,9 @@ import {
   AsyncStorage
 } from "react-native";
 
-import { Button, Block, Input, Text } from "../components";
-import { theme } from "../constants";
-import firebase from "../constants/store";
+import { Button, Block, Input, Text } from "../../components";
+import { theme } from "../../constants";
+import firebase from "../../constants/store";
 
 const EMAIL = "peko22@naver.com";
 const PASSWORD = "thdckdrms1";
@@ -62,7 +62,7 @@ const LoginScreen = props => {
   };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
-      <Block padding={[0, theme.sizes.base * 2]}>
+      <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
           <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
             Login

@@ -11,14 +11,14 @@ import MapView from "react-native-maps";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Input, Badge, Block, Text } from "../components";
+import { Input, Badge, Block, Text } from "../../components";
 import Button from "apsl-react-native-button";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { Calendar, LocaleConfig } from "react-native-calendars";
 
 import StarRating from "react-native-star-rating";
 
-import { theme } from "../constants";
+import { theme } from "../../constants";
 
 const { height, width } = Dimensions.get("window");
 LocaleConfig.locales["kor"] = {
@@ -483,7 +483,7 @@ export default function TripScreen(props) {
                     height: 30,
                     width: 30
                   }}
-                  source={require("../assets/icons/car.png")}
+                  source={require("../../assets/icons/car.png")}
                 ></Image>
               </Badge>
               <Text h4 bold>
@@ -621,10 +621,10 @@ TripScreen.navigationOptions = {
 const styles = StyleSheet.create({
   header: {
     paddingTop: theme.sizes.base * 3.5,
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingHorizontal: theme.sizes.padding
   },
   categories: {
-    paddingHorizontal: theme.sizes.base * 1.5,
+    paddingHorizontal: theme.sizes.padding,
     marginVertical: 15
   },
   shadow: {

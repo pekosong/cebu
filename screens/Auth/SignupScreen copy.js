@@ -7,9 +7,9 @@ import {
   Dimensions
 } from "react-native";
 
-import { Button, Block, Input, Text } from "../components";
-import { theme } from "../constants";
-import firebase from "../constants/store";
+import { Button, Block, Input, Text } from "../../components";
+import { theme } from "../../constants";
+import firebase from "../../constants/store";
 import { CalendarList, LocaleConfig } from "react-native-calendars";
 
 import moment from "moment";
@@ -57,9 +57,10 @@ LocaleConfig.locales["kor"] = {
   ],
   dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"]
 };
+
 LocaleConfig.defaultLocale = "kor";
 
-const SignupScreen = props => {
+const TripInfoScreen = props => {
   const { navigation } = props;
 
   const [email, setEmail] = useState("");
@@ -72,28 +73,7 @@ const SignupScreen = props => {
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
-
-  signUp = async () => {
-    setLoading(true);
-    Keyboard.dismiss();
-
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        setError("");
-        setIsError(false);
-        setStep(step + 1);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setError(err.message);
-        setIsError(true);
-        setLoading(false);
-      });
-  };
+  const [step, setStep] = useState(2);
 
   hasErrors = () => (isError ? styles.hasErrors : null);
 
@@ -179,54 +159,6 @@ const SignupScreen = props => {
 
   renderSignUp = () => {
     if (step == 1) {
-      return (
-        <Block padding={[0, theme.sizes.base * 2]}>
-          <Block middle>
-            <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
-              Email
-            </Text>
-            <Input
-              label="Email"
-              style={[styles.input, hasErrors()]}
-              defaultValue={email}
-              onChangeText={text => {
-                setEmail(text);
-              }}
-            />
-            <Input
-              secure
-              label="Password"
-              style={[styles.input, hasErrors()]}
-              defaultValue={password}
-              onChangeText={text => {
-                setPassword(text);
-              }}
-            />
-            {isError ? <Text color={theme.colors.accent}>{error}</Text> : null}
-
-            <Button
-              gradient
-              onPress={() => {
-                signUp();
-              }}
-            >
-              {loading ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
-                <Text bold white center>
-                  Next
-                </Text>
-              )}
-            </Button>
-            <Button shadow style={styles.shadow}>
-              <Text center semibold onPress={() => navigation.goBack()}>
-                Back
-              </Text>
-            </Button>
-          </Block>
-        </Block>
-      );
-    } else if (step == 2) {
       return (
         <Block>
           <Block bottom padding={[0, theme.sizes.base * 2]}>
@@ -334,7 +266,7 @@ const SignupScreen = props => {
   );
 };
 
-SignupScreen.navigationOptions = {
+TripInfoScreen.navigationOptions = {
   header: null
 };
 
@@ -354,4 +286,4 @@ const styles = StyleSheet.create({
   }
 });
 
-export default SignupScreen;
+export default TripInfoScreen;

@@ -3,8 +3,8 @@ import { Image, Dimensions, ScrollView, StyleSheet } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Card, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
+import { Card, Block, Text } from "../../components";
+import { theme, mocks } from "../../constants";
 
 const { width } = Dimensions.get("window");
 
@@ -19,7 +19,7 @@ function HomeScreen(props) {
             position: "absolute",
             left: 0
           }}
-          source={require("../assets/images/hello.jpg")}
+          source={require("../../assets/images/hello.jpg")}
         ></Image>
         <Text
           white
@@ -59,7 +59,7 @@ function HomeScreen(props) {
                   style={{ width: 60, height: 60 }}
                   resizeMode="contain"
                   resizeMethod="resize"
-                  source={require("../assets/images/weather.png")}
+                  source={require("../../assets/images/weather.png")}
                 ></Image>
               </Block>
               <Block flex={1}>

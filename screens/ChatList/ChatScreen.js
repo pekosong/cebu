@@ -11,9 +11,9 @@ import KeyboardSpacer from "react-native-keyboard-spacer";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
-import firebase from "../constants/store";
+import { Button, Block, Text } from "../../components";
+import { theme, mocks } from "../../constants";
+import firebase from "../../constants/store";
 
 import "moment/locale/ko";
 
@@ -28,13 +28,13 @@ export default function ChatScreen(props) {
   useEffect(() => {
     const name = navigation.getParam("title");
     const engName = navigation.getParam("engName");
+
     let unsubscribe;
 
     setTitle(name);
     setEngName(engName);
 
     _retrieveData().then(email => {
-      roomName = email + "_" + engName;
       unsubscribe = firebase
         .firestore()
         .collection("users")
@@ -68,10 +68,24 @@ export default function ChatScreen(props) {
     });
 
     return () => {
+      _deleteMessage();
       unsubscribe();
     };
   }, []);
 
+  _deleteMessage = () => {
+    if (messages.length == 0) {
+      firebase
+        .firestore()
+        .collection("users")
+        .doc(email)
+        .collection("messages")
+        .doc(engName)
+        .delete()
+        .then(() => console.log("Done"))
+        .catch(err => console.log(err));
+    }
+  };
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem("profile");
@@ -88,8 +102,10 @@ export default function ChatScreen(props) {
   onSend = async msg => {
     await firebase
       .firestore()
-      .collection("chats")
-      .doc(email + "_" + engName)
+      .collection("users")
+      .doc(email)
+      .collection("messages")
+      .doc(engName)
       .update({ message: GiftedChat.append(messages, msg) })
       .then(() => {
         setMessages(GiftedChat.append(messages, msg));
@@ -169,7 +185,7 @@ const styles = StyleSheet.create({
 
   header: {
     paddingTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingHorizontal: theme.sizes.padding
   },
 
   avatar: {

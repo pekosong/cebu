@@ -8,9 +8,10 @@ import {
   ImageBackground
 } from "react-native";
 
-import { Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
-
+import { Button, Block, Text } from "../../components";
+import { theme, mocks } from "../../constants";
+import { SearchBar } from "react-native-elements";
+import axios from "axios";
 const { width } = Dimensions.get("window");
 
 const cateCat = {
@@ -24,6 +25,8 @@ const SearchScreen = props => {
   const { navigation, profiles, categories } = props;
   const [active, setActive] = useState("ALL");
   const [cates, setCates] = useState([]);
+  const [search, setSearch] = useState("");
+
   const tabs = ["ALL", "EAT", "ACTIVITY", "AESTHETIC"];
 
   useEffect(() => {

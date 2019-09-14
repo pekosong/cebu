@@ -11,11 +11,11 @@ import MapView from "react-native-maps";
 
 import { Ionicons } from "@expo/vector-icons";
 
-import { Input, Badge, Block, Text } from "../components";
+import { Input, Badge, Block, Text } from "../../components";
 import Button from "apsl-react-native-button";
 
 import { Calendar, LocaleConfig } from "react-native-calendars";
-import { theme } from "../constants";
+import { theme } from "../../constants";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
 const { height, width } = Dimensions.get("window");
@@ -264,6 +264,9 @@ export default function ShopScreen(props) {
       </Modal>
     );
   };
+  handleLoad = event => {
+    console.log(event);
+  };
 
   return (
     <Block>
@@ -321,7 +324,7 @@ export default function ShopScreen(props) {
         {[1, 2, 3].map(e => (
           <ImageBackground
             key={e}
-            source={require("../assets/images/search/cafe.jpg")}
+            source={{ uri: shop.source }}
             style={{
               width: width,
               height: 250,
@@ -414,11 +417,12 @@ export default function ShopScreen(props) {
             >
               <Badge size={40} color={theme.colors.accent}>
                 <Image
+                  onLoadEnd={e => handleLoad(e)}
                   style={{
                     height: 30,
                     width: 30
                   }}
-                  source={require("../assets/icons/car.png")}
+                  source={require("../../assets/icons/car.png")}
                 ></Image>
               </Badge>
               <Text h4 bold>
@@ -529,10 +533,10 @@ ShopScreen.navigationOptions = {
 const styles = StyleSheet.create({
   header: {
     paddingTop: theme.sizes.base * 3.5,
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingHorizontal: theme.sizes.padding
   },
   categories: {
-    paddingHorizontal: theme.sizes.base * 1.5,
+    paddingHorizontal: theme.sizes.padding,
     marginVertical: 15
   },
   shadow: {

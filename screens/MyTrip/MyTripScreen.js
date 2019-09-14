@@ -11,9 +11,9 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Button, Block, Text } from "../components";
-import { theme, mocks } from "../constants";
-import firebase from "../constants/store";
+import { Button, Block, Text } from "../../components";
+import { theme, mocks } from "../../constants";
+import firebase from "../../constants/store";
 
 import { Calendar, CalendarList, Agenda } from "react-native-calendars";
 
@@ -160,13 +160,10 @@ function MyTripScreen(props) {
   };
   return (
     <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
+      <Block flex={false} style={styles.header}>
         <Text h1 bold>
           내 일정
         </Text>
-        <Button onPress={() => navigation.navigate("Settings", { profiles })}>
-          <Image source={profiles.avatar} style={styles.avatar} />
-        </Button>
       </Block>
       <Block flex={false} row style={styles.tabs}>
         {tabs.map(tab => renderTab(tab))}
@@ -207,8 +204,9 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   header: {
-    marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.base * 1.5
+    marginTop: theme.sizes.base * 4,
+    marginBottom: theme.sizes.base,
+    paddingHorizontal: theme.sizes.padding
   },
   avatar: {
     width: theme.sizes.base * 2.2,
@@ -224,10 +222,10 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginVertical:
       Platform.OS === "ios" ? theme.sizes.base * 0.8 : theme.sizes.base,
-    marginHorizontal: theme.sizes.base * 1.5
+    marginHorizontal: theme.sizes.padding
   },
   tab: {
-    marginRight: theme.sizes.base * 1.5,
+    marginRight: theme.sizes.padding,
     paddingBottom: theme.sizes.base
   },
   active: {
@@ -235,7 +233,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: 3
   },
   categories: {
-    paddingHorizontal: theme.sizes.base * 1.5,
+    paddingHorizontal: theme.sizes.padding,
     marginBottom: theme.sizes.base * 1
   }
 });

@@ -9,9 +9,9 @@ import {
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Badge, Button, Block, Text } from "../components";
-import { theme } from "../constants";
-import firebase from "../constants/store";
+import { Badge, Button, Block, Text } from "../../components";
+import { theme } from "../../constants";
+import firebase from "../../constants/store";
 
 const { width } = Dimensions.get("window");
 
@@ -137,7 +137,7 @@ const CategoryScreen = props => {
           <Block flex={1}>
             <Image
               style={{ width: "100%", height: 70 }}
-              source={require("../assets/images/cebu_food1.jpg")}
+              source={{ uri: list.source }}
             />
           </Block>
           <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
@@ -229,7 +229,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.base * 1.5
+    paddingHorizontal: theme.sizes.padding
   },
   avatar: {
     width: theme.sizes.base * 2.2,
@@ -239,10 +239,10 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.base * 1.5
+    marginHorizontal: theme.sizes.padding
   },
   tab: {
-    marginRight: theme.sizes.base * 1.5,
+    marginRight: theme.sizes.padding,
     paddingBottom: theme.sizes.base
   },
   active: {
@@ -251,7 +251,7 @@ const styles = StyleSheet.create({
   },
   categories: {
     flexWrap: "wrap",
-    marginHorizontal: theme.sizes.base * 1.5,
+    marginHorizontal: theme.sizes.padding,
     marginBottom: theme.sizes.base * 1
   },
   category: {
