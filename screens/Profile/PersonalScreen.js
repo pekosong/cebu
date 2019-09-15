@@ -4,7 +4,6 @@ import {
   ScrollView,
   TextInput,
   AsyncStorage,
-  Platform,
   Image
 } from "react-native";
 import { Button, Block, Text } from "../../components";
@@ -17,6 +16,8 @@ import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
 import * as Permissions from "expo-permissions";
 
+import uuidv1 from "uuid/v1";
+
 const PersonalScreen = props => {
   const { navigation } = props;
   const [name, setName] = useState("");
@@ -25,7 +26,7 @@ const PersonalScreen = props => {
   const [saved, setSaved] = useState(false);
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState({});
-  const [image, setImage] = useState(null);
+  const [image, setImage] = useState("");
 
   getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -36,15 +37,59 @@ const PersonalScreen = props => {
     }
   };
 
+  uploadImage = async uri => {
+    const response = await fetch(uri);
+    const blob = await response.blob();
+
+    let uploadTask = firebase
+      .storage()
+      .ref()
+      .child("images/" + uuidv1())
+      .put(blob);
+
+    uploadTask.on(
+      firebase.storage.TaskEvent.STATE_CHANGED,
+      snapshot => {
+        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        console.log("Upload is " + progress + "% done");
+        switch (snapshot.state) {
+          case firebase.storage.TaskState.PAUSED:
+            console.log("Upload is paused");
+            break;
+          case firebase.storage.TaskState.RUNNING:
+            console.log("Upload is running");
+            break;
+        }
+      },
+      error => {
+        switch (error.code) {
+          case "storage/unauthorized":
+            break;
+
+          case "storage/canceled":
+            break;
+
+          case "storage/unknown":
+            break;
+        }
+      },
+      () => {
+        uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
+          console.log("File available at", downloadURL);
+          setImage(downloadURL);
+        });
+      }
+    );
+  };
   _pickImage = async () => {
     let result = await ImagePicker.launchImageLibraryAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 4]
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      uploadImage(result.uri);
     }
   };
 
@@ -52,11 +97,11 @@ const PersonalScreen = props => {
     let result = await ImagePicker.launchCameraAsync({
       mediaTypes: ImagePicker.MediaTypeOptions.All,
       allowsEditing: true,
-      aspect: [4, 3]
+      aspect: [4, 4]
     });
 
     if (!result.cancelled) {
-      setImage(result.uri);
+      uploadImage(result.uri);
     }
   };
 
@@ -74,6 +119,7 @@ const PersonalScreen = props => {
           setEmail(myProfile.email);
           setSex(myProfile.sex);
           setBirth(myProfile.birth);
+          setImage(myProfile.image);
         });
       })
       .catch(err => console.log(err));
@@ -84,7 +130,13 @@ const PersonalScreen = props => {
   }, []);
 
   savePerson = async () => {
-    let newProfile = { ...profile, name: name, sex: sex, birth: birth };
+    let newProfile = {
+      ...profile,
+      name: name,
+      sex: sex,
+      birth: birth,
+      image: image
+    };
     await firebase
       .firestore()
       .collection("users")
@@ -120,20 +172,23 @@ const PersonalScreen = props => {
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>
         <Block style={styles.inputs}>
-          <Block row space="between" style={{ marginVertical: 20 }}>
-            <Block>
-              <Button onPress={_pickImage}>
-                <Image
-                  source={
-                    image
-                      ? { uri: image }
-                      : require("../../assets/images/avatar.png")
-                  }
-                  style={styles.avatar}
-                />
+          <Block row style={{ marginVertical: 20 }}>
+            <Block flex={false}>
+              <Image
+                source={
+                  image
+                    ? { uri: image }
+                    : require("../../assets/images/avatar.png")
+                }
+                style={styles.avatar}
+              />
+            </Block>
+            <Block row style={{ position: "absolute", bottom: -10, left: 120 }}>
+              <Button onPress={_pickImage} style={{ marginRight: 20 }}>
+                <Ionicons size={40} name="md-photos" />
               </Button>
               <Button onPress={_cameraImage}>
-                <Text>Camera</Text>
+                <Ionicons size={40} name="ios-camera" />
               </Button>
             </Block>
           </Block>
@@ -208,7 +263,8 @@ const styles = StyleSheet.create({
   },
   avatar: {
     width: theme.sizes.base * 6,
-    height: theme.sizes.base * 6
+    height: theme.sizes.base * 6,
+    borderRadius: theme.sizes.base * 3
   },
   inputs: {
     marginTop: theme.sizes.base * 0.5,
