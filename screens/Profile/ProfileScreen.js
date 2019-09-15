@@ -64,7 +64,7 @@ const ProfileScreen = props => {
       .auth()
       .signOut()
       .then(function() {
-        AsyncStorage.removeItem("email");
+        AsyncStorage.removeItem("profile");
         navigation.navigate("Auth");
       })
       .catch(function(err) {
@@ -77,7 +77,9 @@ const ProfileScreen = props => {
       return (
         <TouchableOpacity
           key={idx}
-          onPress={() => navigation.navigate(e.navigation)}
+          onPress={() =>
+            navigation.navigate(e.navigation, { profile: profile })
+          }
         >
           <Block row space="between" style={styles.inputRow}>
             <Text h3>{e.title}</Text>

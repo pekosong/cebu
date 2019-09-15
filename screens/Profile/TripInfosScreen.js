@@ -11,6 +11,7 @@ import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import moment from "moment";
 
 const TripInfosScreen = props => {
   const { navigation } = props;
@@ -21,6 +22,24 @@ const TripInfosScreen = props => {
 
   const [profile, setProfile] = useState({});
 
+  const PLANS = {
+    "2019-10-01": { startDay: true, endDay: false, hotel: "크림슨 리조트" },
+    "2019-10-02": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
+    "2019-10-03": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
+    "2019-10-04": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
+    "2019-10-05": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
+    "2019-10-06": { startDay: false, endDay: true, hotel: "크림슨 리조트" }
+  };
+
+  const NUMTOWEEK = {
+    0: "일",
+    1: "월",
+    2: "화",
+    3: "수",
+    4: "목",
+    5: "금",
+    6: "토"
+  };
   _retrieveData = async () => {
     try {
       const value = await AsyncStorage.getItem("profile");
@@ -81,84 +100,25 @@ const TripInfosScreen = props => {
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>
         <Block style={styles.inputs}>
-          <Block
-            flex={1}
-            middle
-            center
-            style={{
-              backgroundColor: theme.colors.primary,
-              borderRadius: 10,
-              height: 60
-            }}
-          >
-            <Text white h3 bold>
+          <Block space="between" row style={styles.plan}>
+            <Text h3 bold>
               일정
             </Text>
-          </Block>
-          <Block flex={4}>
-            <Block row middle center>
-              <Text h4 bold>
-                2019-10-01 {" ~ "}
-              </Text>
-              <Text h4 bold>
-                2019-10-07
-              </Text>
-            </Block>
-            <Block middle center>
-              <Text h4 bold>
-                세부 ㅌㅌ 호텔
-              </Text>
-            </Block>
-          </Block>
-          <Block flex={0.5} middle center>
-            <TouchableOpacity>
-              <Ionicons
-                size={35}
-                color={theme.colors.black}
-                name="ios-arrow-forward"
-              />
-            </TouchableOpacity>
-          </Block>
-        </Block>
-        <Block style={styles.inputs}>
-          <Block
-            flex={1}
-            middle
-            center
-            style={{
-              backgroundColor: theme.colors.gray,
-              borderRadius: 10,
-              height: 60
-            }}
-          >
-            <Text white h3 bold>
-              일정
+            <Text h3 bold>
+              호텔
             </Text>
           </Block>
-          <Block flex={4}>
-            <Block row middle center>
-              <Text h4 bold>
-                2018-10-01 {" ~ "}
-              </Text>
-              <Text h4 bold>
-                2018-10-07
-              </Text>
-            </Block>
-            <Block middle center>
-              <Text h4 bold>
-                세부 ㅌㅌ 호텔
-              </Text>
-            </Block>
-          </Block>
-          <Block flex={0.5} middle center>
-            <TouchableOpacity>
-              <Ionicons
-                size={35}
-                color={theme.colors.black}
-                name="ios-arrow-forward"
-              />
-            </TouchableOpacity>
-          </Block>
+          {Object.keys(PLANS).map((key, idx) => {
+            return (
+              <Block space="between" row key={idx} style={styles.plan}>
+                <Text h4>
+                  {key}
+                  {" (" + NUMTOWEEK[moment(key).day()] + ")"}
+                </Text>
+                <Text h4>{PLANS[key].hotel}</Text>
+              </Block>
+            );
+          })}
         </Block>
       </ScrollView>
       <Block
@@ -189,10 +149,14 @@ const styles = StyleSheet.create({
     height: theme.sizes.base * 6
   },
   inputs: {
-    flexDirection: "row",
     marginTop: theme.sizes.base * 0.5,
     paddingHorizontal: theme.sizes.padding,
     marginVertical: 10
+  },
+  plan: {
+    paddingVertical: 15,
+    borderBottomWidth: 0.5,
+    borderBottomColor: theme.colors.gray
   }
 });
 

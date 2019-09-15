@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, { useState, useEffect, useRef } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -6,7 +6,8 @@ import {
   ScrollView,
   TouchableOpacity,
   TextInput,
-  Modal
+  Modal,
+  Keyboard
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
 
@@ -14,19 +15,14 @@ import { Button, Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
 import axios from "axios";
 import { Ionicons } from "@expo/vector-icons";
+import { FlatList } from "react-native-gesture-handler";
 const { width } = Dimensions.get("window");
-
-const cateCat = {
-  ALL: "전체",
-  EAT: "먹거리",
-  ACTIVITY: "놀거리",
-  AESTHETIC: "힐링"
-};
 
 const recommendList = [
   {
     shop: "오션스파",
     src: require("../../assets/images/cebu_massage1.jpg"),
+    tag: "편안함, 피로싹",
     desc: "전신 아로마 마사지",
     afterPrice: "30,000",
     beforePrice: "20,000"
@@ -34,6 +30,7 @@ const recommendList = [
   {
     shop: "프라나스파",
     src: require("../../assets/images/cebu_massage2.jpeg"),
+    tag: "편안함, 피로싹",
 
     desc: "전신 아로마 마사지",
     afterPrice: "30,000",
@@ -42,6 +39,7 @@ const recommendList = [
   {
     shop: "메디핑거",
     src: require("../../assets/images/cebu_massage3.jpg"),
+    tag: "편안함, 피로싹",
 
     desc: "전신 아로마 마사지",
     afterPrice: "30,000",
@@ -50,6 +48,7 @@ const recommendList = [
   {
     shop: "에코스파",
     src: require("../../assets/images/cebu_massage4.jpg"),
+    tag: "편안함, 피로싹",
     desc: "전신 아로마 마사지",
     afterPrice: "30,000",
     beforePrice: "20,000"
@@ -60,18 +59,21 @@ const eventList = [
   {
     shop: "란타 코르도바",
     src: require("../../assets/images/cebu_food1.jpg"),
+    tag: "전통",
     desc: "태국 전통 음식",
     event: "1+1 행사 중"
   },
   {
     shop: "아인 레스토랑",
     src: require("../../assets/images/cebu_food2.jpeg"),
+    tag: "전통",
     desc: "태국 전통 음식",
     event: "1+1 행사 중"
   },
   {
     shop: "점보 7",
     src: require("../../assets/images/cebu_food3.jpeg"),
+    tag: "전통",
 
     desc: "태국 전통 음식",
     event: "1+1 행사 중"
@@ -79,16 +81,18 @@ const eventList = [
   {
     shop: "부페 레스토랑",
     src: require("../../assets/images/cebu_food4.jpg"),
+    tag: "전통",
     desc: "태국 전통 음식",
     event: "1+1 행사 중"
   }
 ];
 
 const SearchScreen = props => {
-  const { navigation, profiles, categories } = props;
+  const { navigation, categories } = props;
   const [showSearch, setShowSearch] = useState(false);
   const [cates, setCates] = useState([]);
-  const [slide, setSlide] = useState(0);
+  const [searchResult, setSearchResult] = useState([]);
+  const searchRef = useRef(null);
 
   useEffect(() => {
     setCates(categories);
@@ -105,24 +109,7 @@ const SearchScreen = props => {
           })
         }
       >
-        <Block
-          flex={false}
-          style={{
-            borderRadius: 3,
-            width: 120,
-            height: 120,
-            marginRight: 20,
-            backgroundColor: "white",
-            shadowColor: "#000",
-            shadowOffset: {
-              width: 2,
-              height: 2
-            },
-            shadowOpacity: 0.25,
-            shadowRadius: 3.84,
-            elevation: 5
-          }}
-        >
+        <Block style={styles.categoryContainer}>
           <Image
             style={{
               borderRadius: 3,
@@ -146,33 +133,50 @@ const SearchScreen = props => {
       <TouchableOpacity key={idx} onPress={() => {}}>
         <Block style={styles.elementContainer}>
           <Block flex={2}>
-            <Image
-              style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "cover"
-              }}
-              source={item.src}
-            ></Image>
+            <Image style={styles.imageStyle} source={item.src}></Image>
             <Ionicons
               style={{ position: "absolute", top: 5, right: 10 }}
               size={25}
               color={theme.colors.primary}
               name="md-heart"
             />
+            <Block
+              style={{
+                position: "absolute",
+                right: 5,
+                bottom: 5,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
+                backgroundColor: "rgba(0,0,0,0.7)",
+                borderRadius: 10
+              }}
+            >
+              <Text white>오늘</Text>
+            </Block>
           </Block>
           <Block row flex={1}>
-            <Block middle>
-              <Text caption>{item.desc}</Text>
+            <Block flex={3} middle>
+              <Text style={{ fontWeight: "bold", color: theme.colors.primary }}>
+                {item.tag}
+              </Text>
               <Text h3 bold style={{ marginVertical: 5 }}>
                 {item.shop}
               </Text>
               <Text caption>{item.desc}</Text>
             </Block>
-            <Block center middle>
-              <Text>{item.beforePrice}</Text>
-              <Text h4 bold primary style={{ marginTop: 5 }}>
-                특가 {item.afterPrice}
+            <Block flex={2} middle>
+              <Text
+                gray
+                caption
+                style={{
+                  textDecorationLine: "line-through",
+                  textDecorationStyle: "solid"
+                }}
+              >
+                {item.beforePrice}원
+              </Text>
+              <Text h4 bold style={{ marginTop: 5 }}>
+                {item.afterPrice}원
               </Text>
             </Block>
           </Block>
@@ -184,103 +188,50 @@ const SearchScreen = props => {
     return (
       <TouchableOpacity key={idx} onPress={() => {}}>
         <Block style={styles.elementContainer}>
-          <Block flex={3}>
-            <Image
-              style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "cover"
-              }}
-              source={item.src}
-            ></Image>
+          <Block flex={2}>
+            <Image style={styles.imageStyle} source={item.src}></Image>
             <Ionicons
               style={{ position: "absolute", top: 5, right: 10 }}
               size={25}
               color={theme.colors.primary}
               name="md-heart"
             />
-          </Block>
-          <Block row flex={1.5}>
-            <Block middle>
-              <Text caption>{item.desc}</Text>
-              <Text h3 bold style={{ marginVertical: 5 }}>
-                {item.shop}
-              </Text>
-              <Text caption>{item.desc}</Text>
-            </Block>
-            <Block center middle>
-              <Text h4 bold primary style={{ marginTop: 5 }}>
-                {item.event}
-              </Text>
-            </Block>
-          </Block>
-        </Block>
-      </TouchableOpacity>
-    );
-  };
-  renderTest = ({ item, idx }) => {
-    return (
-      <TouchableOpacity key={idx} onPress={() => {}}>
-        <Block style={{ ...styles.elementContainer, flex: false }}>
-          <Block flex={3}>
-            <Image
+            <Block
               style={{
-                width: "100%",
-                height: "100%",
-                resizeMode: "cover"
+                position: "absolute",
+                right: 5,
+                bottom: 5,
+                paddingVertical: 5,
+                paddingHorizontal: 10,
+                backgroundColor: "rgba(0,0,0,0.7)",
+                borderRadius: 10
               }}
-              source={item.src}
-            ></Image>
-            <Ionicons
-              style={{ position: "absolute", top: 5, right: 10 }}
-              size={25}
-              color={theme.colors.primary}
-              name="md-heart"
-            />
+            >
+              <Text white>오늘</Text>
+            </Block>
           </Block>
-          <Block row flex={1.5}>
-            <Block middle>
-              <Text caption>{item.desc}</Text>
+          <Block row flex={1}>
+            <Block flex={3} middle>
+              <Text style={{ fontWeight: "bold", color: theme.colors.primary }}>
+                {item.tag}
+              </Text>
               <Text h3 bold style={{ marginVertical: 5 }}>
                 {item.shop}
               </Text>
               <Text caption>{item.desc}</Text>
             </Block>
-            <Block center middle>
-              <Text h4 bold primary style={{ marginTop: 5 }}>
+            <Block flex={2} middle>
+              <Text h4 bold style={{ marginTop: 5 }}>
                 {item.event}
               </Text>
             </Block>
           </Block>
         </Block>
       </TouchableOpacity>
-    );
-  };
-  pagination = () => {
-    return (
-      <Pagination
-        dotsLength={eventList.length}
-        activeDotIndex={slide}
-        containerStyle={{ backgroundColor: "rgba(0, 0, 0, 0.2)" }}
-        dotStyle={{
-          width: 5,
-          height: 5,
-          borderRadius: 2.5,
-          marginHorizontal: 2,
-          backgroundColor: "rgba(0, 0, 255, 0.92)"
-        }}
-        inactiveDotStyle={
-          {
-            // Define styles for inactive dots here
-          }
-        }
-        inactiveDotOpacity={0.4}
-        inactiveDotScale={0.6}
-      />
     );
   };
 
-  const renderSearch = () => {
+  renderSearch = () => {
     return (
       <Modal
         animationType="slide"
@@ -288,9 +239,17 @@ const SearchScreen = props => {
         onRequestClose={() => setShowSearch(false)}
       >
         <Block
-          padding={[theme.sizes.padding * 3, theme.sizes.padding]}
+          padding={[theme.sizes.padding, theme.sizes.padding]}
           space="between"
         >
+          <TouchableOpacity
+            onPress={() => {
+              setSearchResult([]);
+              setShowSearch(false);
+            }}
+          >
+            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+          </TouchableOpacity>
           <Text h1 bold>
             세부의 모든게 있어요
           </Text>
@@ -299,26 +258,71 @@ const SearchScreen = props => {
               autoFocus={true}
               style={{ fontSize: 20, width: "100%" }}
               placeholder="여기는 어떠세요?"
-              onFocus={() => setShowSearch(true)}
+              onFocus={() => {
+                setShowSearch(true);
+              }}
+              onSubmitEditing={() => {
+                handleSearch();
+              }}
             ></TextInput>
           </Block>
-          <ScrollView
-            style={{ marginVertical: theme.sizes.padding }}
-          ></ScrollView>
-          <Block bottom>
-            <Button gradient onPress={() => setShowSearch(false)}>
-              <Text center white>
-                I understand
-              </Text>
-            </Button>
-          </Block>
+          <FlatList
+            data={searchResult}
+            keyExtractor={item => item.name}
+            renderItem={item => renderSearchResult(item)}
+          ></FlatList>
         </Block>
       </Modal>
     );
   };
-
+  renderSearchResult = ({ item }) => {
+    return (
+      <TouchableOpacity
+        key={item.name}
+        onPress={() =>
+          navigation.navigate("Shop", {
+            title: cateMap[navigation.getParam("category")],
+            shop: list
+          })
+        }
+      >
+        <Block row middle shadow style={{ paddingVertical: 10 }}>
+          <Block flex={false}>
+            <Image
+              style={{ width: 20, height: 20, resizeMode: "cover" }}
+              source={{ uri: item.icon }}
+            />
+          </Block>
+          <Block middle style={{ paddingLeft: 10 }}>
+            <Text h4 bold height={25}>
+              {item.name}
+            </Text>
+            <Text caption h4>
+              {item.types.join(", ")}
+            </Text>
+            <Text caption h4>
+              {item.vicinity}
+            </Text>
+          </Block>
+        </Block>
+      </TouchableOpacity>
+    );
+  };
+  handleSearch = () => {
+    location = "10.31672,123.89071";
+    key = "AIzaSyCo1nymGnZzH-3XzzmPV_UiNqfT4JbEWZQ";
+    rankby = "distance";
+    type = "food";
+    axios
+      .get(
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&rankby=${rankby}&type=${type}&key=${key}`
+      )
+      .then(Response => {
+        setSearchResult(Response.data.results);
+      });
+  };
   return (
-    <Block style={{ paddingBottom: 10 }}>
+    <Block>
       <Block flex={false} row center space="between" style={styles.header}>
         <Block row style={styles.search}>
           <Ionicons
@@ -328,15 +332,21 @@ const SearchScreen = props => {
             style={{ width: "10%" }}
           />
           <TextInput
+            ref={searchRef}
+            refField={searchRef}
             style={{ width: "90%" }}
             placeholder="여기는 어떠세요?"
-            onFocus={() => setShowSearch(true)}
+            onFocus={() => {
+              Keyboard.dismiss();
+              searchRef.current.blur();
+              setShowSearch(true);
+            }}
           ></TextInput>
         </Block>
       </Block>
       <ScrollView vertival={true}>
         <Block style={styles.title}>
-          <Text h2 bold>
+          <Text h1 bold>
             평생 잊지 못할 세부를 원하세요?
           </Text>
         </Block>
@@ -351,8 +361,11 @@ const SearchScreen = props => {
         </Block>
 
         <Block style={styles.title}>
-          <Text h2 bold>
+          <Text h1 bold>
             지금 할인 하고 있어요
+          </Text>
+          <Text h4 style={{ marginTop: 10 }}>
+            Hello, Cebu 만을 위한 특별 할인 행사를 하고 있어요
           </Text>
         </Block>
         <Block style={styles.content}>
@@ -360,18 +373,20 @@ const SearchScreen = props => {
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             scrollEnabled={true}
-            pagingEnabled
           >
             {recommendList.map((item, idx) => renderRecommendation(item, idx))}
           </ScrollView>
         </Block>
         <Block style={styles.title}>
-          <Text h2 bold>
+          <Text h1 bold>
             지금 이벤트 중이에요
+          </Text>
+          <Text h4 style={{ marginTop: 10 }}>
+            Hello, Cebu 만을 위한 특별 이벤트를 하고 있어요
           </Text>
         </Block>
 
-        <Block style={styles.content}>
+        <Block style={{ ...styles.content, marginBottom: 40 }}>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
@@ -379,23 +394,6 @@ const SearchScreen = props => {
           >
             {eventList.map((item, idx) => renderEvent(item, idx))}
           </ScrollView>
-        </Block>
-        <Block style={styles.title}>
-          <Text h2 bold>
-            여기도 이벤트 중~!
-          </Text>
-        </Block>
-
-        <Block style={styles.content}>
-          <Carousel
-            layout={"default"}
-            data={eventList}
-            renderItem={renderTest}
-            sliderWidth={width - theme.sizes.base * 3}
-            onSnapToItem={index => setSlide(index)}
-            itemWidth={250}
-            firstItem={1}
-          />
         </Block>
       </ScrollView>
       {renderSearch()}
@@ -422,19 +420,17 @@ const styles = StyleSheet.create({
     backgroundColor: theme.colors.white,
     shadowColor: "#000",
     shadowOffset: {
-      width: 1,
-      height: 1
+      width: 2,
+      height: 2
     },
-    shadowOpacity: 0.2
-  },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
   },
   title: {
     marginHorizontal: theme.sizes.padding,
-    marginVertical: 20,
-    marginLeft: theme.sizes.padding
+    marginTop: 40,
+    marginBottom: 20
   },
   content: {
     marginLeft: theme.sizes.padding,
@@ -446,6 +442,27 @@ const styles = StyleSheet.create({
     width: 250,
     height: 250,
     marginRight: 20
+  },
+  categoryContainer: {
+    flex: 0,
+    borderRadius: 3,
+    width: 120,
+    height: 120,
+    marginRight: 20,
+    backgroundColor: "white",
+    shadowColor: "#000",
+    shadowOffset: {
+      width: 2,
+      height: 2
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5
+  },
+  imageStyle: {
+    width: "100%",
+    height: "100%",
+    resizeMode: "cover"
   }
 });
 

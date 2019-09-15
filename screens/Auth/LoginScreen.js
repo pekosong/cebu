@@ -51,8 +51,7 @@ const LoginScreen = props => {
       .then(() => {
         setIsError(false);
         setLoading(false);
-        _storeData();
-        navigation.navigate("Search");
+        _storeData().then(navigation.navigate("Search"));
       })
       .catch(err => {
         console.log(err);

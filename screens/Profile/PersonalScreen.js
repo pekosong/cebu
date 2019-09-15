@@ -4,6 +4,7 @@ import {
   ScrollView,
   TextInput,
   AsyncStorage,
+  Platform,
   Image
 } from "react-native";
 import { Button, Block, Text } from "../../components";
@@ -12,56 +13,89 @@ import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 
+import * as ImagePicker from "expo-image-picker";
+import Constants from "expo-constants";
+import * as Permissions from "expo-permissions";
+
 const PersonalScreen = props => {
   const { navigation } = props;
-  const [editing, setEditing] = useState(null);
   const [name, setName] = useState("");
   const [sex, setSex] = useState("");
   const [birth, setBirth] = useState("");
-
+  const [saved, setSaved] = useState(false);
+  const [email, setEmail] = useState("");
   const [profile, setProfile] = useState({});
+  const [image, setImage] = useState(null);
+
+  getPermissionAsync = async () => {
+    if (Constants.platform.ios) {
+      const { status } = await Permissions.askAsync(Permissions.CAMERA_ROLL);
+      if (status !== "granted") {
+        alert("Sorry, we need camera roll permissions to make this work!");
+      }
+    }
+  };
+
+  _pickImage = async () => {
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
+
+  _cameraImage = async () => {
+    let result = await ImagePicker.launchCameraAsync({
+      mediaTypes: ImagePicker.MediaTypeOptions.All,
+      allowsEditing: true,
+      aspect: [4, 3]
+    });
+
+    if (!result.cancelled) {
+      setImage(result.uri);
+    }
+  };
 
   _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        setProfile(JSON.parse(value));
-      }
-    } catch (err) {
-      console.log(err);
-    }
+    await firebase
+      .firestore()
+      .collection("users")
+      .where("email", "==", "peko22@naver.com")
+      .get()
+      .then(querySnapshot => {
+        querySnapshot.docs.map(doc => {
+          let myProfile = doc.data();
+          setProfile(myProfile);
+          setName(myProfile.name);
+          setEmail(myProfile.email);
+          setSex(myProfile.sex);
+          setBirth(myProfile.birth);
+        });
+      })
+      .catch(err => console.log(err));
   };
 
   useEffect(() => {
     _retrieveData();
   }, []);
 
-  handleEdit = (name, text) => {
-    profile[name] = text;
-    setProfile(profile);
-  };
-  renderEdit = () => {
-    <TextInput
-      defaultValue={name}
-      placeholder="song"
-      onChangeText={() => setName(name)}
-      style={{ fontSize: 20 }}
-    />;
-  };
-
-  toggleEdit = name => {
-    setEditing(!editing ? name : null);
-  };
-
-  handleLogout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function() {
-        AsyncStorage.removeItem("email");
-        navigation.navigate("Auth");
+  savePerson = async () => {
+    let newProfile = { ...profile, name: name, sex: sex, birth: birth };
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(email)
+      .update(newProfile)
+      .then(() => {
+        console.log("save");
+        setProfile(newProfile);
+        setSaved(true);
       })
-      .catch(function(err) {
+      .catch(err => {
         console.log(err);
       });
   };
@@ -78,9 +112,9 @@ const PersonalScreen = props => {
             />
           </Block>
         </Button>
-        <TouchableOpacity>
+        <TouchableOpacity onPress={() => savePerson()}>
           <Text bold h2>
-            저장
+            {saved ? "완료" : "저장"}
           </Text>
         </TouchableOpacity>
       </Block>
@@ -88,11 +122,18 @@ const PersonalScreen = props => {
         <Block style={styles.inputs}>
           <Block row space="between" style={{ marginVertical: 20 }}>
             <Block>
-              <Button>
+              <Button onPress={_pickImage}>
                 <Image
-                  source={require("../../assets/images/avatar.png")}
+                  source={
+                    image
+                      ? { uri: image }
+                      : require("../../assets/images/avatar.png")
+                  }
                   style={styles.avatar}
                 />
+              </Button>
+              <Button onPress={_cameraImage}>
+                <Text>Camera</Text>
               </Button>
             </Block>
           </Block>
@@ -107,7 +148,7 @@ const PersonalScreen = props => {
                 이메일
               </Text>
               <Text bold style={{ fontSize: 20 }}>
-                {profile.email}
+                {email}
               </Text>
             </Block>
           </Block>
@@ -119,7 +160,7 @@ const PersonalScreen = props => {
               <TextInput
                 defaultValue={name}
                 placeholder="홍길동"
-                onChangeText={() => setName(name)}
+                onChangeText={e => setName(e)}
                 style={{ fontSize: 20 }}
               />
             </Block>
@@ -132,7 +173,7 @@ const PersonalScreen = props => {
               <TextInput
                 defaultValue={sex}
                 placeholder="남/여"
-                onChangeText={() => setSex(sex)}
+                onChangeText={e => setSex(e)}
                 style={{ fontSize: 20 }}
               />
             </Block>
@@ -145,7 +186,7 @@ const PersonalScreen = props => {
               <TextInput
                 defaultValue={birth}
                 placeholder="2001-01-01"
-                onChangeText={() => setBirth(birth)}
+                onChangeText={e => setBirth(e)}
                 style={{ fontSize: 20 }}
               />
             </Block>

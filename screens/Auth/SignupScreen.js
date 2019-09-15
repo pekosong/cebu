@@ -38,13 +38,33 @@ const SignupScreen = props => {
       .then(() => {
         setError("");
         setIsError(false);
-        setLoading(false);
-        navigation.navigate("Login");
+        makeUser(email);
       })
       .catch(err => {
         console.log(err);
         setError(err.message);
         setIsError(true);
+        setLoading(false);
+      });
+  };
+
+  makeUser = async email => {
+    const newCus = {
+      email: email,
+      createAt: new Date()
+    };
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(email)
+      .set(newCus)
+      .then(() => {
+        console.log("Document successfully written!");
+        setLoading(false);
+        navigation.navigate("Login");
+      })
+      .catch(err => {
+        console.log(err);
         setLoading(false);
       });
   };

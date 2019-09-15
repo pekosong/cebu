@@ -137,12 +137,15 @@ const TripInfoScreen = props => {
           option["selected"] = true;
         }
         option["color"] = theme.colors.primary;
-        (option["textColor"] = theme.colors.white), (newDate[e] = option);
+        option["textColor"] = theme.colors.white;
+
+        newDate[e] = option;
       });
       setStartDate(myDates[0].dateString);
       setEndDate(myDates[1].dateString);
       setDate(newDate);
       setDates([]);
+      console.log(newDate);
     }
   };
 
