@@ -8,6 +8,9 @@ import { Ionicons } from "@expo/vector-icons";
 
 import { Block } from "./components";
 
+import { Provider } from "react-redux";
+import { store } from "./redux/app-redux";
+
 YellowBox.ignoreWarnings(["Warning: ..."]);
 console.ignoredYellowBox = ["Setting a timer"];
 
@@ -24,10 +27,12 @@ export default function App(props) {
     );
   } else {
     return (
-      <Block style={styles.container}>
-        {Platform.OS === "ios" && <StatusBar barStyle="default" />}
-        <AppNavigator />
-      </Block>
+      <Provider store={store}>
+        <Block style={styles.container}>
+          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </Block>
+      </Provider>
     );
   }
 }

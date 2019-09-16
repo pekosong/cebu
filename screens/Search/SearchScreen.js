@@ -10,6 +10,7 @@ import {
   Keyboard
 } from "react-native";
 import Carousel, { Pagination } from "react-native-snap-carousel";
+import { useSelector, useDispatch } from "react-redux";
 
 import { Button, Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
@@ -93,6 +94,8 @@ const SearchScreen = props => {
   const [cates, setCates] = useState([]);
   const [searchResult, setSearchResult] = useState([]);
   const searchRef = useRef(null);
+  const counter = useSelector(state => state.personData, []);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setCates(categories);
@@ -343,6 +346,47 @@ const SearchScreen = props => {
             }}
           ></TextInput>
         </Block>
+      </Block>
+      <Block row style={{ margin: 30 }}>
+        <Button
+          onPress={() => {
+            dispatch({ type: "INCREMENT" });
+          }}
+          style={{
+            marginRight: 50,
+            height: 50,
+            width: 50,
+            backgroundColor: "red",
+            color: "white"
+          }}
+        >
+          <Text h3>+</Text>
+        </Button>
+        <Block
+          flex={false}
+          style={{
+            marginRight: 50,
+            height: 50,
+            width: 50,
+            backgroundColor: "red",
+            color: "white"
+          }}
+        >
+          <Text h1>{counter}임</Text>
+        </Block>
+        <Button
+          onPress={() => {
+            dispatch({ type: "DECREMENT" });
+          }}
+          style={{
+            height: 50,
+            width: 50,
+            backgroundColor: "blue",
+            color: "white"
+          }}
+        >
+          <Text h3>-</Text>
+        </Button>
       </Block>
       <ScrollView vertival={true}>
         <Block style={styles.title}>
