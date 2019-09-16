@@ -5,6 +5,7 @@ import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const profileList = [
   { title: "개인 정보", navigation: "Personal", icon: "md-person" },
@@ -43,6 +44,8 @@ const helpList = [
 const ProfileScreen = props => {
   const { navigation } = props;
   const [profile, setProfile] = useState({});
+
+  const user = useSelector(state => state.user, []);
 
   _retrieveData = async () => {
     try {

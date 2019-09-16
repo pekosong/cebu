@@ -14,6 +14,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Button, Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
 import firebase from "../../constants/store";
+import { useSelector, shallowEqual } from "react-redux";
 
 import "moment/locale/ko";
 
@@ -22,50 +23,48 @@ export default function ChatScreen(props) {
   const [title, setTitle] = useState("");
   const [engName, setEngName] = useState("");
   const [messages, setMessages] = useState([]);
-  const [email, setEmail] = useState("");
   const [isLoaded, setisLoaded] = useState(false);
 
+  const user = useSelector(state => state.user, shallowEqual);
+
   useEffect(() => {
-    const name = navigation.getParam("title");
     const engName = navigation.getParam("engName");
 
     let unsubscribe;
 
-    setTitle(name);
-    setEngName(engName);
+    setTitle(navigation.getParam("title"));
+    setEngName(navigation.getParam("engName"));
 
-    _retrieveData().then(email => {
-      unsubscribe = firebase
-        .firestore()
-        .collection("users")
-        .doc(email)
-        .collection("messages")
-        .doc(engName)
-        .onSnapshot(doc => {
-          try {
-            let msgs = doc.data().message;
-            let newMsgs = [];
-            if (msgs) {
-              newMsgs = msgs.map(e => {
-                e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
-                return e;
-              });
-            }
-            setMessages(newMsgs);
-            setTimeout(() => {
-              setisLoaded(true);
-            }, 100);
-          } catch (err) {
-            firebase
-              .firestore()
-              .collection("users")
-              .doc(email)
-              .collection("messages")
-              .doc(engName)
-              .set({ email: email, shop: engName, message: [] });
+    unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .collection("messages")
+      .doc(engName)
+      .onSnapshot(doc => {
+        try {
+          let msgs = doc.data().message;
+          let newMsgs = [];
+          if (msgs) {
+            newMsgs = msgs.map(e => {
+              e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
+              return e;
+            });
           }
-        });
-    });
+          setMessages(newMsgs);
+          setTimeout(() => {
+            setisLoaded(true);
+          }, 100);
+        } catch (err) {
+          firebase
+            .firestore()
+            .collection("users")
+            .doc(user.email)
+            .collection("messages")
+            .doc(engName)
+            .set({ email: user.email, shop: engName, message: [] });
+        }
+      });
 
     return () => {
       _deleteMessage();
@@ -78,7 +77,7 @@ export default function ChatScreen(props) {
       firebase
         .firestore()
         .collection("users")
-        .doc(email)
+        .doc(user.email)
         .collection("messages")
         .doc(engName)
         .delete()
@@ -86,24 +85,12 @@ export default function ChatScreen(props) {
         .catch(err => console.log(err));
     }
   };
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        const profile = JSON.parse(value);
-        setEmail(profile.email);
-        return profile.email;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   onSend = async msg => {
     await firebase
       .firestore()
       .collection("users")
-      .doc(email)
+      .doc(user.email)
       .collection("messages")
       .doc(engName)
       .update({ message: GiftedChat.append(messages, msg) })
@@ -124,7 +111,7 @@ export default function ChatScreen(props) {
           messages={messages}
           onSend={msg => onSend(msg)}
           user={{
-            _id: email
+            _id: user.email
           }}
           locale="ko"
           placeholder="Message"

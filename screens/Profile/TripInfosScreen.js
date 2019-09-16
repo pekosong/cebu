@@ -1,26 +1,14 @@
 import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  ScrollView,
-  TextInput,
-  AsyncStorage,
-  Image
-} from "react-native";
+import { StyleSheet, ScrollView, TextInput } from "react-native";
 import { Button, Block, Text } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
 import moment from "moment";
 
 const TripInfosScreen = props => {
   const { navigation } = props;
   const [editing, setEditing] = useState(null);
-  const [name, setName] = useState("");
-  const [sex, setSex] = useState("");
-  const [birth, setBirth] = useState("");
-
-  const [profile, setProfile] = useState({});
 
   const PLANS = {
     "2019-10-01": { startDay: true, endDay: false, hotel: "크림슨 리조트" },
@@ -40,20 +28,8 @@ const TripInfosScreen = props => {
     5: "금",
     6: "토"
   };
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        setProfile(JSON.parse(value));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
-  useEffect(() => {
-    _retrieveData();
-  }, []);
+  useEffect(() => {}, []);
 
   handleEdit = (name, text) => {
     profile[name] = text;
@@ -70,19 +46,6 @@ const TripInfosScreen = props => {
 
   toggleEdit = name => {
     setEditing(!editing ? name : null);
-  };
-
-  handleLogout = () => {
-    firebase
-      .auth()
-      .signOut()
-      .then(function() {
-        AsyncStorage.removeItem("email");
-        navigation.navigate("Auth");
-      })
-      .catch(function(err) {
-        console.log(err);
-      });
   };
 
   return (

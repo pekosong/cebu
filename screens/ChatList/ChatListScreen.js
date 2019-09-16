@@ -9,77 +9,64 @@ import {
   AsyncStorage
 } from "react-native";
 
-import { Button, Block, Text } from "../../components";
+import { Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
 import firebase from "../../constants/store";
 import moment from "moment";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const ChatListScreen = props => {
-  const { navigation, profiles } = props;
+  const { navigation } = props;
   const [chatList, setChatlist] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [email, setEmail] = useState("");
+  const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    _retrieveData().then(email => {
-      let unsubscribe = firebase
-        .firestore()
-        .collection("users")
-        .doc(email)
-        .collection("messages")
-        .onSnapshot(querySnapshot => {
-          let myList = [];
-          querySnapshot.forEach(doc => {
-            let chat = {};
-            data = doc.data();
+    let unsubscribe = firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .collection("messages")
+      .onSnapshot(querySnapshot => {
+        let myList = [];
+        querySnapshot.forEach(doc => {
+          let chat = {};
+          data = doc.data();
 
-            if (data.message.length > 0) {
-              song = data.message.reduce(function(p, v) {
-                if (p.createdAt) {
-                  return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-                } else {
-                  return v;
-                }
-              });
-              date = moment.unix(song.createdAt.seconds).format("YYYY-MM-DD");
-              time = moment.unix(song.createdAt.seconds).format("HH:mm:ss");
-              message = song.text;
-            } else {
-              message = "대화가 없습니다.";
-            }
+          if (data.message.length > 0) {
+            song = data.message.reduce(function(p, v) {
+              if (p.createdAt) {
+                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
+              } else {
+                return v;
+              }
+            });
+            date = moment.unix(song.createdAt.seconds).format("YYYY-MM-DD");
+            time = moment.unix(song.createdAt.seconds).format("HH:mm:ss");
+            message = song.text;
+          } else {
+            message = "대화가 없습니다.";
+          }
 
-            chat.name = data.shop;
-            chat.avatar = `https://i.pravatar.cc/300`;
-            chat.message = message;
-            chat.timeStamp = song.createdAt.seconds;
-            chat.date = date;
-            chat.time = time;
-            myList.push(chat);
-          });
-          myList = myList.sort(function(a, b) {
-            return b.timeStamp - a.timeStamp;
-          });
-          setIsLoaded(true);
-          setChatlist(myList);
+          chat.name = data.shop;
+          chat.avatar = `https://i.pravatar.cc/300`;
+          chat.message = message;
+          chat.timeStamp = song.createdAt.seconds;
+          chat.date = date;
+          chat.time = time;
+          myList.push(chat);
         });
-      return () => {
-        unsubscribe();
-      };
-    });
+        myList = myList.sort(function(a, b) {
+          return b.timeStamp - a.timeStamp;
+        });
+        setIsLoaded(true);
+        setChatlist(myList);
+      });
+    return () => {
+      unsubscribe();
+    };
   }, []);
-
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        const profile = JSON.parse(value);
-        setEmail(profile.email);
-        return profile.email;
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
 
   renderList = ({ item }) => {
     return (

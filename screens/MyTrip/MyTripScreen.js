@@ -6,42 +6,41 @@ import {
   TouchableOpacity,
   Platform,
   ActivityIndicator,
-  AsyncStorage,
   FlatList
 } from "react-native";
 
 import { Ionicons } from "@expo/vector-icons";
-import { Button, Block, Text } from "../../components";
+import { Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
 import firebase from "../../constants/store";
-
-import { Calendar, CalendarList, Agenda } from "react-native-calendars";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 function MyTripScreen(props) {
-  const { profiles, navigation, lists, myplans } = props;
+  const { navigation, lists, myplans } = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState("");
   const [plans, setPlans] = useState([]);
   const [selectedPlans, setSelectedPlans] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
+  const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let unsubscribePlans;
     setActive("전체");
 
-    _retrieveData().then(email => {
-      unsubscribePlans = firebase
-        .firestore()
-        .collection("users")
-        .doc(email)
-        .onSnapshot(doc => {
-          let myPlans = doc.data().plans;
-          setPlans(myPlans);
-          setSelectedPlans(myPlans);
-          setTabs(["전체"].concat(myPlans.map(e => e.nDay)));
-          setIsLoaded(true);
-        });
-    });
+    unsubscribePlans = firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .onSnapshot(doc => {
+        let myPlans = doc.data().plans;
+        setPlans(myPlans);
+        setSelectedPlans(myPlans);
+        setTabs(["전체"].concat(myPlans.map(e => e.nDay)));
+        setIsLoaded(true);
+      });
     return () => {
       unsubscribePlans();
     };
@@ -56,17 +55,6 @@ function MyTripScreen(props) {
         .get()
         .then(e => console.log(e));
     });
-  };
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        const profile = JSON.parse(value);
-        return profile.email;
-      }
-    } catch (err) {
-      console.log(err);
-    }
   };
 
   upload = async email => {

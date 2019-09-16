@@ -3,14 +3,15 @@ import {
   StyleSheet,
   ScrollView,
   TextInput,
-  AsyncStorage,
-  Image
+  Image,
+  ActivityIndicator
 } from "react-native";
 import { Button, Block, Text } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -27,6 +28,23 @@ const PersonalScreen = props => {
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState({});
   const [image, setImage] = useState("");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
+
+  _retrieveData = () => {
+    setProfile(user);
+    setName(user.name);
+    setEmail(user.email);
+    setSex(user.sex);
+    setBirth(user.birth);
+    setImage(user.image);
+  };
+
+  useEffect(() => {
+    _retrieveData();
+  }, []);
 
   getPermissionAsync = async () => {
     if (Constants.platform.ios) {
@@ -105,30 +123,6 @@ const PersonalScreen = props => {
     }
   };
 
-  _retrieveData = async () => {
-    await firebase
-      .firestore()
-      .collection("users")
-      .where("email", "==", "peko22@naver.com")
-      .get()
-      .then(querySnapshot => {
-        querySnapshot.docs.map(doc => {
-          let myProfile = doc.data();
-          setProfile(myProfile);
-          setName(myProfile.name);
-          setEmail(myProfile.email);
-          setSex(myProfile.sex);
-          setBirth(myProfile.birth);
-          setImage(myProfile.image);
-        });
-      })
-      .catch(err => console.log(err));
-  };
-
-  useEffect(() => {
-    _retrieveData();
-  }, []);
-
   savePerson = async () => {
     let newProfile = {
       ...profile,
@@ -143,7 +137,7 @@ const PersonalScreen = props => {
       .doc(email)
       .update(newProfile)
       .then(() => {
-        console.log("save");
+        dispatch({ type: "UPDATE", payload: newProfile });
         setProfile(newProfile);
         setSaved(true);
       })
@@ -178,8 +172,11 @@ const PersonalScreen = props => {
                 source={
                   image
                     ? { uri: image }
-                    : require("../../assets/images/avatar.png")
+                    : { uri: "https://placeholder.com/150" }
                 }
+                onLoadEnd={() => {
+                  setIsLoaded(true);
+                }}
                 style={styles.avatar}
               />
             </Block>

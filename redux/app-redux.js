@@ -6,7 +6,9 @@ import * as firebase from "firebase";
 // Initial State...
 //
 const initialState = {
-  personData: 1
+  test: 1,
+  user: {},
+  song: ""
 };
 
 //
@@ -15,9 +17,14 @@ const initialState = {
 const reducer = (state = initialState, action) => {
   switch (action.type) {
     case "INCREMENT":
-      return { ...state, personData: (state.personData += 1) };
+      return { ...state, test: (state.test += 1) };
     case "DECREMENT":
-      return { ...state, personData: (state.personData -= 1) };
+      return { ...state, test: (state.test -= 1) };
+    case "LOGIN":
+      return { ...state, user: action.payload };
+    case "UPDATE":
+      return { ...state, user: action.payload };
+
     default:
       return state;
   }
@@ -32,10 +39,11 @@ export { store };
 //
 // Action Creators
 //
-const setPersonData = personData => {
+const setTestData = testData => {
   return {
-    type: "setPersonData",
-    value: personData
+    type: "setTestData",
+    value: testData
   };
 };
-export { setPersonData };
+
+export { setTestData };

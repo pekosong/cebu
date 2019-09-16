@@ -10,6 +10,7 @@ import {
 import { Button, Block, Input, Text } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const EMAIL = "peko22@naver.com";
 const PASSWORD = "thdckdrms1";
@@ -20,31 +21,26 @@ const LoginScreen = props => {
   const [password, setPassword] = useState(PASSWORD);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
+  const dispatch = useDispatch();
 
   _storeData = async () => {
-    try {
-      await firebase
-        .firestore()
-        .collection("users")
-        .where("email", "==", email)
-        .get()
-        .then(querySnapshot => {
-          querySnapshot.docs.map(doc => {
-            AsyncStorage.setItem("profile", JSON.stringify(doc.data()));
-          });
-        })
-        .catch(err => console.log(err));
-    } catch (err) {
-      console.log(err);
-    }
+    return await firebase
+      .firestore()
+      .collection("users")
+      .doc(email)
+      .get()
+      .then(doc => {
+        dispatch({ type: "LOGIN", payload: doc.data() });
+      })
+      .catch(err => console.log(err));
   };
 
   hasErrors = () => (isError ? styles.hasErrors : null);
+
   handleLogin = async () => {
     setLoading(true);
 
     Keyboard.dismiss();
-
     await firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
