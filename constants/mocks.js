@@ -286,4 +286,73 @@ const profiles = {
   newsletter: false
 };
 
-export { categories, profiles, plans, lists };
+const recommendList = [
+  {
+    shop: "오션스파",
+    src: require("../assets/images/cebu_massage1.jpg"),
+    tag: "편안함, 피로싹",
+    desc: "전신 아로마 마사지",
+    afterPrice: "30,000",
+    beforePrice: "20,000"
+  },
+  {
+    shop: "프라나스파",
+    src: require("../assets/images/cebu_massage2.jpeg"),
+    tag: "편안함, 피로싹",
+
+    desc: "전신 아로마 마사지",
+    afterPrice: "30,000",
+    beforePrice: "20,000"
+  },
+  {
+    shop: "메디핑거",
+    src: require("../assets/images/cebu_massage3.jpg"),
+    tag: "편안함, 피로싹",
+
+    desc: "전신 아로마 마사지",
+    afterPrice: "30,000",
+    beforePrice: "20,000"
+  },
+  {
+    shop: "에코스파",
+    src: require("../assets/images/cebu_massage4.jpg"),
+    tag: "편안함, 피로싹",
+    desc: "전신 아로마 마사지",
+    afterPrice: "30,000",
+    beforePrice: "20,000"
+  }
+];
+
+const eventList = [
+  {
+    shop: "란타 코르도바",
+    src: require("../assets/images/cebu_food1.jpg"),
+    tag: "전통",
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중"
+  },
+  {
+    shop: "아인 레스토랑",
+    src: require("../assets/images/cebu_food2.jpeg"),
+    tag: "전통",
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중"
+  },
+  {
+    shop: "점보 7",
+    src: require("../assets/images/cebu_food3.jpeg"),
+    tag: "전통",
+
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중"
+  },
+  {
+    shop: "부페 레스토랑",
+    src: require("../assets/images/cebu_food4.jpg"),
+    tag: "전통",
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중"
+  }
+];
+
+export { categories, profiles, plans, lists, recommendList, eventList };

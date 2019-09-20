@@ -7,8 +7,7 @@ import * as firebase from "firebase";
 //
 const initialState = {
   test: 1,
-  user: {},
-  song: ""
+  user: {}
 };
 
 //
@@ -36,14 +35,16 @@ const reducer = (state = initialState, action) => {
 const store = createStore(reducer, applyMiddleware(thunkMiddleware));
 export { store };
 
-//
-// Action Creators
-//
-const setTestData = testData => {
-  return {
-    type: "setTestData",
-    value: testData
-  };
-};
+// //
+// // Action Creators
+// //
 
-export { setTestData };
+// const INCREMENT = "INCREMENT";
+// const setTestData = testData => {
+//   return {
+//     type: INCREMENT,
+//     value: testData
+//   };
+// };
+
+// export { setTestData };
