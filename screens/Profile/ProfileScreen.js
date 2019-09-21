@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, TextInput, AsyncStorage } from "react-native";
-import { Button, Block, Text } from "../../components";
+import { Button, Block, Text, WideTextList } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
@@ -75,28 +75,6 @@ const ProfileScreen = props => {
       });
   };
 
-  renderLists = lists => {
-    return lists.map((e, idx) => {
-      return (
-        <TouchableOpacity
-          key={idx}
-          onPress={() =>
-            navigation.navigate(e.navigation, { profile: profile })
-          }
-        >
-          <Block row space="between" style={styles.inputRow}>
-            <Text h3>{e.title}</Text>
-            <Ionicons
-              size={25}
-              name={e.icon}
-              style={{ color: theme.colors.primary }}
-            ></Ionicons>
-          </Block>
-        </TouchableOpacity>
-      );
-    });
-  };
-
   return (
     <Block>
       <Block flex={false} style={styles.header}>
@@ -111,21 +89,33 @@ const ProfileScreen = props => {
               My Profile
             </Text>
           </Block>
-          {renderLists(profileList)}
+          <WideTextList
+            lists={profileList}
+            profile={profile}
+            navigation={navigation}
+          />
 
           <Block style={{ marginTop: 20, marginBottom: 10 }}>
             <Text h3 gray>
               Hosting
             </Text>
           </Block>
-          {renderLists(hostList)}
+          <WideTextList
+            lists={hostList}
+            profile={profile}
+            navigation={navigation}
+          />
 
           <Block style={{ marginTop: 20, marginBottom: 10 }}>
             <Text h3 gray>
               지원
             </Text>
           </Block>
-          {renderLists(helpList)}
+          <WideTextList
+            lists={helpList}
+            profile={profile}
+            navigation={navigation}
+          />
 
           <TouchableOpacity onPress={() => handleLogout()}>
             <Block
@@ -156,6 +146,7 @@ ProfileScreen.navigationOptions = {
   header: null
 };
 ProfileScreen.defaultProps = {};
+
 const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.base * 4,

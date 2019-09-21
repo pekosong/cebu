@@ -8,6 +8,7 @@ import Progress from "./Progress";
 import Divider from "./Divider";
 import Switch from "./Switch";
 import SearchBar from "./SearchBar";
+import WideTextList from "./WideTextList";
 
 export {
   Block,
@@ -19,5 +20,6 @@ export {
   Progress,
   Divider,
   Switch,
-  SearchBar
+  SearchBar,
+  WideTextList
 };

@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, Image, ScrollView, TouchableOpacity } from "react-native";
-
 import { Block, Text, Card, SearchBar } from "../../components";
 import { theme, mocks } from "../../constants";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
@@ -61,7 +60,7 @@ const SearchScreen = props => {
 
   return (
     <Block>
-      <SearchBar></SearchBar>
+      <SearchBar />
       <ScrollView vertival={true}>
         <Block style={styles.title}>
           <Text h1 bold>
@@ -82,7 +81,7 @@ const SearchScreen = props => {
           <Text h1 bold>
             지금 할인 하고 있어요
           </Text>
-          <Text h4 style={{ marginTop: 10 }}>
+          <Text h4 style={{ marginTop: 6 }}>
             Hello, Cebu 만을 위한 특별 할인 행사를 하고 있어요
           </Text>
         </Block>
@@ -115,7 +114,7 @@ const SearchScreen = props => {
           <Text h1 bold>
             지금 이벤트 중이에요
           </Text>
-          <Text h4 style={{ marginTop: 10 }}>
+          <Text h4 style={{ marginTop: 6 }}>
             Hello, Cebu 만을 위한 특별 이벤트를 하고 있어요
           </Text>
         </Block>
