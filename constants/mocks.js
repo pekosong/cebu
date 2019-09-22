@@ -288,10 +288,12 @@ const profiles = {
 
 const recommendList = [
   {
-    shop: "오션스파",
+    shop: "메디핑거",
     src: require("../assets/images/cebu_massage1.jpg"),
     tag: "편안함, 피로싹",
+
     desc: "전신 아로마 마사지",
+    shopCode: "massage1",
     afterPrice: "30,000",
     beforePrice: "20,000"
   },
@@ -301,15 +303,16 @@ const recommendList = [
     tag: "편안함, 피로싹",
 
     desc: "전신 아로마 마사지",
+    shopCode: "massage2",
     afterPrice: "30,000",
     beforePrice: "20,000"
   },
   {
-    shop: "메디핑거",
+    shop: "오션스파",
     src: require("../assets/images/cebu_massage3.jpg"),
     tag: "편안함, 피로싹",
-
     desc: "전신 아로마 마사지",
+    shopCode: "massage3",
     afterPrice: "30,000",
     beforePrice: "20,000"
   },
@@ -318,6 +321,7 @@ const recommendList = [
     src: require("../assets/images/cebu_massage4.jpg"),
     tag: "편안함, 피로싹",
     desc: "전신 아로마 마사지",
+    shopCode: "massage4",
     afterPrice: "30,000",
     beforePrice: "20,000"
   }
@@ -325,33 +329,37 @@ const recommendList = [
 
 const eventList = [
   {
-    shop: "란타 코르도바",
-    src: require("../assets/images/cebu_food1.jpg"),
-    tag: "전통",
-    desc: "태국 전통 음식",
-    event: "1+1 행사 중"
-  },
-  {
-    shop: "아인 레스토랑",
-    src: require("../assets/images/cebu_food2.jpeg"),
-    tag: "전통",
-    desc: "태국 전통 음식",
-    event: "1+1 행사 중"
-  },
-  {
     shop: "점보 7",
-    src: require("../assets/images/cebu_food3.jpeg"),
+    src: require("../assets/images/cebu_food1.jpg"),
     tag: "전통",
 
     desc: "태국 전통 음식",
-    event: "1+1 행사 중"
+    event: "1+1 행사 중",
+    shopCode: "restaurant1"
   },
   {
     shop: "부페 레스토랑",
+    src: require("../assets/images/cebu_food2.jpeg"),
+    tag: "전통",
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중",
+    shopCode: "restaurant2"
+  },
+  {
+    shop: "란타 코르도바",
+    src: require("../assets/images/cebu_food3.jpeg"),
+    tag: "전통",
+    desc: "태국 전통 음식",
+    event: "1+1 행사 중",
+    shopCode: "restaurant3"
+  },
+  {
+    shop: "아인 레스토랑",
     src: require("../assets/images/cebu_food4.jpg"),
     tag: "전통",
     desc: "태국 전통 음식",
-    event: "1+1 행사 중"
+    event: "1+1 행사 중",
+    shopCode: "restaurant4"
   }
 ];
 

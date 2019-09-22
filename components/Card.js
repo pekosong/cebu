@@ -1,25 +1,75 @@
-import React, { Component } from "react";
+import React, { useState, useEffect } from "react";
 import { StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Block from "./Block";
 import Text from "./Text";
 import { theme } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import firebase from "../constants/store";
 
 export default Card = props => {
-  const { style, children, item } = props;
+  const { style, children, item, navigation } = props;
+  const [isLoaded, setIsLoaded] = useState(false);
+  const [myfavorites, setMyfavorites] = useState([]);
+  const user = useSelector(state => state.user, shallowEqual);
 
-  return (
-    <TouchableOpacity onPress={() => {}}>
+  useEffect(() => {
+    if (user.myfavorites) {
+      setMyfavorites(user.myfavorites);
+      setIsLoaded(true);
+    }
+  });
+
+  handleHeart = async shop => {
+    if (myfavorites.includes(shop)) {
+      const idx = myfavorites.indexOf(shop);
+      myfavorites.splice(idx, 1);
+    } else {
+      myfavorites.push(shop);
+    }
+
+    console.log(myfavorites);
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .update({ myfavorites: myfavorites })
+      .then(() => {
+        console.log("done");
+      });
+  };
+  return isLoaded ? (
+    <TouchableOpacity
+      onPress={() =>
+        navigation.navigate("Shop", {
+          title: "찾기",
+          shopCode: item.shopCode
+        })
+      }
+    >
       <Block style={styles.elementContainer}>
         <Block flex={2}>
           <Image style={styles.imageStyle} source={item.src}></Image>
-          <Ionicons
+          <TouchableOpacity
+            onPress={() => handleHeart(item.shopCode)}
             style={{ position: "absolute", top: 5, right: 10 }}
-            size={25}
-            color={theme.colors.primary}
-            name="md-heart"
-          />
+          >
+            <Ionicons
+              size={30}
+              color={theme.colors.secondary}
+              name={
+                myfavorites.includes(item.shopCode)
+                  ? "ios-heart"
+                  : "ios-heart-empty"
+              }
+              style={{
+                textShadowColor: theme.colors.black,
+                textShadowOffset: { width: 0.5, height: 1 },
+                textShadowRadius: 1
+              }}
+            />
+          </TouchableOpacity>
           <Block
             style={{
               position: "absolute",
@@ -36,10 +86,10 @@ export default Card = props => {
         </Block>
         <Block row flex={1}>
           <Block flex={3} middle>
-            <Text style={{ fontWeight: "bold", color: theme.colors.primary }}>
+            <Text style={{ fontWeight: "bold", color: theme.colors.accent }}>
               {item.tag}
             </Text>
-            <Text h3 bold style={{ marginVertical: 5 }}>
+            <Text h3 bold style={{ marginVertical: 3 }}>
               {item.shop}
             </Text>
             <Text caption>{item.desc}</Text>
@@ -50,7 +100,7 @@ export default Card = props => {
         </Block>
       </Block>
     </TouchableOpacity>
-  );
+  ) : null;
 };
 
 export const styles = StyleSheet.create({

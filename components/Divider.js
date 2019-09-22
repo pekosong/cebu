@@ -1,16 +1,13 @@
-import React, { Component } from 'react';
-import { StyleSheet } from 'react-native';
+import React, { Component } from "react";
+import { StyleSheet } from "react-native";
 
-import Block from './Block';
-import { theme } from '../constants';
+import Block from "./Block";
+import { theme } from "../constants";
 
 export default class Divider extends Component {
   render() {
     const { color, style, ...props } = this.props;
-    const dividerStyles = [
-      styles.divider,
-      style,
-    ];
+    const dividerStyles = [styles.divider, style];
 
     return (
       <Block
@@ -18,15 +15,15 @@ export default class Divider extends Component {
         style={dividerStyles}
         {...props}
       />
-    )
+    );
   }
 }
 
 export const styles = StyleSheet.create({
   divider: {
     height: 0,
-    margin: theme.sizes.base * 2,
+    marginVertical: theme.sizes.base * 1,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
+    borderBottomWidth: StyleSheet.hairlineWidth
   }
-})
+});

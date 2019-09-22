@@ -28,10 +28,7 @@ export default SearchBar = props => {
         visible={showSearch}
         onRequestClose={() => setShowSearch(false)}
       >
-        <Block
-          padding={[theme.sizes.padding, theme.sizes.padding]}
-          space="between"
-        >
+        <Block padding={[theme.sizes.padding, theme.sizes.padding]}>
           <TouchableOpacity
             onPress={() => {
               setSearchResult([]);
@@ -119,7 +116,7 @@ export default SearchBar = props => {
       <Block row style={styles.search}>
         <Ionicons
           size={20}
-          color={theme.colors.accent}
+          color={theme.colors.primary}
           name="md-search"
           style={{ width: "10%" }}
         />

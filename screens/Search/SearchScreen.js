@@ -13,20 +13,15 @@ const SearchScreen = props => {
 
   useEffect(() => {
     setCates(categories);
-    _storeData();
-  }, []);
-
-  _storeData = async () => {
-    return await firebase
+    unsubscribe = firebase
       .firestore()
       .collection("users")
       .doc("peko22@naver.com")
-      .get()
-      .then(doc => {
+      .onSnapshot(doc => {
         dispatch({ type: "LOGIN", payload: doc.data() });
-      })
-      .catch(err => console.log(err));
-  };
+      });
+    return () => unsubscribe();
+  }, []);
 
   renderList = item => {
     return (
@@ -92,7 +87,7 @@ const SearchScreen = props => {
             scrollEnabled={true}
           >
             {recommendList.map((item, idx) => (
-              <Card key={idx} item={item}>
+              <Card key={idx} item={item} navigation={navigation}>
                 <Text
                   gray
                   caption
@@ -126,7 +121,7 @@ const SearchScreen = props => {
             scrollEnabled={true}
           >
             {eventList.map((item, idx) => (
-              <Card key={idx} item={item}>
+              <Card key={idx} item={item} navigation={navigation}>
                 <Text h4 bold style={{ marginTop: 5 }}>
                   {item.event}
                 </Text>

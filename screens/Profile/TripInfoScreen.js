@@ -11,6 +11,7 @@ import { Button, Block, Input, Text } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Calendar, LocaleConfig } from "react-native-calendars";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 import moment from "moment";
 
@@ -61,41 +62,12 @@ LocaleConfig.defaultLocale = "kor";
 
 const TripInfoScreen = props => {
   const { navigation } = props;
-
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
   const [date, setDate] = useState({});
-  const [startDate, setStartDate] = useState("");
-  const [endDate, setEndDate] = useState("");
   const [dates, setDates] = useState([]);
   const [hotel, setHotel] = useState("");
-  const [isError, setIsError] = useState(false);
-  const [error, setError] = useState("");
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
-
-  signUp = async () => {
-    setLoading(true);
-    Keyboard.dismiss();
-
-    await firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        setError("");
-        setIsError(false);
-        setStep(step + 1);
-        setLoading(false);
-      })
-      .catch(err => {
-        console.log(err);
-        setError(err.message);
-        setIsError(true);
-        setLoading(false);
-      });
-  };
-
-  hasErrors = () => (isError ? styles.hasErrors : null);
+  const user = useSelector(state => state.user, shallowEqual);
 
   _getDates = (start, stop) => {
     let startDate = new Date(start.year, start.month - 1, start.day);
@@ -122,6 +94,7 @@ const TripInfoScreen = props => {
         endingDay: true
       };
       setDate(newDate);
+      setDates(myDates);
     }
 
     if (myDates.length == 2) {
@@ -141,11 +114,8 @@ const TripInfoScreen = props => {
 
         newDate[e] = option;
       });
-      setStartDate(myDates[0].dateString);
-      setEndDate(myDates[1].dateString);
       setDate(newDate);
       setDates([]);
-      console.log(newDate);
     }
   };
 
@@ -153,26 +123,26 @@ const TripInfoScreen = props => {
     setLoading(true);
     Keyboard.dismiss();
 
-    const newCus = {
-      uid: firebase.auth().currentUser.uid,
-      email: email,
-      startDate: startDate,
-      endDate: endDate,
-      hotel: hotel,
-      date: new Date()
-    };
+    let myPlans = date;
 
-    console.log(newCus);
+    Object.keys(myPlans).forEach((key, idx) => {
+      myPlans[key] = { hotel: hotel, nDay: idx };
+    });
+    const newCus = {
+      hotel: hotel,
+      date: new Date(),
+      plans: myPlans
+    };
 
     await firebase
       .firestore()
       .collection("users")
-      .doc(email)
-      .set(newCus)
+      .doc(user.email)
+      .update(newCus)
       .then(() => {
         console.log("Document successfully written!");
         setLoading(false);
-        navigation.navigate("Login");
+        navigation.goBack();
       })
       .catch(err => {
         console.log(err);

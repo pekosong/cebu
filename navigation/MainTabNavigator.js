@@ -68,7 +68,8 @@ const MyTripStack = createStackNavigator(
 
 const FavoritesStack = createStackNavigator(
   {
-    Favorites: FavoritesScreen
+    Favorites: FavoritesScreen,
+    Shop: ShopScreen
   },
   config
 );

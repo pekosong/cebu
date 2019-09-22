@@ -5,19 +5,13 @@ import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import moment from "moment";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const TripInfosScreen = props => {
   const { navigation } = props;
   const [editing, setEditing] = useState(null);
-
-  const PLANS = {
-    "2019-10-01": { startDay: true, endDay: false, hotel: "크림슨 리조트" },
-    "2019-10-02": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
-    "2019-10-03": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
-    "2019-10-04": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
-    "2019-10-05": { startDay: false, endDay: false, hotel: "크림슨 리조트" },
-    "2019-10-06": { startDay: false, endDay: true, hotel: "크림슨 리조트" }
-  };
+  const [plans, setPlans] = useState({});
+  const user = useSelector(state => state.user, shallowEqual);
 
   const NUMTOWEEK = {
     0: "일",
@@ -29,7 +23,9 @@ const TripInfosScreen = props => {
     6: "토"
   };
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    setPlans(user.plans);
+  }, [user]);
 
   handleEdit = (name, text) => {
     profile[name] = text;
@@ -71,14 +67,14 @@ const TripInfosScreen = props => {
               호텔
             </Text>
           </Block>
-          {Object.keys(PLANS).map((key, idx) => {
+          {Object.keys(plans).map((key, idx) => {
             return (
               <Block space="between" row key={idx} style={styles.plan}>
                 <Text h4>
                   {key}
                   {" (" + NUMTOWEEK[moment(key).day()] + ")"}
                 </Text>
-                <Text h4>{PLANS[key].hotel}</Text>
+                <Text h4>{plans[key].hotel}</Text>
               </Block>
             );
           })}

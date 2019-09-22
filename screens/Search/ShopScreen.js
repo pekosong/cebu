@@ -2,37 +2,25 @@ import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   StyleSheet,
-  Image,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  TouchableOpacity,
+  Modal
 } from "react-native";
-import Modal from "react-native-modal";
 import MapView from "react-native-maps";
 
-import { Ionicons } from "@expo/vector-icons";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
 
-import { Input, Badge, Block, Text } from "../../components";
+import { Input, Block, Text, Divider } from "../../components";
 import Button from "apsl-react-native-button";
 
-import { Calendar, LocaleConfig } from "react-native-calendars";
 import { theme } from "../../constants";
-import { TouchableOpacity } from "react-native-gesture-handler";
+import firebase from "../../constants/store";
+import { useSelector, shallowEqual } from "react-redux";
+import StarRating from "react-native-star-rating";
 
 const { height, width } = Dimensions.get("window");
 
-LocaleConfig.locales["kor"] = {
-  dayNames: [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일"
-  ],
-  dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"]
-};
-LocaleConfig.defaultLocale = "kor";
 const TIMES = [
   "10:00",
   "11:00",
@@ -52,120 +40,131 @@ export default function ShopScreen(props) {
   const [shop, setShop] = useState({});
   const [title, setTitle] = useState("");
   const [date, setDate] = useState({});
+  const [selectedDate, setSelectedDate] = useState("");
   const [time, setTime] = useState("");
   const [people, setPeople] = useState(1);
   const [text, setText] = useState("");
   const [imageNum, setImageNum] = useState(1);
   const [showReservation, setShowReservation] = useState(false);
+  const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    setShop(navigation.getParam("shop"));
-    setTitle(navigation.getParam("title"));
-  }, []);
+    let myPlans = user.plans;
+    let days = {};
 
-  renderStar = cnt => {
-    let string = String(cnt);
-    let fullStar = parseInt(string.split(".")[0]);
-    let halfStar = parseInt(string.split(".")[1]);
-    let restStar = parseInt(String(5 - cnt));
-    return (
-      <Text>
-        {Array.from(Array(fullStar).keys()).map(key => (
-          <Ionicons
-            key={key}
-            size={30}
-            color={theme.colors.accent}
-            name="md-star"
-          />
-        ))}
-        {halfStar == 5 ? (
-          <Ionicons size={30} color={theme.colors.accent} name="md-star-half" />
-        ) : null}
-        {Array.from(Array(restStar).keys()).map(key => (
-          <Ionicons
-            key={key}
-            size={30}
-            color={theme.colors.accent}
-            name="md-star-outline"
-          />
-        ))}
-      </Text>
-    );
-  };
+    Object.keys(myPlans).forEach((key, idx) => {
+      days[`Day ${idx + 1}`] = key;
+    });
+    setDate(days);
+
+    let code = navigation.getParam("shopCode");
+    if (code) {
+      firebase
+        .firestore()
+        .collection("shops")
+        .doc(code)
+        .get()
+        .then(doc => {
+          setShop(doc.data());
+        });
+    } else {
+      setShop(navigation.getParam("shop"));
+    }
+    setTitle(navigation.getParam("title"));
+  }, [user]);
 
   handleScroll = e => {
     if (e.nativeEvent.contentOffset.x % 360 == 0) {
       setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
     }
   };
-  handleReservation = () => {
+
+  handleReservation = async () => {
+    let reservation = {};
+    reservation["time"] = time;
+    reservation["people"] = people;
+    reservation["date"] = date[selectedDate];
+    reservation["shop"] = shop;
+
+    let allPlans = user.plans;
+    let newPlans = user.plans[date[selectedDate]];
+    newPlans[time] = reservation;
+    allPlans[date[selectedDate]] = newPlans;
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .update({ plans: allPlans })
+      .then(() => {
+        console.log("done");
+      });
+
+    setShowReservation(false);
+  };
+
+  renderReservation = () => {
     return (
       <Modal
         animationType="slide"
-        isVisible={showReservation}
-        backdropOpacity={0.2}
-        onBackdropPress={() => setShowReservation(false)}
-        style={{
-          backgroundColor: "white",
-          marginTop: height - 600,
-          borderRadius: 10
-        }}
+        visible={showReservation}
+        onRequestClose={() => setShowReservation(false)}
       >
-        <Block padding={[theme.sizes.base]}>
+        <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
+          <TouchableOpacity onPress={() => setShowReservation(false)}>
+            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+          </TouchableOpacity>
+          <Text h1 bold style={{ marginBottom: 50 }}>
+            예약 신청
+          </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
-            <Block space="between" row style={{ marginBottom: 20 }}>
-              <Block flex={false}>
-                <Text bold h2>
-                  예약 신청
-                </Text>
-              </Block>
-              <Button
-                style={{
-                  position: "absolute",
-                  right: 0,
-                  top: -10,
-                  borderWidth: 0,
-                  borderRadius: 10
-                }}
-                onPress={() => setShowReservation(false)}
-              >
-                <Ionicons
-                  name={title}
-                  size={30}
-                  color={theme.colors.primary}
-                  name="ios-arrow-down"
-                />
-              </Button>
-            </Block>
-
             <Block>
               <Text bold h3 style={{ marginVertical: 10 }}>
                 예약일
               </Text>
-              <Calendar
-                onDayPress={day => {
-                  newDate = new Object();
-                  newDate[day.dateString] = {
-                    selected: true,
-                    selectedColor: theme.colors.primary
-                  };
-                  setDate(newDate);
-                }}
-                monthFormat={"yyyy MM"}
-                onMonthChange={month => {
-                  console.log("month changed", month);
-                }}
-                hideExtraDays={true}
-                disableMonthChange={true}
-                onPressArrowLeft={substractMonth => substractMonth()}
-                onPressArrowRight={addMonth => addMonth()}
-                markedDates={date}
-                theme={{
-                  arrowColor: theme.colors.primary,
-                  todayTextColor: theme.colors.primary,
-                  mondayTextColor: theme.colors.primary
-                }}
-              />
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+              >
+                <Block row>
+                  {Object.keys(date).map(t => (
+                    <Button
+                      key={t}
+                      style={t == selectedDate ? styles.onDate : styles.date}
+                      onPress={() => setSelectedDate(t)}
+                    >
+                      <Block center>
+                        <Text
+                          bold
+                          h4
+                          style={{
+                            color:
+                              t == selectedDate
+                                ? theme.colors.white
+                                : theme.colors.black,
+                            fontSize: 14,
+                            marginBottom: 5
+                          }}
+                        >
+                          {t}
+                        </Text>
+                        <Text
+                          style={{
+                            color:
+                              t == selectedDate
+                                ? theme.colors.white
+                                : theme.colors.black,
+                            fontSize: 14
+                          }}
+                        >
+                          {date[t]}
+                        </Text>
+                      </Block>
+                    </Button>
+                  ))}
+                </Block>
+              </ScrollView>
+              <Divider></Divider>
               <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
                 예약시간
               </Text>
@@ -180,7 +179,7 @@ export default function ShopScreen(props) {
                       style={t == time ? styles.onTime : styles.time}
                       textStyle={{
                         color:
-                          t == time ? theme.colors.white : theme.colors.primary,
+                          t == time ? theme.colors.white : theme.colors.black,
                         fontSize: 14
                       }}
                       onPress={() => setTime(t)}
@@ -190,12 +189,14 @@ export default function ShopScreen(props) {
                   ))}
                 </Block>
               </ScrollView>
+              <Divider></Divider>
+
               <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
                 예약인원
               </Text>
               <Block
                 style={{
-                  backgroundColor: theme.colors.primary,
+                  backgroundColor: theme.colors.black,
                   borderRadius: 10,
                   marginBottom: 15,
                   height: 45
@@ -234,6 +235,7 @@ export default function ShopScreen(props) {
                   +
                 </Button>
               </Block>
+              <Divider></Divider>
 
               <Text bold h3 style={{ marginVertical: 10 }}>
                 추가 요청 사항
@@ -246,39 +248,80 @@ export default function ShopScreen(props) {
                 }}
               />
             </Block>
+
+            <Block row space="between" style={{ marginVertical: 20 }}>
+              <Block flex={2}>
+                <Text style={{ marginBottom: 5 }}>예약일</Text>
+                <Text h2 bold color={theme.colors.primary}>
+                  {date[selectedDate]}
+                </Text>
+              </Block>
+              <Block center flex={2}>
+                <Text style={{ marginBottom: 5 }}>예약시간</Text>
+                <Text h2 bold color={theme.colors.primary}>
+                  {time}
+                </Text>
+              </Block>
+              <Block flex={1}>
+                <Text right style={{ marginBottom: 5 }}>
+                  예약인원
+                </Text>
+                <Text right h2 bold color={theme.colors.primary}>
+                  {people + "명"}
+                </Text>
+              </Block>
+            </Block>
+            <Divider></Divider>
+
             <Button
               style={{
                 borderColor: "#16a085",
                 borderWidth: 0,
-                backgroundColor: theme.colors.secondary
+                backgroundColor: theme.colors.primary
               }}
               textStyle={{
                 color: theme.colors.white
               }}
-              onPress={() => setShowReservation(false)}
+              onPress={() => {
+                handleReservation();
+              }}
             >
-              예약하기
+              예약 요청
             </Button>
           </ScrollView>
         </Block>
       </Modal>
     );
   };
-  handleLoad = event => {
-    console.log(event);
+
+  handleAddHeart = async shop => {
+    let newfavorites = user.myfavorites;
+    if (newfavorites.includes(shop)) {
+      const idx = newfavorites.indexOf(shop);
+      newfavorites.splice(idx, 1);
+    } else {
+      newfavorites.push(shop);
+    }
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .update({ myfavorites: newfavorites })
+      .then(() => {
+        console.log("done");
+      });
   };
 
   return (
     <Block>
       <Block style={styles.header}>
-        <Button
-          h1
-          bold
+        <TouchableOpacity
           onPress={() => {
             navigation.goBack();
           }}
           style={{
-            borderWidth: 0,
+            height: 100,
             width: 100
           }}
         >
@@ -293,14 +336,14 @@ export default function ShopScreen(props) {
               {title}
             </Text>
           </Block>
-        </Button>
+        </TouchableOpacity>
       </Block>
       <Block
         center
         middle
         style={{
           position: "absolute",
-          top: 50,
+          top: 220,
           right: 10,
           backgroundColor: "rgba(255, 0, 0, 0.3)",
           borderRadius: 10,
@@ -312,6 +355,55 @@ export default function ShopScreen(props) {
           {imageNum + " / 3"}
         </Text>
       </Block>
+
+      <TouchableOpacity
+        onPress={() => handleAddHeart(shop.id)}
+        style={{
+          position: "absolute",
+          top: 55,
+          right: 20
+        }}
+      >
+        <Ionicons
+          size={35}
+          color={theme.colors.secondary}
+          name={
+            user.myfavorites.indexOf(shop.id) == -1
+              ? "ios-heart-empty"
+              : "ios-heart"
+          }
+          style={{
+            textShadowColor: theme.colors.black,
+            textShadowOffset: { width: 0.5, height: 1 },
+            textShadowRadius: 1
+          }}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() =>
+          navigation.navigate("Chat", {
+            title: shop.name,
+            engName: shop.engName
+          })
+        }
+        style={{
+          position: "absolute",
+          top: 58,
+          right: 65
+        }}
+      >
+        <AntDesign
+          size={30}
+          color={theme.colors.secondary}
+          name="message1"
+          style={{
+            textShadowColor: theme.colors.black,
+            textShadowOffset: { width: 0.5, height: 1 },
+            textShadowRadius: 1
+          }}
+        />
+      </TouchableOpacity>
 
       <ScrollView
         horizontal={true}
@@ -343,98 +435,8 @@ export default function ShopScreen(props) {
       </ScrollView>
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 200, paddingTop: 10, marginBottom: 10 }}
+        style={{ marginTop: 220, paddingTop: 10, marginBottom: 65 }}
       >
-        <Block
-          center
-          row
-          style={{
-            paddingHorizontal: 50 - theme.sizes.base * 3,
-            marginHorizontal: theme.sizes.base * 3,
-            borderBottomWidth: 0.5,
-            borderBottomColor: theme.colors.gray2,
-            paddingBottom: 5,
-            marginBottom: 10,
-            alignContent: "space-between"
-          }}
-        >
-          <Block center middle style={{ height: 60 }}>
-            <TouchableOpacity onPress={() => setShowReservation(true)}>
-              <Ionicons
-                size={26}
-                color={theme.colors.primary}
-                name="ios-time"
-                style={{ textAlign: "center" }}
-              />
-              <Text gray>예약하기</Text>
-            </TouchableOpacity>
-          </Block>
-          <Block center middle style={{ height: 60 }}>
-            <TouchableOpacity onPress={() => setShowReservation(true)}>
-              <Ionicons
-                size={26}
-                color={theme.colors.primary}
-                name="ios-heart"
-                style={{ textAlign: "center" }}
-              />
-              <Text gray>저장하기</Text>
-            </TouchableOpacity>
-          </Block>
-          <Block center middle style={{ height: 60 }}>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate("Chat", {
-                  title: shop.name,
-                  engName: shop.engName
-                })
-              }
-            >
-              <Ionicons
-                size={26}
-                color={theme.colors.primary}
-                name="ios-chatbubbles"
-                style={{ textAlign: "center" }}
-              />
-              <Text gray>문의하기</Text>
-            </TouchableOpacity>
-          </Block>
-        </Block>
-        <Block center>
-          <Text>{shop.review ? renderStar(shop.review) : null}</Text>
-          <Text gray h3>
-            {shop.reviewCnt} Reviews
-          </Text>
-          {shop.pickup ? (
-            <Block
-              center
-              middle
-              row
-              style={{
-                position: "absolute",
-                top: 10,
-                right: 10
-              }}
-            >
-              <Badge size={40} color={theme.colors.accent}>
-                <Image
-                  onLoadEnd={e => handleLoad(e)}
-                  style={{
-                    height: 30,
-                    width: 30
-                  }}
-                  source={require("../../assets/icons/car.png")}
-                ></Image>
-              </Badge>
-              <Text h4 bold>
-                {" "}
-                픽업
-              </Text>
-            </Block>
-          ) : (
-            <Block></Block>
-          )}
-        </Block>
-
         <Block style={[styles.categories, { marginTop: 20 }]}>
           <Text bold style={{ fontSize: 25 }}>
             {shop.name}
@@ -521,7 +523,48 @@ export default function ShopScreen(props) {
         </Block>
       </ScrollView>
 
-      {handleReservation()}
+      <Block
+        row
+        style={{
+          position: "absolute",
+          borderTopWidth: 1,
+          borderTopColor: theme.colors.gray2,
+          bottom: 0,
+          paddingTop: 10
+        }}
+      >
+        <Block
+          flex={2}
+          left
+          style={{ marginLeft: theme.sizes.padding, marginTop: 5 }}
+        >
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={shop.review}
+            starSize={15}
+            fullStarColor={theme.colors.accent}
+            containerStyle={{ width: 20 }}
+          />
+          <Text>{shop.reviewCnt} Reviews</Text>
+        </Block>
+        <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
+          <Button
+            style={{
+              borderColor: "#16a085",
+              borderWidth: 0,
+              backgroundColor: theme.colors.primary
+            }}
+            textStyle={{
+              color: theme.colors.white
+            }}
+            onPress={() => setShowReservation(true)}
+          >
+            예약 요청
+          </Button>
+        </Block>
+      </Block>
+      {renderReservation()}
     </Block>
   );
 }
@@ -532,7 +575,7 @@ ShopScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: theme.sizes.base * 3.5,
+    paddingTop: theme.sizes.base * 2,
     paddingHorizontal: theme.sizes.padding
   },
   categories: {
@@ -563,12 +606,30 @@ const styles = StyleSheet.create({
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
-    borderColor: theme.colors.primary
+    borderColor: theme.colors.black
   },
   onTime: {
-    backgroundColor: theme.colors.primary,
+    backgroundColor: theme.colors.black,
     width: 60,
     height: 40,
+    padding: 0,
+    marginRight: 5,
+    borderWidth: 1,
+    borderColor: theme.colors.white
+  },
+  date: {
+    backgroundColor: theme.colors.white,
+    width: 100,
+    height: 50,
+    padding: 0,
+    marginRight: 5,
+    borderWidth: 1,
+    borderColor: theme.colors.black
+  },
+  onDate: {
+    backgroundColor: theme.colors.black,
+    width: 100,
+    height: 50,
     padding: 0,
     marginRight: 5,
     borderWidth: 1,

@@ -5,46 +5,42 @@ import {
   StyleSheet,
   TouchableOpacity,
   Platform,
-  ActivityIndicator,
-  FlatList
+  ActivityIndicator
 } from "react-native";
 
-import { Ionicons } from "@expo/vector-icons";
-import { Block, Text } from "../../components";
+import { Block, Text, Button } from "../../components";
 import { theme, mocks } from "../../constants";
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 function MyTripScreen(props) {
-  const { navigation, lists, myplans } = props;
+  const { navigation, myplans } = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState("");
-  const [plans, setPlans] = useState([]);
-  const [selectedPlans, setSelectedPlans] = useState([]);
+  const [plans, setPlans] = useState({});
+  const [dates, setDates] = useState([]);
+  const [selectedDates, setSelectedDates] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let unsubscribePlans;
-    setActive("전체");
+    setActive("All");
 
-    unsubscribePlans = firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .onSnapshot(doc => {
-        let myPlans = doc.data().plans;
-        setPlans(myPlans);
-        setSelectedPlans(myPlans);
-        setTabs(["전체"].concat(myPlans.map(e => e.nDay)));
-        setIsLoaded(true);
-      });
-    return () => {
-      unsubscribePlans();
-    };
-  }, []);
+    let myPlans = user.plans;
+    let days = {};
+
+    Object.keys(myPlans).forEach((key, idx) => {
+      days[`Day ${idx + 1}`] = key;
+    });
+
+    setDates(days);
+    setSelectedDates(days);
+    setTabs(["All"].concat(Object.keys(days)));
+    setPlans(myPlans);
+    setIsLoaded(true);
+  }, [user]);
 
   getShopData = shops => {
     shops.forEach(e => {
@@ -66,13 +62,13 @@ function MyTripScreen(props) {
       .then(() => console.log("done"));
   };
 
-  renderTab = tab => {
+  renderTripTab = tab => {
     const isActive = active == tab;
 
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => handleTab(tab)}
+        onPress={() => handleTripTab(tab)}
         style={[styles.tab, isActive ? styles.active : null]}
       >
         <Text size={16} medium gray={!isActive} secondary={isActive}>
@@ -82,70 +78,104 @@ function MyTripScreen(props) {
     );
   };
 
-  handleTab = tab => {
-    if (tab == "전체") {
-      setSelectedPlans(plans);
+  handleTripTab = tab => {
+    if (tab == "All") {
+      setSelectedDates(dates);
     } else {
-      setSelectedPlans(plans.filter(plan => plan.nDay == tab));
+      setSelectedDates({ tab: dates[tab] });
     }
     setActive(tab);
   };
 
-  renderList = ({ item }) => {
+  makeMonDay = day => {
+    let _month = day.slice(5, 7);
+    let _day = day.slice(8, 10);
+
+    if (_month.slice(0, 1) == "0") {
+      _month = _month.slice(1, 2);
+    }
+    if (_day.slice(0, 1) == "0") {
+      _day = _day.slice(1, 2);
+    }
+
+    return `${_month}월 ${_day}일`;
+  };
+  renderList = day => {
+    let korDay = makeMonDay(day);
+    let item = plans[day];
+    let times = Object.keys(item);
+    times = times.filter(e => e != "hotel" && e != "nDay");
     return (
-      <Block key={item.date} style={styles.categories}>
-        <Text h2 bold height={40}>
-          {item.date}
-          <Text>{"   "}</Text>
-          <Text>{item.nDay}</Text>
-          <Text>{"  "}</Text>
-          <Ionicons size={14} name="ios-arrow-forward"></Ionicons>
-        </Text>
-        {item.plan.map((todo, idx) => {
-          const shop = lists[todo.category].filter(e => e.id == todo.shopId)[0];
-          return shop ? (
-            <TouchableOpacity
-              key={todo.shopId + idx}
-              onPress={() =>
-                navigation.navigate("Trip", {
-                  title: "내 일정",
-                  trip: todo,
-                  shop: shop,
-                  shopId: todo.shopId,
-                  category: todo.category
-                })
-              }
-            >
-              <Block
-                row
-                style={{
-                  marginVertical: 10,
-                  paddingBottom: 5,
-                  borderBottomWidth: 0.3,
-                  borderBottomColor: theme.colors.gray
-                }}
+      <Block key={day} style={styles.categories}>
+        <Block center row space="between">
+          <Text h3 bold>
+            {korDay}
+            <Text>{"   "}</Text>
+            <Text>{`Day ${item.nDay + 1}`}</Text>
+            <Text>{"  "}</Text>
+          </Text>
+          <Text h4 bold color={theme.colors.accent}>
+            {"in " + item.hotel}
+          </Text>
+        </Block>
+        {times.length != 0 ? (
+          times.map((time, idx) => {
+            const todo = item[time];
+            const shop = item[time]["shop"];
+            return shop ? (
+              <TouchableOpacity
+                key={shop.id + idx}
+                onPress={() =>
+                  navigation.navigate("Trip", {
+                    title: "내 일정",
+                    shop: shop,
+                    todo: todo,
+                    shopId: shop.id,
+                    category: shop.category
+                  })
+                }
               >
-                <Block left flex={1}>
-                  <Image source={shop.source} style={styles.avatarChat} />
-                </Block>
-                <Block flex={3.5} style={{ marginTop: 5, height: 48 }}>
-                  <Block middle row space="between">
-                    <Text h3 bold>
-                      {shop.name}
-                    </Text>
-                    <Text caption>{todo.time}</Text>
+                <Block
+                  row
+                  style={{
+                    marginVertical: 10,
+                    paddingBottom: 5,
+                    borderBottomWidth: 0.3,
+                    borderBottomColor: theme.colors.gray
+                  }}
+                >
+                  <Block left flex={1}>
+                    <Image
+                      source={{ uri: shop.source }}
+                      style={styles.avatarChat}
+                    />
                   </Block>
-                  <Block bottom style={{ marginTop: 6 }}>
-                    <Text>{shop.engName}</Text>
+                  <Block flex={3.5} style={{ marginTop: 5, height: 48 }}>
+                    <Block middle row space="between">
+                      <Text h3 bold>
+                        {shop.name}
+                      </Text>
+                      <Text h3>{todo.time}</Text>
+                    </Block>
+                    <Block bottom>
+                      <Text>{shop.engName}</Text>
+                    </Block>
                   </Block>
                 </Block>
-              </Block>
-            </TouchableOpacity>
-          ) : null;
-        })}
+              </TouchableOpacity>
+            ) : null;
+          })
+        ) : (
+          <Button gradient onPress={() => navigation.navigate("Search")}>
+            <Text bold white center>
+              일정을 등록하세요
+            </Text>
+          </Button>
+        )}
       </Block>
     );
   };
+
   return (
     <Block>
       <Block flex={false} style={styles.header}>
@@ -154,15 +184,13 @@ function MyTripScreen(props) {
         </Text>
       </Block>
       <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTab(tab))}
+        {tabs.map(tab => renderTripTab(tab))}
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <FlatList
-            data={selectedPlans}
-            keyExtractor={(item, index) => "key" + index}
-            renderItem={item => renderList(item)}
-          />
+          {Object.values(selectedDates).map(day => {
+            return renderList(day);
+          })}
         </ScrollView>
       ) : (
         <Block style={styles.full}>
@@ -213,7 +241,7 @@ const styles = StyleSheet.create({
     marginHorizontal: theme.sizes.padding
   },
   tab: {
-    marginRight: theme.sizes.padding,
+    marginRight: theme.sizes.base,
     paddingBottom: theme.sizes.base
   },
   active: {

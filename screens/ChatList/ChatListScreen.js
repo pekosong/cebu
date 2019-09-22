@@ -30,7 +30,7 @@ const ChatListScreen = props => {
       .collection("messages")
       .onSnapshot(querySnapshot => {
         let myList = [];
-        querySnapshot.forEach(doc => {
+        querySnapshot.forEach((doc, idx) => {
           let chat = {};
           data = doc.data();
 
@@ -50,7 +50,7 @@ const ChatListScreen = props => {
           }
 
           chat.name = data.shop;
-          chat.avatar = `https://i.pravatar.cc/300`;
+          chat.avatar = `https://i.pravatar.cc/30${idx}`;
           chat.message = message;
           chat.timeStamp = song.createdAt.seconds;
           chat.date = date;
