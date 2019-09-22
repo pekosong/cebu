@@ -425,38 +425,14 @@ export default function ShopScreen(props) {
         onPress={() => setShowReview(true)}
         style={{
           position: "absolute",
-          top: 52,
-          right: 100
+          top: 58,
+          right: 113
         }}
       >
-        <EvilIcons
-          size={50}
+        <AntDesign
+          size={30}
           color={theme.colors.secondary}
-          name={"pencil"}
-          style={{
-            textShadowColor: theme.colors.black,
-            textShadowOffset: { width: 0.5, height: 1 },
-            textShadowRadius: 1
-          }}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() => handleAddHeart(shop.id)}
-        style={{
-          position: "absolute",
-          top: 55,
-          right: 20
-        }}
-      >
-        <Ionicons
-          size={35}
-          color={theme.colors.secondary}
-          name={
-            user.myfavorites.indexOf(shop.id) == -1
-              ? "ios-heart-empty"
-              : "ios-heart"
-          }
+          name={"form"}
           style={{
             textShadowColor: theme.colors.black,
             textShadowOffset: { width: 0.5, height: 1 },
@@ -482,6 +458,30 @@ export default function ShopScreen(props) {
           size={30}
           color={theme.colors.secondary}
           name="message1"
+          style={{
+            textShadowColor: theme.colors.black,
+            textShadowOffset: { width: 0.5, height: 1 },
+            textShadowRadius: 1
+          }}
+        />
+      </TouchableOpacity>
+
+      <TouchableOpacity
+        onPress={() => handleAddHeart(shop.id)}
+        style={{
+          position: "absolute",
+          top: 55,
+          right: 20
+        }}
+      >
+        <Ionicons
+          size={35}
+          color={theme.colors.secondary}
+          name={
+            user.myfavorites.indexOf(shop.id) == -1
+              ? "ios-heart-empty"
+              : "ios-heart"
+          }
           style={{
             textShadowColor: theme.colors.black,
             textShadowOffset: { width: 0.5, height: 1 },
