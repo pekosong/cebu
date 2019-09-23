@@ -17,7 +17,8 @@ import { theme } from "../../constants";
 import Button from "apsl-react-native-button";
 
 import firebase from "../../constants/store";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { updateFavorite } from "../../redux/app-redux";
 
 const { height, width } = Dimensions.get("window");
 
@@ -51,10 +52,9 @@ export default function ShopScreen(props) {
   const [showReservation, setShowReservation] = useState(false);
   const [showReview, setShowReview] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    let trip = navigation.getParam("todo");
-    let shop = navigation.getParam("shop");
     let myPlans = user.plans;
     let days = {};
 
@@ -63,8 +63,8 @@ export default function ShopScreen(props) {
     });
 
     setDate(days);
-    setShop(shop);
-    setTrip(trip);
+    setTrip(navigation.getParam("todo"));
+    setShop(navigation.getParam("shop"));
     setTitle(navigation.getParam("title"));
   }, [user]);
 
@@ -99,7 +99,7 @@ export default function ShopScreen(props) {
     setShowReservation(false);
   };
 
-  handleAddHeart = async shop => {
+  handleAddHeart = shop => {
     let newfavorites = user.myfavorites;
     if (newfavorites.includes(shop)) {
       const idx = newfavorites.indexOf(shop);
@@ -107,15 +107,7 @@ export default function ShopScreen(props) {
     } else {
       newfavorites.push(shop);
     }
-
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ myfavorites: newfavorites })
-      .then(() => {
-        console.log("done");
-      });
+    dispatch(updateFavorite(newfavorites));
   };
 
   renderReview = () => {
@@ -627,7 +619,14 @@ export default function ShopScreen(props) {
             fullStarColor={theme.colors.accent}
             containerStyle={{ width: 20 }}
           />
-          <Text>{shop.reviewCnt} Reviews</Text>
+          <Text style={{ marginTop: 5 }}>
+            {shop.reviewCnt
+              ? shop.reviewCnt
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+              : null}
+            Reviews
+          </Text>
         </Block>
         <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
           <Button

@@ -6,13 +6,14 @@ import Text from "./Text";
 import { theme } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import firebase from "../constants/store";
+import { updateFavorite } from "../redux/app-redux";
 
 export default Card = props => {
   const { style, children, item, navigation } = props;
   const [isLoaded, setIsLoaded] = useState(false);
   const [myfavorites, setMyfavorites] = useState([]);
   const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     if (user.myfavorites) {
@@ -28,16 +29,7 @@ export default Card = props => {
     } else {
       myfavorites.push(shop);
     }
-
-    console.log(myfavorites);
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ myfavorites: myfavorites })
-      .then(() => {
-        console.log("done");
-      });
+    dispatch(updateFavorite(myfavorites));
   };
   return isLoaded ? (
     <TouchableOpacity

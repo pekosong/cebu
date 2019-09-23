@@ -11,11 +11,10 @@ import {
 import { Block, Text, Button } from "../../components";
 import { theme, mocks } from "../../constants";
 
-import firebase from "../../constants/store";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { useSelector, shallowEqual } from "react-redux";
 
 function MyTripScreen(props) {
-  const { navigation, myplans } = props;
+  const { navigation } = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState("");
   const [plans, setPlans] = useState({});
@@ -137,7 +136,7 @@ function MyTripScreen(props) {
                       </Text>
                       <Text h3>{todo.time}</Text>
                     </Block>
-                    <Block bottom>
+                    <Block>
                       <Text>{shop.engName}</Text>
                     </Block>
                   </Block>

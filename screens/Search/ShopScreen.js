@@ -16,8 +16,8 @@ import Button from "apsl-react-native-button";
 import { Input, Block, Text, Divider } from "../../components";
 import { theme } from "../../constants";
 
-import firebase from "../../constants/store";
-import { useSelector, shallowEqual } from "react-redux";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { updateFavorite, makeResevation } from "../../redux/app-redux";
 
 const { height, width } = Dimensions.get("window");
 
@@ -49,6 +49,8 @@ export default function ShopScreen(props) {
   const [showReservation, setShowReservation] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
 
+  const dispatch = useDispatch();
+
   useEffect(() => {
     let myPlans = user.plans;
     let days = {};
@@ -57,20 +59,8 @@ export default function ShopScreen(props) {
       days[`Day ${idx + 1}`] = key;
     });
 
-    let code = navigation.getParam("shopCode");
-    if (code) {
-      firebase
-        .firestore()
-        .collection("shops")
-        .doc(code)
-        .get()
-        .then(doc => {
-          setShop(doc.data());
-        });
-    } else {
-      setShop(navigation.getParam("shop"));
-    }
     setDate(days);
+    setShop(navigation.getParam("shop"));
     setTitle(navigation.getParam("title"));
   }, [user]);
 
@@ -80,7 +70,7 @@ export default function ShopScreen(props) {
     }
   };
 
-  handleReservation = async () => {
+  handleReservation = () => {
     let reservation = {};
     reservation["time"] = time;
     reservation["people"] = people;
@@ -92,15 +82,7 @@ export default function ShopScreen(props) {
     newPlans[time] = reservation;
     allPlans[date[selectedDate]] = newPlans;
 
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ plans: allPlans })
-      .then(() => {
-        console.log("done");
-      });
-
+    dispatch(makeResevation(allPlans));
     setShowReservation(false);
   };
 
@@ -112,15 +94,7 @@ export default function ShopScreen(props) {
     } else {
       newfavorites.push(shop);
     }
-
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ myfavorites: newfavorites })
-      .then(() => {
-        console.log("done");
-      });
+    dispatch(updateFavorite(newfavorites));
   };
 
   renderReservation = () => {
@@ -540,7 +514,14 @@ export default function ShopScreen(props) {
             fullStarColor={theme.colors.accent}
             containerStyle={{ width: 20 }}
           />
-          <Text>{shop.reviewCnt} Reviews</Text>
+          <Text style={{ marginTop: 5 }}>
+            {shop.reviewCnt
+              ? shop.reviewCnt
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+              : null}
+            Reviews
+          </Text>
         </Block>
         <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
           <Button

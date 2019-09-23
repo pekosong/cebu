@@ -9,7 +9,9 @@ import {
 import { Block, Text, Card, SearchBar } from "../../components";
 import { theme, mocks } from "../../constants";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { watchUserData } from "../../redux/app-redux";
+import { watchUserData, downloadShopData } from "../../redux/app-redux";
+
+const EMAIL = "peko22@naver.com";
 
 const SearchScreen = props => {
   const { navigation, categories, recommendList, eventList } = props;
@@ -21,7 +23,8 @@ const SearchScreen = props => {
 
   useEffect(() => {
     setCates(categories);
-    unsubscribe = dispatch(watchUserData());
+    unsubscribe = dispatch(watchUserData(EMAIL));
+    dispatch(downloadShopData());
     setIsLoaded(true);
     return () => {
       unsubscribe();

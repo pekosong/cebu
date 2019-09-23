@@ -17,6 +17,7 @@ import { theme, mocks } from "../../constants";
 
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { updateFavorite } from "../../redux/app-redux";
 
 const { height, width } = Dimensions.get("window");
 
@@ -28,31 +29,30 @@ function FavoritesScreen(props) {
 
   const [selectedFavorites, setSelectedFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
+  const dispatch = useDispatch();
 
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    if (user.email) {
-      firebase
-        .firestore()
-        .collection("shops")
-        .get()
-        .then(querySnapshot => {
-          const song = [];
-          const category = new Set(["All"]);
-          querySnapshot.forEach(doc => {
-            if (user.myfavorites.indexOf(doc.data().id) != -1) {
-              song.push(doc.data());
-              category.add(doc.data().category);
-            }
-          });
-          setFavorites(song);
-          setSelectedFavorites(song);
-          setActive("All");
-          setTabs(Array.from(category));
-          setIsLoaded(true);
+    firebase
+      .firestore()
+      .collection("shops")
+      .get()
+      .then(querySnapshot => {
+        const song = [];
+        const category = new Set(["All"]);
+        querySnapshot.forEach(doc => {
+          if (user.myfavorites.indexOf(doc.data().id) != -1) {
+            song.push(doc.data());
+            category.add(doc.data().category);
+          }
         });
-    }
+        setFavorites(song);
+        setSelectedFavorites(song);
+        setActive("All");
+        setTabs(Array.from(category));
+        setIsLoaded(true);
+      });
     return () => {};
   }, [user]);
 
@@ -81,18 +81,11 @@ function FavoritesScreen(props) {
     setActive(tab);
   };
 
-  handleRemoveHeart = async shop => {
+  handleRemoveHeart = shop => {
     let newfavorites = user.myfavorites;
     const idx = newfavorites.indexOf(shop);
     newfavorites.splice(idx, 1);
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ myfavorites: newfavorites })
-      .then(() => {
-        console.log("done");
-      });
+    dispatch(updateFavorite(newfavorites));
   };
 
   renderList = item => {

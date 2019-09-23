@@ -6,8 +6,8 @@ import * as firebase from "firebase";
 // Initial State...
 //
 const initialState = {
-  test: 1,
-  user: {}
+  user: {},
+  shops: {}
 };
 
 //
@@ -15,14 +15,10 @@ const initialState = {
 //
 const reducer = (state = initialState, action) => {
   switch (action.type) {
-    case "INCREMENT":
-      return { ...state, test: (state.test += 1) };
-    case "DECREMENT":
-      return { ...state, test: (state.test -= 1) };
-    case "LOGIN":
+    case "SETUSER":
       return { ...state, user: action.payload };
-    case "UPDATE":
-      return { ...state, user: action.payload };
+    case "GETSHOP":
+      return { ...state, shops: action.payload };
 
     default:
       return state;
@@ -39,31 +35,86 @@ export { store };
 // // Action Creators
 // //
 
-const LOGIN = "LOGIN";
+const SETUSER = "SETUSER";
+const GETSHOP = "GETSHOP";
+
 const setUserData = userData => {
   return {
-    type: LOGIN,
+    type: SETUSER,
     payload: userData
   };
 };
 
-const watchUserData = () => {
-  return function(dispatch) {
+const setShopData = shopData => {
+  return {
+    type: GETSHOP,
+    payload: shopData
+  };
+};
+
+const watchUserData = email => {
+  return dispatch => {
     firebase
       .firestore()
       .collection("users")
-      .doc("peko22@naver.com")
+      .doc(email)
       .onSnapshot(
         doc => {
-          var personData = doc.data();
-          var ActionSetUserData = setUserData(personData);
-          dispatch(ActionSetUserData);
+          dispatch(setUserData(doc.data()));
         },
-        function(error) {
+        error => {
           console.log(error);
         }
       );
   };
 };
 
-export { setUserData, watchUserData };
+const downloadShopData = () => {
+  return dispatch => {
+    firebase
+      .firestore()
+      .collection("shops")
+      .get()
+      .then(querySnapshot => {
+        const shops = [];
+        querySnapshot.forEach(doc => {
+          shops.push(doc.data());
+        });
+        dispatch(setShopData(shops));
+      });
+  };
+};
+
+const updateFavorite = myfavorites => {
+  return () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(store.getState().user.email)
+      .update({ myfavorites: myfavorites })
+      .then(() => {
+        console.log("updated favorites");
+      });
+  };
+};
+
+const makeResevation = allPlans => {
+  return () => {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc(store.getState().user.email)
+      .update({ plans: allPlans })
+      .then(() => {
+        console.log("made reservation");
+      });
+  };
+};
+
+export {
+  setUserData,
+  watchUserData,
+  downloadShopData,
+  updateFavorite,
+  makeResevation
+};

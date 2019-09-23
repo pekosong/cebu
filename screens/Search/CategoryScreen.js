@@ -8,10 +8,12 @@ import {
   ActivityIndicator
 } from "react-native";
 
+import StarRating from "react-native-star-rating";
 import { Ionicons } from "@expo/vector-icons";
 import { Badge, Button, Block, Text } from "../../components";
 import { theme } from "../../constants";
-import firebase from "../../constants/store";
+
+import { useSelector, shallowEqual } from "react-redux";
 
 const { width } = Dimensions.get("window");
 
@@ -39,37 +41,24 @@ const CategoryScreen = props => {
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const tabs = ["추천", "리뷰수", "거리"];
+  const shops = useSelector(state => state.shops, shallowEqual);
 
   useEffect(() => {
-    setTitle(navigation.getParam("title"));
-    let docRef = firebase
-      .firestore()
-      .collection("shops")
-      .where("category", "==", navigation.getParam("category"));
+    filteredShops = shops.filter(
+      e => e.category == navigation.getParam("category")
+    );
 
-    docRef
-      .get()
-      .then(querySnapshot => {
-        let myList = [];
-        querySnapshot.forEach(doc => {
-          myList.push(doc.data());
-        });
-        myList = myList.sort(function(a, b) {
-          return b["review"] - a["review"];
-        });
-        setSelectedLists(myList);
-        setIsLoaded(true);
-      })
-      .catch(err => console.log(err));
-    return () => {
-      setSelectedLists([]);
-      setIsLoaded(false);
-      setSelectedLists("");
-    };
+    filteredShops = filteredShops.sort(function(a, b) {
+      return b["review"] - a["review"];
+    });
+
+    setSelectedLists(filteredShops);
+    setIsLoaded(true);
+    setTitle(navigation.getParam("title"));
   }, []);
 
   handleCatTab = tab => {
-    let sortedLists = selectedLists.sort(function(a, b) {
+    sortedLists = selectedLists.sort(function(a, b) {
       return b[filerMap[tab]] - a[filerMap[tab]];
     });
     setActive(tab);
@@ -93,32 +82,15 @@ const CategoryScreen = props => {
   };
 
   renderStar = cnt => {
-    let string = String(cnt);
-    let fullStar = parseInt(string.split(".")[0]);
-    let halfStar = parseInt(string.split(".")[1]);
-    let restStar = parseInt(String(5 - cnt));
     return (
-      <Text>
-        {Array.from(Array(fullStar).keys()).map(key => (
-          <Ionicons
-            key={key}
-            size={18}
-            color={theme.colors.accent}
-            name="md-star"
-          />
-        ))}
-        {halfStar == 5 ? (
-          <Ionicons size={18} color={theme.colors.accent} name="md-star-half" />
-        ) : null}
-        {Array.from(Array(restStar).keys()).map(key => (
-          <Ionicons
-            key={key}
-            size={18}
-            color={theme.colors.accent}
-            name="md-star-outline"
-          />
-        ))}
-      </Text>
+      <StarRating
+        disabled={false}
+        maxStars={5}
+        rating={cnt}
+        starSize={10}
+        fullStarColor={theme.colors.accent}
+        containerStyle={{ width: 20 }}
+      />
     );
   };
 
@@ -147,11 +119,23 @@ const CategoryScreen = props => {
             <Text caption h4>
               {list.tags.join(", ")}
             </Text>
-            <Text h4>
-              {renderStar(list.review)}
-              {"  " + list.review}
-              <Text caption> - 리뷰 {list.reviewCnt}</Text>
-            </Text>
+            <Block row style={{ marginTop: 5 }}>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={list.review}
+                starSize={15}
+                fullStarColor={theme.colors.accent}
+                containerStyle={{ width: 20 }}
+              />
+              <Text caption style={{ marginLeft: 50 }}>
+                {"  "}
+                리뷰{" "}
+                {list.reviewCnt
+                  .toString()
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+              </Text>
+            </Block>
           </Block>
           <Block middle center flex={0.4} style={{ position: "relative" }}>
             <Text>1.5</Text>
