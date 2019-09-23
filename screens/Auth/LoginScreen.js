@@ -3,17 +3,18 @@ import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator,
-  AsyncStorage
+  ActivityIndicator
 } from "react-native";
 
 import { Button, Block, Input, Text } from "../../components";
 import { theme } from "../../constants";
+
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const EMAIL = "peko22@naver.com";
 const PASSWORD = "thdckdrms1";
+
 const LoginScreen = props => {
   const { navigation } = props;
 

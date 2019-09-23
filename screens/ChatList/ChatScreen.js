@@ -1,18 +1,18 @@
 import React, { useState, useEffect } from "react";
 import {
   StyleSheet,
-  AsyncStorage,
   Keyboard,
   ActivityIndicator,
   Platform
 } from "react-native";
+
 import { GiftedChat } from "react-native-gifted-chat";
 import KeyboardSpacer from "react-native-keyboard-spacer";
 
 import { Ionicons } from "@expo/vector-icons";
-
 import { Button, Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
+
 import firebase from "../../constants/store";
 import { useSelector, shallowEqual } from "react-redux";
 
@@ -30,12 +30,10 @@ export default function ChatScreen(props) {
   useEffect(() => {
     const engName = navigation.getParam("engName");
 
-    let unsubscribe;
-
     setTitle(navigation.getParam("title"));
     setEngName(navigation.getParam("engName"));
 
-    unsubscribe = firebase
+    let unsubscribe = firebase
       .firestore()
       .collection("users")
       .doc(user.email)
@@ -169,12 +167,10 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: "center"
   },
-
   header: {
     paddingTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding
   },
-
   avatar: {
     width: theme.sizes.base * 2.2,
     height: theme.sizes.base * 2.2

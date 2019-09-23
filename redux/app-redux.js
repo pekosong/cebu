@@ -39,12 +39,31 @@ export { store };
 // // Action Creators
 // //
 
-// const INCREMENT = "INCREMENT";
-// const setTestData = testData => {
-//   return {
-//     type: INCREMENT,
-//     value: testData
-//   };
-// };
+const LOGIN = "LOGIN";
+const setUserData = userData => {
+  return {
+    type: LOGIN,
+    payload: userData
+  };
+};
 
-// export { setTestData };
+const watchUserData = () => {
+  return function(dispatch) {
+    firebase
+      .firestore()
+      .collection("users")
+      .doc("peko22@naver.com")
+      .onSnapshot(
+        doc => {
+          var personData = doc.data();
+          var ActionSetUserData = setUserData(personData);
+          dispatch(ActionSetUserData);
+        },
+        function(error) {
+          console.log(error);
+        }
+      );
+  };
+};
+
+export { setUserData, watchUserData };

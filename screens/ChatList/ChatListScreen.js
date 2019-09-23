@@ -5,22 +5,22 @@ import {
   ScrollView,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator,
-  AsyncStorage
+  ActivityIndicator
 } from "react-native";
 
 import { Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
-import firebase from "../../constants/store";
+
 import moment from "moment";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+
+import firebase from "../../constants/store";
+import { useSelector, shallowEqual } from "react-redux";
 
 const ChatListScreen = props => {
   const { navigation } = props;
   const [chatList, setChatlist] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
 
   useEffect(() => {
     let unsubscribe = firebase

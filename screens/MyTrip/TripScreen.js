@@ -7,17 +7,17 @@ import {
   TouchableOpacity,
   Modal
 } from "react-native";
-import MapView from "react-native-maps";
 
-import { Ionicons, AntDesign, EvilIcons } from "@expo/vector-icons";
+import MapView from "react-native-maps";
+import { Ionicons, AntDesign } from "@expo/vector-icons";
+import StarRating from "react-native-star-rating";
 
 import { Input, Block, Text, Divider } from "../../components";
+import { theme } from "../../constants";
 import Button from "apsl-react-native-button";
 
-import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { useSelector, shallowEqual } from "react-redux";
-import StarRating from "react-native-star-rating";
 
 const { height, width } = Dimensions.get("window");
 
@@ -35,6 +35,7 @@ const TIMES = [
   "20:00",
   "21:00"
 ];
+
 export default function ShopScreen(props) {
   const { navigation } = props;
   const [starCount, setStarCount] = useState(0);
@@ -54,28 +55,15 @@ export default function ShopScreen(props) {
   useEffect(() => {
     let trip = navigation.getParam("todo");
     let shop = navigation.getParam("shop");
-
     let myPlans = user.plans;
     let days = {};
 
     Object.keys(myPlans).forEach((key, idx) => {
       days[`Day ${idx + 1}`] = key;
     });
-    setDate(days);
 
-    let code = navigation.getParam("shopCode");
-    if (code) {
-      firebase
-        .firestore()
-        .collection("shops")
-        .doc(code)
-        .get()
-        .then(doc => {
-          setShop(doc.data());
-        });
-    } else {
-      setShop(navigation.getParam("shop"));
-    }
+    setDate(days);
+    setShop(shop);
     setTrip(trip);
     setTitle(navigation.getParam("title"));
   }, [user]);
@@ -86,16 +74,56 @@ export default function ShopScreen(props) {
     }
   };
 
-  handleReview = () => {
+  handleReservation = async () => {
+    let reservation = {
+      time: time,
+      people: people,
+      date: date[selectedDate],
+      shop: shop
+    };
+
+    let allPlans = user.plans;
+    let newPlans = user.plans[date[selectedDate]];
+    newPlans[time] = reservation;
+    allPlans[date[selectedDate]] = newPlans;
+
+    // await firebase
+    //   .firestore()
+    //   .collection("users")
+    //   .doc(user.email)
+    //   .update({ plans: allPlans })
+    //   .then(() => {
+    //     console.log("done");
+    //   });
+
+    setShowReservation(false);
+  };
+
+  handleAddHeart = async shop => {
+    let newfavorites = user.myfavorites;
+    if (newfavorites.includes(shop)) {
+      const idx = newfavorites.indexOf(shop);
+      newfavorites.splice(idx, 1);
+    } else {
+      newfavorites.push(shop);
+    }
+
+    await firebase
+      .firestore()
+      .collection("users")
+      .doc(user.email)
+      .update({ myfavorites: newfavorites })
+      .then(() => {
+        console.log("done");
+      });
+  };
+
+  renderReview = () => {
     return (
       <Modal
         animationType="slide"
         visible={showReview}
         onRequestClose={() => setShowReview(false)}
-        style={{
-          backgroundColor: "white",
-          borderRadius: 10
-        }}
       >
         <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
           <TouchableOpacity onPress={() => setShowReview(false)}>
@@ -142,30 +170,6 @@ export default function ShopScreen(props) {
         </Block>
       </Modal>
     );
-  };
-
-  handleReservation = async () => {
-    let reservation = {};
-    reservation["time"] = time;
-    reservation["people"] = people;
-    reservation["date"] = date[selectedDate];
-    reservation["shop"] = shop;
-
-    let allPlans = user.plans;
-    let newPlans = user.plans[date[selectedDate]];
-    newPlans[time] = reservation;
-    allPlans[date[selectedDate]] = newPlans;
-
-    // await firebase
-    //   .firestore()
-    //   .collection("users")
-    //   .doc(user.email)
-    //   .update({ plans: allPlans })
-    //   .then(() => {
-    //     console.log("done");
-    //   });
-
-    setShowReservation(false);
   };
 
   renderReservation = () => {
@@ -340,7 +344,6 @@ export default function ShopScreen(props) {
 
             <Button
               style={{
-                borderColor: "#16a085",
                 borderWidth: 0,
                 backgroundColor: theme.colors.primary
               }}
@@ -357,25 +360,6 @@ export default function ShopScreen(props) {
         </Block>
       </Modal>
     );
-  };
-
-  handleAddHeart = async shop => {
-    let newfavorites = user.myfavorites;
-    if (newfavorites.includes(shop)) {
-      const idx = newfavorites.indexOf(shop);
-      newfavorites.splice(idx, 1);
-    } else {
-      newfavorites.push(shop);
-    }
-
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .update({ myfavorites: newfavorites })
-      .then(() => {
-        console.log("done");
-      });
   };
 
   return (
@@ -403,6 +387,7 @@ export default function ShopScreen(props) {
           </Block>
         </TouchableOpacity>
       </Block>
+
       <Block
         center
         middle
@@ -433,11 +418,7 @@ export default function ShopScreen(props) {
           size={30}
           color={theme.colors.secondary}
           name={"form"}
-          style={{
-            textShadowColor: theme.colors.black,
-            textShadowOffset: { width: 0.5, height: 1 },
-            textShadowRadius: 1
-          }}
+          style={styles.icon}
         />
       </TouchableOpacity>
 
@@ -458,11 +439,7 @@ export default function ShopScreen(props) {
           size={30}
           color={theme.colors.secondary}
           name="message1"
-          style={{
-            textShadowColor: theme.colors.black,
-            textShadowOffset: { width: 0.5, height: 1 },
-            textShadowRadius: 1
-          }}
+          style={styles.icon}
         />
       </TouchableOpacity>
 
@@ -482,11 +459,7 @@ export default function ShopScreen(props) {
               ? "ios-heart-empty"
               : "ios-heart"
           }
-          style={{
-            textShadowColor: theme.colors.black,
-            textShadowOffset: { width: 0.5, height: 1 },
-            textShadowRadius: 1
-          }}
+          style={styles.icon}
         />
       </TouchableOpacity>
 
@@ -518,6 +491,7 @@ export default function ShopScreen(props) {
           </ImageBackground>
         ))}
       </ScrollView>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{ marginTop: 220, paddingTop: 10, marginBottom: 65 }}
@@ -672,7 +646,7 @@ export default function ShopScreen(props) {
         </Block>
       </Block>
       {renderReservation()}
-      {handleReview()}
+      {renderReview()}
     </Block>
   );
 }
@@ -690,14 +664,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding,
     marginVertical: 15
   },
-  shadow: {
-    shadowColor: theme.colors.black,
-    shadowOffset: { width: 0, height: 2 },
-    shadowOpacity: 0.1,
-    shadowRadius: 10,
-    backgroundColor: "#fff",
-    position: "relative"
-  },
   content: {
     marginBottom: 15
   },
@@ -708,39 +674,44 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth
   },
   time: {
-    backgroundColor: theme.colors.white,
     width: 60,
     height: 40,
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
+    backgroundColor: theme.colors.white,
     borderColor: theme.colors.black
   },
   onTime: {
-    backgroundColor: theme.colors.black,
     width: 60,
     height: 40,
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
+    backgroundColor: theme.colors.black,
     borderColor: theme.colors.white
   },
   date: {
-    backgroundColor: theme.colors.white,
     width: 100,
     height: 50,
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
+    backgroundColor: theme.colors.white,
     borderColor: theme.colors.black
   },
   onDate: {
-    backgroundColor: theme.colors.black,
     width: 100,
     height: 50,
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
+    backgroundColor: theme.colors.black,
     borderColor: theme.colors.white
+  },
+  icon: {
+    textShadowColor: theme.colors.black,
+    textShadowOffset: { width: 0.5, height: 1 },
+    textShadowRadius: 1
   }
 });

@@ -10,6 +10,7 @@ import {
 
 import { Block, Text, Button } from "../../components";
 import { theme, mocks } from "../../constants";
+
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
@@ -23,11 +24,8 @@ function MyTripScreen(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    setActive("All");
-
     let myPlans = user.plans;
     let days = {};
 
@@ -35,32 +33,13 @@ function MyTripScreen(props) {
       days[`Day ${idx + 1}`] = key;
     });
 
+    setActive("All");
     setDates(days);
     setSelectedDates(days);
     setTabs(["All"].concat(Object.keys(days)));
     setPlans(myPlans);
     setIsLoaded(true);
   }, [user]);
-
-  getShopData = shops => {
-    shops.forEach(e => {
-      firebase
-        .firestore()
-        .collection("shops")
-        .doc(e.category)
-        .get()
-        .then(e => console.log(e));
-    });
-  };
-
-  upload = async email => {
-    await firebase
-      .firestore()
-      .collection("users")
-      .doc(email)
-      .set({ plans: myplans }, { merge: true })
-      .then(() => console.log("done"));
-  };
 
   renderTripTab = tab => {
     const isActive = active == tab;
@@ -100,11 +79,13 @@ function MyTripScreen(props) {
 
     return `${_month}월 ${_day}일`;
   };
+
   renderList = day => {
     let korDay = makeMonDay(day);
     let item = plans[day];
     let times = Object.keys(item);
     times = times.filter(e => e != "hotel" && e != "nDay");
+
     return (
       <Block key={day} style={styles.categories}>
         <Block center row space="between">
@@ -122,7 +103,7 @@ function MyTripScreen(props) {
           times.map((time, idx) => {
             const todo = item[time];
             const shop = item[time]["shop"];
-            return shop ? (
+            return (
               <TouchableOpacity
                 key={shop.id + idx}
                 onPress={() =>
@@ -130,7 +111,6 @@ function MyTripScreen(props) {
                     title: "내 일정",
                     shop: shop,
                     todo: todo,
-                    shopId: shop.id,
                     category: shop.category
                   })
                 }
@@ -163,7 +143,7 @@ function MyTripScreen(props) {
                   </Block>
                 </Block>
               </TouchableOpacity>
-            ) : null;
+            );
           })
         ) : (
           <Button gradient onPress={() => navigation.navigate("Search")}>
@@ -223,10 +203,6 @@ const styles = StyleSheet.create({
     marginTop: theme.sizes.base * 4,
     marginBottom: theme.sizes.base,
     paddingHorizontal: theme.sizes.padding
-  },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
   },
   avatarChat: {
     width: theme.sizes.base * 4,

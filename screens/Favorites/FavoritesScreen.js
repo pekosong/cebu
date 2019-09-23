@@ -9,17 +9,19 @@ import {
   Dimensions
 } from "react-native";
 
+import StarRating from "react-native-star-rating";
+
 import { Ionicons } from "@expo/vector-icons";
 import { Block, Text } from "../../components";
 import { theme, mocks } from "../../constants";
+
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import StarRating from "react-native-star-rating";
 
 const { height, width } = Dimensions.get("window");
 
 function FavoritesScreen(props) {
-  const { navigation, lists, myplans } = props;
+  const { navigation } = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState("");
   const [favorites, setFavorites] = useState([]);
@@ -28,10 +30,8 @@ function FavoritesScreen(props) {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
 
   useEffect(() => {
-    let myShops = [];
     if (user.email) {
       firebase
         .firestore()
