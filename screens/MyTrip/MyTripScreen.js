@@ -8,7 +8,7 @@ import {
   ActivityIndicator
 } from "react-native";
 
-import { Block, Text, Button } from "../../components";
+import { Block, Text, Button, Divider } from "../../components";
 import { theme, mocks } from "../../constants";
 
 import { useSelector, shallowEqual } from "react-redux";
@@ -87,7 +87,7 @@ function MyTripScreen(props) {
 
     return (
       <Block key={day} style={styles.categories}>
-        <Block center row space="between">
+        <Block center row space="between" style={{ marginBottom: 10 }}>
           <Text h3 bold>
             {korDay}
             <Text>{"   "}</Text>
@@ -117,10 +117,8 @@ function MyTripScreen(props) {
                 <Block
                   row
                   style={{
-                    marginVertical: 10,
-                    paddingBottom: 5,
-                    borderBottomWidth: 0.3,
-                    borderBottomColor: theme.colors.gray
+                    marginVertical: 5,
+                    paddingBottom: 5
                   }}
                 >
                   <Block left flex={1}>
@@ -129,7 +127,7 @@ function MyTripScreen(props) {
                       style={styles.avatarChat}
                     />
                   </Block>
-                  <Block flex={3.5} style={{ marginTop: 5, height: 48 }}>
+                  <Block flex={2.2} style={{ marginTop: 5, height: 48 }}>
                     <Block middle row space="between">
                       <Text h3 bold>
                         {shop.name}
@@ -151,6 +149,12 @@ function MyTripScreen(props) {
             </Text>
           </Button>
         )}
+        <Divider
+          style={{
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
       </Block>
     );
   };
@@ -204,9 +208,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding
   },
   avatarChat: {
-    width: theme.sizes.base * 4,
+    width: theme.sizes.base * 6,
     height: theme.sizes.base * 4,
-    borderRadius: theme.sizes.base * 2
+    borderRadius: 3
   },
   tabs: {
     borderBottomColor: theme.colors.gray2,
@@ -225,7 +229,7 @@ const styles = StyleSheet.create({
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 1
+    marginVertical: theme.sizes.base * 1
   }
 });
 

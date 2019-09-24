@@ -1,11 +1,10 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, TextInput, AsyncStorage } from "react-native";
-import { Button, Block, Text, WideTextList } from "../../components";
+import React, { useEffect } from "react";
+import { StyleSheet, ScrollView } from "react-native";
+import { Block, Text, WideText } from "../../components";
 import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
 
 const profileList = [
   { title: "개인 정보", navigation: "Personal", icon: "md-person" },
@@ -43,31 +42,14 @@ const helpList = [
 ];
 const ProfileScreen = props => {
   const { navigation } = props;
-  const [profile, setProfile] = useState({});
 
-  const user = useSelector(state => state.user, []);
-
-  _retrieveData = async () => {
-    try {
-      const value = await AsyncStorage.getItem("profile");
-      if (value !== null) {
-        setProfile(JSON.parse(value));
-      }
-    } catch (err) {
-      console.log(err);
-    }
-  };
-
-  useEffect(() => {
-    _retrieveData();
-  }, []);
+  useEffect(() => {}, []);
 
   handleLogout = () => {
     firebase
       .auth()
       .signOut()
       .then(function() {
-        AsyncStorage.removeItem("profile");
         navigation.navigate("Auth");
       })
       .catch(function(err) {
@@ -89,34 +71,60 @@ const ProfileScreen = props => {
               My Profile
             </Text>
           </Block>
-          <WideTextList
-            lists={profileList}
-            profile={profile}
-            navigation={navigation}
-          />
+          {profileList.map((item, idx) => (
+            <WideText
+              item={item}
+              key={idx}
+              onPress={() => navigation.navigate(item.navigation)}
+            >
+              <Text h3>{item.title}</Text>
+              <Ionicons
+                size={25}
+                name={item.icon}
+                style={{ color: theme.colors.primary }}
+              ></Ionicons>
+            </WideText>
+          ))}
 
           <Block style={{ marginTop: 20, marginBottom: 10 }}>
             <Text h3 gray>
               Hosting
             </Text>
           </Block>
-          <WideTextList
-            lists={hostList}
-            profile={profile}
-            navigation={navigation}
-          />
+          {hostList.map((item, idx) => (
+            <WideText
+              item={item}
+              key={idx}
+              onPress={() => navigation.navigate(item.navigation)}
+            >
+              <Text h3>{item.title}</Text>
+              <Ionicons
+                size={25}
+                name={item.icon}
+                style={{ color: theme.colors.primary }}
+              ></Ionicons>
+            </WideText>
+          ))}
 
           <Block style={{ marginTop: 20, marginBottom: 10 }}>
             <Text h3 gray>
               지원
             </Text>
           </Block>
-          <WideTextList
-            lists={helpList}
-            profile={profile}
-            navigation={navigation}
-          />
-
+          {helpList.map((item, idx) => (
+            <WideText
+              item={item}
+              key={idx}
+              onPress={() => navigation.navigate(item.navigation)}
+            >
+              <Text h3>{item.title}</Text>
+              <Ionicons
+                size={25}
+                name={item.icon}
+                style={{ color: theme.colors.primary }}
+              ></Ionicons>
+            </WideText>
+          ))}
           <TouchableOpacity onPress={() => handleLogout()}>
             <Block
               row

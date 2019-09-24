@@ -80,7 +80,7 @@ const SearchScreen = props => {
               {cates.map(item => renderList(item))}
             </ScrollView>
           </Block>
-
+          {/* 할인 정보 */}
           <Block style={styles.title}>
             <Text h1 bold>
               지금 할인 하고 있어요
@@ -114,6 +114,7 @@ const SearchScreen = props => {
               ))}
             </ScrollView>
           </Block>
+
           <Block style={styles.title}>
             <Text h1 bold>
               지금 이벤트 중이에요
@@ -122,7 +123,6 @@ const SearchScreen = props => {
               Hello, Cebu 만을 위한 특별 이벤트를 하고 있어요
             </Text>
           </Block>
-
           <Block style={{ ...styles.content, marginBottom: 40 }}>
             <ScrollView
               horizontal={true}

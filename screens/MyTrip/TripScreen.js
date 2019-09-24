@@ -13,7 +13,7 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
 
 import { Input, Block, Text, Divider } from "../../components";
-import { theme } from "../../constants";
+import { theme, mocks } from "../../constants";
 import Button from "apsl-react-native-button";
 
 import firebase from "../../constants/store";
@@ -38,7 +38,7 @@ const TIMES = [
 ];
 
 export default function ShopScreen(props) {
-  const { navigation } = props;
+  const { navigation, recommendList } = props;
   const [starCount, setStarCount] = useState(0);
   const [shop, setShop] = useState({});
   const [trip, setTrip] = useState({});
@@ -65,6 +65,7 @@ export default function ShopScreen(props) {
     setDate(days);
     setTrip(navigation.getParam("todo"));
     setShop(navigation.getParam("shop"));
+    console.log(navigation.getParam("shop"));
     setTitle(navigation.getParam("title"));
   }, [user]);
 
@@ -488,74 +489,122 @@ export default function ShopScreen(props) {
         showsVerticalScrollIndicator={false}
         style={{ marginTop: 220, paddingTop: 10, marginBottom: 65 }}
       >
-        <Block style={[styles.categories, { marginTop: 20 }]}>
-          <Text bold style={{ fontSize: 25 }}>
-            {shop.name}
-          </Text>
-          <Text h3 gray style={styles.content}>
-            {shop.engName}
-          </Text>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam
+        <Block
+          row
+          space="between"
+          style={[styles.categories, { marginTop: 20 }]}
+        >
+          <Block>
+            <Text bold style={{ fontSize: 25, marginBottom: 5 }}>
+              {shop.name}
+            </Text>
+            <Text h3 gray style={styles.content}>
+              {shop.engName}
+            </Text>
+          </Block>
+          <Text bold style={{ color: theme.colors.accent }}>
+            {shop.tags}
           </Text>
         </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             예약정보
           </Text>
-          <Block style={{ marginLeft: 10 }}>
-            <Block row>
-              <Block flex={1}>
-                <Text>예약시간</Text>
-              </Block>
-              <Block flex={1}>
-                <Text gray>{trip.time}</Text>
-              </Block>
-            </Block>
-            <Block row margin={[5, 0]}>
-              <Block flex={1}>
-                <Text>예약인원</Text>
-              </Block>
-              <Block flex={1}>
-                <Text gray>{trip.people}명</Text>
-              </Block>
-            </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>예약시간</Text>
+            <Text h3>{trip.time}</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>예약인원</Text>
+            <Text h3>{trip.people}명</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>예약상품</Text>
+            <Text h3>
+              {shop.category == "Massage" ? "전신 아로마 마사지" : "바베큐"}
+            </Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>추가요청사항</Text>
+            <Text h3>없음</Text>
           </Block>
         </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            픽업정보
+          </Text>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>픽업시간</Text>
+            <Text h3>{trip.time}</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>픽업장소</Text>
+            <Text h3>호텔 정문</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>픽업차량</Text>
+            <Text h3>도요타 - 캠리 ABCD</Text>
+          </Block>
+        </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             업체정보
           </Text>
-          <Block style={{ marginLeft: 10 }}>
-            <Block row>
-              <Block flex={1}>
-                <Text>영업시간</Text>
-              </Block>
-              <Block flex={1}>
-                <Text gray>
-                  {shop.openTime} ~ {shop.closeTime}
-                </Text>
-              </Block>
-            </Block>
-            <Block row margin={[5, 0]}>
-              <Block flex={1}>
-                <Text>전화번호</Text>
-              </Block>
-              <Block flex={1}>
-                <Text gray>{shop.phone}</Text>
-              </Block>
-            </Block>
-            <Block row>
-              <Block flex={1}>
-                <Text>주소</Text>
-              </Block>
-              <Block flex={1}>
-                <Text gray>{shop.address}</Text>
-              </Block>
-            </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>언어</Text>
+            <Text h3>한국어, 영어</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>픽업여부</Text>
+            <Text h3>가능</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>베이비시터</Text>
+            <Text h3>가능</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>영업시간</Text>
+            <Text h3>
+              {shop.openTime} ~ {shop.closeTime}
+            </Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>주소</Text>
+            <Text h3>{shop.address}</Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h3>전화번호</Text>
+            <Text h3>{shop.phone}</Text>
           </Block>
         </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             주요 메뉴 및 가격
@@ -566,6 +615,13 @@ export default function ShopScreen(props) {
             reprehenderit enim quia totam,
           </Text>
         </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
         <Block style={styles.categories}>
           <Text h3 bold>
             위치
@@ -584,15 +640,44 @@ export default function ShopScreen(props) {
             coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
           />
         </MapView>
-        <Block style={styles.categories}>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            marginTop: 20,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
+        <Block style={{ ...styles.categories, marginTop: 10 }}>
           <Text h3 bold style={styles.content}>
-            기타정보
+            이 근처의 추천 장소
           </Text>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam, pariatur
-            reprehenderit enim quia
+          <Text h4 style={{ marginBottom: 10 }}>
+            {shop.name} 근처의 이런 곳은 어때요?
           </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}
+          >
+            {recommendList.map((item, idx) => (
+              <Card key={idx} item={item} navigation={navigation}>
+                <Text
+                  gray
+                  caption
+                  style={{
+                    textDecorationLine: "line-through",
+                    textDecorationStyle: "solid"
+                  }}
+                >
+                  {item.beforePrice}원
+                </Text>
+                <Text h4 bold style={{ marginTop: 5 }}>
+                  {item.afterPrice}원
+                </Text>
+              </Card>
+            ))}
+          </ScrollView>
         </Block>
       </ScrollView>
 
@@ -650,6 +735,10 @@ export default function ShopScreen(props) {
   );
 }
 
+ShopScreen.defaultProps = {
+  recommendList: mocks.recommendList
+};
+
 ShopScreen.navigationOptions = {
   header: null
 };
@@ -661,7 +750,7 @@ const styles = StyleSheet.create({
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
-    marginVertical: 15
+    marginVertical: 10
   },
   content: {
     marginBottom: 15
@@ -712,5 +801,9 @@ const styles = StyleSheet.create({
     textShadowColor: theme.colors.black,
     textShadowOffset: { width: 0.5, height: 1 },
     textShadowRadius: 1
+  },
+  inputRow: {
+    paddingBottom: 5,
+    marginVertical: 5
   }
 });
