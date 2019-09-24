@@ -1,35 +1,5 @@
-import { createStore, applyMiddleware } from "redux";
-import thunkMiddleware from "redux-thunk";
 import * as firebase from "firebase";
-
-//
-// Initial State...
-//
-const initialState = {
-  user: {},
-  shops: {}
-};
-
-//
-// Reducer...
-//
-const reducer = (state = initialState, action) => {
-  switch (action.type) {
-    case "SETUSER":
-      return { ...state, user: action.payload };
-    case "GETSHOP":
-      return { ...state, shops: action.payload };
-
-    default:
-      return state;
-  }
-};
-
-//
-// Store...
-//
-const store = createStore(reducer, applyMiddleware(thunkMiddleware));
-export { store };
+import { store } from "./store";
 
 // //
 // // Action Creators

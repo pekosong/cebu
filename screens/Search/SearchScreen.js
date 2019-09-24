@@ -9,7 +9,7 @@ import {
 import { Block, Text, Card, SearchBar } from "../../components";
 import { theme, mocks } from "../../constants";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { watchUserData, downloadShopData } from "../../redux/app-redux";
+import { watchUserData, downloadShopData } from "../../redux/action";
 
 const EMAIL = "peko22@naver.com";
 

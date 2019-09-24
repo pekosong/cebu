@@ -18,7 +18,7 @@ import Button from "apsl-react-native-button";
 
 import firebase from "../../constants/store";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite } from "../../redux/app-redux";
+import { updateFavorite } from "../../redux/action";
 
 const { height, width } = Dimensions.get("window");
 

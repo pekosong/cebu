@@ -17,7 +17,7 @@ import { Input, Block, Text, Divider } from "../../components";
 import { theme } from "../../constants";
 
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite, makeResevation } from "../../redux/app-redux";
+import { updateFavorite, makeResevation } from "../../redux/action";
 
 const { height, width } = Dimensions.get("window");
 
@@ -48,6 +48,7 @@ export default function ShopScreen(props) {
   const [imageNum, setImageNum] = useState(1);
   const [showReservation, setShowReservation] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
+  const shops = useSelector(state => state.shops, shallowEqual);
 
   const dispatch = useDispatch();
 
@@ -59,8 +60,15 @@ export default function ShopScreen(props) {
       days[`Day ${idx + 1}`] = key;
     });
 
+    let shopCode = navigation.getParam("shopCode");
+    if (shopCode) {
+      let myShop = shops.filter(e => e.id == shopCode);
+      setShop(myShop[0]);
+    } else {
+      setShop(navigation.getParam("shop"));
+    }
+
     setDate(days);
-    setShop(navigation.getParam("shop"));
     setTitle(navigation.getParam("title"));
   }, [user]);
 

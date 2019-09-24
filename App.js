@@ -9,7 +9,7 @@ import { Ionicons } from "@expo/vector-icons";
 import { Block } from "./components";
 
 import { Provider } from "react-redux";
-import { store } from "./redux/app-redux";
+import { store } from "./redux/store";
 
 YellowBox.ignoreWarnings(["Warning: ..."]);
 console.ignoredYellowBox = ["Setting a timer"];

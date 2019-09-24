@@ -6,7 +6,7 @@ import Text from "./Text";
 import { theme } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite } from "../redux/app-redux";
+import { updateFavorite } from "../redux/action";
 
 export default Card = props => {
   const { style, children, item, navigation } = props;
