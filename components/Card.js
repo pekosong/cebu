@@ -81,7 +81,7 @@ export default Card = props => {
             <Text style={{ fontWeight: "bold", color: theme.colors.accent }}>
               {item.tag}
             </Text>
-            <Text h3 bold style={{ marginVertical: 3 }}>
+            <Text h3 bold style={{ marginVertical: 2 }}>
               {item.shop}
             </Text>
             <Text caption>{item.desc}</Text>
@@ -105,6 +105,7 @@ export const styles = StyleSheet.create({
   imageStyle: {
     width: "100%",
     height: "100%",
-    resizeMode: "cover"
+    resizeMode: "cover",
+    borderRadius: 3
   }
 });
