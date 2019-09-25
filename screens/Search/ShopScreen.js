@@ -5,7 +5,8 @@ import {
   ScrollView,
   ImageBackground,
   TouchableOpacity,
-  Modal
+  Modal,
+  Animated
 } from "react-native";
 
 import MapView from "react-native-maps";
@@ -51,6 +52,7 @@ export default function ShopScreen(props) {
   const shops = useSelector(state => state.shops, shallowEqual);
 
   const dispatch = useDispatch();
+  const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
     let myPlans = user.plans;
@@ -72,9 +74,23 @@ export default function ShopScreen(props) {
     setTitle(navigation.getParam("title"));
   }, [user]);
 
-  handleScroll = e => {
+  handleScrollByX = e => {
     if (e.nativeEvent.contentOffset.x % 360 == 0) {
       setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
+    }
+  };
+
+  handleScrollByY = e => {
+    if (e.nativeEvent.contentOffset.y > 120) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 100
+      }).start();
+    } else if (e.nativeEvent.contentOffset.y < 120) {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 50
+      }).start();
     }
   };
 
@@ -297,122 +313,151 @@ export default function ShopScreen(props) {
 
   return (
     <Block>
-      <Block style={styles.header}>
-        <TouchableOpacity
-          onPress={() => {
-            navigation.goBack();
-          }}
-          style={{
-            height: 100,
-            width: 100
-          }}
-        >
-          <Block center row>
-            <Ionicons
-              name={title}
-              size={35}
-              color={theme.colors.white}
-              name="ios-arrow-back"
-            />
-            <Text bold h2 style={{ color: theme.colors.white, marginLeft: 10 }}>
-              {title}
-            </Text>
+      <Animated.View
+        style={{
+          ...styles.header,
+          backgroundColor: fadeAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
+          }),
+          borderBottomWidth: fadeAnim,
+          borderBottomColor: theme.colors.gray2
+        }}
+      >
+        <Block middle center row space="between">
+          <Block>
+            <TouchableOpacity
+              onPressIn={() => {
+                navigation.goBack();
+              }}
+              style={{
+                height: 100,
+                width: 100
+              }}
+            >
+              <Block center row>
+                <Animated.Text
+                  style={{
+                    color: fadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                    })
+                  }}
+                >
+                  <Ionicons name={title} size={35} name="ios-arrow-back" />
+                </Animated.Text>
+                <Animated.Text
+                  style={{
+                    fontWeight: "bold",
+                    marginLeft: 10,
+                    fontSize: 20,
+                    color: fadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                    })
+                  }}
+                >
+                  {title}
+                </Animated.Text>
+              </Block>
+            </TouchableOpacity>
           </Block>
-        </TouchableOpacity>
-      </Block>
-
-      <Block
-        center
-        middle
-        style={{
-          position: "absolute",
-          top: 220,
-          right: 10,
-          backgroundColor: "rgba(255, 0, 0, 0.3)",
-          borderRadius: 10,
-          paddingVertical: 3,
-          paddingHorizontal: 8
-        }}
-      >
-        <Text white bold size={11}>
-          {imageNum + " / 3"}
-        </Text>
-      </Block>
-
-      <TouchableOpacity
-        onPress={() => handleAddHeart(shop.id)}
-        style={{
-          position: "absolute",
-          top: 55,
-          right: 20
-        }}
-      >
-        <Ionicons
-          size={35}
-          color={theme.colors.secondary}
-          name={
-            user.myfavorites.indexOf(shop.id) == -1
-              ? "ios-heart-empty"
-              : "ios-heart"
-          }
-          style={styles.icon}
-        />
-      </TouchableOpacity>
-
-      <TouchableOpacity
-        onPress={() =>
-          navigation.navigate("Chat", {
-            title: shop.name,
-            engName: shop.engName
-          })
-        }
-        style={{
-          position: "absolute",
-          top: 58,
-          right: 65
-        }}
-      >
-        <AntDesign
-          size={30}
-          color={theme.colors.secondary}
-          name="message1"
-          style={styles.icon}
-        />
-      </TouchableOpacity>
-
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={360}
-        pagingEnabled
-        onScroll={handleScroll}
-        style={{ position: "absolute", top: 0, zIndex: -1 }}
-      >
-        {[1, 2, 3].map(e => (
-          <ImageBackground
-            key={e}
-            source={{ uri: shop.source }}
+          <Animated.Text
             style={{
-              width: width,
-              height: 250,
-              resizeMode: "stretch"
+              fontWeight: "bold",
+              fontSize: 18,
+              opacity: fadeAnim
             }}
           >
-            <Block
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0, 0, 0, 0.24)"
-              }}
-            ></Block>
-          </ImageBackground>
-        ))}
-      </ScrollView>
+            {shop.name}
+          </Animated.Text>
+          <Block middle row right style={{ paddingRight: 2 }}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Chat", {
+                  title: shop.name,
+                  engName: shop.engName
+                })
+              }
+              style={{ marginHorizontal: 12, marginTop: 2 }}
+            >
+              <AntDesign
+                size={28}
+                color={theme.colors.secondary}
+                name="message1"
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+
+            <TouchableOpacity onPress={() => handleAddHeart(shop.id)}>
+              <Ionicons
+                size={32}
+                color={theme.colors.secondary}
+                name={
+                  user.myfavorites.indexOf(shop.id) == -1
+                    ? "ios-heart-empty"
+                    : "ios-heart"
+                }
+                style={styles.icon}
+              />
+            </TouchableOpacity>
+          </Block>
+        </Block>
+      </Animated.View>
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginTop: 220, paddingTop: 10, marginBottom: 65 }}
+        style={{ marginBottom: 65, zIndex: -1 }}
+        scrollEventThrottle={360}
+        onScroll={handleScrollByY}
       >
+        <Block>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={360}
+            pagingEnabled
+            onScroll={handleScrollByX}
+          >
+            {[1, 2, 3].map(e => (
+              <ImageBackground
+                key={e}
+                source={{ uri: shop.source }}
+                style={{
+                  width: width,
+                  height: 250,
+                  resizeMode: "stretch"
+                }}
+              >
+                <Block
+                  style={{
+                    width: "100%",
+                    height: "100%",
+                    backgroundColor: "rgba(0, 0, 0, 0.24)"
+                  }}
+                ></Block>
+              </ImageBackground>
+            ))}
+          </ScrollView>
+          <Block
+            center
+            middle
+            style={{
+              position: "absolute",
+              bottom: 10,
+              right: 10,
+              backgroundColor: "rgba(255, 0, 0, 0.3)",
+              borderRadius: 10,
+              paddingVertical: 3,
+              paddingHorizontal: 8
+            }}
+          >
+            <Text white bold size={11}>
+              {imageNum + " / 3"}
+            </Text>
+          </Block>
+        </Block>
+
         <Block style={[styles.categories, { marginTop: 20 }]}>
           <Block row space="between">
             <Block>
@@ -622,8 +667,12 @@ ShopScreen.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: theme.sizes.base * 2,
-    paddingHorizontal: theme.sizes.padding
+    top: theme.sizes.padding * 1.7,
+    height: 50,
+    width: width,
+    paddingHorizontal: theme.sizes.padding,
+    position: "absolute",
+    zIndex: 100
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
