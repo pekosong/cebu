@@ -23,7 +23,7 @@ export const styles = StyleSheet.create({
   divider: {
     height: 0,
     marginVertical: theme.sizes.base * 1,
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderWidth: 0.3,
+    borderColor: theme.colors.gray2
   }
 });

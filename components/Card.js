@@ -49,7 +49,7 @@ export default Card = props => {
           >
             <Ionicons
               size={30}
-              color={theme.colors.secondary}
+              color={theme.colors.white}
               name={
                 myfavorites.includes(item.shopCode)
                   ? "ios-heart"

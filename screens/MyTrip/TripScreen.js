@@ -45,6 +45,8 @@ export default function ShopScreen(props) {
   const [date, setDate] = useState({});
   const [selectedDate, setSelectedDate] = useState("");
   const [time, setTime] = useState("");
+  const [timeCan, setTimeCan] = useState([]);
+
   const [people, setPeople] = useState(1);
   const [text, setText] = useState("");
   const [imageNum, setImageNum] = useState(1);
@@ -56,11 +58,12 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
+    let reservation = navigation.getParam("todo");
     let myPlans = user.plans;
     let days = {};
 
     Object.keys(myPlans).forEach((key, idx) => {
-      days[`Day ${idx + 1}`] = key;
+      days[key] = `Day ${idx + 1}`;
     });
 
     let shopCode = navigation.getParam("shopCode");
@@ -71,7 +74,10 @@ export default function ShopScreen(props) {
       setShop(navigation.getParam("shop"));
     }
 
-    setTodo(navigation.getParam("todo"));
+    setTodo(reservation);
+    setSelectedDate(reservation.date);
+    setTime(reservation.time);
+    setPeople(reservation.people);
     setDate(days);
     setTitle(navigation.getParam("title"));
   }, [user]);
@@ -100,13 +106,14 @@ export default function ShopScreen(props) {
     let reservation = {};
     reservation["time"] = time;
     reservation["people"] = people;
-    reservation["date"] = date[selectedDate];
+    reservation["date"] = selectedDate;
     reservation["shop"] = shop;
 
     let allPlans = user.plans;
-    let newPlans = user.plans[date[selectedDate]];
-    newPlans[time] = reservation;
-    allPlans[date[selectedDate]] = newPlans;
+
+    delete allPlans[todo.date][todo.time];
+
+    allPlans[selectedDate][time] = reservation;
 
     dispatch(makeResevation(allPlans));
     setShowReservation(false);
@@ -134,7 +141,7 @@ export default function ShopScreen(props) {
           <TouchableOpacity onPress={() => setShowReservation(false)}>
             <Ionicons size={50} color={theme.colors.black} name="ios-close" />
           </TouchableOpacity>
-          <Text h1 bold style={{ marginBottom: 50 }}>
+          <Text h1 bold style={{ marginBottom: 20 }}>
             예약 신청
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
@@ -151,7 +158,14 @@ export default function ShopScreen(props) {
                     <Button
                       key={t}
                       style={t == selectedDate ? styles.onDate : styles.date}
-                      onPress={() => setSelectedDate(t)}
+                      onPress={() => {
+                        setTimeCan(
+                          Object.keys(user.plans[t]).filter(
+                            e => e != "hotel" && e != "nDay"
+                          )
+                        );
+                        setSelectedDate(t);
+                      }}
                     >
                       <Block center>
                         <Text
@@ -166,7 +180,7 @@ export default function ShopScreen(props) {
                             marginBottom: 5
                           }}
                         >
-                          {t}
+                          {date[t]}
                         </Text>
                         <Text
                           style={{
@@ -177,7 +191,7 @@ export default function ShopScreen(props) {
                             fontSize: 14
                           }}
                         >
-                          {date[t]}
+                          {t}
                         </Text>
                       </Block>
                     </Button>
@@ -196,15 +210,25 @@ export default function ShopScreen(props) {
                   {TIMES.map(t => (
                     <Button
                       key={t}
-                      style={t == time ? styles.onTime : styles.time}
+                      style={
+                        timeCan.indexOf(t) != -1
+                          ? styles.noTime
+                          : t == time
+                          ? styles.onTime
+                          : styles.time
+                      }
                       textStyle={{
                         color:
-                          t == time ? theme.colors.white : theme.colors.black,
+                          timeCan.indexOf(t) != -1
+                            ? theme.colors.white
+                            : t == time
+                            ? theme.colors.white
+                            : theme.colors.black,
                         fontSize: 14
                       }}
                       onPress={() => setTime(t)}
                     >
-                      {t}
+                      {timeCan.indexOf(t) != -1 ? "예약중" : t}
                     </Button>
                   ))}
                 </Block>
@@ -273,7 +297,7 @@ export default function ShopScreen(props) {
               <Block flex={2}>
                 <Text style={{ marginBottom: 5 }}>예약일</Text>
                 <Text h2 bold color={theme.colors.primary}>
-                  {date[selectedDate]}
+                  {selectedDate}
                 </Text>
               </Block>
               <Block center flex={2}>
@@ -305,7 +329,7 @@ export default function ShopScreen(props) {
                 handleReservation();
               }}
             >
-              예약 요청
+              예약 변경 요청
             </Button>
           </ScrollView>
         </Block>
@@ -322,8 +346,8 @@ export default function ShopScreen(props) {
             inputRange: [0, 1],
             outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
           }),
-          borderBottomWidth: fadeAnim,
-          borderBottomColor: theme.colors.gray2
+          borderWidth: fadeAnim,
+          borderColor: theme.colors.gray2
         }}
       >
         <Block middle center row space="between">
@@ -348,27 +372,16 @@ export default function ShopScreen(props) {
                 >
                   <Ionicons name={title} size={35} name="ios-arrow-back" />
                 </Animated.Text>
-                <Animated.Text
-                  style={{
-                    fontWeight: "bold",
-                    marginLeft: 10,
-                    fontSize: 20,
-                    color: fadeAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                    })
-                  }}
-                >
-                  {title}
-                </Animated.Text>
               </Block>
             </TouchableOpacity>
           </Block>
           <Animated.Text
             style={{
+              color: theme.colors.black,
               fontWeight: "bold",
               fontSize: 18,
-              opacity: fadeAnim
+              opacity: fadeAnim,
+              marginRight: 30
             }}
           >
             {shop.name}
@@ -383,25 +396,37 @@ export default function ShopScreen(props) {
               }
               style={{ marginHorizontal: 12, marginTop: 2 }}
             >
-              <AntDesign
-                size={28}
-                color={theme.colors.secondary}
-                name="message1"
-                style={styles.icon}
-              />
+              <Animated.Text
+                style={{
+                  color: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                  })
+                }}
+              >
+                <AntDesign size={28} name="message1" style={styles.icon} />
+              </Animated.Text>
             </TouchableOpacity>
 
             <TouchableOpacity onPress={() => handleAddHeart(shop.id)}>
-              <Ionicons
-                size={32}
-                color={theme.colors.secondary}
-                name={
-                  user.myfavorites.indexOf(shop.id) == -1
-                    ? "ios-heart-empty"
-                    : "ios-heart"
-                }
-                style={styles.icon}
-              />
+              <Animated.Text
+                style={{
+                  color: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                  })
+                }}
+              >
+                <Ionicons
+                  size={32}
+                  name={
+                    user.myfavorites.indexOf(shop.id) == -1
+                      ? "ios-heart-empty"
+                      : "ios-heart"
+                  }
+                  style={styles.icon}
+                />
+              </Animated.Text>
             </TouchableOpacity>
           </Block>
         </Block>
@@ -477,9 +502,7 @@ export default function ShopScreen(props) {
         </Block>
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginHorizontal: theme.sizes.padding
           }}
         ></Divider>
         <Block style={styles.categories}>
@@ -505,9 +528,7 @@ export default function ShopScreen(props) {
         </Block>
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginHorizontal: theme.sizes.padding
           }}
         ></Divider>
         <Block style={styles.categories}>
@@ -531,9 +552,7 @@ export default function ShopScreen(props) {
         </Block>
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginHorizontal: theme.sizes.padding
           }}
         ></Divider>
         <Block style={styles.categories}>
@@ -572,9 +591,7 @@ export default function ShopScreen(props) {
 
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginHorizontal: theme.sizes.padding
           }}
         ></Divider>
         <Block style={styles.categories}>
@@ -589,9 +606,7 @@ export default function ShopScreen(props) {
         </Block>
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginHorizontal: theme.sizes.padding
           }}
         ></Divider>
         <Block style={styles.categories}>
@@ -615,9 +630,7 @@ export default function ShopScreen(props) {
         <Divider
           style={{
             marginHorizontal: theme.sizes.padding,
-            marginTop: 20,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
+            marginTop: 20
           }}
         ></Divider>
         <Block style={{ ...styles.categories, marginTop: 10 }}>
@@ -755,6 +768,16 @@ const styles = StyleSheet.create({
     marginRight: 5,
     borderWidth: 1,
     backgroundColor: theme.colors.black,
+    borderColor: theme.colors.white
+  },
+  noTime: {
+    width: 60,
+    height: 40,
+    padding: 0,
+    marginRight: 5,
+    borderWidth: 1,
+    color: theme.colors.primary,
+    backgroundColor: theme.colors.primary,
     borderColor: theme.colors.white
   },
   date: {

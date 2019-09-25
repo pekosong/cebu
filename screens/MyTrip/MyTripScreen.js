@@ -79,7 +79,7 @@ function MyTripScreen(props) {
     return `${_month}월 ${_day}일`;
   };
 
-  renderList = day => {
+  renderList = (day, lastItem) => {
     let korDay = makeMonDay(day);
     let item = plans[day];
     let times = Object.keys(item);
@@ -149,12 +149,7 @@ function MyTripScreen(props) {
             </Text>
           </Button>
         )}
-        <Divider
-          style={{
-            borderWidth: 1,
-            borderColor: theme.colors.gray2
-          }}
-        ></Divider>
+        {lastItem ? null : <Divider></Divider>}
       </Block>
     );
   };
@@ -171,8 +166,10 @@ function MyTripScreen(props) {
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {Object.values(selectedDates).map(day => {
-            return renderList(day);
+          {Object.values(selectedDates).map((day, idx) => {
+            lastItem =
+              Object.values(selectedDates).length == idx + 1 ? true : false;
+            return renderList(day, lastItem);
           })}
         </ScrollView>
       ) : (
