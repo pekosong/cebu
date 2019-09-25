@@ -40,6 +40,7 @@ const TIMES = [
 export default function ShopScreen(props) {
   const { navigation, recommendList } = props;
   const [shop, setShop] = useState({});
+  const [todo, setTodo] = useState({});
   const [title, setTitle] = useState("");
   const [date, setDate] = useState({});
   const [selectedDate, setSelectedDate] = useState("");
@@ -70,6 +71,7 @@ export default function ShopScreen(props) {
       setShop(navigation.getParam("shop"));
     }
 
+    setTodo(navigation.getParam("todo"));
     setDate(days);
     setTitle(navigation.getParam("title"));
   }, [user]);
@@ -472,10 +474,60 @@ export default function ShopScreen(props) {
               {shop.tags}
             </Text>
           </Block>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam
+        </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            예약정보
           </Text>
+          <Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>예약인원</Text>
+              <Text h3>{todo.people}명</Text>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>예약시간</Text>
+              <Text h3>{todo.time}</Text>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>예약정보</Text>
+              <Text h3>
+                {shop.category == "Massage" ? "전신마사지" : "스테이크"}
+              </Text>
+            </Block>
+          </Block>
+        </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2
+          }}
+        ></Divider>
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            픽업정보
+          </Text>
+          <Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>픽업장소</Text>
+              <Text h3>호텔 정문</Text>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>픽업시간</Text>
+              <Text h3>{todo.time}</Text>
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>픽업차량</Text>
+              <Text h3>도요타 캠리 - 가가가</Text>
+            </Block>
+          </Block>
         </Block>
         <Divider
           style={{
@@ -645,7 +697,7 @@ export default function ShopScreen(props) {
             }}
             onPress={() => setShowReservation(true)}
           >
-            예약 요청
+            예약 변경
           </Button>
         </Block>
       </Block>
