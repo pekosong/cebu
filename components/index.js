@@ -2,6 +2,7 @@ import Block from "./Block";
 import Badge from "./Badge";
 import Button from "./Button";
 import Card from "./Card";
+import CardMenu from "./CardMenu";
 import Input from "./Input";
 import Text from "./Text";
 import Progress from "./Progress";
@@ -15,6 +16,7 @@ export {
   Badge,
   Button,
   Card,
+  CardMenu,
   Input,
   Text,
   Progress,

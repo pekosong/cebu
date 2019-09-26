@@ -35,7 +35,6 @@ export default Card = props => {
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Shop", {
-          title: "찾기",
           shopCode: item.shopCode
         })
       }
