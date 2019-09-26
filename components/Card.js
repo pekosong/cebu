@@ -11,14 +11,16 @@ import { updateFavorite } from "../redux/action";
 export default Card = props => {
   const { style, children, item, navigation } = props;
   const [myfavorites, setMyfavorites] = useState([]);
+  const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
     if (user.myfavorites) {
       setMyfavorites(user.myfavorites);
+      setIsLoaded(true);
     }
-  });
+  }, [user]);
 
   handleHeart = async shop => {
     if (myfavorites.includes(shop)) {
@@ -44,21 +46,24 @@ export default Card = props => {
             onPress={() => handleHeart(item.shopCode)}
             style={{ position: "absolute", top: 5, right: 10 }}
           >
-            <Ionicons
-              size={30}
-              color={theme.colors.white}
-              name={
-                myfavorites.includes(item.shopCode)
-                  ? "ios-heart"
-                  : "ios-heart-empty"
-              }
-              style={{
-                textShadowColor: theme.colors.black,
-                textShadowOffset: { width: 0.5, height: 1 },
-                textShadowRadius: 1
-              }}
-            />
+            {isLoaded ? (
+              <Ionicons
+                size={30}
+                color={theme.colors.white}
+                name={
+                  myfavorites.includes(item.shopCode)
+                    ? "ios-heart"
+                    : "ios-heart-empty"
+                }
+                style={{
+                  textShadowColor: theme.colors.black,
+                  textShadowOffset: { width: 0.5, height: 1 },
+                  textShadowRadius: 1
+                }}
+              />
+            ) : null}
           </TouchableOpacity>
+
           <Block
             style={{
               position: "absolute",

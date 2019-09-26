@@ -95,7 +95,12 @@ const SearchScreen = props => {
               scrollEnabled={true}
             >
               {recommendList.map((item, idx) => (
-                <Card key={idx} item={item} navigation={navigation}>
+                <Card
+                  key={idx}
+                  item={item}
+                  navigation={navigation}
+                  favorite={user.myfavorites}
+                >
                   <Text
                     gray
                     caption
@@ -129,7 +134,12 @@ const SearchScreen = props => {
               scrollEnabled={true}
             >
               {eventList.map((item, idx) => (
-                <Card key={idx} item={item} navigation={navigation}>
+                <Card
+                  key={idx}
+                  item={item}
+                  navigation={navigation}
+                  favorite={user.myfavorites}
+                >
                   <Text h4 bold style={{ marginTop: 5 }}>
                     {item.event}
                   </Text>

@@ -180,7 +180,7 @@ export default function ShopScreen(props) {
             <Ionicons size={50} color={theme.colors.black} name="ios-close" />
           </TouchableOpacity>
           <Text h1 bold style={{ marginBottom: 20 }}>
-            예약 신청
+            예약 요청
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block>
@@ -595,19 +595,22 @@ export default function ShopScreen(props) {
           >
             {items.map((item, idx) => (
               <CardMenu key={idx} item={item}>
-                <Text
-                  gray
-                  caption
-                  style={{
-                    textDecorationLine: "line-through",
-                    textDecorationStyle: "solid"
-                  }}
-                >
-                  20,000원
-                </Text>
-                <Text h4 bold style={{ marginTop: 5 }}>
-                  30,000원
-                </Text>
+                <Block middle>
+                  <Text
+                    gray
+                    right
+                    caption
+                    style={{
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid"
+                    }}
+                  >
+                    20,000원
+                  </Text>
+                  <Text right bold>
+                    30,000원
+                  </Text>
+                </Block>
               </CardMenu>
             ))}
           </ScrollView>

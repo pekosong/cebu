@@ -212,7 +212,7 @@ export default function ShopScreen(props) {
             <Ionicons size={50} color={theme.colors.black} name="ios-close" />
           </TouchableOpacity>
           <Text h1 bold style={{ marginBottom: 20 }}>
-            예약 신청
+            예약 변경
           </Text>
           <ScrollView showsVerticalScrollIndicator={false}>
             <Block>

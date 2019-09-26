@@ -20,7 +20,7 @@ export default CardMenu = props => {
         </Block>
         <Block row flex={1}>
           <Block flex={3} middle>
-            <Text h3 bold style={{ marginVertical: 2 }}>
+            <Text h4 bold style={{ marginVertical: 2 }}>
               {item.name}
             </Text>
             <Text caption>{item.desc}</Text>
