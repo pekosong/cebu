@@ -36,7 +36,6 @@ const filerMap = {
 
 const CategoryScreen = props => {
   const { navigation } = props;
-  const [title, setTitle] = useState("");
   const [active, setActive] = useState("추천");
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -54,7 +53,6 @@ const CategoryScreen = props => {
 
     setSelectedLists(filteredShops);
     setIsLoaded(true);
-    setTitle(navigation.getParam("title"));
   }, []);
 
   handleCatTab = tab => {
@@ -100,7 +98,6 @@ const CategoryScreen = props => {
         key={list.name}
         onPress={() =>
           navigation.navigate("Shop", {
-            title: cateMap[navigation.getParam("category")],
             shop: list
           })
         }
@@ -165,14 +162,10 @@ const CategoryScreen = props => {
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons
-              name={title}
               size={35}
               color={theme.colors.primary}
               name="ios-arrow-back"
             />
-            <Text primary bold h2 style={{ marginLeft: 10 }}>
-              {title}
-            </Text>
           </Block>
         </Button>
         <Button>

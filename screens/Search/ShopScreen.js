@@ -126,6 +126,26 @@ export default function ShopScreen(props) {
     dispatch(updateFavorite(newfavorites));
   };
 
+  selectedDateColor = t => {
+    return t == selectedDate ? theme.colors.white : theme.colors.black;
+  };
+
+  seletedTimeStyle = t => {
+    return timeCan.indexOf(t) != -1
+      ? styles.noTime
+      : t == time
+      ? styles.onTime
+      : styles.time;
+  };
+
+  seletedTimeColor = t => {
+    return timeCan.indexOf(t) != -1
+      ? theme.colors.white
+      : t == time
+      ? theme.colors.white
+      : theme.colors.black;
+  };
+
   renderReservation = () => {
     return (
       <Modal
@@ -166,12 +186,8 @@ export default function ShopScreen(props) {
                       <Block center>
                         <Text
                           bold
-                          h4
                           style={{
-                            color:
-                              t == selectedDate
-                                ? theme.colors.white
-                                : theme.colors.black,
+                            color: selectedDateColor(t),
                             fontSize: 14,
                             marginBottom: 5
                           }}
@@ -180,10 +196,7 @@ export default function ShopScreen(props) {
                         </Text>
                         <Text
                           style={{
-                            color:
-                              t == selectedDate
-                                ? theme.colors.white
-                                : theme.colors.black,
+                            color: selectedDateColor(t),
                             fontSize: 14
                           }}
                         >
@@ -206,28 +219,15 @@ export default function ShopScreen(props) {
                   {TIMES.map(t => (
                     <Button
                       key={t}
-                      style={[
-                        styles.timeStyle,
-                        timeCan.indexOf(t) != -1
-                          ? styles.noTime
-                          : t == time
-                          ? styles.onTime
-                          : styles.time
-                      ]}
+                      style={[styles.timeStyle, seletedTimeStyle(t)]}
                       onPress={() => setTime(t)}
                     >
                       <Block center>
                         <Text
-                          h4
                           bold
                           style={{
-                            color:
-                              timeCan.indexOf(t) != -1
-                                ? theme.colors.white
-                                : t == time
-                                ? theme.colors.white
-                                : theme.colors.black,
-                            fontSize: 14
+                            color: seletedTimeColor(t),
+                            fontSize: 16
                           }}
                         >
                           {timeCan.indexOf(t) != -1 ? `예약중` : t}
@@ -235,12 +235,7 @@ export default function ShopScreen(props) {
                         {timeCan.indexOf(t) != -1 ? (
                           <Text
                             style={{
-                              color:
-                                timeCan.indexOf(t) != -1
-                                  ? theme.colors.white
-                                  : t == time
-                                  ? theme.colors.white
-                                  : theme.colors.black,
+                              color: seletedTimeColor(t),
                               fontSize: 14
                             }}
                           >
@@ -348,7 +343,7 @@ export default function ShopScreen(props) {
                 handleReservation();
               }}
             >
-              예약 변경 요청
+              예약 요청
             </Button>
           </ScrollView>
         </Block>

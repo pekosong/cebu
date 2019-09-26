@@ -110,7 +110,7 @@ export default function ShopScreen(props) {
     }
   };
 
-  handleReservation = () => {
+  handleChangeReservation = () => {
     let reservation = {};
     reservation["time"] = time;
     reservation["people"] = people;
@@ -151,6 +151,30 @@ export default function ShopScreen(props) {
       newfavorites.push(shop);
     }
     dispatch(updateFavorite(newfavorites));
+  };
+
+  selectedDateColor = t => {
+    return t == selectedDate ? theme.colors.white : theme.colors.black;
+  };
+
+  seletedTimeStyle = t => {
+    return reservationDate == selectedDate && reservationTime == t
+      ? styles.reserTime
+      : timeCan.indexOf(t) != -1
+      ? styles.noTime
+      : t == time
+      ? styles.onTime
+      : styles.time;
+  };
+
+  seletedTimeColor = t => {
+    return reservationDate == selectedDate && t == reservationTime
+      ? theme.colors.white
+      : timeCan.indexOf(t) != -1
+      ? theme.colors.white
+      : t == time
+      ? theme.colors.white
+      : theme.colors.black;
   };
 
   renderReservation = () => {
@@ -195,10 +219,7 @@ export default function ShopScreen(props) {
                           bold
                           h4
                           style={{
-                            color:
-                              t == selectedDate
-                                ? theme.colors.white
-                                : theme.colors.black,
+                            color: selectedDateColor(t),
                             fontSize: 14,
                             marginBottom: 5
                           }}
@@ -207,10 +228,7 @@ export default function ShopScreen(props) {
                         </Text>
                         <Text
                           style={{
-                            color:
-                              t == selectedDate
-                                ? theme.colors.white
-                                : theme.colors.black,
+                            color: selectedDateColor(t),
                             fontSize: 14
                           }}
                         >
@@ -233,16 +251,7 @@ export default function ShopScreen(props) {
                   {TIMES.map(t => (
                     <Button
                       key={t}
-                      style={[
-                        styles.timeStyle,
-                        reservationDate == selectedDate && t == reservationTime
-                          ? styles.reserTime
-                          : timeCan.indexOf(t) != -1
-                          ? styles.noTime
-                          : t == time
-                          ? styles.onTime
-                          : styles.time
-                      ]}
+                      style={[styles.timeStyle, seletedTimeStyle(t)]}
                       onPress={() => setTime(t)}
                     >
                       <Block center>
@@ -250,16 +259,8 @@ export default function ShopScreen(props) {
                           h4
                           bold
                           style={{
-                            color:
-                              reservationDate == selectedDate &&
-                              t == reservationTime
-                                ? theme.colors.white
-                                : timeCan.indexOf(t) != -1
-                                ? theme.colors.white
-                                : t == time
-                                ? theme.colors.white
-                                : theme.colors.black,
-                            fontSize: 14
+                            color: seletedTimeColor(t),
+                            fontSize: 16
                           }}
                         >
                           {reservationDate == selectedDate &&
@@ -274,15 +275,7 @@ export default function ShopScreen(props) {
                           -1 ? (
                           <Text
                             style={{
-                              color:
-                                reservationDate == selectedDate &&
-                                t == reservationTime
-                                  ? theme.colors.white
-                                  : timeCan.indexOf(t) != -1
-                                  ? theme.colors.white
-                                  : t == time
-                                  ? theme.colors.white
-                                  : theme.colors.black,
+                              color: seletedTimeColor(t),
                               fontSize: 14
                             }}
                           >
@@ -387,7 +380,7 @@ export default function ShopScreen(props) {
                 color: theme.colors.white
               }}
               onPress={() => {
-                handleReservation();
+                handleChangeReservation();
               }}
             >
               예약 변경 요청

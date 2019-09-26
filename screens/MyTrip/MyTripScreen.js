@@ -166,11 +166,13 @@ function MyTripScreen(props) {
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          {Object.values(selectedDates).map((day, idx) => {
-            lastItem =
-              Object.values(selectedDates).length == idx + 1 ? true : false;
-            return renderList(day, lastItem);
-          })}
+          <Block style={{ marginBottom: 40 }}>
+            {Object.values(selectedDates).map((day, idx) => {
+              lastItem =
+                Object.values(selectedDates).length == idx + 1 ? true : false;
+              return renderList(day, lastItem);
+            })}
+          </Block>
         </ScrollView>
       ) : (
         <Block style={styles.full}>

@@ -37,7 +37,6 @@ const SearchScreen = props => {
         key={item.name}
         onPress={() =>
           navigation.navigate("Category", {
-            title: "찾기",
             category: item.id
           })
         }
