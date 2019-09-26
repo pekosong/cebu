@@ -73,6 +73,12 @@ export default function ShopScreen(props) {
 
     setDate(days);
     setTitle(navigation.getParam("title"));
+    setSelectedDate(Object.keys(days)[0]);
+    setTimeCan(
+      Object.keys(user.plans[Object.keys(days)[0]]).filter(
+        e => e != "hotel" && e != "nDay"
+      )
+    );
   }, [user]);
 
   handleScrollByX = e => {
@@ -200,25 +206,48 @@ export default function ShopScreen(props) {
                   {TIMES.map(t => (
                     <Button
                       key={t}
-                      style={
+                      style={[
+                        styles.timeStyle,
                         timeCan.indexOf(t) != -1
                           ? styles.noTime
                           : t == time
                           ? styles.onTime
                           : styles.time
-                      }
-                      textStyle={{
-                        color:
-                          timeCan.indexOf(t) != -1
-                            ? theme.colors.white
-                            : t == time
-                            ? theme.colors.white
-                            : theme.colors.black,
-                        fontSize: 14
-                      }}
+                      ]}
                       onPress={() => setTime(t)}
                     >
-                      {timeCan.indexOf(t) != -1 ? "예약중" : t}
+                      <Block center>
+                        <Text
+                          h4
+                          bold
+                          style={{
+                            color:
+                              timeCan.indexOf(t) != -1
+                                ? theme.colors.white
+                                : t == time
+                                ? theme.colors.white
+                                : theme.colors.black,
+                            fontSize: 14
+                          }}
+                        >
+                          {timeCan.indexOf(t) != -1 ? `예약중` : t}
+                        </Text>
+                        {timeCan.indexOf(t) != -1 ? (
+                          <Text
+                            style={{
+                              color:
+                                timeCan.indexOf(t) != -1
+                                  ? theme.colors.white
+                                  : t == time
+                                  ? theme.colors.white
+                                  : theme.colors.black,
+                              fontSize: 14
+                            }}
+                          >
+                            {user.plans[selectedDate][t]["shop"]["name"]}
+                          </Text>
+                        ) : null}
+                      </Block>
                     </Button>
                   ))}
                 </Block>
@@ -696,24 +725,26 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  time: {
-    width: 60,
-    height: 40,
+  timeStyle: {
+    width: 100,
+    height: 50,
     padding: 0,
     marginRight: 5,
-    borderWidth: 1,
+    borderWidth: 1
+  },
+  time: {
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.black
   },
   onTime: {
-    width: 60,
-    height: 40,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
     backgroundColor: theme.colors.black,
     borderColor: theme.colors.white
   },
+  noTime: {
+    backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.white
+  },
+
   date: {
     width: 100,
     height: 50,
@@ -730,16 +761,6 @@ const styles = StyleSheet.create({
     marginRight: 5,
     borderWidth: 1,
     backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white
-  },
-  noTime: {
-    width: 60,
-    height: 40,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
-    color: theme.colors.primary,
-    backgroundColor: theme.colors.primary,
     borderColor: theme.colors.white
   },
   icon: {

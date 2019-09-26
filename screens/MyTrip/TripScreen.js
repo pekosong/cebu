@@ -44,7 +44,9 @@ export default function ShopScreen(props) {
   const [title, setTitle] = useState("");
   const [date, setDate] = useState({});
   const [selectedDate, setSelectedDate] = useState("");
+  const [reservationDate, setReservationDate] = useState("");
   const [time, setTime] = useState("");
+  const [reservationTime, setReservationTime] = useState("");
   const [timeCan, setTimeCan] = useState([]);
 
   const [people, setPeople] = useState(1);
@@ -73,13 +75,19 @@ export default function ShopScreen(props) {
     } else {
       setShop(navigation.getParam("shop"));
     }
-
     setTodo(reservation);
     setSelectedDate(reservation.date);
+    setReservationDate(reservation.date);
     setTime(reservation.time);
+    setReservationTime(reservation.time);
     setPeople(reservation.people);
     setDate(days);
     setTitle(navigation.getParam("title"));
+    setTimeCan(
+      Object.keys(user.plans[reservation.date]).filter(
+        e => e != "hotel" && e != "nDay"
+      )
+    );
   }, [user]);
 
   handleScrollByX = e => {
@@ -114,6 +122,21 @@ export default function ShopScreen(props) {
     delete allPlans[todo.date][todo.time];
 
     allPlans[selectedDate][time] = reservation;
+
+    dispatch(makeResevation(allPlans));
+    setShowReservation(false);
+  };
+
+  handleDeleteReservation = () => {
+    let reservation = {};
+    reservation["time"] = time;
+    reservation["people"] = people;
+    reservation["date"] = selectedDate;
+    reservation["shop"] = shop;
+
+    let allPlans = user.plans;
+
+    delete allPlans[todo.date][todo.time];
 
     dispatch(makeResevation(allPlans));
     setShowReservation(false);
@@ -210,25 +233,63 @@ export default function ShopScreen(props) {
                   {TIMES.map(t => (
                     <Button
                       key={t}
-                      style={
-                        timeCan.indexOf(t) != -1
+                      style={[
+                        styles.timeStyle,
+                        reservationDate == selectedDate && t == reservationTime
+                          ? styles.reserTime
+                          : timeCan.indexOf(t) != -1
                           ? styles.noTime
                           : t == time
                           ? styles.onTime
                           : styles.time
-                      }
-                      textStyle={{
-                        color:
-                          timeCan.indexOf(t) != -1
-                            ? theme.colors.white
-                            : t == time
-                            ? theme.colors.white
-                            : theme.colors.black,
-                        fontSize: 14
-                      }}
+                      ]}
                       onPress={() => setTime(t)}
                     >
-                      {timeCan.indexOf(t) != -1 ? "예약중" : t}
+                      <Block center>
+                        <Text
+                          h4
+                          bold
+                          style={{
+                            color:
+                              reservationDate == selectedDate &&
+                              t == reservationTime
+                                ? theme.colors.white
+                                : timeCan.indexOf(t) != -1
+                                ? theme.colors.white
+                                : t == time
+                                ? theme.colors.white
+                                : theme.colors.black,
+                            fontSize: 14
+                          }}
+                        >
+                          {reservationDate == selectedDate &&
+                          reservationTime == t
+                            ? "현예약"
+                            : timeCan.indexOf(t) != -1
+                            ? `예약중`
+                            : t}
+                        </Text>
+                        {reservationDate == selectedDate &&
+                        reservationTime == t ? null : timeCan.indexOf(t) !=
+                          -1 ? (
+                          <Text
+                            style={{
+                              color:
+                                reservationDate == selectedDate &&
+                                t == reservationTime
+                                  ? theme.colors.white
+                                  : timeCan.indexOf(t) != -1
+                                  ? theme.colors.white
+                                  : t == time
+                                  ? theme.colors.white
+                                  : theme.colors.black,
+                              fontSize: 14
+                            }}
+                          >
+                            {user.plans[selectedDate][t]["shop"]["name"]}
+                          </Text>
+                        ) : null}
+                      </Block>
                     </Button>
                   ))}
                 </Block>
@@ -330,6 +391,20 @@ export default function ShopScreen(props) {
               }}
             >
               예약 변경 요청
+            </Button>
+            <Button
+              style={{
+                borderWidth: 0,
+                backgroundColor: theme.colors.white
+              }}
+              textStyle={{
+                color: theme.colors.primary
+              }}
+              onPress={() => {
+                handleDeleteReservation();
+              }}
+            >
+              예약 취소 요청
             </Button>
           </ScrollView>
         </Block>
@@ -752,32 +827,27 @@ const styles = StyleSheet.create({
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth
   },
-  time: {
-    width: 60,
-    height: 40,
+  timeStyle: {
+    width: 100,
+    height: 50,
     padding: 0,
     marginRight: 5,
-    borderWidth: 1,
+    borderWidth: 1
+  },
+  time: {
     backgroundColor: theme.colors.white,
     borderColor: theme.colors.black
   },
   onTime: {
-    width: 60,
-    height: 40,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
     backgroundColor: theme.colors.black,
     borderColor: theme.colors.white
   },
   noTime: {
-    width: 60,
-    height: 40,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
-    color: theme.colors.primary,
     backgroundColor: theme.colors.primary,
+    borderColor: theme.colors.white
+  },
+  reserTime: {
+    backgroundColor: theme.colors.accent,
     borderColor: theme.colors.white
   },
   date: {
