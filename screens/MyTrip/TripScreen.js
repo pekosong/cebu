@@ -22,6 +22,29 @@ import { updateFavorite, makeResevation } from "../../redux/action";
 
 const { height, width } = Dimensions.get("window");
 
+const items = [
+  {
+    name: "전신마사지",
+    desc: "전신을 마사지",
+    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+  },
+  {
+    name: "전신마사지",
+    desc: "전신을 마사지",
+    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+  },
+  {
+    name: "전신마사지",
+    desc: "전신을 마사지",
+    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+  },
+  {
+    name: "전신마사지",
+    desc: "전신을 마사지",
+    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+  }
+];
+
 const TIMES = [
   "10:00",
   "11:00",
@@ -666,11 +689,29 @@ export default function ShopScreen(props) {
           <Text h3 bold style={styles.content}>
             주요 메뉴 및 가격
           </Text>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam, pariatur
-            reprehenderit enim quia totam,
-          </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}
+          >
+            {items.map((item, idx) => (
+              <CardMenu key={idx} item={item}>
+                <Text
+                  gray
+                  caption
+                  style={{
+                    textDecorationLine: "line-through",
+                    textDecorationStyle: "solid"
+                  }}
+                >
+                  20,000원
+                </Text>
+                <Text h4 bold style={{ marginTop: 5 }}>
+                  30,000원
+                </Text>
+              </CardMenu>
+            ))}
+          </ScrollView>
         </Block>
         <Divider
           style={{

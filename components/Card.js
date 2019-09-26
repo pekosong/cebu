@@ -10,7 +10,6 @@ import { updateFavorite } from "../redux/action";
 
 export default Card = props => {
   const { style, children, item, navigation } = props;
-  const [isLoaded, setIsLoaded] = useState(false);
   const [myfavorites, setMyfavorites] = useState([]);
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
@@ -18,7 +17,6 @@ export default Card = props => {
   useEffect(() => {
     if (user.myfavorites) {
       setMyfavorites(user.myfavorites);
-      setIsLoaded(true);
     }
   });
 
@@ -31,7 +29,7 @@ export default Card = props => {
     }
     dispatch(updateFavorite(myfavorites));
   };
-  return isLoaded ? (
+  return (
     <TouchableOpacity
       onPress={() =>
         navigation.navigate("Shop", {
@@ -91,7 +89,7 @@ export default Card = props => {
         </Block>
       </Block>
     </TouchableOpacity>
-  ) : null;
+  );
 };
 
 export const styles = StyleSheet.create({
