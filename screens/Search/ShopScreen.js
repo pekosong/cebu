@@ -552,29 +552,39 @@ export default function ShopScreen(props) {
           <Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>언어</Text>
-              <Text h3>한국어, 영어</Text>
+              <Text color={theme.colors.black} bold h3>
+                한국어, 영어
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>픽업여부</Text>
-              <Text h3>가능</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>베이비시터</Text>
-              <Text h3>가능</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>영업시간</Text>
-              <Text h3>
+              <Text color={theme.colors.black} bold h3>
                 {shop.openTime} ~ {shop.closeTime}
               </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>주소</Text>
-              <Text h3>{shop.address}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.address}
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>전화번호</Text>
-              <Text h3>{shop.phone}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.phone}
+              </Text>
             </Block>
           </Block>
         </Block>
