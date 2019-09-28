@@ -22,13 +22,35 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food1.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3",
+    likes: 20,
     review: 3.5,
     reviewCnt: 1212,
     tags: ["랍스타", "새우요리"],
     pickup: true,
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        stars: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        stars: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        stars: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Restaurant",
@@ -38,13 +60,35 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food2.jpeg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=066e24f1-86e4-49fd-8389-736902f71309",
+    likes: 20,
     review: 2.5,
     reviewCnt: 231,
     tags: ["부페", "전통음식"],
     pickup: false,
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Restaurant",
@@ -54,13 +98,35 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food3.jpeg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913",
+    likes: 20,
     review: 4.0,
     reviewCnt: 342,
     tags: ["동동", "전통음식"],
     pickup: false,
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Restaurant",
@@ -70,13 +136,35 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_food4.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d",
+    likes: 20,
     review: 4,
     reviewCnt: 545,
     tags: ["스테이크", "전통음식"],
     pickup: true,
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Massage",
@@ -86,12 +174,34 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage1.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa",
+    likes: 20,
     review: 4,
     reviewCnt: 200,
     tags: ["전통태국마사지"],
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Massage",
@@ -101,12 +211,34 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage2.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614",
+    likes: 20,
     review: 4.5,
     reviewCnt: 234,
     tags: ["전통태국마사지"],
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Massage",
@@ -116,12 +248,34 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage3.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=c0a2c43a-8cb0-457a-9b31-737d1599940e",
+    likes: 20,
     review: 5,
     reviewCnt: 156,
     tags: ["전통태국마사지"],
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   },
   {
     category: "Massage",
@@ -131,12 +285,34 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source: "'../assets/images/cebu_massage4.jpg'",
+    source:
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f",
+    likes: 20,
     review: 3.5,
     reviewCnt: 270,
     tags: ["전통태국마사지"],
     openTime: "11:00",
-    closeTime: "24:00"
+    closeTime: "24:00",
+    reviews: [
+      {
+        writer: "peko22@naver.com",
+        comment: "너무 좋아요",
+        star: 5,
+        date: new Date()
+      },
+      {
+        writer: "peko2@naver.com",
+        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        star: 3,
+        date: new Date()
+      },
+      {
+        writer: "peko1@naver.com",
+        comment: "다음에 꼭 다시 오고 싶어요",
+        star: 4,
+        date: new Date()
+      }
+    ]
   }
 ];
 

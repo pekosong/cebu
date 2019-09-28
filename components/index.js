@@ -10,6 +10,9 @@ import Divider from "./Divider";
 import Switch from "./Switch";
 import SearchBar from "./SearchBar";
 import WideText from "./WideText";
+import Reviews from "./Reviews";
+import FullImageSlider from "./FullImageSlider";
+import ReservationModal from "./ReservationModal";
 
 export {
   Block,
@@ -23,5 +26,8 @@ export {
   Divider,
   Switch,
   SearchBar,
-  WideText
+  WideText,
+  Reviews,
+  FullImageSlider,
+  ReservationModal
 };

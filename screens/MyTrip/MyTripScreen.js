@@ -149,7 +149,7 @@ function MyTripScreen(props) {
             </Text>
           </Button>
         )}
-        {lastItem ? null : <Divider></Divider>}
+        {lastItem ? null : <Divider style={{ marginHorizontal: 0 }}></Divider>}
       </Block>
     );
   };

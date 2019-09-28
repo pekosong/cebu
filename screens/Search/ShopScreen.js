@@ -3,7 +3,6 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
-  ImageBackground,
   TouchableOpacity,
   Modal,
   Animated
@@ -14,11 +13,18 @@ import { Ionicons, AntDesign } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
 import Button from "apsl-react-native-button";
 
-import { Input, Block, Text, Divider } from "../../components";
+import {
+  Block,
+  Text,
+  Divider,
+  Reviews,
+  FullImageSlider,
+  ReservationModal
+} from "../../components";
 import { theme, mocks } from "../../constants";
 
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite, makeResevation } from "../../redux/action";
+import { updateFavorite } from "../../redux/action";
 
 const { height, width } = Dimensions.get("window");
 
@@ -44,33 +50,11 @@ const items = [
     src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
   }
 ];
-const TIMES = [
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-  "21:00"
-];
 
 export default function ShopScreen(props) {
   const { navigation, recommendList } = props;
   const [shop, setShop] = useState({});
-  const [title, setTitle] = useState("");
-  const [date, setDate] = useState({});
-  const [selectedDate, setSelectedDate] = useState("");
-  const [time, setTime] = useState("");
-  const [timeCan, setTimeCan] = useState([]);
-  const [people, setPeople] = useState(1);
-  const [text, setText] = useState("");
-  const [imageNum, setImageNum] = useState(1);
-  const [showReservation, setShowReservation] = useState(false);
+  const [visible, setVisible] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
   const shops = useSelector(state => state.shops, shallowEqual);
 
@@ -78,13 +62,6 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    let myPlans = user.plans;
-    let days = {};
-
-    Object.keys(myPlans).forEach((key, idx) => {
-      days[key] = `Day ${idx + 1}`;
-    });
-
     let shopCode = navigation.getParam("shopCode");
     if (shopCode) {
       let myShop = shops.filter(e => e.id == shopCode);
@@ -92,22 +69,7 @@ export default function ShopScreen(props) {
     } else {
       setShop(navigation.getParam("shop"));
     }
-
-    setDate(days);
-    setTitle(navigation.getParam("title"));
-    setSelectedDate(Object.keys(days)[0]);
-    setTimeCan(
-      Object.keys(user.plans[Object.keys(days)[0]]).filter(
-        e => e != "hotel" && e != "nDay"
-      )
-    );
   }, [user]);
-
-  handleScrollByX = e => {
-    if (e.nativeEvent.contentOffset.x % 360 == 0) {
-      setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
-    }
-  };
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
@@ -123,20 +85,6 @@ export default function ShopScreen(props) {
     }
   };
 
-  handleReservation = () => {
-    let reservation = {};
-    reservation["time"] = time;
-    reservation["people"] = people;
-    reservation["date"] = selectedDate;
-    reservation["shop"] = shop;
-
-    let allPlans = user.plans;
-    allPlans[selectedDate][time] = reservation;
-
-    dispatch(makeResevation(allPlans));
-    setShowReservation(false);
-  };
-
   handleAddHeart = async shop => {
     let newfavorites = user.myfavorites;
     if (newfavorites.includes(shop)) {
@@ -146,231 +94,6 @@ export default function ShopScreen(props) {
       newfavorites.push(shop);
     }
     dispatch(updateFavorite(newfavorites));
-  };
-
-  selectedDateColor = t => {
-    return t == selectedDate ? theme.colors.white : theme.colors.black;
-  };
-
-  seletedTimeStyle = t => {
-    return timeCan.indexOf(t) != -1
-      ? styles.noTime
-      : t == time
-      ? styles.onTime
-      : styles.time;
-  };
-
-  seletedTimeColor = t => {
-    return timeCan.indexOf(t) != -1
-      ? theme.colors.white
-      : t == time
-      ? theme.colors.white
-      : theme.colors.black;
-  };
-
-  renderReservation = () => {
-    return (
-      <Modal
-        animationType="slide"
-        visible={showReservation}
-        onRequestClose={() => setShowReservation(false)}
-      >
-        <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
-          <TouchableOpacity onPress={() => setShowReservation(false)}>
-            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
-          </TouchableOpacity>
-          <Text h1 bold style={{ marginBottom: 20 }}>
-            예약 요청
-          </Text>
-          <ScrollView showsVerticalScrollIndicator={false}>
-            <Block>
-              <Text bold h3 style={{ marginVertical: 10 }}>
-                예약일
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <Block row>
-                  {Object.keys(date).map(t => (
-                    <Button
-                      key={t}
-                      style={t == selectedDate ? styles.onDate : styles.date}
-                      onPress={() => {
-                        setTimeCan(
-                          Object.keys(user.plans[t]).filter(
-                            e => e != "hotel" && e != "nDay"
-                          )
-                        );
-                        setSelectedDate(t);
-                      }}
-                    >
-                      <Block center>
-                        <Text
-                          bold
-                          style={{
-                            color: selectedDateColor(t),
-                            fontSize: 14,
-                            marginBottom: 5
-                          }}
-                        >
-                          {date[t]}
-                        </Text>
-                        <Text
-                          style={{
-                            color: selectedDateColor(t),
-                            fontSize: 14
-                          }}
-                        >
-                          {t}
-                        </Text>
-                      </Block>
-                    </Button>
-                  ))}
-                </Block>
-              </ScrollView>
-              <Divider></Divider>
-              <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
-                예약시간
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-              >
-                <Block row>
-                  {TIMES.map(t => (
-                    <Button
-                      key={t}
-                      style={[styles.timeStyle, seletedTimeStyle(t)]}
-                      onPress={() => setTime(t)}
-                    >
-                      <Block center>
-                        <Text
-                          bold
-                          style={{
-                            color: seletedTimeColor(t),
-                            fontSize: 16
-                          }}
-                        >
-                          {timeCan.indexOf(t) != -1 ? `예약중` : t}
-                        </Text>
-                        {timeCan.indexOf(t) != -1 ? (
-                          <Text
-                            style={{
-                              color: seletedTimeColor(t),
-                              fontSize: 14
-                            }}
-                          >
-                            {user.plans[selectedDate][t]["shop"]["name"]}
-                          </Text>
-                        ) : null}
-                      </Block>
-                    </Button>
-                  ))}
-                </Block>
-              </ScrollView>
-              <Divider></Divider>
-
-              <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
-                예약인원
-              </Text>
-              <Block
-                style={{
-                  backgroundColor: theme.colors.black,
-                  borderRadius: 10,
-                  marginBottom: 15,
-                  height: 45
-                }}
-                row
-              >
-                <Button
-                  style={{
-                    borderWidth: 0,
-                    flex: 0.3
-                  }}
-                  textStyle={{ color: theme.colors.white, fontSize: 30 }}
-                  onPress={() => {
-                    setPeople(people == 1 ? people : people - 1);
-                  }}
-                >
-                  -
-                </Button>
-                <Button
-                  style={{
-                    borderWidth: 0,
-                    flex: 1
-                  }}
-                  textStyle={{ color: theme.colors.white, fontSize: 16 }}
-                >
-                  {people + "명"}
-                </Button>
-                <Button
-                  style={{
-                    borderWidth: 0,
-                    flex: 0.3
-                  }}
-                  textStyle={{ color: theme.colors.white, fontSize: 30 }}
-                  onPress={() => setPeople(people + 1)}
-                >
-                  +
-                </Button>
-              </Block>
-              <Divider></Divider>
-
-              <Text bold h3 style={{ marginVertical: 10 }}>
-                추가 요청 사항
-              </Text>
-              <Input
-                style={styles.input}
-                defaultValue={text}
-                onChangeText={e => {
-                  setText(e);
-                }}
-              />
-            </Block>
-
-            <Block row space="between" style={{ marginVertical: 20 }}>
-              <Block flex={2}>
-                <Text style={{ marginBottom: 5 }}>예약일</Text>
-                <Text h2 bold color={theme.colors.primary}>
-                  {selectedDate}
-                </Text>
-              </Block>
-              <Block center flex={2}>
-                <Text style={{ marginBottom: 5 }}>예약시간</Text>
-                <Text h2 bold color={theme.colors.primary}>
-                  {time}
-                </Text>
-              </Block>
-              <Block flex={1}>
-                <Text right style={{ marginBottom: 5 }}>
-                  예약인원
-                </Text>
-                <Text right h2 bold color={theme.colors.primary}>
-                  {people + "명"}
-                </Text>
-              </Block>
-            </Block>
-            <Divider></Divider>
-
-            <Button
-              style={{
-                borderWidth: 0,
-                backgroundColor: theme.colors.primary
-              }}
-              textStyle={{
-                color: theme.colors.white
-              }}
-              onPress={() => {
-                handleReservation();
-              }}
-            >
-              예약 요청
-            </Button>
-          </ScrollView>
-        </Block>
-      </Modal>
-    );
   };
 
   return (
@@ -406,7 +129,7 @@ export default function ShopScreen(props) {
                     })
                   }}
                 >
-                  <Ionicons name={title} size={35} name="ios-arrow-back" />
+                  <Ionicons size={35} name="ios-arrow-back" />
                 </Animated.Text>
               </Block>
             </TouchableOpacity>
@@ -474,53 +197,7 @@ export default function ShopScreen(props) {
         scrollEventThrottle={360}
         onScroll={handleScrollByY}
       >
-        <Block>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={360}
-            pagingEnabled
-            onScroll={handleScrollByX}
-          >
-            {[1, 2, 3].map(e => (
-              <ImageBackground
-                key={e}
-                source={{ uri: shop.source }}
-                style={{
-                  width: width,
-                  height: 250,
-                  resizeMode: "stretch"
-                }}
-              >
-                <Block
-                  style={{
-                    width: "100%",
-                    height: "100%",
-                    backgroundColor: "rgba(0, 0, 0, 0.24)"
-                  }}
-                ></Block>
-              </ImageBackground>
-            ))}
-          </ScrollView>
-          <Block
-            center
-            middle
-            style={{
-              position: "absolute",
-              bottom: 10,
-              right: 10,
-              backgroundColor: "rgba(255, 0, 0, 0.3)",
-              borderRadius: 10,
-              paddingVertical: 3,
-              paddingHorizontal: 8
-            }}
-          >
-            <Text white bold size={11}>
-              {imageNum + " / 3"}
-            </Text>
-          </Block>
-        </Block>
-
+        <FullImageSlider source={shop.source}></FullImageSlider>
         <Block style={[styles.categories, { marginTop: 20 }]}>
           <Block row space="between">
             <Block>
@@ -540,11 +217,7 @@ export default function ShopScreen(props) {
             recusandae voluptate numquam consectetur quibusdam
           </Text>
         </Block>
-        <Divider
-          style={{
-            marginHorizontal: theme.sizes.padding
-          }}
-        ></Divider>
+        <Divider />
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             업체정보
@@ -578,12 +251,7 @@ export default function ShopScreen(props) {
             </Block>
           </Block>
         </Block>
-
-        <Divider
-          style={{
-            marginHorizontal: theme.sizes.padding
-          }}
-        ></Divider>
+        <Divider />
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             주요 메뉴 및 가격
@@ -615,11 +283,23 @@ export default function ShopScreen(props) {
             ))}
           </ScrollView>
         </Block>
-        <Divider
-          style={{
-            marginHorizontal: theme.sizes.padding
-          }}
-        ></Divider>
+        <Divider />
+        <Block style={styles.categories}>
+          <Block row space="between">
+            <Text h3 bold style={styles.content}>
+              후기
+            </Text>
+            <TouchableOpacity>
+              <Text color={theme.colors.primary}>더보기</Text>
+            </TouchableOpacity>
+          </Block>
+          {shop.reviews
+            ? shop.reviews.map((review, idx) => (
+                <Reviews key={idx} review={review} />
+              ))
+            : null}
+        </Block>
+        <Divider />
         <Block style={styles.categories}>
           <Text h3 bold>
             위치
@@ -640,7 +320,6 @@ export default function ShopScreen(props) {
         </MapView>
         <Divider
           style={{
-            marginHorizontal: theme.sizes.padding,
             marginTop: 20
           }}
         ></Divider>
@@ -687,27 +366,46 @@ export default function ShopScreen(props) {
           paddingTop: 10
         }}
       >
-        <Block
-          flex={2}
-          left
-          style={{ marginLeft: theme.sizes.padding, marginTop: 5 }}
-        >
-          <StarRating
-            disabled={false}
-            maxStars={5}
-            rating={shop.review}
-            starSize={15}
-            fullStarColor={theme.colors.accent}
-            containerStyle={{ width: 20 }}
-          />
-          <Text style={{ marginTop: 5 }}>
-            {shop.reviewCnt
-              ? shop.reviewCnt
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
-              : null}
-            Reviews
-          </Text>
+        <Block flex={2} left>
+          <Block
+            row
+            style={{
+              marginLeft: theme.sizes.padding,
+              marginTop: 3,
+              marginBottom: -6
+            }}
+          >
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={shop.review}
+              starSize={15}
+              fullStarColor={theme.colors.accent}
+              containerStyle={{ width: 70 }}
+            />
+            <Text style={{ marginLeft: 7 }}>
+              {shop.reviewCnt
+                ? shop.reviewCnt
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+                : null}
+              Reviews
+            </Text>
+          </Block>
+          <Block row style={{ marginLeft: theme.sizes.padding }}>
+            <Ionicons
+              size={15}
+              color={theme.colors.accent}
+              name={"ios-heart"}
+            />
+            <Text style={{ marginLeft: 7 }}>
+              {shop.likes
+                ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " "
+                : null}
+              Likes
+            </Text>
+          </Block>
         </Block>
         <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
           <Button
@@ -719,13 +417,23 @@ export default function ShopScreen(props) {
             textStyle={{
               color: theme.colors.white
             }}
-            onPress={() => setShowReservation(true)}
+            onPress={() => setVisible(true)}
           >
             예약 요청
           </Button>
         </Block>
       </Block>
-      {renderReservation()}
+      <Modal
+        animationType="slide"
+        visible={visible}
+        onRequestClose={() => setVisible(false)}
+      >
+        <ReservationModal
+          shop={shop}
+          navigation={navigation}
+          setVisible={setVisible}
+        />
+      </Modal>
     </Block>
   );
 }
@@ -756,50 +464,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 15
-  },
-  input: {
-    borderRadius: 0,
-    borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
-  },
-  timeStyle: {
-    width: 100,
-    height: 50,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1
-  },
-  time: {
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black
-  },
-  onTime: {
-    backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white
-  },
-  noTime: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.white
-  },
-
-  date: {
-    width: 100,
-    height: 50,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black
-  },
-  onDate: {
-    width: 100,
-    height: 50,
-    padding: 0,
-    marginRight: 5,
-    borderWidth: 1,
-    backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white
   },
   icon: {
     textShadowColor: theme.colors.black,

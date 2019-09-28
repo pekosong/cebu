@@ -24,6 +24,7 @@ export const styles = StyleSheet.create({
     height: 0,
     marginVertical: theme.sizes.base * 1,
     borderWidth: 0.3,
-    borderColor: theme.colors.gray2
+    borderColor: theme.colors.gray2,
+    marginHorizontal: theme.sizes.padding
   }
 });
