@@ -4,7 +4,8 @@ import {
   ScrollView,
   TextInput,
   AsyncStorage,
-  Image
+  Image,
+  KeyboardAvoidingView
 } from "react-native";
 import { Button, Block, Text } from "../../components";
 import { theme } from "../../constants";
@@ -67,7 +68,7 @@ const MyShopScreen = props => {
   };
 
   return (
-    <Block>
+    <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block flex={false} row center space="between" style={styles.header}>
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
@@ -218,7 +219,7 @@ const MyShopScreen = props => {
           </Block>
         </Block>
       </ScrollView>
-    </Block>
+    </KeyboardAvoidingView>
   );
 };
 
@@ -227,6 +228,10 @@ MyShopScreen.navigationOptions = {
 };
 MyShopScreen.defaultProps = {};
 const styles = StyleSheet.create({
+  login: {
+    flex: 1,
+    justifyContent: "center"
+  },
   header: {
     marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding

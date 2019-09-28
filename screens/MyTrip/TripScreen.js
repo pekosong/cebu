@@ -227,15 +227,19 @@ export default function ShopScreen(props) {
           <Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>예약인원</Text>
-              <Text h3>{todo.people}명</Text>
+              <Text color={theme.colors.black} bold h3>
+                {todo.people}명
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>예약시간</Text>
-              <Text h3>{todo.time}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {todo.time}
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>예약정보</Text>
-              <Text h3>
+              <Text color={theme.colors.black} bold h3>
                 {shop.category == "Massage" ? "전신마사지" : "스테이크"}
               </Text>
             </Block>
@@ -250,15 +254,21 @@ export default function ShopScreen(props) {
           <Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>픽업장소</Text>
-              <Text h3>호텔 정문</Text>
+              <Text color={theme.colors.black} bold h3>
+                호텔 정문
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>픽업시간</Text>
-              <Text h3>{todo.time}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {todo.time}
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>픽업차량</Text>
-              <Text h3>도요타 캠리 - 가가가</Text>
+              <Text color={theme.colors.black} bold h3>
+                도요타 캠리 - 가가가
+              </Text>
             </Block>
           </Block>
         </Block>
@@ -271,29 +281,39 @@ export default function ShopScreen(props) {
           <Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>언어</Text>
-              <Text h3>한국어, 영어</Text>
+              <Text color={theme.colors.black} bold h3>
+                한국어, 영어
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>픽업여부</Text>
-              <Text h3>가능</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>베이비시터</Text>
-              <Text h3>가능</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>영업시간</Text>
-              <Text h3>
+              <Text color={theme.colors.black} bold h3>
                 {shop.openTime} ~ {shop.closeTime}
               </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>주소</Text>
-              <Text h3>{shop.address}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.address}
+              </Text>
             </Block>
             <Block row space="between" style={styles.inputRow}>
               <Text h3>전화번호</Text>
-              <Text h3>{shop.phone}</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.phone}
+              </Text>
             </Block>
           </Block>
         </Block>

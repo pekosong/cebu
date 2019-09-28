@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { StyleSheet, ScrollView, Switch } from "react-native";
-import { Button, Block, Text } from "../../components";
+import { Button, Block, Text, Divider } from "../../components";
 import { theme } from "../../constants";
 import { Ionicons } from "@expo/vector-icons";
 
@@ -25,30 +25,51 @@ const NoticeScreen = props => {
         </Button>
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>
-        <Block style={styles.toggles}>
-          <Block
-            row
-            center
-            space="between"
-            style={{ marginBottom: theme.sizes.base * 2 }}
-          >
-            <Text h3>알림설정</Text>
-            <Switch
-              value={notifications}
-              onValueChange={value => setNotifications(value)}
-            />
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            메시지 알림 설정
+          </Text>
+          <Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>알림설정</Text>
+              <Switch
+                value={notifications}
+                onValueChange={value => setNotifications(value)}
+              />
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>새정보받기</Text>
+              <Switch
+                value={newsletters}
+                onValueChange={value => setNewsletters(value)}
+              />
+            </Block>
           </Block>
-          <Block
-            row
-            center
-            space="between"
-            style={{ marginBottom: theme.sizes.base * 2 }}
-          >
-            <Text h3>새정보받기</Text>
-            <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
-            />
+        </Block>
+        <Divider
+          style={{
+            marginHorizontal: theme.sizes.padding
+          }}
+        ></Divider>
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            기타 알림 설정
+          </Text>
+          <Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>알림설정</Text>
+              <Switch
+                value={notifications}
+                onValueChange={value => setNotifications(value)}
+              />
+            </Block>
+            <Block row space="between" style={styles.inputRow}>
+              <Text h3>새정보받기</Text>
+              <Switch
+                value={newsletters}
+                onValueChange={value => setNewsletters(value)}
+              />
+            </Block>
           </Block>
         </Block>
       </ScrollView>
@@ -65,8 +86,16 @@ const styles = StyleSheet.create({
     marginTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding
   },
-  toggles: {
-    paddingHorizontal: theme.sizes.base * 2
+  inputRow: {
+    paddingBottom: 5,
+    marginVertical: 5
+  },
+  categories: {
+    paddingHorizontal: theme.sizes.padding,
+    marginVertical: 10
+  },
+  content: {
+    marginBottom: 15
   }
 });
 
