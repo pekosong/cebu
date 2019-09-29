@@ -5,12 +5,12 @@ import Divider from "./Divider";
 import Block from "./Block";
 import Text from "./Text";
 import Input from "./Input";
+import Button from "./Button";
 
 import { theme } from "../constants";
 import { Ionicons } from "@expo/vector-icons";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
 import { makeResevation } from "../redux/action";
-import Button from "apsl-react-native-button";
 
 const TIMES = [
   "10:00",
@@ -182,13 +182,12 @@ export default ReservationModal = props => {
                     setSelectedDate(t);
                   }}
                 >
-                  <Block center>
+                  <Block middle center>
                     <Text
                       bold
                       h4
                       style={{
                         color: selectedDateColor(t),
-                        fontSize: 14,
                         marginBottom: 5
                       }}
                     >
@@ -207,7 +206,7 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Divider></Divider>
+          <Divider style={{ marginHorizontal: 0 }} />
           <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
             예약시간
           </Text>
@@ -219,13 +218,12 @@ export default ReservationModal = props => {
                   style={[styles.timeStyle, seletedTimeStyle(t)]}
                   onPress={() => setTime(t)}
                 >
-                  <Block center>
+                  <Block center middle>
                     <Text
                       h4
                       bold
                       style={{
-                        color: seletedTimeColor(t),
-                        fontSize: 16
+                        color: seletedTimeColor(t)
                       }}
                     >
                       {reservationDate == selectedDate && reservationTime == t
@@ -238,6 +236,7 @@ export default ReservationModal = props => {
                     reservationTime == t ? null : timeCan.indexOf(t) != -1 ? (
                       <Text
                         style={{
+                          marginTop: 5,
                           color: seletedTimeColor(t),
                           fontSize: 14
                         }}
@@ -250,7 +249,7 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Divider></Divider>
+          <Divider style={{ marginHorizontal: 0 }} />
 
           <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
             예약인원
@@ -258,45 +257,43 @@ export default ReservationModal = props => {
           <Block
             style={{
               backgroundColor: theme.colors.black,
-              borderRadius: 10,
+              borderRadius: 5,
               marginBottom: 15,
               height: 45
             }}
             row
+            middle
+            center
           >
-            <Button
+            <TouchableOpacity
               style={{
-                borderWidth: 0,
-                flex: 0.3
+                position: "absolute",
+                left: 20
               }}
-              textStyle={{ color: theme.colors.white, fontSize: 30 }}
               onPress={() => {
                 setPeople(people == 1 ? people : people - 1);
               }}
             >
-              -
-            </Button>
-            <Button
-              style={{
-                borderWidth: 0,
-                flex: 1
-              }}
-              textStyle={{ color: theme.colors.white, fontSize: 16 }}
-            >
+              <Text h1 bold white>
+                -
+              </Text>
+            </TouchableOpacity>
+            <Text white h3>
               {people + "명"}
-            </Button>
-            <Button
+            </Text>
+            <TouchableOpacity
               style={{
-                borderWidth: 0,
-                flex: 0.3
+                position: "absolute",
+                right: 20
               }}
-              textStyle={{ color: theme.colors.white, fontSize: 30 }}
               onPress={() => setPeople(people + 1)}
             >
-              +
-            </Button>
+              <Text h1 bold white>
+                +
+              </Text>
+            </TouchableOpacity>
           </Block>
-          <Divider></Divider>
+          <Divider style={{ marginHorizontal: 0 }} />
 
           <Text bold h3 style={{ marginVertical: 10 }}>
             추가 요청 사항
@@ -313,13 +310,13 @@ export default ReservationModal = props => {
         <Block row space="between" style={{ marginVertical: 20 }}>
           <Block flex={2}>
             <Text style={{ marginBottom: 5 }}>예약일</Text>
-            <Text h2 bold color={theme.colors.primary}>
+            <Text h2 bold primary>
               {selectedDate}
             </Text>
           </Block>
           <Block center flex={2}>
             <Text style={{ marginBottom: 5 }}>예약시간</Text>
-            <Text h2 bold color={theme.colors.primary}>
+            <Text h2 bold primary>
               {time}
             </Text>
           </Block>
@@ -327,57 +324,44 @@ export default ReservationModal = props => {
             <Text right style={{ marginBottom: 5 }}>
               예약인원
             </Text>
-            <Text right h2 bold color={theme.colors.primary}>
+            <Text right h2 bold primary>
               {people + "명"}
             </Text>
           </Block>
         </Block>
-        <Divider></Divider>
         {isChange ? (
           <Block>
             <Button
-              style={{
-                borderWidth: 0,
-                backgroundColor: theme.colors.primary
-              }}
-              textStyle={{
-                color: theme.colors.white
-              }}
+              gradient
               onPress={() => {
                 handleChangeReservation();
               }}
             >
-              예약 변경 요청
+              <Text bold white center>
+                예약 변경 요청
+              </Text>
             </Button>
             <Button
-              style={{
-                borderWidth: 0,
-                backgroundColor: theme.colors.white
-              }}
-              textStyle={{
-                color: theme.colors.primary
-              }}
+              shadow
               onPress={() => {
                 handleDeleteReservation();
               }}
             >
-              취소 요청
+              <Text center bold primary>
+                취소 요청
+              </Text>
             </Button>
           </Block>
         ) : (
           <Button
-            style={{
-              borderWidth: 0,
-              backgroundColor: theme.colors.primary
-            }}
-            textStyle={{
-              color: theme.colors.white
-            }}
+            gradient
             onPress={() => {
               handleReservation();
             }}
           >
-            예약 요청
+            <Text bold white center>
+              예약 요청
+            </Text>
           </Button>
         )}
       </ScrollView>
