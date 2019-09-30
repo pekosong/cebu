@@ -123,7 +123,7 @@ function MyTripScreen(props) {
                 >
                   <Block left flex={1}>
                     <Image
-                      source={{ uri: shop.source }}
+                      source={{ uri: shop.source[0] }}
                       style={styles.avatarChat}
                     />
                   </Block>

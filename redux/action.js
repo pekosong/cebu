@@ -68,6 +68,19 @@ const updateFavorite = myfavorites => {
   };
 };
 
+const updateShop = shop => {
+  return () => {
+    firebase
+      .firestore()
+      .collection("shops")
+      .doc(shop.id)
+      .update(shop)
+      .then(() => {
+        console.log("updated favorites");
+      });
+  };
+};
+
 const makeResevation = allPlans => {
   return () => {
     firebase
@@ -86,5 +99,6 @@ export {
   watchUserData,
   downloadShopData,
   updateFavorite,
-  makeResevation
+  makeResevation,
+  updateShop
 };

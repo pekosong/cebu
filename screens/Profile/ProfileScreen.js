@@ -5,6 +5,10 @@ import { theme } from "../../constants";
 import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
+import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { watchUserData } from "../../redux/action";
+
+const EMAIL = "peko22@naver.com";
 
 const profileList = [
   { title: "개인 정보", navigation: "Personal", icon: "md-person" },
@@ -42,8 +46,15 @@ const helpList = [
 ];
 const ProfileScreen = props => {
   const { navigation } = props;
+  const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    unsubscribe = dispatch(watchUserData(EMAIL));
+    return () => {
+      unsubscribe();
+    };
+  }, []);
 
   handleLogout = () => {
     firebase

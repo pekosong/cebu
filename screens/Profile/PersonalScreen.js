@@ -28,7 +28,6 @@ const PersonalScreen = props => {
   const [email, setEmail] = useState("");
   const [profile, setProfile] = useState({});
   const [image, setImage] = useState("");
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
@@ -171,9 +170,6 @@ const PersonalScreen = props => {
                     ? { uri: image }
                     : { uri: "https://placeholder.com/150" }
                 }
-                onLoadEnd={() => {
-                  setIsLoaded(true);
-                }}
                 style={styles.avatar}
               />
             </Block>

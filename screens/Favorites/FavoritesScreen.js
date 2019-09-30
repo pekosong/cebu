@@ -116,7 +116,7 @@ function FavoritesScreen(props) {
             />
           </TouchableOpacity>
           <Image
-            source={{ uri: item.source }}
+            source={{ uri: item.source[0] }}
             style={{
               height: 200,
               width: width - theme.sizes.padding * 2,

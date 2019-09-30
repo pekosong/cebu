@@ -15,6 +15,7 @@ let db = firebase.firestore();
 
 const lists = [
   {
+    email: "peko22@naver.com",
     category: "Restaurant",
     id: "restaurant1",
     name: "점보 7",
@@ -22,8 +23,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3"
+    ],
     likes: 20,
     review: 3.5,
     reviewCnt: 1212,
@@ -35,24 +37,25 @@ const lists = [
       {
         writer: "peko22@naver.com",
         comment: "너무 좋아요",
-        stars: 5,
+        star: 5,
         date: new Date()
       },
       {
         writer: "peko2@naver.com",
         comment: "좋긴 한데 서비스가 조금 별로 였어요",
-        stars: 3,
+        star: 3,
         date: new Date()
       },
       {
         writer: "peko1@naver.com",
         comment: "다음에 꼭 다시 오고 싶어요",
-        stars: 4,
+        star: 4,
         date: new Date()
       }
     ]
   },
   {
+    email: "",
     category: "Restaurant",
     id: "restaurant2",
     name: "부레 레스토랑",
@@ -60,8 +63,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=066e24f1-86e4-49fd-8389-736902f71309",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=066e24f1-86e4-49fd-8389-736902f71309"
+    ],
     likes: 20,
     review: 2.5,
     reviewCnt: 231,
@@ -91,6 +95,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Restaurant",
     id: "restaurant3",
     name: "란타 코르도바",
@@ -98,8 +103,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913"
+    ],
     likes: 20,
     review: 4.0,
     reviewCnt: 342,
@@ -129,6 +135,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Restaurant",
     id: "restaurant4",
     name: "아인 레스토랑",
@@ -136,8 +143,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d"
+    ],
     likes: 20,
     review: 4,
     reviewCnt: 545,
@@ -167,6 +175,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Massage",
     id: "massage1",
     name: "메디핑거",
@@ -174,8 +183,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa"
+    ],
     likes: 20,
     review: 4,
     reviewCnt: 200,
@@ -204,6 +214,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Massage",
     id: "massage2",
     name: "프라나 스파",
@@ -211,8 +222,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614"
+    ],
     likes: 20,
     review: 4.5,
     reviewCnt: 234,
@@ -241,6 +253,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Massage",
     id: "massage3",
     name: "오션 스파",
@@ -248,8 +261,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=c0a2c43a-8cb0-457a-9b31-737d1599940e",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=c0a2c43a-8cb0-457a-9b31-737d1599940e"
+    ],
     likes: 20,
     review: 5,
     reviewCnt: 156,
@@ -278,6 +292,7 @@ const lists = [
     ]
   },
   {
+    email: "",
     category: "Massage",
     id: "massage4",
     name: "에코 스파",
@@ -285,8 +300,9 @@ const lists = [
     address: "세부 막탄",
     engAddress: "cebu maktan",
     phone: "010-9141-9090",
-    source:
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f",
+    source: [
+      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f"
+    ],
     likes: 20,
     review: 3.5,
     reviewCnt: 270,

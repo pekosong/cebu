@@ -12,15 +12,25 @@ import Text from "./Text";
 export default FullImageSlider = props => {
   const { source } = props;
   const [imageNum, setImageNum] = useState(1);
-  const { height, width } = Dimensions.get("window");
+  const [maxImageNum, setMaxImageNum] = useState(1);
 
-  useEffect(() => {}, []);
+  const { height, width } = Dimensions.get("window");
+  const [isLoaded, setIsLoaded] = useState(false);
+
+  console.log(source);
+
+  useEffect(() => {
+    if (source) {
+      setIsLoaded(true);
+      setMaxImageNum(source.length);
+    }
+  }, [source]);
   handleScrollByX = e => {
     if (e.nativeEvent.contentOffset.x % 360 == 0) {
       setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
     }
   };
-  return (
+  return isLoaded ? (
     <Block>
       <ScrollView
         horizontal={true}
@@ -29,10 +39,10 @@ export default FullImageSlider = props => {
         pagingEnabled
         onScroll={handleScrollByX}
       >
-        {[1, 2, 3].map(e => (
+        {source.map(e => (
           <ImageBackground
             key={e}
-            source={{ uri: source }}
+            source={{ uri: e }}
             style={{
               width: width,
               height: 250,
@@ -63,11 +73,11 @@ export default FullImageSlider = props => {
         }}
       >
         <Text white bold size={11}>
-          {imageNum + " / 3"}
+          {imageNum + " / " + maxImageNum}
         </Text>
       </Block>
     </Block>
-  );
+  ) : null;
 };
 
 export const styles = StyleSheet.create({});
