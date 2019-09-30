@@ -11,9 +11,9 @@ import {
 import MapView from "react-native-maps";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
-import Button from "apsl-react-native-button";
 
 import {
+  Button,
   Block,
   Text,
   Divider,
@@ -74,7 +74,7 @@ export default function ShopScreen(props) {
       setShop(navigation.getParam("shop"));
     }
     setTodo(navigation.getParam("todo"));
-  }, [user]);
+  }, [user, todo]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
@@ -243,6 +243,12 @@ export default function ShopScreen(props) {
                 {shop.category == "Massage" ? "전신마사지" : "스테이크"}
               </Text>
             </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>요청사항</Text>
+              <Text color={theme.colors.black} bold h3>
+                {todo.text}
+              </Text>
+            </Block>
           </Block>
         </Block>
         <Divider />
@@ -264,7 +270,7 @@ export default function ShopScreen(props) {
                 {todo.time}
               </Text>
             </Block>
-            <Block style={styles.ç}>
+            <Block style={styles.inputRow}>
               <Text h3>픽업차량</Text>
               <Text color={theme.colors.black} bold h3>
                 도요타 캠리 - 가가가
@@ -419,23 +425,22 @@ export default function ShopScreen(props) {
       </ScrollView>
       <Block
         row
+        middle
         style={{
           position: "absolute",
-          borderTopWidth: 1,
-          borderTopColor: theme.colors.gray2,
           bottom: 0,
-          paddingTop: 10
+          borderTopWidth: 1,
+          borderTopColor: theme.colors.gray2
         }}
       >
-        <Block flex={2} left>
-          <Block
-            row
-            style={{
-              marginLeft: theme.sizes.padding,
-              marginTop: 3,
-              marginBottom: -6
-            }}
-          >
+        <Block
+          flex={2}
+          left
+          style={{
+            marginLeft: theme.sizes.padding
+          }}
+        >
+          <Block row style={{ marginTop: 10, marginBottom: -5 }}>
             <StarRating
               disabled={false}
               maxStars={5}
@@ -453,7 +458,7 @@ export default function ShopScreen(props) {
               Reviews
             </Text>
           </Block>
-          <Block row style={{ marginLeft: theme.sizes.padding }}>
+          <Block row>
             <Ionicons
               size={15}
               color={theme.colors.accent}
@@ -470,19 +475,14 @@ export default function ShopScreen(props) {
         </Block>
         <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
           <Button
-            style={{
-              borderColor: "#16a085",
-              borderWidth: 0,
-              backgroundColor: theme.colors.primary
-            }}
-            textStyle={{
-              color: theme.colors.white
-            }}
+            gradient
             onPress={() => {
               setVisible(true);
             }}
           >
-            예약 변경
+            <Text white center bold>
+              예약 변경
+            </Text>
           </Button>
         </Block>
       </Block>

@@ -11,9 +11,9 @@ import {
 import MapView from "react-native-maps";
 import { Ionicons, AntDesign } from "@expo/vector-icons";
 import StarRating from "react-native-star-rating";
-import Button from "apsl-react-native-button";
 
 import {
+  Button,
   Block,
   Text,
   Divider,
@@ -368,23 +368,22 @@ export default function ShopScreen(props) {
 
       <Block
         row
+        middle
         style={{
           position: "absolute",
-          borderTopWidth: 1,
-          borderTopColor: theme.colors.gray2,
           bottom: 0,
-          paddingTop: 10
+          borderTopWidth: 1,
+          borderTopColor: theme.colors.gray2
         }}
       >
-        <Block flex={2} left>
-          <Block
-            row
-            style={{
-              marginLeft: theme.sizes.padding,
-              marginTop: 3,
-              marginBottom: -6
-            }}
-          >
+        <Block
+          flex={2}
+          left
+          style={{
+            marginLeft: theme.sizes.padding
+          }}
+        >
+          <Block row style={{ marginTop: 10, marginBottom: -5 }}>
             <StarRating
               disabled={false}
               maxStars={5}
@@ -402,7 +401,7 @@ export default function ShopScreen(props) {
               Reviews
             </Text>
           </Block>
-          <Block row style={{ marginLeft: theme.sizes.padding }}>
+          <Block row>
             <Ionicons
               size={15}
               color={theme.colors.accent}
@@ -419,17 +418,14 @@ export default function ShopScreen(props) {
         </Block>
         <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
           <Button
-            style={{
-              borderColor: "#16a085",
-              borderWidth: 0,
-              backgroundColor: theme.colors.primary
+            gradient
+            onPress={() => {
+              setVisible(true);
             }}
-            textStyle={{
-              color: theme.colors.white
-            }}
-            onPress={() => setVisible(true)}
           >
-            예약 요청
+            <Text white center bold>
+              예약 요청
+            </Text>
           </Button>
         </Block>
       </Block>

@@ -62,6 +62,7 @@ export default ReservationModal = props => {
       setTime(reservation.time);
       setReservationTime(reservation.time);
       setPeople(reservation.people);
+      setText(reservation.text);
       setTimeCan(
         Object.keys(user.plans[reservation.date]).filter(
           e => e != "hotel" && e != "nDay"
@@ -90,6 +91,7 @@ export default ReservationModal = props => {
     reservation["people"] = people;
     reservation["date"] = selectedDate;
     reservation["shop"] = shop;
+    reservation["text"] = text;
 
     let allPlans = user.plans;
     allPlans[selectedDate][time] = reservation;
@@ -104,6 +106,7 @@ export default ReservationModal = props => {
     reservation["people"] = people;
     reservation["date"] = selectedDate;
     reservation["shop"] = shop;
+    reservation["text"] = text;
 
     let allPlans = user.plans;
 
@@ -112,7 +115,7 @@ export default ReservationModal = props => {
     allPlans[selectedDate][time] = reservation;
 
     dispatch(makeResevation(allPlans));
-    setVisible(false);
+    navigation.goBack();
   };
 
   handleDeleteReservation = () => {
@@ -121,6 +124,7 @@ export default ReservationModal = props => {
     reservation["people"] = people;
     reservation["date"] = selectedDate;
     reservation["shop"] = shop;
+    reservation["text"] = text;
 
     let allPlans = user.plans;
 

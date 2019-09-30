@@ -33,17 +33,13 @@ const PersonalScreen = props => {
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
 
-  _retrieveData = () => {
+  useEffect(() => {
     setProfile(user);
     setName(user.name);
     setEmail(user.email);
     setSex(user.sex);
     setBirth(user.birth);
     setImage(user.image);
-  };
-
-  useEffect(() => {
-    _retrieveData();
   }, []);
 
   getPermissionAsync = async () => {
