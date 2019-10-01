@@ -7,6 +7,7 @@ import { store } from "./store";
 
 const SETUSER = "SETUSER";
 const GETSHOP = "GETSHOP";
+const UPDATESHOP = "UPDATESHOP";
 
 const setUserData = userData => {
   return {
@@ -18,6 +19,13 @@ const setUserData = userData => {
 const setShopData = shopData => {
   return {
     type: GETSHOP,
+    payload: shopData
+  };
+};
+
+const updateShopData = shopData => {
+  return {
+    type: UPDATESHOP,
     payload: shopData
   };
 };
@@ -69,14 +77,18 @@ const updateFavorite = myfavorites => {
 };
 
 const updateShop = shop => {
-  return () => {
+  return dispatch => {
     firebase
       .firestore()
       .collection("shops")
       .doc(shop.id)
       .update(shop)
       .then(() => {
-        console.log("updated favorites");
+        let shops = store.getState().shops;
+        shops[shop.id] = shop;
+        dispatch(updateShopData(shops));
+        dispatch(downloadShopData());
+        console.log("updated shop");
       });
   };
 };

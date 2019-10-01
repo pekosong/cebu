@@ -14,6 +14,7 @@ import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import { updateShop } from "../../redux/action";
 
 import * as ImagePicker from "expo-image-picker";
 import Constants from "expo-constants";
@@ -39,6 +40,8 @@ const MyShopScreen = props => {
   const [saved, setSaved] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
+
+  const dispatch = useDispatch();
 
   useEffect(() => {
     firebase
@@ -144,7 +147,7 @@ const MyShopScreen = props => {
     }
   };
 
-  saveShop = async () => {
+  saveShop = () => {
     let newShop = {
       ...myShop,
       name: name,
@@ -159,18 +162,9 @@ const MyShopScreen = props => {
       pickup: pickup,
       phone: phone
     };
-    await firebase
-      .firestore()
-      .collection("shops")
-      .doc(myShop.id)
-      .update(newShop)
-      .then(() => {
-        setMyShop(newShop);
-        setSaved(true);
-      })
-      .catch(err => {
-        console.log(err);
-      });
+    dispatch(updateShop(newShop));
+    setMyShop(newShop);
+    setSaved(true);
   };
 
   return isLoaded ? (

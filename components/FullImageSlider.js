@@ -3,11 +3,13 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
-  ImageBackground
+  ImageBackground,
+  ActivityIndicator
 } from "react-native";
 
 import Block from "./Block";
 import Text from "./Text";
+import { theme } from "../constants";
 
 export default FullImageSlider = props => {
   const { source } = props;
@@ -16,8 +18,6 @@ export default FullImageSlider = props => {
 
   const { height, width } = Dimensions.get("window");
   const [isLoaded, setIsLoaded] = useState(false);
-
-  console.log(source);
 
   useEffect(() => {
     if (source) {
@@ -77,7 +77,20 @@ export default FullImageSlider = props => {
         </Text>
       </Block>
     </Block>
-  ) : null;
+  ) : (
+    <Block style={styles.full}>
+      <ActivityIndicator
+        size="large"
+        color={theme.colors.primary}
+      ></ActivityIndicator>
+    </Block>
+  );
 };
 
-export const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  full: {
+    flex: 1,
+    height: 250,
+    justifyContent: "center"
+  }
+});

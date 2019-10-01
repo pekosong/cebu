@@ -6,7 +6,7 @@ import firebase from "../../constants/store";
 import { Ionicons } from "@expo/vector-icons";
 import { TouchableOpacity } from "react-native-gesture-handler";
 import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { watchUserData } from "../../redux/action";
+import { watchUserData, downloadShopData } from "../../redux/action";
 
 const EMAIL = "peko22@naver.com";
 
@@ -50,9 +50,11 @@ const ProfileScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    unsubscribe = dispatch(watchUserData(EMAIL));
+    unsubscribe1 = dispatch(watchUserData(EMAIL));
+    unsubscribe2 = dispatch(downloadShopData());
     return () => {
-      unsubscribe();
+      unsubscribe1();
+      unsubscribe2();
     };
   }, []);
 

@@ -69,7 +69,7 @@ export default function ShopScreen(props) {
     } else {
       setShop(navigation.getParam("shop"));
     }
-  }, [user]);
+  }, [user, shops]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
