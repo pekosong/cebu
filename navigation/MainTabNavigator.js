@@ -143,11 +143,11 @@ ProfileStack.path = "";
 
 const tabNavigator = createBottomTabNavigator(
   {
-    ProfileStack,
     SearchStack,
     FavoritesStack,
     MyTripStack,
-    ChatStack
+    ChatStack,
+    ProfileStack
   },
   {
     tabBarOptions: {

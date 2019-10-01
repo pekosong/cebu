@@ -25,19 +25,21 @@ function MyTripScreen(props) {
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    let myPlans = user.plans;
-    let days = {};
+    if (Object.entries(user).length !== 0) {
+      let myPlans = user.plans;
+      let days = {};
 
-    Object.keys(myPlans).forEach((key, idx) => {
-      days[`Day ${idx + 1}`] = key;
-    });
+      Object.keys(myPlans).forEach((key, idx) => {
+        days[`Day ${idx + 1}`] = key;
+      });
 
-    setActive("All");
-    setDates(days);
-    setSelectedDates(days);
-    setTabs(["All"].concat(Object.keys(days)));
-    setPlans(myPlans);
-    setIsLoaded(true);
+      setActive("All");
+      setDates(days);
+      setSelectedDates(days);
+      setTabs(["All"].concat(Object.keys(days)));
+      setPlans(myPlans);
+      setIsLoaded(true);
+    }
   }, [user]);
 
   renderTripTab = tab => {

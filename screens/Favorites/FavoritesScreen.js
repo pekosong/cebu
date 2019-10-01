@@ -34,25 +34,27 @@ function FavoritesScreen(props) {
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection("shops")
-      .get()
-      .then(querySnapshot => {
-        const song = [];
-        const category = new Set(["All"]);
-        querySnapshot.forEach(doc => {
-          if (user.myfavorites.indexOf(doc.data().id) != -1) {
-            song.push(doc.data());
-            category.add(doc.data().category);
-          }
+    if (Object.entries(user).length !== 0) {
+      firebase
+        .firestore()
+        .collection("shops")
+        .get()
+        .then(querySnapshot => {
+          const song = [];
+          const category = new Set(["All"]);
+          querySnapshot.forEach(doc => {
+            if (user.myfavorites.indexOf(doc.data().id) != -1) {
+              song.push(doc.data());
+              category.add(doc.data().category);
+            }
+          });
+          setFavorites(song);
+          setSelectedFavorites(song);
+          setActive("All");
+          setTabs(Array.from(category));
+          setIsLoaded(true);
         });
-        setFavorites(song);
-        setSelectedFavorites(song);
-        setActive("All");
-        setTabs(Array.from(category));
-        setIsLoaded(true);
-      });
+    }
     return () => {};
   }, [user]);
 

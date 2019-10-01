@@ -23,50 +23,52 @@ const ChatListScreen = props => {
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    let unsubscribe = firebase
-      .firestore()
-      .collection("users")
-      .doc(user.email)
-      .collection("messages")
-      .onSnapshot(querySnapshot => {
-        let myList = [];
-        querySnapshot.forEach((doc, idx) => {
-          let chat = {};
-          data = doc.data();
+    if (Object.entries(user).length !== 0) {
+      let unsubscribe = firebase
+        .firestore()
+        .collection("users")
+        .doc(user.email)
+        .collection("messages")
+        .onSnapshot(querySnapshot => {
+          let myList = [];
+          querySnapshot.forEach((doc, idx) => {
+            let chat = {};
+            data = doc.data();
 
-          if (data.message.length > 0) {
-            song = data.message.reduce(function(p, v) {
-              if (p.createdAt) {
-                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-              } else {
-                return v;
-              }
-            });
-            date = moment.unix(song.createdAt.seconds).format("YYYY-MM-DD");
-            time = moment.unix(song.createdAt.seconds).format("HH:mm:ss");
-            message = song.text;
-          } else {
-            message = "대화가 없습니다.";
-          }
+            if (data.message.length > 0) {
+              song = data.message.reduce(function(p, v) {
+                if (p.createdAt) {
+                  return p.createdAt.seconds > v.createdAt.seconds ? p : v;
+                } else {
+                  return v;
+                }
+              });
+              date = moment.unix(song.createdAt.seconds).format("YYYY-MM-DD");
+              time = moment.unix(song.createdAt.seconds).format("HH:mm:ss");
+              message = song.text;
+            } else {
+              message = "대화가 없습니다.";
+            }
 
-          chat.name = data.shop;
-          chat.avatar = `https://i.pravatar.cc/30${idx}`;
-          chat.message = message;
-          chat.timeStamp = song.createdAt.seconds;
-          chat.date = date;
-          chat.time = time;
-          myList.push(chat);
+            chat.name = data.shop;
+            chat.avatar = `https://i.pravatar.cc/30${idx}`;
+            chat.message = message;
+            chat.timeStamp = song.createdAt.seconds;
+            chat.date = date;
+            chat.time = time;
+            myList.push(chat);
+          });
+          myList = myList.sort(function(a, b) {
+            return b.timeStamp - a.timeStamp;
+          });
+          setIsLoaded(true);
+          setChatlist(myList);
         });
-        myList = myList.sort(function(a, b) {
-          return b.timeStamp - a.timeStamp;
-        });
-        setIsLoaded(true);
-        setChatlist(myList);
-      });
-    return () => {
-      unsubscribe();
-    };
-  }, []);
+      return () => {
+        unsubscribe();
+      };
+    }
+  }, [user]);
 
   renderList = ({ item }) => {
     return (

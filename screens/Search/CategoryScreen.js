@@ -43,17 +43,19 @@ const CategoryScreen = props => {
   const shops = useSelector(state => state.shops, shallowEqual);
 
   useEffect(() => {
-    filteredShops = shops.filter(
-      e => e.category == navigation.getParam("category")
-    );
+    if (Object.entries(shops).length !== 0) {
+      filteredShops = shops.filter(
+        e => e.category == navigation.getParam("category")
+      );
 
-    filteredShops = filteredShops.sort(function(a, b) {
-      return b["review"] - a["review"];
-    });
+      filteredShops = filteredShops.sort(function(a, b) {
+        return b["review"] - a["review"];
+      });
 
-    setSelectedLists(filteredShops);
-    setIsLoaded(true);
-  }, []);
+      setSelectedLists(filteredShops);
+      setIsLoaded(true);
+    }
+  }, [shops]);
 
   handleCatTab = tab => {
     sortedLists = selectedLists.sort(function(a, b) {
@@ -106,7 +108,7 @@ const CategoryScreen = props => {
           <Block flex={1}>
             <Image
               style={{ width: "100%", height: 70 }}
-              source={{ uri: list.source }}
+              source={{ uri: list.source[0] }}
             />
           </Block>
           <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
