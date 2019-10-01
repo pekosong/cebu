@@ -64,19 +64,14 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    if (
-      Object.entries(user).length !== 0 &&
-      Object.entries(shops).length !== 0
-    ) {
-      let shopCode = navigation.getParam("shopCode");
-      if (shopCode) {
-        let myShop = shops.filter(e => e.id == shopCode);
-        setShop(myShop[0]);
-        setIsLoaded(true);
-      } else {
-        setShop(navigation.getParam("shop"));
-        setIsLoaded(true);
-      }
+    let shopCode = navigation.getParam("shopCode");
+    if (shopCode) {
+      let myShop = shops.filter(e => e.id == shopCode);
+      setShop(myShop[0]);
+      setIsLoaded(true);
+    } else {
+      setShop(navigation.getParam("shop"));
+      setIsLoaded(true);
     }
   }, [user, shops]);
 
@@ -84,12 +79,12 @@ export default function ShopScreen(props) {
     if (e.nativeEvent.contentOffset.y > 120) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 100
+        duration: 50
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 120) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 50
+        duration: 25
       }).start();
     }
   };
@@ -107,363 +102,358 @@ export default function ShopScreen(props) {
 
   return (
     <Block>
-      {isLoaded ? (
-        <Fragment>
-          <Animated.View
-            style={{
-              ...styles.header,
-              backgroundColor: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [
-                  "rgba(255, 255, 255, 0)",
-                  "rgba(255, 255, 255, 1)"
-                ]
-              }),
-              borderWidth: fadeAnim,
-              borderColor: theme.colors.gray2
-            }}
-          >
-            <Block middle center row space="between">
-              <Block>
-                <TouchableOpacity
-                  onPressIn={() => {
-                    navigation.goBack();
-                  }}
+      <Animated.View
+        style={{
+          ...styles.header,
+          backgroundColor: fadeAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
+          }),
+          borderWidth: fadeAnim,
+          borderColor: theme.colors.gray2
+        }}
+      >
+        <Block middle center row space="between">
+          <Block>
+            <TouchableOpacity
+              onPressIn={() => {
+                navigation.goBack();
+              }}
+              style={{
+                height: 100,
+                width: 100
+              }}
+            >
+              <Block center row>
+                <Animated.Text
                   style={{
-                    height: 100,
-                    width: 100
+                    color: fadeAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                    })
                   }}
                 >
-                  <Block center row>
-                    <Animated.Text
-                      style={{
-                        color: fadeAnim.interpolate({
-                          inputRange: [0, 1],
-                          outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                        })
-                      }}
-                    >
-                      <Ionicons size={35} name="ios-arrow-back" />
-                    </Animated.Text>
-                  </Block>
-                </TouchableOpacity>
+                  <Ionicons size={35} name="ios-arrow-back" />
+                </Animated.Text>
               </Block>
+            </TouchableOpacity>
+          </Block>
+          <Animated.Text
+            style={{
+              color: theme.colors.black,
+              fontWeight: "bold",
+              fontSize: 18,
+              opacity: fadeAnim,
+              marginRight: 30
+            }}
+          >
+            {shop.name}
+          </Animated.Text>
+          <Block middle row right style={{ marginRight: 2 }}>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate("Chat", {
+                  title: shop.name,
+                  engName: shop.engName
+                })
+              }
+              style={{ marginHorizontal: 12, marginTop: 2 }}
+            >
               <Animated.Text
                 style={{
-                  color: theme.colors.black,
-                  fontWeight: "bold",
-                  fontSize: 18,
-                  opacity: fadeAnim,
-                  marginRight: 30
+                  color: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                  })
                 }}
               >
-                {shop.name}
+                <AntDesign size={28} name="message1" style={styles.icon} />
               </Animated.Text>
-              <Block middle row right style={{ paddingRight: 2 }}>
-                <TouchableOpacity
-                  onPress={() =>
-                    navigation.navigate("Chat", {
-                      title: shop.name,
-                      engName: shop.engName
-                    })
-                  }
-                  style={{ marginHorizontal: 12, marginTop: 2 }}
-                >
-                  <Animated.Text
-                    style={{
-                      color: fadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                      })
-                    }}
-                  >
-                    <AntDesign size={28} name="message1" style={styles.icon} />
-                  </Animated.Text>
-                </TouchableOpacity>
+            </TouchableOpacity>
 
-                <TouchableOpacity onPress={() => handleAddHeart(shop.id)}>
-                  <Animated.Text
-                    style={{
-                      color: fadeAnim.interpolate({
-                        inputRange: [0, 1],
-                        outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                      })
-                    }}
-                  >
-                    <Ionicons
-                      size={32}
-                      name={
-                        user.myfavorites.indexOf(shop.id) == -1
-                          ? "ios-heart-empty"
-                          : "ios-heart"
-                      }
-                      style={styles.icon}
-                    />
-                  </Animated.Text>
-                </TouchableOpacity>
-              </Block>
-            </Block>
-          </Animated.View>
-
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{ marginBottom: 65, zIndex: -1 }}
-            scrollEventThrottle={360}
-            onScroll={handleScrollByY}
-          >
-            <FullImageSlider source={shop.source}></FullImageSlider>
-            <Block style={[styles.categories, { marginTop: 20 }]}>
-              <Block row space="between">
-                <Block>
-                  <Text bold style={{ fontSize: 25, marginBottom: 5 }}>
-                    {shop.name}
-                  </Text>
-                  <Text h3 gray style={styles.content}>
-                    {shop.engName}
-                  </Text>
-                </Block>
-                <Text bold style={{ color: theme.colors.accent }}>
-                  {shop.tags}
-                </Text>
-              </Block>
-              <Text gray>
-                Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-                unde recusandae voluptate numquam consectetur quibusdam
-              </Text>
-            </Block>
-            <Divider />
-            <Block style={styles.categories}>
-              <Text h3 bold style={styles.content}>
-                업체정보
-              </Text>
-              <Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>언어</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    한국어, 영어
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>픽업여부</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    가능
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>베이비시터</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    가능
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>영업시간</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {shop.openTime} ~ {shop.closeTime}
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>주소</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {shop.address}
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>전화번호</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {shop.phone}
-                  </Text>
-                </Block>
-              </Block>
-            </Block>
-            <Divider />
-            <Block style={styles.categories}>
-              <Text h3 bold style={styles.content}>
-                주요 메뉴 및 가격
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={true}
-              >
-                {items.map((item, idx) => (
-                  <CardMenu key={idx} item={item}>
-                    <Block middle>
-                      <Text
-                        gray
-                        right
-                        caption
-                        style={{
-                          textDecorationLine: "line-through",
-                          textDecorationStyle: "solid"
-                        }}
-                      >
-                        20,000원
-                      </Text>
-                      <Text right bold>
-                        30,000원
-                      </Text>
-                    </Block>
-                  </CardMenu>
-                ))}
-              </ScrollView>
-            </Block>
-            <Divider />
-            <Block style={styles.categories}>
-              <Block row space="between">
-                <Text h3 bold style={styles.content}>
-                  후기
-                </Text>
-                <TouchableOpacity>
-                  <Text color={theme.colors.primary}>더보기</Text>
-                </TouchableOpacity>
-              </Block>
-              {shop.reviews
-                ? shop.reviews.map((review, idx) => (
-                    <Reviews key={idx} review={review} />
-                  ))
-                : null}
-            </Block>
-            <Divider />
-            <Block style={styles.categories}>
-              <Text h3 bold>
-                위치
-              </Text>
-            </Block>
-            <MapView
-              style={{ flex: 1, height: 200 }}
-              initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              }}
-            >
-              <MapView.Marker
-                coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-              />
-            </MapView>
-            <Divider
-              style={{
-                marginTop: 20
-              }}
-            ></Divider>
-            <Block style={{ ...styles.categories, marginTop: 10 }}>
-              <Text h3 bold style={styles.content}>
-                이 근처의 추천 장소
-              </Text>
-              <Text h4 style={{ marginBottom: 10 }}>
-                {shop.name} 근처의 이런 곳은 어때요?
-              </Text>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={true}
-              >
-                {recommendList.map((item, idx) => (
-                  <Card key={idx} item={item} navigation={navigation}>
-                    <Text
-                      gray
-                      caption
-                      style={{
-                        textDecorationLine: "line-through",
-                        textDecorationStyle: "solid"
-                      }}
-                    >
-                      {item.beforePrice}원
-                    </Text>
-                    <Text h4 bold style={{ marginTop: 5 }}>
-                      {item.afterPrice}원
-                    </Text>
-                  </Card>
-                ))}
-              </ScrollView>
-            </Block>
-          </ScrollView>
-
-          <Block
-            row
-            middle
-            style={{
-              position: "absolute",
-              bottom: 0,
-              borderTopWidth: 1,
-              borderTopColor: theme.colors.gray2
-            }}
-          >
-            <Block
-              flex={2}
-              left
-              style={{
-                marginLeft: theme.sizes.padding
-              }}
-            >
-              <Block row style={{ marginTop: 10, marginBottom: -5 }}>
-                <StarRating
-                  disabled={false}
-                  maxStars={5}
-                  rating={shop.review}
-                  starSize={15}
-                  fullStarColor={theme.colors.accent}
-                  containerStyle={{ width: 70 }}
-                />
-                <Text style={{ marginLeft: 7 }}>
-                  {shop.reviewCnt
-                    ? shop.reviewCnt
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
-                    : null}
-                  Reviews
-                </Text>
-              </Block>
-              <Block row>
-                <Ionicons
-                  size={15}
-                  color={theme.colors.accent}
-                  name={"ios-heart"}
-                />
-                <Text style={{ marginLeft: 7 }}>
-                  {shop.likes
-                    ? shop.likes
-                        .toString()
-                        .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
-                    : null}
-                  Likes
-                </Text>
-              </Block>
-            </Block>
-            <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
-              <Button
-                gradient
-                onPress={() => {
-                  setVisible(true);
+            <TouchableOpacity onPress={() => handleAddHeart(shop.id)}>
+              <Animated.Text
+                style={{
+                  color: fadeAnim.interpolate({
+                    inputRange: [0, 1],
+                    outputRange:
+                      user.myfavorites.indexOf(shop.id) == -1
+                        ? ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                        : ["rgb(255, 0, 0)", "rgb(255, 0, 0)"]
+                  })
                 }}
               >
-                <Text white center bold>
-                  예약 요청
-                </Text>
-              </Button>
+                <Ionicons
+                  size={32}
+                  name={
+                    user.myfavorites.indexOf(shop.id) == -1
+                      ? "ios-heart-empty"
+                      : "ios-heart"
+                  }
+                  style={styles.icon}
+                />
+              </Animated.Text>
+            </TouchableOpacity>
+          </Block>
+        </Block>
+      </Animated.View>
+
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{ marginBottom: 65, zIndex: -1 }}
+        scrollEventThrottle={360}
+        onScroll={handleScrollByY}
+      >
+        <FullImageSlider source={shop.source}></FullImageSlider>
+        <Block style={[styles.categories, { marginTop: 20 }]}>
+          <Block row space="between">
+            <Block>
+              <Text bold style={{ fontSize: 25, marginBottom: 5 }}>
+                {shop.name}
+              </Text>
+              <Text h3 gray style={styles.content}>
+                {shop.engName}
+              </Text>
+            </Block>
+            <Text bold style={{ color: theme.colors.accent }}>
+              {shop.tags}
+            </Text>
+          </Block>
+          <Text gray>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
+            recusandae voluptate numquam consectetur quibusdam
+          </Text>
+        </Block>
+        <Divider />
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            업체정보
+          </Text>
+          <Block>
+            <Block style={styles.inputRow}>
+              <Text h3>언어</Text>
+              <Text color={theme.colors.black} bold h3>
+                한국어, 영어
+              </Text>
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>픽업여부</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>베이비시터</Text>
+              <Text color={theme.colors.black} bold h3>
+                가능
+              </Text>
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>영업시간</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.openTime} ~ {shop.closeTime}
+              </Text>
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>주소</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.address}
+              </Text>
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text h3>전화번호</Text>
+              <Text color={theme.colors.black} bold h3>
+                {shop.phone}
+              </Text>
             </Block>
           </Block>
-          <Modal
-            animationType="slide"
-            visible={visible}
-            onRequestClose={() => setVisible(false)}
-          >
-            <ReservationModal
-              shop={shop}
-              navigation={navigation}
-              setVisible={setVisible}
-            />
-          </Modal>
-        </Fragment>
-      ) : (
-        <Block style={styles.full}>
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.primary}
-          ></ActivityIndicator>
         </Block>
-      )}
+        <Divider />
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            주요 메뉴 및 가격
+          </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}
+          >
+            {items.map((item, idx) => (
+              <CardMenu key={idx} item={item}>
+                <Block middle>
+                  <Text
+                    gray
+                    right
+                    caption
+                    style={{
+                      textDecorationLine: "line-through",
+                      textDecorationStyle: "solid"
+                    }}
+                  >
+                    20,000원
+                  </Text>
+                  <Text right bold>
+                    30,000원
+                  </Text>
+                </Block>
+              </CardMenu>
+            ))}
+          </ScrollView>
+        </Block>
+        <Divider />
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            후기
+          </Text>
+          {shop.reviews
+            ? shop.reviews.map((review, idx) => (
+                <Reviews key={idx} review={review} />
+              ))
+            : null}
+          <TouchableOpacity style={{ marginTop: theme.sizes.padding }}>
+            <Text h3 bold color={theme.colors.accent}>
+              후기 모두 보기
+            </Text>
+          </TouchableOpacity>
+        </Block>
+        <Divider />
+        <Block style={styles.categories}>
+          <Block row space="between">
+            <Text h3 bold>
+              위치
+            </Text>
+            <Text h3>{shop.engAddress}</Text>
+          </Block>
+          <MapView
+            style={{
+              flex: 1,
+              height: 200,
+              marginTop: theme.sizes.padding / 2
+            }}
+            initialRegion={{
+              latitude: 37.78825,
+              longitude: -122.4324,
+              latitudeDelta: 0.0922,
+              longitudeDelta: 0.0421
+            }}
+          >
+            <MapView.Marker
+              coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+            />
+          </MapView>
+        </Block>
+        <Divider
+          style={{
+            marginTop: 20
+          }}
+        ></Divider>
+        <Block style={{ ...styles.categories, marginTop: 10 }}>
+          <Text h3 bold style={styles.content}>
+            이 근처의 추천 장소
+          </Text>
+          <Text h4 style={{ marginBottom: 10 }}>
+            {shop.name} 근처의 이런 곳은 어때요?
+          </Text>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}
+          >
+            {recommendList.map((item, idx) => (
+              <Card key={idx} item={item} navigation={navigation}>
+                <Text
+                  gray
+                  caption
+                  style={{
+                    textDecorationLine: "line-through",
+                    textDecorationStyle: "solid"
+                  }}
+                >
+                  {item.beforePrice}원
+                </Text>
+                <Text h4 bold style={{ marginTop: 5 }}>
+                  {item.afterPrice}원
+                </Text>
+              </Card>
+            ))}
+          </ScrollView>
+        </Block>
+      </ScrollView>
+
+      <Block
+        row
+        middle
+        style={{
+          position: "absolute",
+          bottom: 0,
+          borderTopWidth: 1,
+          borderTopColor: theme.colors.gray2
+        }}
+      >
+        <Block
+          flex={2}
+          left
+          style={{
+            marginLeft: theme.sizes.padding
+          }}
+        >
+          <Block row style={{ marginTop: 10, marginBottom: -5 }}>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={shop.review}
+              starSize={15}
+              fullStarColor={theme.colors.accent}
+              containerStyle={{ width: 70 }}
+            />
+            <Text style={{ marginLeft: 7 }}>
+              {shop.reviewCnt
+                ? shop.reviewCnt
+                    .toString()
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+                : null}
+              Reviews
+            </Text>
+          </Block>
+          <Block row>
+            <Ionicons
+              size={15}
+              color={theme.colors.accent}
+              name={"ios-heart"}
+            />
+            <Text style={{ marginLeft: 7 }}>
+              {shop.likes
+                ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
+                  " "
+                : null}
+              Likes
+            </Text>
+          </Block>
+        </Block>
+        <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
+          <Button
+            gradient
+            onPress={() => {
+              setVisible(true);
+            }}
+          >
+            <Text white center bold>
+              예약 요청
+            </Text>
+          </Button>
+        </Block>
+      </Block>
+      <Modal
+        animationType="slide"
+        visible={visible}
+        onRequestClose={() => setVisible(false)}
+      >
+        <ReservationModal
+          shop={shop}
+          navigation={navigation}
+          setVisible={setVisible}
+        />
+      </Modal>
     </Block>
   );
 }
@@ -504,7 +494,7 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     paddingBottom: 5,
-    marginVertical: 5,
+    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between"
   }

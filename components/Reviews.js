@@ -1,5 +1,5 @@
 import React, { useEffect } from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import { StyleSheet, TouchableOpacity, Image } from "react-native";
 
 import Block from "./Block";
 import Text from "./Text";
@@ -13,12 +13,17 @@ export default Reviews = props => {
 
   return (
     <TouchableOpacity>
-      <Block style={{ marginVertical: 5 }}>
-        <Block row space="between">
-          <Block>
+      <Block style={{ marginVertical: theme.sizes.padding / 3 }}>
+        <Block row space="between" flex={1}>
+          <Image
+            source={{ uri: "https://i.pravatar.cc/301" }}
+            style={styles.avatarChat}
+          />
+          <Block bottom style={{ marginLeft: 10 }}>
+            <Text>2019년 9월</Text>
             <Text>{review.writer}</Text>
           </Block>
-          <Block style={{ position: "absolute", right: 50 }}>
+          <Block style={{ position: "absolute", right: 50, bottom: 0 }}>
             <StarRating
               disabled={false}
               maxStars={5}
@@ -29,8 +34,8 @@ export default Reviews = props => {
             />
           </Block>
         </Block>
-        <Block style={{ marginTop: 5 }}>
-          <Text bold>{review.comment}</Text>
+        <Block style={{ marginTop: theme.sizes.padding / 2 }}>
+          <Text h3>{review.comment}</Text>
         </Block>
       </Block>
     </TouchableOpacity>
@@ -49,5 +54,10 @@ export const styles = StyleSheet.create({
     height: "100%",
     resizeMode: "cover",
     borderRadius: 3
+  },
+  avatarChat: {
+    width: theme.sizes.base * 4,
+    height: theme.sizes.base * 4,
+    borderRadius: theme.sizes.base * 2
   }
 });

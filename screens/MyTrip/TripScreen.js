@@ -6,7 +6,8 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  ActivityIndicator
+  ActivityIndicator,
+  TextInput
 } from "react-native";
 
 import MapView from "react-native-maps";
@@ -59,6 +60,9 @@ export default function ShopScreen(props) {
   const [todo, setTodo] = useState({});
 
   const [visible, setVisible] = useState(false);
+  const [showReview, setShowReview] = useState(false);
+  const [text, setText] = useState("");
+  const [starCount, setStarCount] = useState(5);
 
   const user = useSelector(state => state.user, shallowEqual);
   const shops = useSelector(state => state.shops, shallowEqual);
@@ -109,6 +113,52 @@ export default function ShopScreen(props) {
       newfavorites.push(shop);
     }
     dispatch(updateFavorite(newfavorites));
+  };
+
+  handleReview = () => {
+    return (
+      <Modal
+        animationType="slide"
+        visible={showReview}
+        onRequestClose={() => setShowReview(false)}
+      >
+        <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
+          <TouchableOpacity onPress={() => setShowReview(false)}>
+            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+          </TouchableOpacity>
+          <Text h1 bold style={{ marginBottom: 20 }}>
+            리뷰 작성
+          </Text>
+          <Block bottom style={{ marginBottom: 50, marginHorizontal: 50 }}>
+            <StarRating
+              disabled={false}
+              emptyStar={"ios-star-outline"}
+              fullStar={"ios-star"}
+              halfStar={"ios-star-half"}
+              iconSet={"Ionicons"}
+              fullStarColor={theme.colors.primary}
+              rating={starCount}
+              selectedStar={rating => setStarCount(rating)}
+            ></StarRating>
+          </Block>
+          <Text bold h3>
+            리뷰
+          </Text>
+          <TextInput
+            style={{ fontSize: 20 }}
+            defaultValue={text}
+            onChangeText={e => {
+              setText(e);
+            }}
+          />
+          <Button gradient onPress={() => setShowReview(false)}>
+            <Text white center bold>
+              작성완료
+            </Text>
+          </Button>
+        </Block>
+      </Modal>
+    );
   };
 
   return (
@@ -165,7 +215,7 @@ export default function ShopScreen(props) {
               >
                 {shop.name}
               </Animated.Text>
-              <Block middle row right style={{ paddingRight: 2 }}>
+              <Block middle row right style={{ marginRight: 2 }}>
                 <TouchableOpacity
                   onPress={() =>
                     navigation.navigate("Chat", {
@@ -192,7 +242,10 @@ export default function ShopScreen(props) {
                     style={{
                       color: fadeAnim.interpolate({
                         inputRange: [0, 1],
-                        outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                        outputRange:
+                          user.myfavorites.indexOf(shop.id) == -1
+                            ? ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
+                            : ["rgb(255, 0, 0)", "rgb(255, 0, 0)"]
                       })
                     }}
                   >
@@ -380,6 +433,22 @@ export default function ShopScreen(props) {
                     <Reviews key={idx} review={review} />
                   ))
                 : null}
+              <Block
+                row
+                space="between"
+                style={{ marginTop: theme.sizes.padding }}
+              >
+                <TouchableOpacity>
+                  <Text h3 bold color={theme.colors.accent}>
+                    후기 모두 보기
+                  </Text>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowReview(true)}>
+                  <Text h3 bold color={theme.colors.accent}>
+                    후기 작성
+                  </Text>
+                </TouchableOpacity>
+              </Block>
             </Block>
             <Divider />
 
@@ -387,20 +456,25 @@ export default function ShopScreen(props) {
               <Text h3 bold>
                 위치
               </Text>
+              <MapView
+                style={{
+                  flex: 1,
+                  height: 200,
+                  marginTop: theme.sizes.padding
+                }}
+                initialRegion={{
+                  latitude: 37.78825,
+                  longitude: -122.4324,
+                  latitudeDelta: 0.0922,
+                  longitudeDelta: 0.0421
+                }}
+              >
+                <MapView.Marker
+                  coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+                />
+              </MapView>
             </Block>
-            <MapView
-              style={{ flex: 1, height: 200 }}
-              initialRegion={{
-                latitude: 37.78825,
-                longitude: -122.4324,
-                latitudeDelta: 0.0922,
-                longitudeDelta: 0.0421
-              }}
-            >
-              <MapView.Marker
-                coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
-              />
-            </MapView>
+
             <Divider
               style={{
                 marginTop: 20
@@ -513,6 +587,7 @@ export default function ShopScreen(props) {
               setVisible={setVisible}
             />
           </Modal>
+          {handleReview()}
         </Fragment>
       ) : (
         <Block style={styles.full}>
@@ -565,7 +640,7 @@ const styles = StyleSheet.create({
   },
   inputRow: {
     paddingBottom: 5,
-    marginVertical: 5,
+    marginVertical: 10,
     flexDirection: "row",
     justifyContent: "space-between"
   }

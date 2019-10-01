@@ -33,11 +33,11 @@ export default Card = props => {
   };
   return (
     <TouchableOpacity
-      onPress={() =>
-        navigation.navigate("Shop", {
+      onPress={() => {
+        navigation.push("Shop", {
           shopCode: item.shopCode
-        })
-      }
+        });
+      }}
     >
       <Block style={styles.elementContainer}>
         <Block flex={2}>
@@ -49,14 +49,18 @@ export default Card = props => {
             {isLoaded ? (
               <Ionicons
                 size={30}
-                color={theme.colors.white}
+                color={
+                  myfavorites.includes(item.shopCode)
+                    ? "red"
+                    : theme.colors.white
+                }
                 name={
                   myfavorites.includes(item.shopCode)
                     ? "ios-heart"
                     : "ios-heart-empty"
                 }
                 style={{
-                  textShadowColor: theme.colors.black,
+                  textShadowColor: theme.colors.red,
                   textShadowOffset: { width: 0.5, height: 1 },
                   textShadowRadius: 1
                 }}

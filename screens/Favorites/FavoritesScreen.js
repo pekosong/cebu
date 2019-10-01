@@ -108,7 +108,7 @@ function FavoritesScreen(props) {
           >
             <Ionicons
               size={30}
-              color={theme.colors.white}
+              color={"red"}
               name={"ios-heart"}
               style={{
                 textShadowColor: theme.colors.black,
