@@ -7,7 +7,6 @@ import { store } from "./store";
 
 const SETUSER = "SETUSER";
 const GETSHOP = "GETSHOP";
-const UPDATESHOP = "UPDATESHOP";
 
 const setUserData = userData => {
   return {
@@ -19,13 +18,6 @@ const setUserData = userData => {
 const setShopData = shopData => {
   return {
     type: GETSHOP,
-    payload: shopData
-  };
-};
-
-const updateShopData = shopData => {
-  return {
-    type: UPDATESHOP,
     payload: shopData
   };
 };
@@ -84,10 +76,10 @@ const updateShop = shop => {
       .doc(shop.id)
       .update(shop)
       .then(() => {
-        let shops = store.getState().shops;
-        shops[shop.id] = shop;
-        dispatch(updateShopData(shops));
-        dispatch(downloadShopData());
+        let newShops = store.getState().shops;
+        let idx = newShops.findIndex(e => e.id == shop.id);
+        newShops[idx] = shop;
+        dispatch(setShopData(newShops));
         console.log("updated shop");
       });
   };

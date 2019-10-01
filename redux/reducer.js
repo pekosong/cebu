@@ -9,8 +9,6 @@ const reducer = (state = initialState, action) => {
       return { ...state, user: action.payload };
     case "GETSHOP":
       return { ...state, shops: action.payload };
-    case "UPDATESHOP":
-      return { ...state, shops: action.payload };
     default:
       return state;
   }

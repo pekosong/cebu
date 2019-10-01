@@ -218,11 +218,9 @@ const MyShopScreen = props => {
             >
               <Block row>
                 {images.map((source, idx) => (
-                  <Image
-                    key={idx}
-                    source={{ uri: source }}
-                    style={styles.avatar}
-                  />
+                  <TouchableOpacity key={idx} onPress={() => console.log(idx)}>
+                    <Image source={{ uri: source }} style={styles.avatar} />
+                  </TouchableOpacity>
                 ))}
               </Block>
             </ScrollView>
