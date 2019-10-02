@@ -24,7 +24,7 @@ const setShopData = shopData => {
 
 const watchUserData = email => {
   return dispatch => {
-    firebase
+    return firebase
       .firestore()
       .collection("users")
       .doc(email)

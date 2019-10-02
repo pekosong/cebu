@@ -24,21 +24,21 @@ export default ReviewModal = props => {
             후기
           </Text>
         </Block>
-        <Block right row style={{ marginTop: 10, marginBottom: -5 }}>
+        <Block right style={{ marginTop: 10, marginBottom: -5 }}>
+          <Text right>
+            {reviewCnt
+              ? reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+              : null}
+            Reviews
+          </Text>
           <StarRating
             disabled={false}
             maxStars={5}
             rating={review}
             starSize={20}
             fullStarColor={theme.colors.accent}
-            containerStyle={{ width: 70 }}
+            containerStyle={{ width: 20 }}
           />
-          <Text>
-            {reviewCnt
-              ? reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
-              : null}
-            Reviews
-          </Text>
         </Block>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>

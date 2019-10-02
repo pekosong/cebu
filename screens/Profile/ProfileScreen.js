@@ -50,11 +50,11 @@ const ProfileScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    unsubscribe1 = dispatch(watchUserData(EMAIL));
-    unsubscribe2 = dispatch(downloadShopData());
+    let unsubscribe;
+    unsubscribe = dispatch(watchUserData(EMAIL));
+    dispatch(downloadShopData());
     return () => {
-      unsubscribe1();
-      unsubscribe2();
+      unsubscribe();
     };
   }, []);
 

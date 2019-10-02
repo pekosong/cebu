@@ -22,6 +22,7 @@ const SearchScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
+    let unsubscribe;
     setCates(categories);
     unsubscribe = dispatch(watchUserData(EMAIL));
     dispatch(downloadShopData());
