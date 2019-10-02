@@ -13,6 +13,7 @@ import WideText from "./WideText";
 import Reviews from "./Reviews";
 import FullImageSlider from "./FullImageSlider";
 import ReservationModal from "./ReservationModal";
+import ReviewModal from "./ReviewModal";
 
 export {
   Block,
@@ -29,5 +30,6 @@ export {
   WideText,
   Reviews,
   FullImageSlider,
-  ReservationModal
+  ReservationModal,
+  ReviewModal
 };

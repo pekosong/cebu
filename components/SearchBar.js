@@ -139,7 +139,7 @@ export default SearchBar = props => {
 
 export const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 4,
+    marginTop: theme.sizes.padding * 2.5,
     marginBottom: 5,
     paddingHorizontal: theme.sizes.padding
   },

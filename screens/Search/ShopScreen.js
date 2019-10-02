@@ -1,4 +1,4 @@
-import React, { useState, useEffect, Fragment } from "react";
+import React, { useState, useEffect } from "react";
 import {
   Dimensions,
   StyleSheet,
@@ -20,7 +20,8 @@ import {
   Divider,
   Reviews,
   FullImageSlider,
-  ReservationModal
+  ReservationModal,
+  ReviewModal
 } from "../../components";
 import { theme, mocks } from "../../constants";
 
@@ -56,6 +57,7 @@ export default function ShopScreen(props) {
   const { navigation, recommendList } = props;
   const [shop, setShop] = useState({});
   const [visible, setVisible] = useState(false);
+  const [reviewVisible, setReviewVisible] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
   const shops = useSelector(state => state.shops, shallowEqual);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -310,7 +312,10 @@ export default function ShopScreen(props) {
                 <Reviews key={idx} review={review} />
               ))
             : null}
-          <TouchableOpacity style={{ marginTop: theme.sizes.padding }}>
+          <TouchableOpacity
+            style={{ marginTop: theme.sizes.padding }}
+            onPress={() => setReviewVisible(true)}
+          >
             <Text h3 bold color={theme.colors.accent}>
               후기 모두 보기
             </Text>
@@ -452,6 +457,19 @@ export default function ShopScreen(props) {
           shop={shop}
           navigation={navigation}
           setVisible={setVisible}
+        />
+      </Modal>
+      <Modal
+        animationType="slide"
+        visible={reviewVisible}
+        onRequestClose={() => setReviewVisible(false)}
+      >
+        <ReviewModal
+          review={shop.review}
+          reviewCnt={shop.reviewCnt}
+          reviews={shop.reviews}
+          navigation={navigation}
+          setReviewVisible={setReviewVisible}
         />
       </Modal>
     </Block>

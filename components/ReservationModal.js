@@ -159,7 +159,7 @@ export default ReservationModal = props => {
   };
 
   return (
-    <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
+    <Block padding={[theme.sizes.padding]}>
       <TouchableOpacity onPress={() => setVisible(false)}>
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
@@ -188,11 +188,10 @@ export default ReservationModal = props => {
                 >
                   <Block middle center>
                     <Text
-                      bold
-                      h4
+                      caption
                       style={{
                         color: selectedDateColor(t),
-                        marginBottom: 5
+                        marginBottom: 2
                       }}
                     >
                       {date[t]}
@@ -200,7 +199,7 @@ export default ReservationModal = props => {
                     <Text
                       style={{
                         color: selectedDateColor(t),
-                        fontSize: 14
+                        fontSize: 12
                       }}
                     >
                       {t}
@@ -210,8 +209,7 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Divider style={{ marginHorizontal: 0 }} />
-          <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
+          <Text bold h3 style={{ marginTop: 10, marginBottom: 5 }}>
             예약시간
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -224,8 +222,7 @@ export default ReservationModal = props => {
                 >
                   <Block center middle>
                     <Text
-                      h4
-                      bold
+                      caption
                       style={{
                         color: seletedTimeColor(t)
                       }}
@@ -240,9 +237,8 @@ export default ReservationModal = props => {
                     reservationTime == t ? null : timeCan.indexOf(t) != -1 ? (
                       <Text
                         style={{
-                          marginTop: 5,
                           color: seletedTimeColor(t),
-                          fontSize: 14
+                          fontSize: 12
                         }}
                       >
                         {user.plans[selectedDate][t]["shop"]["name"]}
@@ -253,9 +249,8 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Divider style={{ marginHorizontal: 0 }} />
 
-          <Text bold h3 style={{ marginTop: 15, marginBottom: 10 }}>
+          <Text bold h3 style={{ marginTop: 10, marginBottom: 5 }}>
             예약인원
           </Text>
           <Block
@@ -297,9 +292,8 @@ export default ReservationModal = props => {
               </Text>
             </TouchableOpacity>
           </Block>
-          <Divider style={{ marginHorizontal: 0 }} />
 
-          <Text bold h3 style={{ marginVertical: 10 }}>
+          <Text bold h3 style={{ marginVertical: 5 }}>
             추가 요청 사항
           </Text>
           <Input
@@ -376,7 +370,7 @@ export default ReservationModal = props => {
 export const styles = StyleSheet.create({
   timeStyle: {
     width: 100,
-    height: 50,
+    height: 45,
     padding: 0,
     marginRight: 5,
     borderWidth: 1
