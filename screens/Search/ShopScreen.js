@@ -135,7 +135,7 @@ export default function ShopScreen(props) {
                     })
                   }}
                 >
-                  <Ionicons size={35} name="ios-arrow-back" />
+                  <Ionicons size={30} name="ios-arrow-back" />
                 </Animated.Text>
               </Block>
             </TouchableOpacity>
@@ -159,7 +159,7 @@ export default function ShopScreen(props) {
                   engName: shop.engName
                 })
               }
-              style={{ marginHorizontal: 12, marginTop: 2 }}
+              style={{ marginHorizontal: 10, marginTop: 2 }}
             >
               <Animated.Text
                 style={{
@@ -169,7 +169,7 @@ export default function ShopScreen(props) {
                   })
                 }}
               >
-                <AntDesign size={28} name="message1" style={styles.icon} />
+                <AntDesign size={26} name="message1" />
               </Animated.Text>
             </TouchableOpacity>
 
@@ -186,13 +186,12 @@ export default function ShopScreen(props) {
                 }}
               >
                 <Ionicons
-                  size={32}
+                  size={30}
                   name={
                     user.myfavorites.indexOf(shop.id) == -1
                       ? "ios-heart-empty"
                       : "ios-heart"
                   }
-                  style={styles.icon}
                 />
               </Animated.Text>
             </TouchableOpacity>
@@ -491,8 +490,8 @@ const styles = StyleSheet.create({
     justifyContent: "center"
   },
   header: {
-    top: theme.sizes.padding * 1.7,
-    height: 50,
+    paddingTop: theme.sizes.padding * 1.8,
+    height: 85,
     width: width,
     paddingHorizontal: theme.sizes.padding,
     position: "absolute",
@@ -504,11 +503,6 @@ const styles = StyleSheet.create({
   },
   content: {
     marginBottom: 15
-  },
-  icon: {
-    textShadowColor: theme.colors.black,
-    textShadowOffset: { width: 0.5, height: 1 },
-    textShadowRadius: 1
   },
   inputRow: {
     paddingBottom: 5,

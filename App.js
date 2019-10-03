@@ -47,19 +47,7 @@ async function loadResourcesAsync() {
       require("./assets/images/cebu_massage1.jpg"),
       require("./assets/images/cebu_massage2.jpeg"),
       require("./assets/images/cebu_massage3.jpg"),
-      require("./assets/images/cebu_massage4.jpg"),
-      require("./assets/images/hello.jpg"),
-      require("./assets/images/weather.png"),
-      require("./assets/images/avatar.png"),
-      require("./assets/images/search/activity.jpg"),
-      require("./assets/images/search/bar.jpg"),
-      require("./assets/images/search/cafe.jpg"),
-      require("./assets/images/search/massage.jpg"),
-      require("./assets/images/search/nail.jpg"),
-      require("./assets/images/search/activity.jpg"),
-      require("./assets/images/search/restaurant.jpg"),
-      require("./assets/images/search/seasports.jpg"),
-      require("./assets/images/search/shopping.jpg")
+      require("./assets/images/cebu_massage4.jpg")
     ]),
     Font.loadAsync({
       // This is the font that we are using for our tab bar

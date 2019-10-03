@@ -14,7 +14,7 @@ export default Reviews = props => {
   return (
     <TouchableOpacity>
       <Block style={{ marginVertical: theme.sizes.padding / 3 }}>
-        <Block row space="between" flex={1}>
+        <Block row space="between">
           <Image
             source={{ uri: "https://i.pravatar.cc/301" }}
             style={styles.avatarChat}

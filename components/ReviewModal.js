@@ -18,27 +18,29 @@ export default ReviewModal = props => {
       <TouchableOpacity onPress={() => setReviewVisible(false)}>
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
-      <Block row space="between" style={{ marginBottom: 40 }}>
+      <Block row space="between" style={{ marginBottom: 45 }}>
         <Block>
           <Text h1 bold>
             후기
           </Text>
         </Block>
-        <Block right style={{ marginTop: 10, marginBottom: -5 }}>
-          <Text right>
+        <Block>
+          <Text h4 right>
             {reviewCnt
               ? reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
               : null}
             Reviews
           </Text>
-          <StarRating
-            disabled={false}
-            maxStars={5}
-            rating={review}
-            starSize={20}
-            fullStarColor={theme.colors.accent}
-            containerStyle={{ width: 20 }}
-          />
+          <Block style={{ position: "absolute", right: 62, top: 25 }}>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={review}
+              starSize={20}
+              fullStarColor={theme.colors.accent}
+              containerStyle={{ width: 30 }}
+            />
+          </Block>
         </Block>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false}>

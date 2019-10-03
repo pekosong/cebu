@@ -164,7 +164,7 @@ const CategoryScreen = props => {
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons
-              size={35}
+              size={30}
               color={theme.colors.primary}
               name="ios-arrow-back"
             />
