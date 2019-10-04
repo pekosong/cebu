@@ -1,18 +1,19 @@
-import React, { useState } from "react";
-import { Platform, StatusBar, StyleSheet, YellowBox } from "react-native";
-import { AppLoading } from "expo";
-import * as Font from "expo-font";
-import { Asset } from "expo-asset";
-import AppNavigator from "./navigation/AppNavigator";
-import { Ionicons } from "@expo/vector-icons";
+import './fixtimerbug';
+import React, {useState} from 'react';
+import {Platform, StatusBar, StyleSheet, YellowBox, Image} from 'react-native';
+import {AppLoading} from 'expo';
+import * as Font from 'expo-font';
+import {Asset} from 'expo-asset';
+import AppNavigator from './navigation/AppNavigator';
+import {Ionicons} from '@expo/vector-icons';
 
-import { Block } from "./components";
+import {Block} from './components';
 
-import { Provider } from "react-redux";
-import { store } from "./redux/store";
+import {Provider} from 'react-redux';
+import {store} from './redux/store';
 
-YellowBox.ignoreWarnings(["Warning: ..."]);
-console.ignoredYellowBox = ["Setting a timer"];
+// YellowBox.ignoreWarnings(['Warning: ...']);
+// console.ignoredYellowBox = ['Setting a timer'];
 
 export default function App(props) {
   const [isLoadingComplete, setLoadingComplete] = useState(false);
@@ -29,7 +30,7 @@ export default function App(props) {
     return (
       <Provider store={store}>
         <Block style={styles.container}>
-          {Platform.OS === "ios" && <StatusBar barStyle="default" />}
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
           <AppNavigator />
         </Block>
       </Provider>
@@ -37,26 +38,33 @@ export default function App(props) {
   }
 }
 
+function cacheFonts(fonts) {
+  return fonts.map(font => Font.loadAsync(font));
+}
+
+function cacheImages(images) {
+  return images.map(image => {
+    if (typeof image === 'string') {
+      return Image.prefetch(image);
+    } else {
+      return Asset.fromModule(image).downloadAsync();
+    }
+  });
+}
+
 async function loadResourcesAsync() {
-  await Promise.all([
-    Asset.loadAsync([
-      require("./assets/images/cebu_food1.jpg"),
-      require("./assets/images/cebu_food2.jpeg"),
-      require("./assets/images/cebu_food3.jpeg"),
-      require("./assets/images/cebu_food4.jpg"),
-      require("./assets/images/cebu_massage1.jpg"),
-      require("./assets/images/cebu_massage2.jpeg"),
-      require("./assets/images/cebu_massage3.jpg"),
-      require("./assets/images/cebu_massage4.jpg")
-    ]),
-    Font.loadAsync({
-      // This is the font that we are using for our tab bar
-      ...Ionicons.font,
-      // We include SpaceMono because we use it in HomeScreen.js. Feel free to
-      // remove this if you are not using it in your app
-      "space-mono": require("./assets/fonts/SpaceMono-Regular.ttf")
-    })
+  const imageAssets = cacheImages([
+    require('./assets/images/cebu_food1.jpg'),
+    require('./assets/images/cebu_food2.jpeg'),
+    require('./assets/images/cebu_food3.jpeg'),
+    require('./assets/images/cebu_food4.jpg'),
+    require('./assets/images/cebu_massage1.jpg'),
+    require('./assets/images/cebu_massage2.jpeg'),
+    require('./assets/images/cebu_massage3.jpg'),
+    require('./assets/images/cebu_massage4.jpg'),
   ]);
+
+  await Promise.all([...imageAssets]);
 }
 
 function handleLoadingError(error) {
@@ -72,6 +80,6 @@ function handleFinishLoading(setLoadingComplete) {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "#fff"
-  }
+    backgroundColor: '#fff',
+  },
 });

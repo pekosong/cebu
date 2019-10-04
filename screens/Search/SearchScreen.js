@@ -68,7 +68,7 @@ const SearchScreen = props => {
         <ScrollView vertival={true}>
           <Block style={styles.title}>
             <Text h1 bold>
-              평생 잊지 못할 세부를 원하세요
+              평생 잊지 못할 세부를 원하세요?
             </Text>
           </Block>
           <Block style={{ ...styles.content, height: 130 }}>

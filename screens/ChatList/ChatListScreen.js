@@ -1,23 +1,22 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
-  Image,
   ScrollView,
   TouchableOpacity,
   FlatList,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import { Block, Text } from "../../components";
-import { theme, mocks } from "../../constants";
+import {Block, Text, CachedImage} from '../../components';
+import {theme, mocks} from '../../constants';
 
-import moment from "moment";
+import moment from 'moment';
 
-import firebase from "../../constants/store";
-import { useSelector, shallowEqual } from "react-redux";
+import firebase from '../../constants/store';
+import {useSelector, shallowEqual} from 'react-redux';
 
 const ChatListScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
   const [chatList, setChatlist] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
@@ -26,9 +25,9 @@ const ChatListScreen = props => {
     if (Object.entries(user).length !== 0) {
       let unsubscribe = firebase
         .firestore()
-        .collection("users")
+        .collection('users')
         .doc(user.email)
-        .collection("messages")
+        .collection('messages')
         .onSnapshot(querySnapshot => {
           let myList = [];
           querySnapshot.forEach((doc, idx) => {
@@ -43,11 +42,11 @@ const ChatListScreen = props => {
                   return v;
                 }
               });
-              date = moment.unix(song.createdAt.seconds).format("YYYY-MM-DD");
-              time = moment.unix(song.createdAt.seconds).format("HH:mm:ss");
+              date = moment.unix(song.createdAt.seconds).format('YYYY-MM-DD');
+              time = moment.unix(song.createdAt.seconds).format('HH:mm:ss');
               message = song.text;
             } else {
-              message = "대화가 없습니다.";
+              message = '대화가 없습니다.';
             }
 
             chat.name = data.shop;
@@ -70,38 +69,36 @@ const ChatListScreen = props => {
     }
   }, [user]);
 
-  renderList = ({ item }) => {
+  renderList = ({item}) => {
     return (
       <TouchableOpacity
         onPress={() =>
-          navigation.navigate("Chat", {
+          navigation.navigate('Chat', {
             title: item.name,
-            engName: item.name
+            engName: item.name,
           })
-        }
-      >
+        }>
         <Block
           row
           style={{
             marginVertical: 10,
             paddingBottom: 5,
             borderBottomWidth: 0.3,
-            borderBottomColor: theme.colors.gray
-          }}
-        >
+            borderBottomColor: theme.colors.gray,
+          }}>
           <Block left flex={1}>
-            <Image source={{ uri: item.avatar }} style={styles.avatarChat} />
+            <CachedImage uri={item.avatar} style={styles.avatarChat} />
           </Block>
-          <Block flex={3.5} style={{ marginTop: 15, height: 40 }}>
+          <Block flex={3.5} style={{marginTop: 15, height: 40}}>
             <Block middle row space="between">
               <Text h4 bold>
                 {item.name}
               </Text>
               <Block flex={false}>
-                <Text caption style={{ textAlign: "right" }}>
+                <Text caption style={{textAlign: 'right'}}>
                   {item.date}
                 </Text>
-                <Text caption style={{ textAlign: "right" }}>
+                <Text caption style={{textAlign: 'right'}}>
                   {item.time}
                 </Text>
               </Block>
@@ -126,8 +123,7 @@ const ChatListScreen = props => {
           </Block>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{ marginHorizontal: theme.sizes.padding }}
-          >
+            style={{marginHorizontal: theme.sizes.padding}}>
             <FlatList
               data={chatList}
               keyExtractor={item => item.name}
@@ -139,8 +135,7 @@ const ChatListScreen = props => {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}
-          ></ActivityIndicator>
+            color={theme.colors.primary}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -148,30 +143,30 @@ const ChatListScreen = props => {
 };
 
 ChatListScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 ChatListScreen.defaultProps = {
-  profiles: mocks.profiles
+  profiles: mocks.profiles,
 };
 const styles = StyleSheet.create({
   full: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   header: {
     marginTop: theme.sizes.base * 4.2,
     marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
     width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
+    height: theme.sizes.base * 2.2,
   },
   avatarChat: {
     width: theme.sizes.base * 4,
     height: theme.sizes.base * 4,
-    borderRadius: theme.sizes.base * 2
-  }
+    borderRadius: theme.sizes.base * 2,
+  },
 });
 
 export default ChatListScreen;

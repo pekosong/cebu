@@ -27,7 +27,7 @@
     "android": {
       "package": "com.os1.cebu",
       "config": {
-        "googleMaps": { "apiKey": "AIzaSyDO9cR41XXuwEcl3B02Rwxag8Ytl1LJw_A" }
+        "googleMaps": {"apiKey": "AIzaSyDO9cR41XXuwEcl3B02Rwxag8Ytl1LJw_A"}
       }
     }
   }

@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,12 +6,12 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import MapView from "react-native-maps";
-import { Ionicons, AntDesign } from "@expo/vector-icons";
-import StarRating from "react-native-star-rating";
+import MapView from 'react-native-maps';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
+import StarRating from 'react-native-star-rating';
 
 import {
   Button,
@@ -21,40 +21,40 @@ import {
   Reviews,
   FullImageSlider,
   ReservationModal,
-  ReviewModal
-} from "../../components";
-import { theme, mocks } from "../../constants";
+  ReviewModal,
+} from '../../components';
+import {theme, mocks} from '../../constants';
 
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite } from "../../redux/action";
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {updateFavorite} from '../../redux/action';
 
-const { height, width } = Dimensions.get("window");
+const {height, width} = Dimensions.get('window');
 
 const items = [
   {
-    name: "전신마사지",
-    desc: "전신을 마사지",
-    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+    name: '전신마사지',
+    desc: '전신을 마사지',
+    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
   },
   {
-    name: "전신마사지",
-    desc: "전신을 마사지",
-    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+    name: '전신마사지',
+    desc: '전신을 마사지',
+    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
   },
   {
-    name: "전신마사지",
-    desc: "전신을 마사지",
-    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
+    name: '전신마사지',
+    desc: '전신을 마사지',
+    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
   },
   {
-    name: "전신마사지",
-    desc: "전신을 마사지",
-    src: "http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666"
-  }
+    name: '전신마사지',
+    desc: '전신을 마사지',
+    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+  },
 ];
 
 export default function ShopScreen(props) {
-  const { navigation, recommendList } = props;
+  const {navigation, recommendList} = props;
   const [shop, setShop] = useState({});
   const [visible, setVisible] = useState(false);
   const [reviewVisible, setReviewVisible] = useState(false);
@@ -66,13 +66,13 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    let shopCode = navigation.getParam("shopCode");
+    let shopCode = navigation.getParam('shopCode');
     if (shopCode) {
       let myShop = shops.filter(e => e.id == shopCode);
       setShop(myShop[0]);
       setIsLoaded(true);
     } else {
-      setShop(navigation.getParam("shop"));
+      setShop(navigation.getParam('shop'));
       setIsLoaded(true);
     }
   }, [user, shops]);
@@ -81,12 +81,12 @@ export default function ShopScreen(props) {
     if (e.nativeEvent.contentOffset.y > 120) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 50
+        duration: 50,
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 120) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 25
+        duration: 25,
       }).start();
     }
   };
@@ -109,12 +109,11 @@ export default function ShopScreen(props) {
           ...styles.header,
           backgroundColor: fadeAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ["rgba(255, 255, 255, 0)", "rgba(255, 255, 255, 1)"]
+            outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
           }),
           borderWidth: fadeAnim,
-          borderColor: theme.colors.gray2
-        }}
-      >
+          borderColor: theme.colors.gray2,
+        }}>
         <Block middle center row space="between">
           <Block>
             <TouchableOpacity
@@ -123,18 +122,16 @@ export default function ShopScreen(props) {
               }}
               style={{
                 height: 100,
-                width: 100
-              }}
-            >
+                width: 100,
+              }}>
               <Block center row>
                 <Animated.Text
                   style={{
                     color: fadeAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                    })
-                  }}
-                >
+                      outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                    }),
+                  }}>
                   <Ionicons size={30} name="ios-arrow-back" />
                 </Animated.Text>
               </Block>
@@ -143,32 +140,29 @@ export default function ShopScreen(props) {
           <Animated.Text
             style={{
               color: theme.colors.black,
-              fontWeight: "bold",
+              fontWeight: 'bold',
               fontSize: 18,
               opacity: fadeAnim,
-              marginRight: 30
-            }}
-          >
+              marginRight: 30,
+            }}>
             {shop.name}
           </Animated.Text>
-          <Block middle row right style={{ marginRight: 2 }}>
+          <Block middle row right style={{marginRight: 2}}>
             <TouchableOpacity
               onPress={() =>
-                navigation.navigate("Chat", {
+                navigation.navigate('Chat', {
                   title: shop.name,
-                  engName: shop.engName
+                  engName: shop.engName,
                 })
               }
-              style={{ marginHorizontal: 10, marginTop: 2 }}
-            >
+              style={{marginHorizontal: 10, marginTop: 2}}>
               <Animated.Text
                 style={{
                   color: fadeAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                  })
-                }}
-              >
+                    outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                  }),
+                }}>
                 <AntDesign size={26} name="message1" />
               </Animated.Text>
             </TouchableOpacity>
@@ -180,17 +174,16 @@ export default function ShopScreen(props) {
                     inputRange: [0, 1],
                     outputRange:
                       user.myfavorites.indexOf(shop.id) == -1
-                        ? ["rgb(255, 255, 255)", "rgb(0, 0, 0)"]
-                        : ["rgb(255, 0, 0)", "rgb(255, 0, 0)"]
-                  })
-                }}
-              >
+                        ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
+                        : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
+                  }),
+                }}>
                 <Ionicons
                   size={30}
                   name={
                     user.myfavorites.indexOf(shop.id) == -1
-                      ? "ios-heart-empty"
-                      : "ios-heart"
+                      ? 'ios-heart-empty'
+                      : 'ios-heart'
                   }
                 />
               </Animated.Text>
@@ -201,22 +194,21 @@ export default function ShopScreen(props) {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{ marginBottom: 65, zIndex: -1 }}
+        style={{marginBottom: 65, zIndex: -1}}
         scrollEventThrottle={360}
-        onScroll={handleScrollByY}
-      >
+        onScroll={handleScrollByY}>
         <FullImageSlider source={shop.source}></FullImageSlider>
-        <Block style={[styles.categories, { marginTop: 20 }]}>
+        <Block style={[styles.categories, {marginTop: 20}]}>
           <Block row space="between">
             <Block>
-              <Text bold style={{ fontSize: 25, marginBottom: 5 }}>
+              <Text bold style={{fontSize: 25, marginBottom: 5}}>
                 {shop.name}
               </Text>
               <Text h3 gray style={styles.content}>
                 {shop.engName}
               </Text>
             </Block>
-            <Text bold style={{ color: theme.colors.accent }}>
+            <Text bold style={{color: theme.colors.accent}}>
               {shop.tags}
             </Text>
           </Block>
@@ -277,8 +269,7 @@ export default function ShopScreen(props) {
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}
-          >
+            scrollEnabled={true}>
             {items.map((item, idx) => (
               <CardMenu key={idx} item={item}>
                 <Block middle>
@@ -287,10 +278,9 @@ export default function ShopScreen(props) {
                     right
                     caption
                     style={{
-                      textDecorationLine: "line-through",
-                      textDecorationStyle: "solid"
-                    }}
-                  >
+                      textDecorationLine: 'line-through',
+                      textDecorationStyle: 'solid',
+                    }}>
                     20,000원
                   </Text>
                   <Text right bold>
@@ -312,9 +302,8 @@ export default function ShopScreen(props) {
               ))
             : null}
           <TouchableOpacity
-            style={{ marginTop: theme.sizes.padding }}
-            onPress={() => setReviewVisible(true)}
-          >
+            style={{marginTop: theme.sizes.padding}}
+            onPress={() => setReviewVisible(true)}>
             <Text h3 bold color={theme.colors.accent}>
               후기 모두 보기
             </Text>
@@ -332,50 +321,46 @@ export default function ShopScreen(props) {
             style={{
               flex: 1,
               height: 200,
-              marginTop: theme.sizes.padding / 2
+              marginTop: theme.sizes.padding / 2,
             }}
             initialRegion={{
               latitude: 37.78825,
               longitude: -122.4324,
               latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421
-            }}
-          >
+              longitudeDelta: 0.0421,
+            }}>
             <MapView.Marker
-              coordinate={{ latitude: 37.78825, longitude: -122.4324 }}
+              coordinate={{latitude: 37.78825, longitude: -122.4324}}
             />
           </MapView>
         </Block>
         <Divider
           style={{
-            marginTop: 20
-          }}
-        ></Divider>
-        <Block style={{ ...styles.categories, marginTop: 10 }}>
+            marginTop: 20,
+          }}></Divider>
+        <Block style={{...styles.categories, marginTop: 10}}>
           <Text h3 bold style={styles.content}>
             이 근처의 추천 장소
           </Text>
-          <Text h4 style={{ marginBottom: 10 }}>
+          <Text h4 style={{marginBottom: 10}}>
             {shop.name} 근처의 이런 곳은 어때요?
           </Text>
           <ScrollView
             horizontal={true}
             showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}
-          >
+            scrollEnabled={true}>
             {recommendList.map((item, idx) => (
               <Card key={idx} item={item} navigation={navigation}>
                 <Text
                   gray
                   caption
                   style={{
-                    textDecorationLine: "line-through",
-                    textDecorationStyle: "solid"
-                  }}
-                >
+                    textDecorationLine: 'line-through',
+                    textDecorationStyle: 'solid',
+                  }}>
                   {item.beforePrice}원
                 </Text>
-                <Text h4 bold style={{ marginTop: 5 }}>
+                <Text h4 bold style={{marginTop: 5}}>
                   {item.afterPrice}원
                 </Text>
               </Card>
@@ -386,61 +371,57 @@ export default function ShopScreen(props) {
 
       <Block
         row
-        middle
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 0,
           borderTopWidth: 1,
-          borderTopColor: theme.colors.gray2
-        }}
-      >
+          borderTopColor: theme.colors.gray2,
+        }}>
         <Block
           flex={2}
           left
           style={{
-            marginLeft: theme.sizes.padding
-          }}
-        >
-          <Block row style={{ marginTop: 10, marginBottom: -5 }}>
+            marginLeft: theme.sizes.padding,
+          }}>
+          <Block row center style={{marginTop: 5, marginBottom: -5}}>
             <StarRating
               disabled={false}
               maxStars={5}
               rating={shop.review}
-              starSize={15}
+              starSize={16}
               fullStarColor={theme.colors.accent}
-              containerStyle={{ width: 70 }}
+              containerStyle={{width: 70}}
             />
-            <Text style={{ marginLeft: 7 }}>
+            <Text style={{marginLeft: 12, fontSize: 16}}>
               {shop.reviewCnt
                 ? shop.reviewCnt
                     .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ",") + " "
+                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' '
                 : null}
               Reviews
             </Text>
           </Block>
-          <Block row>
+          <Block row center>
             <Ionicons
-              size={15}
+              size={16}
               color={theme.colors.accent}
-              name={"ios-heart"}
+              name={'ios-heart'}
             />
-            <Text style={{ marginLeft: 7 }}>
+            <Text style={{marginLeft: 10, fontSize: 16}}>
               {shop.likes
-                ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",") +
-                  " "
+                ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+                  ' '
                 : null}
               Likes
             </Text>
           </Block>
         </Block>
-        <Block flex={1} style={{ marginRight: theme.sizes.padding }}>
+        <Block flex={1} style={{marginRight: theme.sizes.padding}}>
           <Button
             gradient
             onPress={() => {
               setVisible(true);
-            }}
-          >
+            }}>
             <Text white center bold>
               예약 요청
             </Text>
@@ -450,8 +431,7 @@ export default function ShopScreen(props) {
       <Modal
         animationType="slide"
         visible={visible}
-        onRequestClose={() => setVisible(false)}
-      >
+        onRequestClose={() => setVisible(false)}>
         <ReservationModal
           shop={shop}
           navigation={navigation}
@@ -461,8 +441,7 @@ export default function ShopScreen(props) {
       <Modal
         animationType="slide"
         visible={reviewVisible}
-        onRequestClose={() => setReviewVisible(false)}
-      >
+        onRequestClose={() => setReviewVisible(false)}>
         <ReviewModal
           review={shop.review}
           reviewCnt={shop.reviewCnt}
@@ -477,37 +456,37 @@ export default function ShopScreen(props) {
 
 ShopScreen.defaultProps = {
   recommendList: mocks.recommendList,
-  eventList: mocks.eventList
+  eventList: mocks.eventList,
 };
 
 ShopScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   full: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   header: {
     paddingTop: theme.sizes.padding * 1.8,
     height: 85,
     width: width,
     paddingHorizontal: theme.sizes.padding,
-    position: "absolute",
-    zIndex: 100
+    position: 'absolute',
+    zIndex: 100,
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
-    marginVertical: 10
+    marginVertical: 10,
   },
   content: {
-    marginBottom: 15
+    marginBottom: 15,
   },
   inputRow: {
     paddingBottom: 5,
     marginVertical: 10,
-    flexDirection: "row",
-    justifyContent: "space-between"
-  }
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+  },
 });

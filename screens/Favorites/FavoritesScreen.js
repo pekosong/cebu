@@ -1,30 +1,29 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
-  Image,
   ScrollView,
   StyleSheet,
   TouchableOpacity,
   Platform,
   ActivityIndicator,
-  Dimensions
-} from "react-native";
+  Dimensions,
+} from 'react-native';
 
-import StarRating from "react-native-star-rating";
+import StarRating from 'react-native-star-rating';
 
-import { Ionicons } from "@expo/vector-icons";
-import { Block, Text } from "../../components";
-import { theme, mocks } from "../../constants";
+import {Ionicons} from '@expo/vector-icons';
+import {Block, Text, CachedImage} from '../../components';
+import {theme, mocks} from '../../constants';
 
-import firebase from "../../constants/store";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { updateFavorite } from "../../redux/action";
+import firebase from '../../constants/store';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {updateFavorite} from '../../redux/action';
 
-const { height, width } = Dimensions.get("window");
+const {height, width} = Dimensions.get('window');
 
 function FavoritesScreen(props) {
-  const { navigation } = props;
+  const {navigation} = props;
   const [tabs, setTabs] = useState([]);
-  const [active, setActive] = useState("");
+  const [active, setActive] = useState('');
   const [favorites, setFavorites] = useState([]);
 
   const [selectedFavorites, setSelectedFavorites] = useState([]);
@@ -37,11 +36,11 @@ function FavoritesScreen(props) {
     if (Object.entries(user).length !== 0) {
       firebase
         .firestore()
-        .collection("shops")
+        .collection('shops')
         .get()
         .then(querySnapshot => {
           const song = [];
-          const category = new Set(["All"]);
+          const category = new Set(['All']);
           querySnapshot.forEach(doc => {
             if (user.myfavorites.indexOf(doc.data().id) != -1) {
               song.push(doc.data());
@@ -50,7 +49,7 @@ function FavoritesScreen(props) {
           });
           setFavorites(song);
           setSelectedFavorites(song);
-          setActive("All");
+          setActive('All');
           setTabs(Array.from(category));
           setIsLoaded(true);
         });
@@ -65,8 +64,7 @@ function FavoritesScreen(props) {
       <TouchableOpacity
         key={`tab-${tab}`}
         onPress={() => handleTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}
-      >
+        style={[styles.tab, isActive ? styles.active : null]}>
         <Text size={16} medium gray={!isActive} secondary={isActive}>
           {tab}
         </Text>
@@ -75,7 +73,7 @@ function FavoritesScreen(props) {
   };
 
   handleTab = tab => {
-    if (tab == "All") {
+    if (tab == 'All') {
       setSelectedFavorites(favorites);
     } else {
       setSelectedFavorites(favorites.filter(item => item.category == tab));
@@ -95,41 +93,38 @@ function FavoritesScreen(props) {
       <TouchableOpacity
         key={item.name}
         onPress={() =>
-          navigation.navigate("Shop", {
-            title: "저장소",
-            shop: item
+          navigation.navigate('Shop', {
+            title: '저장소',
+            shop: item,
           })
-        }
-      >
+        }>
         <Block key={item.name} style={styles.categories}>
           <TouchableOpacity
             onPress={() => handleRemoveHeart(item.id)}
-            style={{ position: "absolute", top: 5, right: 30, zIndex: 10 }}
-          >
+            style={{position: 'absolute', top: 5, right: 30, zIndex: 10}}>
             <Ionicons
               size={30}
-              color={"red"}
-              name={"ios-heart"}
+              color={'red'}
+              name={'ios-heart'}
               style={{
                 textShadowColor: theme.colors.black,
-                textShadowOffset: { width: 0.5, height: 1 },
-                textShadowRadius: 1
+                textShadowOffset: {width: 0.5, height: 1},
+                textShadowRadius: 1,
               }}
             />
           </TouchableOpacity>
-          <Image
-            source={{ uri: item.source[0] }}
+          <CachedImage
+            uri={item.source[0]}
             style={{
               height: 200,
               width: width - theme.sizes.padding * 2,
-              resizeMode: "cover",
-              borderRadius: 5
+              borderRadius: 5,
+              resizeMode: 'cover',
             }}
-          ></Image>
-
-          <Text style={{ marginTop: 5 }}>{item.category}</Text>
-          <Text h2 bold style={{ marginVertical: 5 }}>
-            {item.name + "  "}
+          />
+          <Text style={{marginTop: 5}}>{item.category}</Text>
+          <Text h2 bold style={{marginVertical: 5}}>
+            {item.name + '  '}
             <Text>{item.engName}</Text>
           </Text>
           <StarRating
@@ -138,7 +133,7 @@ function FavoritesScreen(props) {
             rating={item.review}
             starSize={10}
             fullStarColor={theme.colors.accent}
-            containerStyle={{ width: 20 }}
+            containerStyle={{width: 20}}
           />
         </Block>
       </TouchableOpacity>
@@ -163,8 +158,7 @@ function FavoritesScreen(props) {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}
-          ></ActivityIndicator>
+            color={theme.colors.primary}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -172,44 +166,44 @@ function FavoritesScreen(props) {
 }
 
 FavoritesScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 FavoritesScreen.defaultProps = {
   profiles: mocks.profiles,
   lists: mocks.lists,
-  myplans: mocks.plans
+  myplans: mocks.plans,
 };
 
 const styles = StyleSheet.create({
   full: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   header: {
     marginTop: theme.sizes.base * 4,
     marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   tabs: {
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginVertical:
-      Platform.OS === "ios" ? theme.sizes.base * 1.1 : theme.sizes.base,
-    marginHorizontal: theme.sizes.padding
+      Platform.OS === 'ios' ? theme.sizes.base * 1.1 : theme.sizes.base,
+    marginHorizontal: theme.sizes.padding,
   },
   tab: {
     marginRight: theme.sizes.base,
-    paddingBottom: theme.sizes.base
+    paddingBottom: theme.sizes.base,
   },
   active: {
     borderBottomColor: theme.colors.secondary,
-    borderBottomWidth: 3
+    borderBottomWidth: 3,
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
-    marginVertical: theme.sizes.padding
-  }
+    marginVertical: theme.sizes.padding,
+  },
 });
 
 export default FavoritesScreen;

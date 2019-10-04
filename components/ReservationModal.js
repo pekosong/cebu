@@ -1,44 +1,50 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, TouchableOpacity, Modal, ScrollView } from "react-native";
+import React, {useState, useEffect} from 'react';
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  Modal,
+  ScrollView,
+} from 'react-native';
 
-import Divider from "./Divider";
-import Block from "./Block";
-import Text from "./Text";
-import Input from "./Input";
-import Button from "./Button";
+import Divider from './Divider';
+import Block from './Block';
+import Text from './Text';
+import Input from './Input';
+import Button from './Button';
 
-import { theme } from "../constants";
-import { Ionicons } from "@expo/vector-icons";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { makeResevation } from "../redux/action";
+import {theme} from '../constants';
+import {Ionicons} from '@expo/vector-icons';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {makeResevation} from '../redux/action';
 
 const TIMES = [
-  "10:00",
-  "11:00",
-  "12:00",
-  "13:00",
-  "14:00",
-  "15:00",
-  "16:00",
-  "17:00",
-  "18:00",
-  "19:00",
-  "20:00",
-  "21:00"
+  '10:00',
+  '11:00',
+  '12:00',
+  '13:00',
+  '14:00',
+  '15:00',
+  '16:00',
+  '17:00',
+  '18:00',
+  '19:00',
+  '20:00',
+  '21:00',
 ];
 
 export default ReservationModal = props => {
-  const { shop, navigation, setVisible } = props;
+  const {shop, navigation, setVisible} = props;
   const [todo, setTodo] = useState({});
 
   const [date, setDate] = useState({});
-  const [selectedDate, setSelectedDate] = useState("");
-  const [reservationDate, setReservationDate] = useState("");
-  const [time, setTime] = useState("");
-  const [reservationTime, setReservationTime] = useState("");
+  const [selectedDate, setSelectedDate] = useState('');
+  const [reservationDate, setReservationDate] = useState('');
+  const [time, setTime] = useState('');
+  const [reservationTime, setReservationTime] = useState('');
   const [timeCan, setTimeCan] = useState([]);
   const [people, setPeople] = useState(1);
-  const [text, setText] = useState("");
+  const [text, setText] = useState('');
 
   const [isChange, setIsChange] = useState(false);
 
@@ -47,7 +53,7 @@ export default ReservationModal = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let reservation = navigation.getParam("todo");
+    let reservation = navigation.getParam('todo');
     let myPlans = user.plans;
 
     if (reservation) {
@@ -65,8 +71,8 @@ export default ReservationModal = props => {
       setText(reservation.text);
       setTimeCan(
         Object.keys(user.plans[reservation.date]).filter(
-          e => e != "hotel" && e != "nDay"
-        )
+          e => e != 'hotel' && e != 'nDay',
+        ),
       );
       setIsChange(true);
     } else {
@@ -77,8 +83,8 @@ export default ReservationModal = props => {
       setDate(days);
       setTimeCan(
         Object.keys(user.plans[Object.keys(days)[0]]).filter(
-          e => e != "hotel" && e != "nDay"
-        )
+          e => e != 'hotel' && e != 'nDay',
+        ),
       );
       setSelectedDate(Object.keys(days)[0]);
       setIsChange(false);
@@ -87,11 +93,11 @@ export default ReservationModal = props => {
 
   handleReservation = () => {
     let reservation = {};
-    reservation["time"] = time;
-    reservation["people"] = people;
-    reservation["date"] = selectedDate;
-    reservation["shop"] = shop;
-    reservation["text"] = text;
+    reservation['time'] = time;
+    reservation['people'] = people;
+    reservation['date'] = selectedDate;
+    reservation['shop'] = shop;
+    reservation['text'] = text;
 
     let allPlans = user.plans;
     allPlans[selectedDate][time] = reservation;
@@ -102,11 +108,11 @@ export default ReservationModal = props => {
 
   handleChangeReservation = () => {
     let reservation = {};
-    reservation["time"] = time;
-    reservation["people"] = people;
-    reservation["date"] = selectedDate;
-    reservation["shop"] = shop;
-    reservation["text"] = text;
+    reservation['time'] = time;
+    reservation['people'] = people;
+    reservation['date'] = selectedDate;
+    reservation['shop'] = shop;
+    reservation['text'] = text;
 
     let allPlans = user.plans;
 
@@ -120,11 +126,11 @@ export default ReservationModal = props => {
 
   handleDeleteReservation = () => {
     let reservation = {};
-    reservation["time"] = time;
-    reservation["people"] = people;
-    reservation["date"] = selectedDate;
-    reservation["shop"] = shop;
-    reservation["text"] = text;
+    reservation['time'] = time;
+    reservation['people'] = people;
+    reservation['date'] = selectedDate;
+    reservation['shop'] = shop;
+    reservation['text'] = text;
 
     let allPlans = user.plans;
 
@@ -159,16 +165,20 @@ export default ReservationModal = props => {
   };
 
   return (
-    <Block padding={[theme.sizes.padding]}>
+    <Block
+      padding={[
+        Platform.OS === 'ios' ? theme.sizes.padding * 2 : theme.sizes.padding,
+        theme.sizes.padding,
+      ]}>
       <TouchableOpacity onPress={() => setVisible(false)}>
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
-      <Text h1 bold style={{ marginBottom: 20 }}>
-        {isChange ? "예약 변경" : "예약 신청"}
+      <Text h1 bold style={{marginBottom: 20}}>
+        {isChange ? '예약 변경' : '예약 신청'}
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block>
-          <Text bold h3 style={{ marginVertical: 10 }}>
+          <Text bold h3 style={{marginVertical: 10}}>
             예약일
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -180,28 +190,25 @@ export default ReservationModal = props => {
                   onPress={() => {
                     setTimeCan(
                       Object.keys(user.plans[t]).filter(
-                        e => e != "hotel" && e != "nDay"
-                      )
+                        e => e != 'hotel' && e != 'nDay',
+                      ),
                     );
                     setSelectedDate(t);
-                  }}
-                >
+                  }}>
                   <Block middle center>
                     <Text
                       caption
                       style={{
                         color: selectedDateColor(t),
-                        marginBottom: 2
-                      }}
-                    >
+                        marginBottom: 2,
+                      }}>
                       {date[t]}
                     </Text>
                     <Text
                       style={{
                         color: selectedDateColor(t),
-                        fontSize: 12
-                      }}
-                    >
+                        fontSize: 12,
+                      }}>
                       {t}
                     </Text>
                   </Block>
@@ -209,7 +216,7 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Text bold h3 style={{ marginTop: 10, marginBottom: 5 }}>
+          <Text bold h3 style={{marginTop: 10, marginBottom: 5}}>
             예약시간
           </Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
@@ -218,17 +225,15 @@ export default ReservationModal = props => {
                 <Button
                   key={t}
                   style={[styles.timeStyle, seletedTimeStyle(t)]}
-                  onPress={() => setTime(t)}
-                >
+                  onPress={() => setTime(t)}>
                   <Block center middle>
                     <Text
                       caption
                       style={{
-                        color: seletedTimeColor(t)
-                      }}
-                    >
+                        color: seletedTimeColor(t),
+                      }}>
                       {reservationDate == selectedDate && reservationTime == t
-                        ? "현예약"
+                        ? '현예약'
                         : timeCan.indexOf(t) != -1
                         ? `예약중`
                         : t}
@@ -238,10 +243,9 @@ export default ReservationModal = props => {
                       <Text
                         style={{
                           color: seletedTimeColor(t),
-                          fontSize: 12
-                        }}
-                      >
-                        {user.plans[selectedDate][t]["shop"]["name"]}
+                          fontSize: 12,
+                        }}>
+                        {user.plans[selectedDate][t]['shop']['name']}
                       </Text>
                     ) : null}
                   </Block>
@@ -250,7 +254,7 @@ export default ReservationModal = props => {
             </Block>
           </ScrollView>
 
-          <Text bold h3 style={{ marginTop: 10, marginBottom: 5 }}>
+          <Text bold h3 style={{marginTop: 10, marginBottom: 5}}>
             예약인원
           </Text>
           <Block
@@ -258,42 +262,39 @@ export default ReservationModal = props => {
               backgroundColor: theme.colors.black,
               borderRadius: 5,
               marginBottom: 15,
-              height: 45
+              height: 45,
             }}
             row
             middle
-            center
-          >
+            center>
             <TouchableOpacity
               style={{
-                position: "absolute",
-                left: 20
+                position: 'absolute',
+                left: 20,
               }}
               onPress={() => {
                 setPeople(people == 1 ? people : people - 1);
-              }}
-            >
+              }}>
               <Text h1 bold white>
                 -
               </Text>
             </TouchableOpacity>
             <Text white h3>
-              {people + "명"}
+              {people + '명'}
             </Text>
             <TouchableOpacity
               style={{
-                position: "absolute",
-                right: 20
+                position: 'absolute',
+                right: 20,
               }}
-              onPress={() => setPeople(people + 1)}
-            >
+              onPress={() => setPeople(people + 1)}>
               <Text h1 bold white>
                 +
               </Text>
             </TouchableOpacity>
           </Block>
 
-          <Text bold h3 style={{ marginVertical: 5 }}>
+          <Text bold h3 style={{marginVertical: 5}}>
             추가 요청 사항
           </Text>
           <Input
@@ -305,25 +306,25 @@ export default ReservationModal = props => {
           />
         </Block>
 
-        <Block row space="between" style={{ marginVertical: 20 }}>
+        <Block row space="between" style={{marginVertical: 20}}>
           <Block flex={2}>
-            <Text style={{ marginBottom: 5 }}>예약일</Text>
+            <Text style={{marginBottom: 5}}>예약일</Text>
             <Text h2 bold primary>
               {selectedDate}
             </Text>
           </Block>
           <Block center flex={2}>
-            <Text style={{ marginBottom: 5 }}>예약시간</Text>
+            <Text style={{marginBottom: 5}}>예약시간</Text>
             <Text h2 bold primary>
               {time}
             </Text>
           </Block>
           <Block flex={1}>
-            <Text right style={{ marginBottom: 5 }}>
+            <Text right style={{marginBottom: 5}}>
               예약인원
             </Text>
             <Text right h2 bold primary>
-              {people + "명"}
+              {people + '명'}
             </Text>
           </Block>
         </Block>
@@ -333,8 +334,7 @@ export default ReservationModal = props => {
               gradient
               onPress={() => {
                 handleChangeReservation();
-              }}
-            >
+              }}>
               <Text bold white center>
                 예약 변경 요청
               </Text>
@@ -343,8 +343,7 @@ export default ReservationModal = props => {
               shadow
               onPress={() => {
                 handleDeleteReservation();
-              }}
-            >
+              }}>
               <Text center bold primary>
                 취소 요청
               </Text>
@@ -355,8 +354,7 @@ export default ReservationModal = props => {
             gradient
             onPress={() => {
               handleReservation();
-            }}
-          >
+            }}>
             <Text bold white center>
               예약 요청
             </Text>
@@ -373,23 +371,23 @@ export const styles = StyleSheet.create({
     height: 45,
     padding: 0,
     marginRight: 5,
-    borderWidth: 1
+    borderWidth: 1,
   },
   time: {
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black
+    borderColor: theme.colors.black,
   },
   onTime: {
     backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white
+    borderColor: theme.colors.white,
   },
   noTime: {
     backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.white
+    borderColor: theme.colors.white,
   },
   reserTime: {
     backgroundColor: theme.colors.accent,
-    borderColor: theme.colors.white
+    borderColor: theme.colors.white,
   },
   date: {
     width: 100,
@@ -398,7 +396,7 @@ export const styles = StyleSheet.create({
     marginRight: 5,
     borderWidth: 1,
     backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black
+    borderColor: theme.colors.black,
   },
   onDate: {
     width: 100,
@@ -407,12 +405,12 @@ export const styles = StyleSheet.create({
     marginRight: 5,
     borderWidth: 1,
     backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white
+    borderColor: theme.colors.white,
   },
   input: {
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
-  }
+    borderBottomWidth: StyleSheet.hairlineWidth,
+  },
 });

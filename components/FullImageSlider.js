@@ -1,22 +1,18 @@
-import React, { useState, useEffect } from "react";
-import {
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  ImageBackground,
-  ActivityIndicator
-} from "react-native";
+import React, {useState, useEffect} from 'react';
+import {Dimensions, StyleSheet, ScrollView} from 'react-native';
 
-import Block from "./Block";
-import Text from "./Text";
-import { theme } from "../constants";
+import CachedImage from './CachedImage';
+import Block from './Block';
+import Text from './Text';
+
+const {height, width} = Dimensions.get('window');
 
 export default FullImageSlider = props => {
-  const { source } = props;
+  const {source} = props;
   const [imageNum, setImageNum] = useState(1);
+
   const [maxImageNum, setMaxImageNum] = useState(1);
 
-  const { height, width } = Dimensions.get("window");
   const [isLoaded, setIsLoaded] = useState(false);
 
   useEffect(() => {
@@ -25,64 +21,49 @@ export default FullImageSlider = props => {
       setMaxImageNum(source.length);
     }
   }, [source]);
+
   handleScrollByX = e => {
     if (e.nativeEvent.contentOffset.x % 360 == 0) {
       setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
     }
   };
-  return isLoaded ? (
+  return (
     <Block>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={360}
         pagingEnabled
-        onScroll={handleScrollByX}
-      >
-        {source.map(e => (
-          <ImageBackground
-            key={e}
-            source={{ uri: e }}
-            style={{
-              width: width,
-              height: 250,
-              resizeMode: "stretch"
-            }}
-          >
-            <Block
-              style={{
-                width: "100%",
-                height: "100%",
-                backgroundColor: "rgba(0, 0, 0, 0.24)"
-              }}
-            ></Block>
-          </ImageBackground>
-        ))}
+        onScroll={handleScrollByX}>
+        {isLoaded ? (
+          source.map(e => (
+            <CachedImage
+              key={e}
+              uri={e}
+              style={{height: 250, width: width, resizeMode: 'contain'}}
+            />
+          ))
+        ) : (
+          <Block style={{height: 250}}></Block>
+        )}
       </ScrollView>
+
       <Block
         center
         middle
         style={{
-          position: "absolute",
+          position: 'absolute',
           bottom: 10,
           right: 10,
-          backgroundColor: "rgba(255, 255, 255, 0.3)",
+          backgroundColor: 'rgba(255, 255, 255, 0.3)',
           borderRadius: 10,
           paddingVertical: 3,
-          paddingHorizontal: 8
-        }}
-      >
+          paddingHorizontal: 8,
+        }}>
         <Text white bold size={11}>
-          {imageNum + " / " + maxImageNum}
+          {imageNum + ' / ' + maxImageNum}
         </Text>
       </Block>
-    </Block>
-  ) : (
-    <Block style={styles.full}>
-      <ActivityIndicator
-        size="large"
-        color={theme.colors.primary}
-      ></ActivityIndicator>
     </Block>
   );
 };
@@ -91,6 +72,6 @@ const styles = StyleSheet.create({
   full: {
     flex: 1,
     height: 250,
-    justifyContent: "center"
-  }
+    justifyContent: 'center',
+  },
 });

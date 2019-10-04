@@ -1,24 +1,32 @@
-import * as firebase from "firebase";
-import { store } from "./store";
+import * as firebase from 'firebase';
+import {store} from './store';
 
 // //
 // // Action Creators
 // //
 
-const SETUSER = "SETUSER";
-const GETSHOP = "GETSHOP";
+const SETUSER = 'SETUSER';
+const GETSHOP = 'GETSHOP';
+const DELIMAGES = 'DELIMAGES';
 
 const setUserData = userData => {
   return {
     type: SETUSER,
-    payload: userData
+    payload: userData,
   };
 };
 
 const setShopData = shopData => {
   return {
     type: GETSHOP,
-    payload: shopData
+    payload: shopData,
+  };
+};
+
+const setImagesData = delImage => {
+  return {
+    type: DELIMAGES,
+    payload: delImage,
   };
 };
 
@@ -26,7 +34,7 @@ const watchUserData = email => {
   return dispatch => {
     return firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(email)
       .onSnapshot(
         doc => {
@@ -34,7 +42,7 @@ const watchUserData = email => {
         },
         error => {
           console.log(error);
-        }
+        },
       );
   };
 };
@@ -43,7 +51,7 @@ const downloadShopData = () => {
   return dispatch => {
     firebase
       .firestore()
-      .collection("shops")
+      .collection('shops')
       .get()
       .then(querySnapshot => {
         const shops = [];
@@ -59,20 +67,20 @@ const updateFavorite = myfavorites => {
   return () => {
     firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(store.getState().user.email)
-      .update({ myfavorites: myfavorites })
+      .update({myfavorites: myfavorites})
       .then(() => {
-        console.log("updated favorites");
+        console.log('updated favorites');
       });
   };
 };
 
 const updateShop = shop => {
   return dispatch => {
-    firebase
+    return firebase
       .firestore()
-      .collection("shops")
+      .collection('shops')
       .doc(shop.id)
       .update(shop)
       .then(() => {
@@ -80,7 +88,7 @@ const updateShop = shop => {
         let idx = newShops.findIndex(e => e.id == shop.id);
         newShops[idx] = shop;
         dispatch(setShopData(newShops));
-        console.log("updated shop");
+        console.log('updated shop');
       });
   };
 };
@@ -89,11 +97,11 @@ const makeResevation = allPlans => {
   return () => {
     firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(store.getState().user.email)
-      .update({ plans: allPlans })
+      .update({plans: allPlans})
       .then(() => {
-        console.log("made reservation");
+        console.log('made reservation');
       });
   };
 };
@@ -104,5 +112,6 @@ export {
   downloadShopData,
   updateFavorite,
   makeResevation,
-  updateShop
+  updateShop,
+  setImagesData,
 };
