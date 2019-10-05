@@ -153,6 +153,7 @@ export default function ShopScreen(props) {
                 navigation.navigate('Chat', {
                   title: shop.name,
                   engName: shop.engName,
+                  shopId: shop.id,
                 })
               }
               style={{marginHorizontal: 10, marginTop: 2}}>

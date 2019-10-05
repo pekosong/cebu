@@ -25,8 +25,8 @@ const ChatListScreen = props => {
     if (Object.entries(user).length !== 0) {
       let unsubscribe = firebase
         .firestore()
-        .collection('users')
-        .doc(user.email)
+        .collection(user.host ? 'shops' : 'users')
+        .doc(user.host ? user.shops[0] : user.email)
         .collection('messages')
         .onSnapshot(querySnapshot => {
           let myList = [];
@@ -48,8 +48,11 @@ const ChatListScreen = props => {
             } else {
               message = '대화가 없습니다.';
             }
+            chat.email = data.email;
+            chat.shop = data.shop;
+            chat.shopName = data.shopName;
+            chat.shopEngName = data.shopEngName;
 
-            chat.name = data.shop;
             chat.avatar = `https://i.pravatar.cc/30${idx}`;
             chat.message = message;
             chat.timeStamp = mm.createdAt.seconds;
@@ -60,6 +63,7 @@ const ChatListScreen = props => {
           myList = myList.sort(function(a, b) {
             return b.timeStamp - a.timeStamp;
           });
+
           setIsLoaded(true);
           setChatlist(myList);
         });
@@ -74,8 +78,10 @@ const ChatListScreen = props => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('Chat', {
-            title: item.name,
-            engName: item.name,
+            title: item.shopName,
+            engName: item.shopEngName,
+            shopId: item.shop,
+            email: item.email,
           })
         }>
         <Block
@@ -90,7 +96,7 @@ const ChatListScreen = props => {
           <Block flex={3.5} style={{marginTop: 15, height: 40}}>
             <Block middle row space="between">
               <Text h4 bold>
-                {item.name}
+                {item.shopName}
               </Text>
               <Block flex={false}>
                 <Text caption style={{textAlign: 'right'}}>
@@ -128,7 +134,7 @@ const ChatListScreen = props => {
             style={{marginHorizontal: theme.sizes.padding}}>
             <FlatList
               data={chatList}
-              keyExtractor={item => item.name}
+              keyExtractor={item => (user.host ? item.email : item.shopName)}
               renderItem={item => renderList(item)}
             />
           </ScrollView>

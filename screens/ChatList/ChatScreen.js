@@ -1,44 +1,50 @@
-import React, { useState, useEffect } from "react";
-import {
-  StyleSheet,
-  Keyboard,
-  ActivityIndicator,
-  Platform
-} from "react-native";
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
 
-import { GiftedChat } from "react-native-gifted-chat";
-import KeyboardSpacer from "react-native-keyboard-spacer";
+import {GiftedChat} from 'react-native-gifted-chat';
+import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import { Ionicons } from "@expo/vector-icons";
-import { Button, Block, Text } from "../../components";
-import { theme, mocks } from "../../constants";
+import {Ionicons} from '@expo/vector-icons';
+import {Button, Block, Text} from '../../components';
+import {theme, mocks} from '../../constants';
 
-import firebase from "../../constants/store";
-import { useSelector, shallowEqual } from "react-redux";
+import firebase from '../../constants/store';
+import {useSelector, shallowEqual} from 'react-redux';
 
-import "moment/locale/ko";
+import 'moment/locale/ko';
 
 export default function ChatScreen(props) {
-  const { navigation } = props;
-  const [title, setTitle] = useState("");
-  const [engName, setEngName] = useState("");
+  const {navigation} = props;
+  const [title, setTitle] = useState('');
+  const [shopId, setShopId] = useState('');
+  const [email, setEmail] = useState('');
+
   const [messages, setMessages] = useState([]);
   const [isLoaded, setisLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    const engName = navigation.getParam("engName");
+    const shopName = navigation.getParam('title');
+    const shopEngName = navigation.getParam('engName');
+    const shop = navigation.getParam('shopId');
+    const email = navigation.getParam('email')
+      ? navigation.getParam('email')
+      : user.email;
 
-    setTitle(navigation.getParam("title"));
-    setEngName(navigation.getParam("engName"));
+    setTitle(shopName);
+    setShopId(shop);
+    setEmail(email);
 
-    let unsubscribe = firebase
+    console.log(shop);
+    console.log(shopEngName);
+
+    let unsubscribe1 = firebase
       .firestore()
-      .collection("users")
-      .doc(user.email)
-      .collection("messages")
-      .doc(engName)
+      .collection('users')
+      .doc(email)
+      .collection('messages')
+      .doc(shop)
       .onSnapshot(doc => {
         try {
           let msgs = doc.data().message;
@@ -56,17 +62,61 @@ export default function ChatScreen(props) {
         } catch (err) {
           firebase
             .firestore()
-            .collection("users")
+            .collection('users')
             .doc(user.email)
-            .collection("messages")
-            .doc(engName)
-            .set({ email: user.email, shop: engName, message: [] });
+            .collection('messages')
+            .doc(shop)
+            .set({
+              email: email,
+              shop: shop,
+              shopName: shopName,
+              shopEngName: shopEngName,
+              message: [],
+            });
+        }
+      });
+
+    let unsubscribe2 = firebase
+      .firestore()
+      .collection('shops')
+      .doc(shop)
+      .collection('messages')
+      .doc(email)
+      .onSnapshot(doc => {
+        try {
+          let msgs = doc.data().message;
+          let newMsgs = [];
+          if (msgs) {
+            newMsgs = msgs.map(e => {
+              e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
+              return e;
+            });
+          }
+          setMessages(newMsgs);
+          setTimeout(() => {
+            setisLoaded(true);
+          }, 100);
+        } catch (err) {
+          firebase
+            .firestore()
+            .collection('shops')
+            .doc(shop)
+            .collection('messages')
+            .doc(user.email)
+            .set({
+              email: user.email,
+              shop: shop,
+              shopName: shopName,
+              shopEngName: shopEngName,
+              message: [],
+            });
         }
       });
 
     return () => {
       _deleteMessage();
-      unsubscribe();
+      unsubscribe1();
+      unsubscribe2();
     };
   }, []);
 
@@ -74,12 +124,22 @@ export default function ChatScreen(props) {
     if (messages.length == 0) {
       firebase
         .firestore()
-        .collection("users")
-        .doc(user.email)
-        .collection("messages")
-        .doc(engName)
+        .collection('users')
+        .doc(email)
+        .collection('messages')
+        .doc(shopId)
         .delete()
-        .then(() => console.log("Done"))
+        .then(() => console.log('Done'))
+        .catch(err => console.log(err));
+
+      firebase
+        .firestore()
+        .collection('shops')
+        .doc(shopId)
+        .collection('messages')
+        .doc(email)
+        .delete()
+        .then(() => console.log('Done'))
         .catch(err => console.log(err));
     }
   };
@@ -87,14 +147,28 @@ export default function ChatScreen(props) {
   onSend = async msg => {
     await firebase
       .firestore()
-      .collection("users")
-      .doc(user.email)
-      .collection("messages")
-      .doc(engName)
-      .update({ message: GiftedChat.append(messages, msg) })
+      .collection('users')
+      .doc(email)
+      .collection('messages')
+      .doc(shopId)
+      .update({message: GiftedChat.append(messages, msg)})
       .then(() => {
         setMessages(GiftedChat.append(messages, msg));
-        console.log("Document successfully written!");
+        console.log('Document successfully written!');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+    await firebase
+      .firestore()
+      .collection('shops')
+      .doc(shopId)
+      .collection('messages')
+      .doc(email)
+      .update({message: GiftedChat.append(messages, msg)})
+      .then(() => {
+        setMessages(GiftedChat.append(messages, msg));
+        console.log('Document successfully written!');
       })
       .catch(err => {
         console.log(err);
@@ -104,19 +178,19 @@ export default function ChatScreen(props) {
   renderChat = () => {
     Keyboard.dismiss();
     return (
-      <Block style={{ flex: 1 }}>
+      <Block style={{flex: 1}}>
         <GiftedChat
           messages={messages}
           onSend={msg => onSend(msg)}
           user={{
-            _id: user.email
+            _id: user.host ? shopId : user.email,
           }}
           locale="ko"
           placeholder="Message"
           dateFormat="ll"
           // bottomOffset={50}
         />
-        {Platform.OS === "android" ? <KeyboardSpacer topSpacing={-15} /> : null}
+        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={-15} /> : null}
       </Block>
     );
   };
@@ -127,7 +201,6 @@ export default function ChatScreen(props) {
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons
-              name={title}
               size={30}
               color={theme.colors.primary}
               name="ios-arrow-back"
@@ -136,7 +209,7 @@ export default function ChatScreen(props) {
         </Button>
         <Button>
           <Text h1 bold>
-            {title}
+            {user.host ? email : title}
           </Text>
         </Button>
       </Block>
@@ -146,8 +219,7 @@ export default function ChatScreen(props) {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}
-          ></ActivityIndicator>
+            color={theme.colors.primary}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -155,24 +227,24 @@ export default function ChatScreen(props) {
 }
 
 ChatScreen.defaultProps = {
-  profiles: mocks.profiles
+  profiles: mocks.profiles,
 };
 
 ChatScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   full: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   header: {
     paddingTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
     width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
-  }
+    height: theme.sizes.base * 2.2,
+  },
 });
