@@ -1,26 +1,26 @@
-import React, { useState, useEffect } from "react";
-import { StyleSheet, ScrollView, TextInput } from "react-native";
-import { Button, Block, Text } from "../../components";
-import { theme } from "../../constants";
-import firebase from "../../constants/store";
-import { Ionicons } from "@expo/vector-icons";
-import moment from "moment";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import React, {useState, useEffect} from 'react';
+import {StyleSheet, ScrollView, TextInput} from 'react-native';
+import {Button, Block, Text} from '../../components';
+import {theme} from '../../constants';
+import firebase from '../../constants/store';
+import {Ionicons} from '@expo/vector-icons';
+import moment from 'moment';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
 const TripInfosScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
   const [editing, setEditing] = useState(null);
   const [plans, setPlans] = useState({});
   const user = useSelector(state => state.user, shallowEqual);
 
   const NUMTOWEEK = {
-    0: "일",
-    1: "월",
-    2: "화",
-    3: "수",
-    4: "목",
-    5: "금",
-    6: "토"
+    0: '일',
+    1: '월',
+    2: '화',
+    3: '수',
+    4: '목',
+    5: '금',
+    6: '토',
   };
 
   useEffect(() => {
@@ -36,7 +36,7 @@ const TripInfosScreen = props => {
       defaultValue={name}
       placeholder="song"
       onChangeText={() => setName(name)}
-      style={{ fontSize: 20 }}
+      style={{fontSize: 20}}
     />;
   };
 
@@ -72,7 +72,7 @@ const TripInfosScreen = props => {
               <Block space="between" row key={idx} style={styles.plan}>
                 <Text h4>
                   {key}
-                  {" (" + NUMTOWEEK[moment(key).day()] + ")"}
+                  {' (' + NUMTOWEEK[moment(key).day()] + ')'}
                 </Text>
                 <Text h4>{plans[key].hotel}</Text>
               </Block>
@@ -82,9 +82,8 @@ const TripInfosScreen = props => {
       </ScrollView>
       <Block
         flex={false}
-        style={{ marginHorizontal: theme.sizes.padding, marginBottom: 10 }}
-      >
-        <Button gradient onPress={() => navigation.navigate("TripInfo")}>
+        style={{marginHorizontal: theme.sizes.padding, marginBottom: 10}}>
+        <Button gradient onPress={() => navigation.navigate('TripInfo')}>
           <Text bold white center>
             새로운 여행 등록
           </Text>
@@ -95,28 +94,28 @@ const TripInfosScreen = props => {
 };
 
 TripInfosScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 TripInfosScreen.defaultProps = {};
 const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
     width: theme.sizes.base * 6,
-    height: theme.sizes.base * 6
+    height: theme.sizes.base * 6,
   },
   inputs: {
     marginTop: theme.sizes.base * 0.5,
     paddingHorizontal: theme.sizes.padding,
-    marginVertical: 10
+    marginVertical: 10,
   },
   plan: {
     paddingVertical: 15,
     borderBottomWidth: 0.5,
-    borderBottomColor: theme.colors.gray
-  }
+    borderBottomColor: theme.colors.gray,
+  },
 });
 
 export default TripInfosScreen;

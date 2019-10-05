@@ -1,22 +1,23 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import { Button, Block, Input, Text } from "../../components";
-import { theme } from "../../constants";
+import {Button, Block, Input, Text} from '../../components';
+import {theme} from '../../constants';
 
-import firebase from "../../constants/store";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import firebase from '../../constants/store';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {watchUserData, downloadShopData} from '../../redux/action';
 
-const EMAIL = "peko22@naver.com";
-const PASSWORD = "thdckdrms1";
+const EMAIL = 'peko22@naver.com';
+const PASSWORD = 'thdckdrms1';
 
 const LoginScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
 
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
@@ -24,43 +25,33 @@ const LoginScreen = props => {
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
 
-  _storeData = async () => {
-    return await firebase
-      .firestore()
-      .collection("users")
-      .doc(email)
-      .get()
-      .then(doc => {
-        dispatch({ type: "LOGIN", payload: doc.data() });
-      })
-      .catch(err => console.log(err));
-  };
-
   hasErrors = () => (isError ? styles.hasErrors : null);
 
-  handleLogin = async () => {
+  handleLogin = () => {
     setLoading(true);
 
     Keyboard.dismiss();
-    await firebase
+    firebase
       .auth()
       .signInWithEmailAndPassword(email, password)
       .then(() => {
         setIsError(false);
         setLoading(false);
-        _storeData().then(navigation.navigate("Search"));
+        unsubscribe = dispatch(watchUserData(email));
       })
       .catch(err => {
         console.log(err);
         setIsError(true);
         setLoading(false);
-      });
+      })
+      .then(() => dispatch(downloadShopData()))
+      .then(() => navigation.navigate('Search'));
   };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
-          <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
+          <Text bold style={{fontSize: 40, paddingBottom: 40}}>
             Login
           </Text>
           <Input
@@ -93,7 +84,7 @@ const LoginScreen = props => {
             )}
           </Button>
           <Button shadow style={styles.shadow}>
-            <Text center semibold onPress={() => navigation.navigate("Auth")}>
+            <Text center semibold onPress={() => navigation.navigate('Auth')}>
               Back
             </Text>
           </Button>
@@ -102,9 +93,8 @@ const LoginScreen = props => {
               gray
               caption
               center
-              style={{ textDecorationLine: "underline" }}
-              onPress={() => navigation.navigate("Forgot")}
-            >
+              style={{textDecorationLine: 'underline'}}
+              onPress={() => navigation.navigate('Forgot')}>
               Forget your password?
             </Text>
           </Button>
@@ -115,23 +105,23 @@ const LoginScreen = props => {
 };
 
 LoginScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   login: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   input: {
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {
-    borderBottomColor: theme.colors.accent
-  }
+    borderBottomColor: theme.colors.accent,
+  },
 });
 
 export default LoginScreen;

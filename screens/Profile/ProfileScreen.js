@@ -1,57 +1,55 @@
-import React, { useEffect } from "react";
-import { StyleSheet, ScrollView } from "react-native";
-import { Block, Text, WideText } from "../../components";
-import { theme } from "../../constants";
-import firebase from "../../constants/store";
-import { Ionicons } from "@expo/vector-icons";
-import { TouchableOpacity } from "react-native-gesture-handler";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
-import { watchUserData, downloadShopData } from "../../redux/action";
-
-const EMAIL = "peko22@naver.com";
+import React, {useEffect, Fragment} from 'react';
+import {StyleSheet, ScrollView} from 'react-native';
+import {Block, Text, WideText} from '../../components';
+import {theme} from '../../constants';
+import firebase from '../../constants/store';
+import {Ionicons} from '@expo/vector-icons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {watchUserData, downloadShopData} from '../../redux/action';
 
 const profileList = [
-  { title: "개인 정보", navigation: "Personal", icon: "md-person" },
+  {title: '개인 정보', navigation: 'Personal', icon: 'md-person'},
   {
-    title: "내 여행 정보",
-    navigation: "TripInfos",
-    icon: "ios-planet"
+    title: '내 여행 정보',
+    navigation: 'TripInfos',
+    icon: 'ios-planet',
   },
-  { title: "알림", navigation: "Notice", icon: "md-notifications" }
+  {title: '알림', navigation: 'Notice', icon: 'md-notifications'},
 ];
 
 const hostList = [
-  { title: "매장 정보", navigation: "MyShop", icon: "ios-home" },
+  {title: '매장 정보', navigation: 'MyShop', icon: 'ios-home'},
   {
-    title: "예약 관리",
-    navigation: "",
-    icon: "md-book"
+    title: '예약 관리',
+    navigation: '',
+    icon: 'md-book',
   },
-  { title: "고객 정보", navigation: "", icon: "md-people" },
-  { title: "이벤트 등록", navigation: "=", icon: "ios-basket" }
+  {title: '고객 정보', navigation: '', icon: 'md-people'},
+  {title: '이벤트 등록', navigation: '=', icon: 'ios-basket'},
 ];
 
 const helpList = [
   {
-    title: "도움말",
-    navigation: "",
-    icon: "md-information-circle"
+    title: '도움말',
+    navigation: '',
+    icon: 'md-information-circle',
   },
   {
-    title: "의견 남기기",
-    navigation: "",
-    icon: "ios-paper"
+    title: '의견 남기기',
+    navigation: '',
+    icon: 'ios-paper',
   },
   ,
 ];
 const ProfileScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
     let unsubscribe;
-    unsubscribe = dispatch(watchUserData(EMAIL));
+    unsubscribe = dispatch(watchUserData(user.email));
     dispatch(downloadShopData());
     return () => {
       unsubscribe();
@@ -63,7 +61,7 @@ const ProfileScreen = props => {
       .auth()
       .signOut()
       .then(function() {
-        navigation.navigate("Auth");
+        navigation.navigate('Auth');
       })
       .catch(function(err) {
         console.log(err);
@@ -88,38 +86,37 @@ const ProfileScreen = props => {
             <WideText
               item={item}
               key={idx}
-              onPress={() => navigation.navigate(item.navigation)}
-            >
+              onPress={() => navigation.navigate(item.navigation)}>
               <Text h3>{item.title}</Text>
               <Ionicons
                 size={25}
                 name={item.icon}
-                style={{ color: theme.colors.primary }}
-              ></Ionicons>
+                style={{color: theme.colors.primary}}></Ionicons>
             </WideText>
           ))}
+          {user.shops ? (
+            <Fragment>
+              <Block style={{marginTop: 20, marginBottom: 10}}>
+                <Text h3 gray>
+                  Hosting
+                </Text>
+              </Block>
+              {hostList.map((item, idx) => (
+                <WideText
+                  item={item}
+                  key={idx}
+                  onPress={() => navigation.navigate(item.navigation)}>
+                  <Text h3>{item.title}</Text>
+                  <Ionicons
+                    size={25}
+                    name={item.icon}
+                    style={{color: theme.colors.primary}}></Ionicons>
+                </WideText>
+              ))}
+            </Fragment>
+          ) : null}
 
-          <Block style={{ marginTop: 20, marginBottom: 10 }}>
-            <Text h3 gray>
-              Hosting
-            </Text>
-          </Block>
-          {hostList.map((item, idx) => (
-            <WideText
-              item={item}
-              key={idx}
-              onPress={() => navigation.navigate(item.navigation)}
-            >
-              <Text h3>{item.title}</Text>
-              <Ionicons
-                size={25}
-                name={item.icon}
-                style={{ color: theme.colors.primary }}
-              ></Ionicons>
-            </WideText>
-          ))}
-
-          <Block style={{ marginTop: 20, marginBottom: 10 }}>
+          <Block style={{marginTop: 20, marginBottom: 10}}>
             <Text h3 gray>
               지원
             </Text>
@@ -128,14 +125,12 @@ const ProfileScreen = props => {
             <WideText
               item={item}
               key={idx}
-              onPress={() => navigation.navigate(item.navigation)}
-            >
+              onPress={() => navigation.navigate(item.navigation)}>
               <Text h3>{item.title}</Text>
               <Ionicons
                 size={25}
                 name={item.icon}
-                style={{ color: theme.colors.primary }}
-              ></Ionicons>
+                style={{color: theme.colors.primary}}></Ionicons>
             </WideText>
           ))}
           <TouchableOpacity onPress={() => handleLogout()}>
@@ -144,17 +139,15 @@ const ProfileScreen = props => {
               space="between"
               style={{
                 ...styles.inputRow,
-                marginVertical: 30
-              }}
-            >
+                marginVertical: 30,
+              }}>
               <Text color={theme.colors.primary} h3>
                 로그아웃
               </Text>
               <Ionicons
                 size={25}
                 name="md-log-out"
-                style={{ color: theme.colors.primary }}
-              ></Ionicons>
+                style={{color: theme.colors.primary}}></Ionicons>
             </Block>
           </TouchableOpacity>
         </Block>
@@ -164,29 +157,29 @@ const ProfileScreen = props => {
 };
 
 ProfileScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 ProfileScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.base * 4,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
     width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
+    height: theme.sizes.base * 2.2,
   },
   inputs: {
     marginTop: theme.sizes.base * 2,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   inputRow: {
     paddingBottom: 6,
     marginVertical: 10,
     borderBottomWidth: 0.2,
-    borderBottomColor: theme.colors.gray
-  }
+    borderBottomColor: theme.colors.gray,
+  },
 });
 
 export default ProfileScreen;

@@ -1,9 +1,9 @@
 {
   "expo": {
-    "name": "cebu",
-    "slug": "cebu",
+    "name": "hello, 세부",
+    "slug": "hello, 세부",
     "privacy": "public",
-    "sdkVersion": "34.0.0",
+    "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.0",
     "orientation": "portrait",
@@ -11,7 +11,7 @@
     "splash": {
       "image": "./assets/splash.png",
       "resizeMode": "contain",
-      "backgroundColor": "#ffffff"
+      "backgroundColor": "#C13031"
     },
     "updates": {
       "fallbackToCacheTimeout": 0

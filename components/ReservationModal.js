@@ -1,13 +1,6 @@
 import React, {useState, useEffect} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  Modal,
-  ScrollView,
-} from 'react-native';
+import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
-import Divider from './Divider';
 import Block from './Block';
 import Text from './Text';
 import Input from './Input';

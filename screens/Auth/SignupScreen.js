@@ -1,45 +1,62 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import { Button, Block, Input, Text } from "../../components";
-import { theme } from "../../constants";
+import {Button, Block, Input, Text} from '../../components';
+import {theme} from '../../constants';
 
-import firebase from "../../constants/store";
+import firebase from '../../constants/store';
 
 const SignupScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
 
-  const [email, setEmail] = useState("");
-  const [password, setPassword] = useState("");
-  const [confirmPassword, setConfirmPassword] = useState("");
+  const [email, setEmail] = useState('');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const [isError, setIsError] = useState(false);
-  const [error, setError] = useState("");
+  const [error, setError] = useState('');
   const [loading, setLoading] = useState(false);
 
-  signUp = async () => {
+  signUp = () => {
     setLoading(true);
     Keyboard.dismiss();
 
     if (password != confirmPassword) {
-      setError("패스워드가 일치하지 않습니다.");
+      setError('패스워드가 일치하지 않습니다.');
       setIsError(true);
       setLoading(false);
       return;
     }
 
-    await firebase
+    firebase
       .auth()
       .createUserWithEmailAndPassword(email, password)
-      .then(() => {
-        setError("");
+      .then(user => {
+        setError('');
         setIsError(false);
-        makeUser(email);
+        const newCus = {
+          email: email,
+          createAt: new Date(),
+          myfavorites: [],
+          plans: {},
+        };
+        console.log('진행중');
+        firebase
+          .firestore()
+          .collection('users')
+          .doc(email)
+          .set(newCus)
+          .then(() => {
+            console.log('진행중');
+            setLoading(false);
+            navigation.navigate('Login');
+          })
+          .catch(err => console.log(err));
       })
       .catch(err => {
         console.log(err);
@@ -49,25 +66,19 @@ const SignupScreen = props => {
       });
   };
 
-  makeUser = async email => {
+  makeUser = email => {
     const newCus = {
       email: email,
-      createAt: new Date()
+      createAt: new Date(),
+      myfavorites: [],
+      plans: {},
     };
-    await firebase
+    console.log('진행중');
+    return firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(email)
-      .set(newCus)
-      .then(() => {
-        console.log("Document successfully written!");
-        setLoading(false);
-        navigation.navigate("Login");
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
+      .set(newCus);
   };
 
   hasErrors = () => (isError ? styles.hasErrors : null);
@@ -76,7 +87,7 @@ const SignupScreen = props => {
     return (
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
-          <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
+          <Text bold style={{fontSize: 40, paddingBottom: 40}}>
             Email
           </Text>
           <Input
@@ -105,14 +116,13 @@ const SignupScreen = props => {
               setConfirmPassword(text);
             }}
           />
-          {isError ? <Text color={theme.colors.accent}>{error}</Text> : null}
+          {isError ? <Text color={'red'}>{error}</Text> : null}
 
           <Button
             gradient
             onPress={() => {
               signUp();
-            }}
-          >
+            }}>
             {loading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
@@ -138,23 +148,23 @@ const SignupScreen = props => {
 };
 
 SignupScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   login: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   input: {
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {
-    borderBottomColor: theme.colors.accent
-  }
+    borderBottomColor: 'red',
+  },
 });
 
 export default SignupScreen;
