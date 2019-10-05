@@ -2,7 +2,6 @@ import React, {useState} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
-  Keyboard,
   ActivityIndicator,
 } from 'react-native';
 
@@ -10,7 +9,7 @@ import {Button, Block, Input, Text} from '../../components';
 import {theme} from '../../constants';
 
 import firebase from '../../constants/store';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import {useDispatch} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
 const EMAIL = 'peko22@naver.com';
@@ -21,6 +20,7 @@ const LoginScreen = props => {
 
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
+  const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
   const dispatch = useDispatch();
@@ -30,22 +30,48 @@ const LoginScreen = props => {
   handleLogin = () => {
     setLoading(true);
 
-    Keyboard.dismiss();
-    firebase
-      .auth()
-      .signInWithEmailAndPassword(email, password)
-      .then(() => {
-        setIsError(false);
-        setLoading(false);
-        unsubscribe = dispatch(watchUserData(email));
+    checkUser().then(() => {
+      firebase
+        .auth()
+        .signInWithEmailAndPassword(email, password)
+        .then(() => {
+          setIsError(false);
+          setLoading(false);
+          unsubscribe = dispatch(watchUserData(email));
+          dispatch(downloadShopData());
+          navigation.navigate('Search');
+        })
+        .catch(err => {
+          console.log(err.message);
+          setError(err.message);
+          setIsError(true);
+          setLoading(false);
+        });
+    });
+  };
+
+  checkUser = () => {
+    return firebase
+      .firestore()
+      .collection('users')
+      .doc(email)
+      .get()
+      .then(e => {
+        if (e.data() == undefined) {
+          const newCus = {
+            email: email,
+            createAt: new Date(),
+            myfavorites: [],
+            plans: {},
+          };
+          return firebase
+            .firestore()
+            .collection('users')
+            .doc(email)
+            .set(newCus);
+        }
       })
-      .catch(err => {
-        console.log(err);
-        setIsError(true);
-        setLoading(false);
-      })
-      .then(() => dispatch(downloadShopData()))
-      .then(() => navigation.navigate('Search'));
+      .catch(err => console.log(err));
   };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
@@ -56,7 +82,6 @@ const LoginScreen = props => {
           </Text>
           <Input
             label="Email"
-            error={hasErrors()}
             style={[styles.input, hasErrors()]}
             defaultValue={email}
             onChangeText={text => {
@@ -66,13 +91,13 @@ const LoginScreen = props => {
           <Input
             secure
             label="Password"
-            error={hasErrors()}
             style={[styles.input, hasErrors()]}
             defaultValue={password}
             onChangeText={text => {
               setPassword(text);
             }}
           />
+          {isError ? <Text color={'red'}>{error}</Text> : null}
 
           <Button gradient onPress={() => handleLogin()}>
             {loading ? (
@@ -120,7 +145,7 @@ const styles = StyleSheet.create({
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {
-    borderBottomColor: theme.colors.accent,
+    borderBottomColor: 'red',
   },
 });
 

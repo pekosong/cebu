@@ -129,7 +129,7 @@ export default function ShopScreen(props) {
                   style={{
                     color: fadeAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                      outputRange: ['rgb(200, 200, 200)', 'rgb(0, 0, 0)'],
                     }),
                   }}>
                   <Ionicons size={30} name="ios-arrow-back" />
@@ -160,7 +160,7 @@ export default function ShopScreen(props) {
                 style={{
                   color: fadeAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                    outputRange: ['rgb(200, 200, 200)', 'rgb(0, 0, 0)'],
                   }),
                 }}>
                 <AntDesign size={26} name="message1" />
@@ -174,7 +174,7 @@ export default function ShopScreen(props) {
                     inputRange: [0, 1],
                     outputRange:
                       user.myfavorites.indexOf(shop.id) == -1
-                        ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
+                        ? ['rgb(200, 200, 200)', 'rgb(0, 0, 0)']
                         : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
                   }),
                 }}>
@@ -417,15 +417,27 @@ export default function ShopScreen(props) {
           </Block>
         </Block>
         <Block flex={1} style={{marginRight: theme.sizes.padding}}>
-          <Button
-            gradient
-            onPress={() => {
-              setVisible(true);
-            }}>
-            <Text white center bold>
-              예약 요청
-            </Text>
-          </Button>
+          {Object.keys(user.plans).length > 0 ? (
+            <Button
+              gradient
+              onPress={() => {
+                setVisible(true);
+              }}>
+              <Text white center bold>
+                예약 요청
+              </Text>
+            </Button>
+          ) : (
+            <Button
+              gradient
+              onPress={() => {
+                navigation.navigate('Profile');
+              }}>
+              <Text white center bold>
+                일정 등록
+              </Text>
+            </Button>
+          )}
         </Block>
       </Block>
       <Modal

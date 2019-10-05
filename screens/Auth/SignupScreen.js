@@ -15,8 +15,8 @@ const SignupScreen = props => {
   const {navigation} = props;
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [confirmPassword, setConfirmPassword] = useState('');
+  const [password, setPassword] = useState('1q2w3e4r');
+  const [confirmPassword, setConfirmPassword] = useState('1q2w3e4r');
 
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState('');
@@ -39,24 +39,7 @@ const SignupScreen = props => {
       .then(user => {
         setError('');
         setIsError(false);
-        const newCus = {
-          email: email,
-          createAt: new Date(),
-          myfavorites: [],
-          plans: {},
-        };
-        console.log('진행중');
-        firebase
-          .firestore()
-          .collection('users')
-          .doc(email)
-          .set(newCus)
-          .then(() => {
-            console.log('진행중');
-            setLoading(false);
-            navigation.navigate('Login');
-          })
-          .catch(err => console.log(err));
+        navigation.navigate('Login');
       })
       .catch(err => {
         console.log(err);
@@ -64,21 +47,6 @@ const SignupScreen = props => {
         setIsError(true);
         setLoading(false);
       });
-  };
-
-  makeUser = email => {
-    const newCus = {
-      email: email,
-      createAt: new Date(),
-      myfavorites: [],
-      plans: {},
-    };
-    console.log('진행중');
-    return firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
-      .set(newCus);
   };
 
   hasErrors = () => (isError ? styles.hasErrors : null);

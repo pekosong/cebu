@@ -37,7 +37,7 @@ const MyShopScreen = props => {
   const [myShop, setMyShop] = useState({});
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
-  const [image, setImage] = useState('');
+  const [progress, setProgress] = useState(null);
 
   const [saved, setSaved] = useState(false);
   const [changed, setChanged] = useState(false);
@@ -48,7 +48,6 @@ const MyShopScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    console.log('render?');
     firebase
       .firestore()
       .collection('shops')
@@ -94,7 +93,9 @@ const MyShopScreen = props => {
     uploadTask.on(
       firebase.storage.TaskEvent.STATE_CHANGED,
       snapshot => {
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        var prog = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(`${Math.round(prog, 1)}%`);
+
         console.log('Upload is ' + progress + '% done');
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED:
@@ -123,7 +124,7 @@ const MyShopScreen = props => {
           let newImages = images;
           newImages.push(downloadURL);
           setImages(newImages);
-          setImage(downloadURL);
+          setProgress(null);
         });
       },
     );
@@ -217,7 +218,7 @@ const MyShopScreen = props => {
         </Button>
         <TouchableOpacity onPress={() => saveShop()}>
           <Text bold h2>
-            {saved ? '저장 중' : '저장'}
+            {progress ? progress : saved ? '완료' : '저장'}
           </Text>
         </TouchableOpacity>
       </Block>

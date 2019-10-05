@@ -28,7 +28,7 @@ export default FullImageSlider = props => {
     }
   };
   return (
-    <Block>
+    <Block style={{flex: 1, backgroundColor: 'rgba(0,0,0,.6)'}}>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}

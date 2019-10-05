@@ -1,11 +1,11 @@
 {
   "expo": {
     "name": "hello, 세부",
-    "slug": "hello, 세부",
+    "slug": "hellocebu",
     "privacy": "public",
     "sdkVersion": "35.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.0",
+    "version": "1.0.1",
     "orientation": "portrait",
     "icon": "./assets/icon.png",
     "splash": {
@@ -27,7 +27,7 @@
     "android": {
       "package": "com.os1.cebu",
       "config": {
-        "googleMaps": {"apiKey": "AIzaSyDO9cR41XXuwEcl3B02Rwxag8Ytl1LJw_A"}
+        "googleMaps": {"apiKey": "AIzaSyDbJD2UXs-MRhCU0KXh1jzYrxVv3w3z9DA"}
       }
     }
   }

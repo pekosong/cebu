@@ -23,21 +23,22 @@ const PersonalScreen = props => {
   const [name, setName] = useState('');
   const [sex, setSex] = useState('');
   const [birth, setBirth] = useState('');
-  const [saved, setSaved] = useState(false);
   const [email, setEmail] = useState('');
-  const [profile, setProfile] = useState({});
   const [image, setImage] = useState('');
+  const [saved, setSaved] = useState(false);
+  const [profile, setProfile] = useState({});
+  const [progress, setProgress] = useState(null);
 
   const user = useSelector(state => state.user, shallowEqual);
   const dispatch = useDispatch();
 
   useEffect(() => {
     setProfile(user);
-    setName(user.name);
-    setEmail(user.email);
-    setSex(user.sex);
-    setBirth(user.birth);
-    setImage(user.image);
+    setName(user.name ? user.name : '');
+    setEmail(user.email ? user.email : '');
+    setSex(user.sex ? user.sex : '');
+    setBirth(user.birth ? user.birth : '');
+    setImage(user.image ? user.image : '');
   }, []);
 
   getPermissionAsync = async () => {
@@ -62,8 +63,9 @@ const PersonalScreen = props => {
     uploadTask.on(
       firebase.storage.TaskEvent.STATE_CHANGED,
       snapshot => {
-        var progress = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
-        console.log('Upload is ' + progress + '% done');
+        var prog = (snapshot.bytesTransferred / snapshot.totalBytes) * 100;
+        setProgress(`${Math.round(prog, 1)}%`);
+        console.log('Upload is ' + prog + '% done');
         switch (snapshot.state) {
           case firebase.storage.TaskState.PAUSED:
             console.log('Upload is paused');
@@ -89,6 +91,7 @@ const PersonalScreen = props => {
         uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
           console.log('File available at', downloadURL);
           setImage(downloadURL);
+          setProgress(null);
         });
       },
     );
@@ -155,7 +158,7 @@ const PersonalScreen = props => {
         </Button>
         <TouchableOpacity onPress={() => savePerson()}>
           <Text bold h2>
-            {saved ? '완료' : '저장'}
+            {progress ? progress : saved ? '완료' : '저장'}
           </Text>
         </TouchableOpacity>
       </Block>

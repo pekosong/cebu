@@ -35,16 +35,16 @@ const ChatListScreen = props => {
             data = doc.data();
 
             if (data.message.length > 0) {
-              song = data.message.reduce(function(p, v) {
+              mm = data.message.reduce(function(p, v) {
                 if (p.createdAt) {
                   return p.createdAt.seconds > v.createdAt.seconds ? p : v;
                 } else {
                   return v;
                 }
               });
-              date = moment.unix(song.createdAt.seconds).format('YYYY-MM-DD');
-              time = moment.unix(song.createdAt.seconds).format('HH:mm:ss');
-              message = song.text;
+              date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
+              time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
+              message = mm.text;
             } else {
               message = '대화가 없습니다.';
             }
@@ -52,7 +52,7 @@ const ChatListScreen = props => {
             chat.name = data.shop;
             chat.avatar = `https://i.pravatar.cc/30${idx}`;
             chat.message = message;
-            chat.timeStamp = song.createdAt.seconds;
+            chat.timeStamp = mm.createdAt.seconds;
             chat.date = date;
             chat.time = time;
             myList.push(chat);
@@ -83,8 +83,6 @@ const ChatListScreen = props => {
           style={{
             marginVertical: 10,
             paddingBottom: 5,
-            borderBottomWidth: 0.3,
-            borderBottomColor: theme.colors.gray,
           }}>
           <Block left flex={1}>
             <CachedImage uri={item.avatar} style={styles.avatarChat} />
@@ -104,7 +102,11 @@ const ChatListScreen = props => {
               </Block>
             </Block>
             <Block bottom>
-              <Text>{item.message}</Text>
+              <Text>
+                {item.message.length > 15
+                  ? `${item.message.slice(0, 15)}...`
+                  : item.message}
+              </Text>
             </Block>
           </Block>
         </Block>
