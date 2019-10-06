@@ -22,12 +22,13 @@ const SearchScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let unsubscribe;
-    unsubscribe = dispatch(watchUserData(EMAIL));
-    dispatch(downloadShopData()).then(() => setIsLoaded(true));
+    // let unsubscribe;
+    // unsubscribe = dispatch(watchUserData(EMAIL));
+    // dispatch(downloadShopData()).then(() => setIsLoaded(true));
+    setIsLoaded(true);
     setCates(categories);
     return () => {
-      unsubscribe();
+      // unsubscribe();
     };
   }, []);
 
