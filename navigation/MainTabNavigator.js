@@ -1,38 +1,35 @@
-import React from "react";
-import { Platform } from "react-native";
+import React from 'react';
+import {Platform} from 'react-native';
 
-import {
-  createStackNavigator,
-  createBottomTabNavigator
-} from "react-navigation";
+import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
-import SearchScreen from "../screens/Search/SearchScreen";
-import CategoryScreen from "../screens/Search/CategoryScreen";
+import SearchScreen from '../screens/Search/SearchScreen';
+import CategoryScreen from '../screens/Search/CategoryScreen';
 
-import MyTripScreen from "../screens/MyTrip/MyTripScreen";
-import TripSceen from "../screens/MyTrip/TripScreen";
+import MyTripScreen from '../screens/MyTrip/MyTripScreen';
+import TripSceen from '../screens/MyTrip/TripScreen';
 
-import ChatListScreen from "../screens/ChatList/ChatListScreen";
-import ChatScreen from "../screens/ChatList/ChatScreen";
+import ChatListScreen from '../screens/ChatList/ChatListScreen';
+import ChatScreen from '../screens/ChatList/ChatScreen';
 
-import FavoritesScreen from "../screens/Favorites/FavoritesScreen";
+import FavoritesScreen from '../screens/Favorites/FavoritesScreen';
 
-import ProfileScreen from "../screens/Profile/ProfileScreen";
-import PersonalScreen from "../screens/Profile/PersonalScreen";
-import NoticeScreen from "../screens/Profile/NoticeScreen";
-import TripInfosScreen from "../screens/Profile/TripInfosScreen";
-import TripInfoScreen from "../screens/Profile/TripInfoScreen";
-import MyShopScreen from "../screens/Profile/MyShopScreen";
+import ProfileScreen from '../screens/Profile/ProfileScreen';
+import PersonalScreen from '../screens/Profile/PersonalScreen';
+import NoticeScreen from '../screens/Profile/NoticeScreen';
+import TripInfosScreen from '../screens/Profile/TripInfosScreen';
+import TripInfoScreen from '../screens/Profile/TripInfoScreen';
+import MyShopScreen from '../screens/Profile/MyShopScreen';
 
-import ShopScreen from "../screens/Search/ShopScreen";
+import ShopScreen from '../screens/Search/ShopScreen';
 
-import TabBarIcon from "../components/TabBarIcon";
+import TabBarIcon from '../components/TabBarIcon';
 
-import { theme } from "../constants";
+import {theme} from '../constants';
 
 const config = Platform.select({
-  web: { headerMode: "screen" },
-  default: {}
+  web: {headerMode: 'screen'},
+  default: {},
 });
 
 const SearchStack = createStackNavigator(
@@ -40,82 +37,83 @@ const SearchStack = createStackNavigator(
     Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
-    Chat: ChatScreen
+    Chat: ChatScreen,
   },
-  config
+  config,
 );
 
 SearchStack.navigationOptions = {
-  tabBarLabel: "찾기",
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: '찾기',
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-search" : "md-search"}
+      name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
     />
-  )
+  ),
 };
 
-SearchStack.path = "";
+SearchStack.path = '';
 
 const MyTripStack = createStackNavigator(
   {
     MyTrip: MyTripScreen,
     Trip: TripSceen,
-    Chat: ChatScreen
+    Chat: ChatScreen,
   },
-  config
+  config,
 );
 
 const FavoritesStack = createStackNavigator(
   {
     Favorites: FavoritesScreen,
-    Shop: ShopScreen
+    Shop: ShopScreen,
   },
-  config
+  config,
 );
 
 FavoritesStack.navigationOptions = {
-  tabBarLabel: "저장소",
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: '저장소',
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? `ios-heart` : "ios-heart"}
+      name={Platform.OS === 'ios' ? `ios-heart` : 'ios-heart'}
     />
-  )
+  ),
 };
 
-FavoritesStack.path = "";
+FavoritesStack.path = '';
 MyTripStack.navigationOptions = {
-  tabBarLabel: "내 일정",
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: '내 일정',
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? `logo-google` : "logo-google"}
+      name={Platform.OS === 'ios' ? `logo-google` : 'logo-google'}
     />
-  )
+  ),
 };
 
-MyTripStack.path = "";
+MyTripStack.path = '';
 
 const ChatStack = createStackNavigator(
   {
     ChatLists: ChatListScreen,
-    Chat: ChatScreen
+    Chat: ChatScreen,
+    Shop: ShopScreen,
   },
-  config
+  config,
 );
 
 ChatStack.navigationOptions = {
-  tabBarLabel: "메시지",
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: '메시지',
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "ios-chatbubbles" : "ios-chatbubbles"}
+      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'ios-chatbubbles'}
     />
-  )
+  ),
 };
 
-ChatStack.path = "";
+ChatStack.path = '';
 
 const ProfileStack = createStackNavigator(
   {
@@ -124,22 +122,22 @@ const ProfileStack = createStackNavigator(
     Notice: NoticeScreen,
     TripInfos: TripInfosScreen,
     TripInfo: TripInfoScreen,
-    MyShop: MyShopScreen
+    MyShop: MyShopScreen,
   },
-  config
+  config,
 );
 
 ProfileStack.navigationOptions = {
-  tabBarLabel: "내 정보",
-  tabBarIcon: ({ focused }) => (
+  tabBarLabel: '내 정보',
+  tabBarIcon: ({focused}) => (
     <TabBarIcon
       focused={focused}
-      name={Platform.OS === "ios" ? "md-person" : "md-person"}
+      name={Platform.OS === 'ios' ? 'md-person' : 'md-person'}
     />
-  )
+  ),
 };
 
-ProfileStack.path = "";
+ProfileStack.path = '';
 
 const tabNavigator = createBottomTabNavigator(
   {
@@ -147,7 +145,7 @@ const tabNavigator = createBottomTabNavigator(
     FavoritesStack,
     MyTripStack,
     ChatStack,
-    ProfileStack
+    ProfileStack,
   },
   {
     tabBarOptions: {
@@ -156,17 +154,17 @@ const tabNavigator = createBottomTabNavigator(
       style: {
         margin: 0,
         paddingHorizontal: 20,
-        backgroundColor: "white",
+        backgroundColor: 'white',
         borderTopWidth: 0,
-        shadowOffset: { width: 5, height: 3 },
-        shadowColor: "black",
+        shadowOffset: {width: 5, height: 3},
+        shadowColor: 'black',
         shadowOpacity: 0.5,
-        elevation: 5
-      }
-    }
-  }
+        elevation: 5,
+      },
+    },
+  },
 );
 
-tabNavigator.path = "";
+tabNavigator.path = '';
 
 export default tabNavigator;

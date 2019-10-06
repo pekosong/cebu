@@ -1,11 +1,11 @@
-import React from "react";
-import { StyleSheet, TouchableOpacity } from "react-native";
+import React from 'react';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import Block from "./Block";
-import { theme } from "../constants";
+import Block from './Block';
+import {theme} from '../constants';
 
 export default WideText = props => {
-  const { style, onPress, children } = props;
+  const {style, onPress, children} = props;
   return (
     <TouchableOpacity style={style} onPress={onPress}>
       <Block row space="between" style={styles.inputRow}>
@@ -20,6 +20,6 @@ export const styles = StyleSheet.create({
     paddingBottom: 6,
     marginVertical: 10,
     borderBottomWidth: 0.2,
-    borderBottomColor: theme.colors.gray
-  }
+    borderBottomColor: theme.colors.gray,
+  },
 });

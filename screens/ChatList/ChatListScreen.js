@@ -45,20 +45,31 @@ const ChatListScreen = props => {
               date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
               time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
               message = mm.text;
+              chat.email = data.email;
+              chat.shop = data.shop;
+              chat.shopName = data.shopName;
+
+              users = data.message.map(e => e.user);
+              if (user.host) {
+                chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
+              } else {
+                if (users.filter(e => e._id != data.email).length > 0) {
+                  chat.avatar = users.filter(
+                    e => e._id != data.email,
+                  )[0].avatar;
+                } else {
+                  chat.avatar =
+                    'https://img.icons8.com/wired/64/000000/guest-male.png';
+                }
+              }
+              chat.message = message;
+              chat.timeStamp = mm.createdAt.seconds;
+              chat.date = date;
+              chat.time = time;
+              myList.push(chat);
             } else {
               message = '대화가 없습니다.';
             }
-            chat.email = data.email;
-            chat.shop = data.shop;
-            chat.shopName = data.shopName;
-            chat.shopEngName = data.shopEngName;
-
-            chat.avatar = `https://i.pravatar.cc/30${idx}`;
-            chat.message = message;
-            chat.timeStamp = mm.createdAt.seconds;
-            chat.date = date;
-            chat.time = time;
-            myList.push(chat);
           });
           myList = myList.sort(function(a, b) {
             return b.timeStamp - a.timeStamp;
@@ -78,10 +89,9 @@ const ChatListScreen = props => {
       <TouchableOpacity
         onPress={() =>
           navigation.navigate('Chat', {
-            title: item.shopName,
-            engName: item.shopEngName,
-            shopId: item.shop,
             email: item.email,
+            shopId: item.shop,
+            shopName: item.shopName,
           })
         }>
         <Block
@@ -96,7 +106,7 @@ const ChatListScreen = props => {
           <Block flex={3.5} style={{marginTop: 15, height: 40}}>
             <Block middle row space="between">
               <Text h4 bold>
-                {item.shopName}
+                {user.host ? item.email : item.shopName}
               </Text>
               <Block flex={false}>
                 <Text caption style={{textAlign: 'right'}}>
@@ -153,9 +163,6 @@ const ChatListScreen = props => {
 ChatListScreen.navigationOptions = {
   header: null,
 };
-ChatListScreen.defaultProps = {
-  profiles: mocks.profiles,
-};
 const styles = StyleSheet.create({
   full: {
     flex: 1,
@@ -166,14 +173,9 @@ const styles = StyleSheet.create({
     marginBottom: theme.sizes.base,
     paddingHorizontal: theme.sizes.padding,
   },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2,
-  },
   avatarChat: {
     width: theme.sizes.base * 4,
     height: theme.sizes.base * 4,
-    borderRadius: theme.sizes.base * 2,
   },
 });
 

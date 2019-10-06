@@ -35,11 +35,12 @@ const LoginScreen = props => {
         .auth()
         .signInWithEmailAndPassword(email, password)
         .then(() => {
-          setIsError(false);
-          setLoading(false);
           unsubscribe = dispatch(watchUserData(email));
-          dispatch(downloadShopData());
-          navigation.navigate('Search');
+          dispatch(downloadShopData()).then(() => {
+            setIsError(false);
+            setLoading(false);
+            navigation.navigate('Search');
+          });
         })
         .catch(err => {
           console.log(err.message);
@@ -63,6 +64,8 @@ const LoginScreen = props => {
             createAt: new Date(),
             myfavorites: [],
             plans: {},
+            image:
+              'https://img.icons8.com/plasticine/16/000000/person-male.png',
           };
           return firebase
             .firestore()

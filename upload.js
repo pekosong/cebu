@@ -1,12 +1,12 @@
-let firebase = require("firebase");
+let firebase = require('firebase');
 let firebaseConfig = {
-  apiKey: "AIzaSyCPpjFnNk1TKksDdjfloXAHKFkrReHydq8",
-  authDomain: "cabu-c030d.firebaseapp.com",
-  databaseURL: "https://cabu-c030d.firebaseio.com",
-  projectId: "cabu-c030d",
-  storageBucket: "",
-  messagingSenderId: "31520463311",
-  appId: "1:31520463311:web:5455973a89b2c0dc"
+  apiKey: 'AIzaSyCPpjFnNk1TKksDdjfloXAHKFkrReHydq8',
+  authDomain: 'cabu-c030d.firebaseapp.com',
+  databaseURL: 'https://cabu-c030d.firebaseio.com',
+  projectId: 'cabu-c030d',
+  storageBucket: '',
+  messagingSenderId: '31520463311',
+  appId: '1:31520463311:web:5455973a89b2c0dc',
 };
 // Initialize Firebase
 firebase.initializeApp(firebaseConfig);
@@ -15,328 +15,355 @@ let db = firebase.firestore();
 
 const lists = [
   {
-    email: "peko22@naver.com",
-    category: "Restaurant",
-    id: "restaurant1",
-    name: "점보 7",
-    engName: "jumbo7",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: 'peko22@naver.com',
+    category: 'Restaurant',
+    id: 'restaurant1',
+    name: '점보 7',
+    engName: 'jumbo7',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3',
     ],
     likes: 20,
     review: 3.5,
     reviewCnt: 1212,
-    tags: ["랍스타", "새우요리"],
+    tags: ['랍스타', '새우요리'],
     pickup: true,
-    openTime: "11:00",
-    closeTime: "24:00",
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: 50,
+        time: 60,
+        description: '전신 스포츠 마사지',
+        event: {
+          price: 40,
+          time: 70,
+          desc: '이벤트 중',
+          startDate: '2020-01-01',
+          endDate: '2020-01-01',
+        },
+      },
+      {
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
+        star: 3,
+        date: new Date(),
+      },
+      {
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
+        star: 4,
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Restaurant",
-    id: "restaurant2",
-    name: "부레 레스토랑",
-    engName: "Buffet",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Restaurant',
+    id: 'restaurant2',
+    name: '부레 레스토랑',
+    engName: 'Buffet',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=066e24f1-86e4-49fd-8389-736902f71309"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=066e24f1-86e4-49fd-8389-736902f71309',
     ],
     likes: 20,
     review: 2.5,
     reviewCnt: 231,
-    tags: ["부페", "전통음식"],
+    tags: ['부페', '전통음식'],
     pickup: false,
-    openTime: "11:00",
-    closeTime: "24:00",
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Restaurant",
-    id: "restaurant3",
-    name: "란타 코르도바",
-    engName: "Lantaw Cordova",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Restaurant',
+    id: 'restaurant3',
+    name: '란타 코르도바',
+    engName: 'Lantaw Cordova',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913',
     ],
     likes: 20,
     review: 4.0,
     reviewCnt: 342,
-    tags: ["동동", "전통음식"],
+    tags: ['동동', '전통음식'],
     pickup: false,
-    openTime: "11:00",
-    closeTime: "24:00",
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Restaurant",
-    id: "restaurant4",
-    name: "아인 레스토랑",
-    engName: "Ain",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Restaurant',
+    id: 'restaurant4',
+    name: '아인 레스토랑',
+    engName: 'Ain',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d',
     ],
     likes: 20,
     review: 4,
     reviewCnt: 545,
-    tags: ["스테이크", "전통음식"],
+    tags: ['스테이크', '전통음식'],
     pickup: true,
-    openTime: "11:00",
-    closeTime: "24:00",
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Massage",
-    id: "massage1",
-    name: "메디핑거",
-    engName: "Medi Finger",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Massage',
+    id: 'massage1',
+    name: '메디핑거',
+    engName: 'Medi Finger',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa',
     ],
     likes: 20,
     review: 4,
     reviewCnt: 200,
-    tags: ["전통태국마사지"],
-    openTime: "11:00",
-    closeTime: "24:00",
+    tags: ['전통태국마사지'],
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Massage",
-    id: "massage2",
-    name: "프라나 스파",
-    engName: "Prana Spa",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Massage',
+    id: 'massage2',
+    name: '프라나 스파',
+    engName: 'Prana Spa',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614',
     ],
     likes: 20,
     review: 4.5,
     reviewCnt: 234,
-    tags: ["전통태국마사지"],
-    openTime: "11:00",
-    closeTime: "24:00",
+    tags: ['전통태국마사지'],
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Massage",
-    id: "massage3",
-    name: "오션 스파",
-    engName: "Ocean Spa",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Massage',
+    id: 'massage3',
+    name: '오션 스파',
+    engName: 'Ocean Spa',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=c0a2c43a-8cb0-457a-9b31-737d1599940e"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=c0a2c43a-8cb0-457a-9b31-737d1599940e',
     ],
     likes: 20,
     review: 5,
     reviewCnt: 156,
-    tags: ["전통태국마사지"],
-    openTime: "11:00",
-    closeTime: "24:00",
+    tags: ['전통태국마사지'],
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
+        date: new Date(),
+      },
+    ],
   },
   {
-    email: "",
-    category: "Massage",
-    id: "massage4",
-    name: "에코 스파",
-    engName: "Eco Spa",
-    address: "세부 막탄",
-    engAddress: "cebu maktan",
-    phone: "010-9141-9090",
+    email: '',
+    category: 'Massage',
+    id: 'massage4',
+    name: '에코 스파',
+    engName: 'Eco Spa',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
     source: [
-      "https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f"
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f',
     ],
     likes: 20,
     review: 3.5,
     reviewCnt: 270,
-    tags: ["전통태국마사지"],
-    openTime: "11:00",
-    closeTime: "24:00",
+    tags: ['전통태국마사지'],
+    openTime: '11:00',
+    closeTime: '24:00',
     reviews: [
       {
-        writer: "peko22@naver.com",
-        comment: "너무 좋아요",
+        writer: 'peko22@naver.com',
+        comment: '너무 좋아요',
         star: 5,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko2@naver.com",
-        comment: "좋긴 한데 서비스가 조금 별로 였어요",
+        writer: 'peko2@naver.com',
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
-        date: new Date()
+        date: new Date(),
       },
       {
-        writer: "peko1@naver.com",
-        comment: "다음에 꼭 다시 오고 싶어요",
+        writer: 'peko1@naver.com',
+        comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
-        date: new Date()
-      }
-    ]
-  }
+        date: new Date(),
+      },
+    ],
+  },
 ];
 
 lists.forEach(e => {
-  db.collection("shops")
+  db.collection('shops')
     .doc(e.id)
     .set(e)
-    .then(() => console.log("done"))
+    .then(() => console.log('done'))
     .catch(err => {
       console.log(err);
     });

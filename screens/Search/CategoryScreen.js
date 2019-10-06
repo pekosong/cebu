@@ -1,55 +1,55 @@
-import React, { useState, useEffect } from "react";
+import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
   Image,
   ScrollView,
   TouchableOpacity,
-  ActivityIndicator
-} from "react-native";
+  ActivityIndicator,
+} from 'react-native';
 
-import StarRating from "react-native-star-rating";
-import { Ionicons } from "@expo/vector-icons";
-import { Badge, Button, Block, Text } from "../../components";
-import { theme } from "../../constants";
+import StarRating from 'react-native-star-rating';
+import {Ionicons} from '@expo/vector-icons';
+import {Badge, Button, Block, Text, CachedImage} from '../../components';
+import {theme} from '../../constants';
 
-import { useSelector, shallowEqual } from "react-redux";
+import {useSelector, shallowEqual} from 'react-redux';
 
-const { width } = Dimensions.get("window");
+const {width} = Dimensions.get('window');
 
 const cateMap = {
-  Restaurant: "식당",
-  Message: "마사지",
-  Cafe: "카페",
-  Bar: "술집",
-  Nail: "네일",
-  SeaSports: "수상스포츠",
-  Activity: "액티비티",
-  Shopping: "쇼핑"
+  Restaurant: '식당',
+  Message: '마사지',
+  Cafe: '카페',
+  Bar: '술집',
+  Nail: '네일',
+  SeaSports: '수상스포츠',
+  Activity: '액티비티',
+  Shopping: '쇼핑',
 };
 
 const filerMap = {
-  추천: "review",
-  리뷰수: "reviewCnt",
-  거리: "hello"
+  추천: 'review',
+  리뷰수: 'reviewCnt',
+  거리: 'hello',
 };
 
 const CategoryScreen = props => {
-  const { navigation } = props;
-  const [active, setActive] = useState("추천");
+  const {navigation} = props;
+  const [active, setActive] = useState('추천');
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const tabs = ["추천", "리뷰수", "거리"];
+  const tabs = ['추천', '리뷰수', '거리'];
   const shops = useSelector(state => state.shops, shallowEqual);
 
   useEffect(() => {
     if (Object.entries(shops).length !== 0) {
       filteredShops = shops.filter(
-        e => e.category == navigation.getParam("category")
+        e => e.category == navigation.getParam('category'),
       );
 
       filteredShops = filteredShops.sort(function(a, b) {
-        return b["review"] - a["review"];
+        return b['review'] - a['review'];
       });
 
       setSelectedLists(filteredShops);
@@ -72,8 +72,7 @@ const CategoryScreen = props => {
       <TouchableOpacity
         key={`tab-${tab}`}
         onPress={() => handleCatTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}
-      >
+        style={[styles.tab, isActive ? styles.active : null]}>
         <Text size={16} medium gray={!isActive} secondary={isActive}>
           {tab}
         </Text>
@@ -89,7 +88,7 @@ const CategoryScreen = props => {
         rating={cnt}
         starSize={10}
         fullStarColor={theme.colors.accent}
-        containerStyle={{ width: 20 }}
+        containerStyle={{width: 20}}
       />
     );
   };
@@ -99,56 +98,55 @@ const CategoryScreen = props => {
       <TouchableOpacity
         key={list.name}
         onPress={() =>
-          navigation.navigate("Shop", {
-            shop: list
+          navigation.navigate('Shop', {
+            shop: list,
           })
-        }
-      >
+        }>
         <Block middle shadow style={styles.category}>
           <Block flex={1}>
-            <Image
-              style={{ width: "100%", height: 70 }}
-              source={{ uri: list.source[0] }}
+            <CachedImage
+              key={list.source[0]}
+              uri={list.source[0]}
+              style={{height: 70, width: '100%'}}
             />
           </Block>
-          <Block middle flex={2.8} style={{ paddingLeft: 10 }}>
+          <Block middle flex={2.8} style={{paddingLeft: 10}}>
             <Text h4 bold height={25}>
               {list.name}
             </Text>
             <Text caption h4>
-              {list.tags.join(", ")}
+              {list.tags.join(', ')}
             </Text>
-            <Block row style={{ marginTop: 5 }}>
+            <Block row style={{marginTop: 5}}>
               <StarRating
                 disabled={false}
                 maxStars={5}
                 rating={list.review}
                 starSize={15}
                 fullStarColor={theme.colors.accent}
-                containerStyle={{ width: 20 }}
+                containerStyle={{width: 20}}
               />
-              <Text caption style={{ marginLeft: 50 }}>
-                {"  "}
-                리뷰{" "}
+              <Text caption style={{marginLeft: 50}}>
+                {'  '}
+                리뷰{' '}
                 {list.reviewCnt
                   .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ",")}
+                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               </Text>
             </Block>
           </Block>
-          <Block middle center flex={0.4} style={{ position: "relative" }}>
+          <Block middle center flex={0.4} style={{position: 'relative'}}>
             <Text>1.5</Text>
             <Text>km</Text>
             {list.pickup ? (
               <Badge
                 size={18}
                 style={{
-                  position: "absolute",
+                  position: 'absolute',
                   top: -5,
-                  right: -5
+                  right: -5,
                 }}
-                color={theme.colors.primary}
-              >
+                color={theme.colors.primary}>
                 <Ionicons color={theme.colors.white} size={12} name="md-car" />
               </Badge>
             ) : null}
@@ -172,7 +170,7 @@ const CategoryScreen = props => {
         </Button>
         <Button>
           <Text h1 bold>
-            {cateMap[navigation.getParam("category")]}
+            {cateMap[navigation.getParam('category')]}
           </Text>
         </Button>
       </Block>
@@ -189,8 +187,7 @@ const CategoryScreen = props => {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}
-          ></ActivityIndicator>
+            color={theme.colors.primary}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -198,46 +195,46 @@ const CategoryScreen = props => {
 };
 
 CategoryScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 CategoryScreen.defaultProps = {};
 const styles = StyleSheet.create({
   full: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   header: {
     marginTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
     width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2
+    height: theme.sizes.base * 2.2,
   },
   tabs: {
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
     marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.padding
+    marginHorizontal: theme.sizes.padding,
   },
   tab: {
     marginRight: theme.sizes.padding,
-    paddingBottom: theme.sizes.base
+    paddingBottom: theme.sizes.base,
   },
   active: {
     borderBottomColor: theme.colors.secondary,
-    borderBottomWidth: 3
+    borderBottomWidth: 3,
   },
   categories: {
-    flexWrap: "wrap",
+    flexWrap: 'wrap',
     marginHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 1
+    marginBottom: theme.sizes.base * 1,
   },
   category: {
-    flexDirection: "row",
+    flexDirection: 'row',
     paddingVertical: theme.sizes.base / 2,
-    width: width - theme.sizes.base * 3
-  }
+    width: width - theme.sizes.base * 3,
+  },
 });
 
 export default CategoryScreen;

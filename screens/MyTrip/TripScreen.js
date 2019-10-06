@@ -167,7 +167,7 @@ export default function ShopScreen(props) {
           ...styles.header,
           backgroundColor: fadeAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
+            outputRange: ['rgba(0, 0, 0, 0.1)', 'rgba(255, 255, 255, 1)'],
           }),
           borderWidth: fadeAnim,
           borderColor: theme.colors.gray2,
@@ -209,8 +209,8 @@ export default function ShopScreen(props) {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Chat', {
-                  title: shop.name,
-                  engName: shop.engName,
+                  shopId: shop.id,
+                  shopName: shop.name,
                 })
               }
               style={{marginHorizontal: 10, marginTop: 2}}>

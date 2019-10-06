@@ -49,7 +49,7 @@ const watchUserData = email => {
 
 const downloadShopData = () => {
   return dispatch => {
-    firebase
+    return firebase
       .firestore()
       .collection('shops')
       .get()

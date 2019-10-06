@@ -24,9 +24,8 @@ const SearchScreen = props => {
   useEffect(() => {
     let unsubscribe;
     unsubscribe = dispatch(watchUserData(EMAIL));
-    dispatch(downloadShopData());
+    dispatch(downloadShopData()).then(() => setIsLoaded(true));
     setCates(categories);
-    setIsLoaded(true);
     return () => {
       unsubscribe();
     };
@@ -98,6 +97,7 @@ const SearchScreen = props => {
                   navigation={navigation}
                   favorite={user.myfavorites}>
                   <Text
+                    right
                     gray
                     caption
                     style={{
@@ -106,7 +106,7 @@ const SearchScreen = props => {
                     }}>
                     {item.beforePrice}원
                   </Text>
-                  <Text h4 bold style={{marginTop: 5}}>
+                  <Text right h4 bold style={{marginTop: 5}}>
                     {item.afterPrice}원
                   </Text>
                 </Card>
@@ -133,7 +133,7 @@ const SearchScreen = props => {
                   item={item}
                   navigation={navigation}
                   favorite={user.myfavorites}>
-                  <Text h4 bold style={{marginTop: 5}}>
+                  <Text right h4 bold style={{marginTop: 5}}>
                     {item.event}
                   </Text>
                 </Card>

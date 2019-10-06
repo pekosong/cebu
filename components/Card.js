@@ -74,9 +74,11 @@ export default Card = props => {
               paddingVertical: 5,
               paddingHorizontal: 10,
               backgroundColor: 'rgba(0,0,0,0.7)',
-              borderRadius: 10,
+              borderRadius: 5,
             }}>
-            <Text white>오늘</Text>
+            <Text caption white>
+              오늘
+            </Text>
           </Block>
         </Block>
         <Block row flex={1}>

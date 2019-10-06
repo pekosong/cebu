@@ -109,7 +109,7 @@ export default function ShopScreen(props) {
           ...styles.header,
           backgroundColor: fadeAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ['rgba(255, 255, 255, 0)', 'rgba(255, 255, 255, 1)'],
+            outputRange: ['rgba(0, 0, 0, 0.1)', 'rgba(255, 255, 255, 1)'],
           }),
           borderWidth: fadeAnim,
           borderColor: theme.colors.gray2,
@@ -129,7 +129,7 @@ export default function ShopScreen(props) {
                   style={{
                     color: fadeAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: ['rgb(200, 200, 200)', 'rgb(0, 0, 0)'],
+                      outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
                     }),
                   }}>
                   <Ionicons size={30} name="ios-arrow-back" />
@@ -151,9 +151,8 @@ export default function ShopScreen(props) {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Chat', {
-                  title: shop.name,
-                  engName: shop.engName,
                   shopId: shop.id,
+                  shopName: shop.name,
                 })
               }
               style={{marginHorizontal: 10, marginTop: 2}}>
@@ -161,7 +160,7 @@ export default function ShopScreen(props) {
                 style={{
                   color: fadeAnim.interpolate({
                     inputRange: [0, 1],
-                    outputRange: ['rgb(200, 200, 200)', 'rgb(0, 0, 0)'],
+                    outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
                   }),
                 }}>
                 <AntDesign size={26} name="message1" />
@@ -175,7 +174,7 @@ export default function ShopScreen(props) {
                     inputRange: [0, 1],
                     outputRange:
                       user.myfavorites.indexOf(shop.id) == -1
-                        ? ['rgb(200, 200, 200)', 'rgb(0, 0, 0)']
+                        ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
                         : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
                   }),
                 }}>
@@ -233,7 +232,7 @@ export default function ShopScreen(props) {
             <Block style={styles.inputRow}>
               <Text h3>픽업여부</Text>
               <Text color={theme.colors.black} bold h3>
-                가능
+                {shop.pickup ? '가능' : '불가'}
               </Text>
             </Block>
             <Block style={styles.inputRow}>
@@ -265,7 +264,7 @@ export default function ShopScreen(props) {
         <Divider />
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
-            주요 메뉴 및 가격
+            추천메뉴
           </Text>
           <ScrollView
             horizontal={true}
@@ -274,16 +273,6 @@ export default function ShopScreen(props) {
             {items.map((item, idx) => (
               <CardMenu key={idx} item={item}>
                 <Block middle>
-                  <Text
-                    gray
-                    right
-                    caption
-                    style={{
-                      textDecorationLine: 'line-through',
-                      textDecorationStyle: 'solid',
-                    }}>
-                    20,000원
-                  </Text>
                   <Text right bold>
                     30,000원
                   </Text>

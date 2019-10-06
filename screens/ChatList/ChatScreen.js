@@ -18,26 +18,21 @@ export default function ChatScreen(props) {
   const [title, setTitle] = useState('');
   const [shopId, setShopId] = useState('');
   const [email, setEmail] = useState('');
-
   const [messages, setMessages] = useState([]);
   const [isLoaded, setisLoaded] = useState(false);
 
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    const shopName = navigation.getParam('title');
-    const shopEngName = navigation.getParam('engName');
     const shop = navigation.getParam('shopId');
+    const shopName = navigation.getParam('shopName');
     const email = navigation.getParam('email')
       ? navigation.getParam('email')
       : user.email;
 
-    setTitle(shopName);
     setShopId(shop);
+    setTitle(shopName);
     setEmail(email);
-
-    console.log(shop);
-    console.log(shopEngName);
 
     let unsubscribe1 = firebase
       .firestore()
@@ -63,14 +58,13 @@ export default function ChatScreen(props) {
           firebase
             .firestore()
             .collection('users')
-            .doc(user.email)
+            .doc(email)
             .collection('messages')
             .doc(shop)
             .set({
               email: email,
               shop: shop,
               shopName: shopName,
-              shopEngName: shopEngName,
               message: [],
             });
         }
@@ -102,12 +96,11 @@ export default function ChatScreen(props) {
             .collection('shops')
             .doc(shop)
             .collection('messages')
-            .doc(user.email)
+            .doc(email)
             .set({
-              email: user.email,
+              email: email,
               shop: shop,
               shopName: shopName,
-              shopEngName: shopEngName,
               message: [],
             });
         }
@@ -145,6 +138,8 @@ export default function ChatScreen(props) {
   };
 
   onSend = async msg => {
+    msg[0].user.avatar = user.image;
+
     await firebase
       .firestore()
       .collection('users')
@@ -159,6 +154,7 @@ export default function ChatScreen(props) {
       .catch(err => {
         console.log(err);
       });
+
     await firebase
       .firestore()
       .collection('shops')
@@ -183,7 +179,7 @@ export default function ChatScreen(props) {
           messages={messages}
           onSend={msg => onSend(msg)}
           user={{
-            _id: user.host ? shopId : user.email,
+            _id: user.host ? shopId : email,
           }}
           locale="ko"
           placeholder="Message"
@@ -207,11 +203,20 @@ export default function ChatScreen(props) {
             />
           </Block>
         </Button>
-        <Button>
-          <Text h1 bold>
-            {user.host ? email : title}
-          </Text>
-        </Button>
+        {user.host ? (
+          <Button>
+            <Text h2 bold>
+              {email}
+            </Text>
+          </Button>
+        ) : (
+          <Button
+            onPress={() => navigation.navigate('Shop', {shopCode: shopId})}>
+            <Text h1 bold>
+              {title}
+            </Text>
+          </Button>
+        )}
       </Block>
       {isLoaded ? (
         renderChat()
@@ -242,9 +247,5 @@ const styles = StyleSheet.create({
   header: {
     paddingTop: theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding,
-  },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2,
   },
 });
