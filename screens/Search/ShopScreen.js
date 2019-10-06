@@ -30,29 +30,6 @@ import {updateFavorite} from '../../redux/action';
 
 const {height, width} = Dimensions.get('window');
 
-const items = [
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-];
-
 export default function ShopScreen(props) {
   const {navigation, recommendList} = props;
   const [shop, setShop] = useState({});
@@ -60,7 +37,6 @@ export default function ShopScreen(props) {
   const [reviewVisible, setReviewVisible] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
   const shops = useSelector(state => state.shops, shallowEqual);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const dispatch = useDispatch();
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -70,10 +46,8 @@ export default function ShopScreen(props) {
     if (shopCode) {
       let myShop = shops.filter(e => e.id == shopCode);
       setShop(myShop[0]);
-      setIsLoaded(true);
     } else {
       setShop(navigation.getParam('shop'));
-      setIsLoaded(true);
     }
   }, [user, shops]);
 
@@ -219,6 +193,33 @@ export default function ShopScreen(props) {
         </Block>
         <Divider />
         <Block style={styles.categories}>
+          <Text h3 bold style={{...styles.content, marginBottom: 25}}>
+            추천메뉴
+          </Text>
+          {shop.menus
+            ? shop.menus.map((item, idx) => <CardMenu key={idx} item={item} />)
+            : null}
+        </Block>
+        <Divider />
+        <Block style={styles.categories}>
+          <Text h3 bold style={styles.content}>
+            후기
+          </Text>
+          {shop.reviews
+            ? shop.reviews.map((review, idx) => (
+                <Reviews key={idx} review={review} />
+              ))
+            : null}
+          <TouchableOpacity
+            style={{marginTop: theme.sizes.padding}}
+            onPress={() => setReviewVisible(true)}>
+            <Text h3 bold color={theme.colors.accent}>
+              후기 모두 보기
+            </Text>
+          </TouchableOpacity>
+        </Block>
+        <Divider />
+        <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             업체정보
           </Text>
@@ -261,50 +262,14 @@ export default function ShopScreen(props) {
             </Block>
           </Block>
         </Block>
+
         <Divider />
         <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            추천메뉴
+          <Text h3 bold>
+            위치
           </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}>
-            {items.map((item, idx) => (
-              <CardMenu key={idx} item={item}>
-                <Block middle>
-                  <Text right bold>
-                    30,000원
-                  </Text>
-                </Block>
-              </CardMenu>
-            ))}
-          </ScrollView>
-        </Block>
-        <Divider />
-        <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            후기
-          </Text>
-          {shop.reviews
-            ? shop.reviews.map((review, idx) => (
-                <Reviews key={idx} review={review} />
-              ))
-            : null}
-          <TouchableOpacity
-            style={{marginTop: theme.sizes.padding}}
-            onPress={() => setReviewVisible(true)}>
-            <Text h3 bold color={theme.colors.accent}>
-              후기 모두 보기
-            </Text>
-          </TouchableOpacity>
-        </Block>
-        <Divider />
-        <Block style={styles.categories}>
-          <Block row space="between">
-            <Text h3 bold>
-              위치
-            </Text>
+          <Block row space="between" style={{marginTop: 10}}>
+            <Text h3>{shop.address}</Text>
             <Text h3>{shop.engAddress}</Text>
           </Block>
           <MapView

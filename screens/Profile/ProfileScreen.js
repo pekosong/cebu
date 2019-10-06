@@ -138,7 +138,7 @@ const ProfileScreen = props => {
                 style={{color: theme.colors.primary}}></Ionicons>
             </WideText>
           ))}
-          {user.shops ? (
+          {user.host ? (
             <Fragment>
               <Block style={{marginTop: 20, marginBottom: 10}}>
                 <Text h3 gray>
@@ -183,14 +183,11 @@ const ProfileScreen = props => {
               space="between"
               style={{
                 ...styles.inputRow,
-                marginVertical: 30,
               }}>
-              <Text color={theme.colors.primary} h3>
-                알림 테스트
-              </Text>
+              <Text h3>알림 테스트</Text>
               <Ionicons
                 size={25}
-                name="md-log-out"
+                name="md-book"
                 style={{color: theme.colors.primary}}></Ionicons>
             </Block>
           </TouchableOpacity>

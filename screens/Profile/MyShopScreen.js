@@ -38,7 +38,7 @@ const MyShopScreen = props => {
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
   const [progress, setProgress] = useState(null);
-
+  const [menuSelected, setMenuSelected] = useState(null);
   const [saved, setSaved] = useState(false);
   const [changed, setChanged] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
@@ -288,168 +288,200 @@ const MyShopScreen = props => {
               ))}
             </Block>
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                주요 메뉴
-              </Text>
-              <TextInput
-                defaultValue={''}
-                placeholder=""
-                onChangeText={() => {}}
-                style={{fontSize: 20}}
-              />
-            </Block>
-          </Block>
-          <Block row space="between" style={{marginBottom: 20}}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 태그
-              </Text>
-              <Block row>
-                {tags.map((tag, idx) => (
-                  <TextInput
+          <Block style={{marginBottom: 20}}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              추천메뉴
+            </Text>
+            <Block row>
+              {myShop.menus.map((item, idx) => {
+                return (
+                  <Block
+                    center
+                    middle
                     key={idx}
-                    defaultValue={tag}
-                    placeholder="한국음식, 배달가능"
+                    style={{
+                      padding: 5,
+                      marginRight: 5,
+                      backgroundColor: theme.colors.accent,
+                      borderRadius: 5,
+                    }}>
+                    <TouchableOpacity onPress={() => setMenuSelected(idx)}>
+                      <Text white h4>
+                        {item.name}
+                      </Text>
+                    </TouchableOpacity>
+                  </Block>
+                );
+              })}
+            </Block>
+            {menuSelected != null ? (
+              <Block>
+                <Block style={styles.inputRow}>
+                  <Text h3 gray style={{marginBottom: 10}}>
+                    메뉴명
+                  </Text>
+                  <TextInput
+                    defaultValue={myShop.menus[menuSelected].name}
                     onChangeText={() => {}}
-                    style={{fontSize: 20, width: 80}}
+                    style={{fontSize: 16}}></TextInput>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3 gray style={{marginBottom: 10}}>
+                    가격
+                  </Text>
+                  <TextInput
+                    defaultValue={myShop.menus[menuSelected].price}
+                    onChangeText={() => {}}
+                    style={{fontSize: 16}}></TextInput>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3 gray style={{marginBottom: 10}}>
+                    설명
+                  </Text>
+                  <TextInput
+                    defaultValue={myShop.menus[menuSelected].desc}
+                    onChangeText={() => {}}
+                    style={{fontSize: 16}}></TextInput>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3 gray style={{marginBottom: 10}}>
+                    이미지
+                  </Text>
+                  <CachedImage
+                    uri={myShop.menus[menuSelected].src}
+                    style={styles.avatar}
                   />
-                ))}
+                </Block>
               </Block>
+            ) : null}
+          </Block>
+          <Block style={{marginBottom: 20}}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 태그
+            </Text>
+            <Block row>
+              {tags.map((tag, idx) => (
+                <TextInput
+                  key={idx}
+                  defaultValue={tag}
+                  placeholder="한국음식, 배달가능"
+                  onChangeText={() => {}}
+                  style={{fontSize: 20, width: 80}}
+                />
+              ))}
             </Block>
           </Block>
 
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 이름
-              </Text>
-              <TextInput
-                defaultValue={name}
-                placeholder=""
-                onChangeText={e => setName(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 이름
+            </Text>
+            <TextInput
+              defaultValue={name}
+              placeholder=""
+              onChangeText={e => setName(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 분류
-              </Text>
-              <TextInput
-                defaultValue={category}
-                placeholder=""
-                onChangeText={e => setCategory(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 분류
+            </Text>
+            <TextInput
+              defaultValue={category}
+              placeholder=""
+              onChangeText={e => setCategory(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 영어 이름
-              </Text>
-              <TextInput
-                defaultValue={engName}
-                placeholder=""
-                onChangeText={e => setEngName(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 영어 이름
+            </Text>
+            <TextInput
+              defaultValue={engName}
+              placeholder=""
+              onChangeText={e => setEngName(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
 
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 주소
-              </Text>
-              <TextInput
-                defaultValue={address}
-                placeholder=""
-                onChangeText={e => setAddress(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 주소
+            </Text>
+            <TextInput
+              defaultValue={address}
+              placeholder=""
+              onChangeText={e => setAddress(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                매장 영어 주소
-              </Text>
-              <TextInput
-                defaultValue={engAddress}
-                placeholder=""
-                onChangeText={e => setEngAddress(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              매장 영어 주소
+            </Text>
+            <TextInput
+              defaultValue={engAddress}
+              placeholder=""
+              onChangeText={e => setEngAddress(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                전화번호
-              </Text>
-              <TextInput
-                defaultValue={phone}
-                placeholder=""
-                onChangeText={e => setPhone(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              전화번호
+            </Text>
+            <TextInput
+              defaultValue={phone}
+              placeholder=""
+              onChangeText={e => setPhone(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
 
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                오픈 시간
-              </Text>
-              <TextInput
-                defaultValue={openTime}
-                placeholder=""
-                onChangeText={e => {
-                  setOpenTime(e);
-                }}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              오픈 시간
+            </Text>
+            <TextInput
+              defaultValue={openTime}
+              placeholder=""
+              onChangeText={e => {
+                setOpenTime(e);
+              }}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                마감 시간
-              </Text>
-              <TextInput
-                defaultValue={closeTime}
-                placeholder=""
-                onChangeText={e => {
-                  setCloseTime(e);
-                }}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              마감 시간
+            </Text>
+            <TextInput
+              defaultValue={closeTime}
+              placeholder=""
+              onChangeText={e => {
+                setCloseTime(e);
+              }}
+              style={{fontSize: 20}}
+            />
           </Block>
-          <Block row space="between" style={{marginBottom: 20}}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                픽업가능 여부
-              </Text>
-              <Switch value={pickup} onValueChange={e => setPickup(e)} />
-            </Block>
+          <Block style={{marginBottom: 20}}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              픽업가능 여부
+            </Text>
+            <Switch value={pickup} onValueChange={e => setPickup(e)} />
           </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                기타 정보
-              </Text>
-              <TextInput
-                defaultValue={''}
-                placeholder=""
-                onChangeText={() => {}}
-                style={{fontSize: 20}}
-              />
-            </Block>
+          <Block style={styles.inputRow}>
+            <Text h3 gray style={{marginBottom: 10}}>
+              기타 정보
+            </Text>
+            <TextInput
+              defaultValue={''}
+              placeholder=""
+              onChangeText={() => {}}
+              style={{fontSize: 20}}
+            />
           </Block>
         </Block>
       </ScrollView>

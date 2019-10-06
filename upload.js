@@ -15,7 +15,6 @@ let db = firebase.firestore();
 
 const lists = [
   {
-    email: 'peko22@naver.com',
     category: 'Restaurant',
     id: 'restaurant1',
     name: '점보 7',
@@ -56,33 +55,34 @@ const lists = [
     menus: [
       {
         name: '전신마사지',
-        price: 50,
-        time: 60,
-        description: '전신 스포츠 마사지',
-        event: {
-          price: 40,
-          time: 70,
-          desc: '이벤트 중',
-          startDate: '2020-01-01',
-          endDate: '2020-01-01',
-        },
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
       },
       {
-        writer: 'peko2@naver.com',
-        comment: '좋긴 한데 서비스가 조금 별로 였어요',
-        star: 3,
-        date: new Date(),
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
       },
       {
-        writer: 'peko1@naver.com',
-        comment: '다음에 꼭 다시 오고 싶어요',
-        star: 4,
-        date: new Date(),
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
       },
     ],
   },
   {
-    email: '',
     category: 'Restaurant',
     id: 'restaurant2',
     name: '부레 레스토랑',
@@ -120,9 +120,37 @@ const lists = [
         date: new Date(),
       },
     ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
+      },
+    ],
   },
   {
-    email: '',
     category: 'Restaurant',
     id: 'restaurant3',
     name: '란타 코르도바',
@@ -162,7 +190,6 @@ const lists = [
     ],
   },
   {
-    email: '',
     category: 'Restaurant',
     id: 'restaurant4',
     name: '아인 레스토랑',
@@ -200,9 +227,37 @@ const lists = [
         date: new Date(),
       },
     ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
+      },
+    ],
   },
   {
-    email: '',
     category: 'Massage',
     id: 'massage1',
     name: '메디핑거',
@@ -239,9 +294,37 @@ const lists = [
         date: new Date(),
       },
     ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
+      },
+    ],
   },
   {
-    email: '',
     category: 'Massage',
     id: 'massage2',
     name: '프라나 스파',
@@ -278,9 +361,37 @@ const lists = [
         date: new Date(),
       },
     ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
+      },
+    ],
   },
   {
-    email: '',
     category: 'Massage',
     id: 'massage3',
     name: '오션 스파',
@@ -317,9 +428,37 @@ const lists = [
         date: new Date(),
       },
     ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
+      },
+    ],
   },
   {
-    email: '',
     category: 'Massage',
     id: 'massage4',
     name: '에코 스파',
@@ -354,6 +493,35 @@ const lists = [
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
+      },
+    ],
+    menus: [
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '필리핀 전통 마사지',
+        src:
+          'https://post-phinf.pstatic.net/MjAxNzA2MzBfMTQ2/MDAxNDk4Nzk4Nzg3MDM4.q5sogz4xcF3U0-FF5gdopfoSuLeyYwFRBeBPA0b_5I4g.D3-_sYBfFrptUQX9ywnUcNzs20GF_NLTYN3_Lmd6IEsg.JPEG/%EC%95%84%EB%A1%9C%EB%A7%88_%EB%A7%88%EC%82%AC%EC%A7%80_%ED%9A%A8%EA%B3%BC1.jpg?type=w1200',
+      },
+      {
+        name: '스톤마사지',
+        price: '10,000원',
+        desc: '스톤을 이용한 마사지',
+        src:
+          'https://mblogthumb-phinf.pstatic.net/20160308_186/homearoma_1457449152660lfToa_JPEG/39CI6011.JPG?type=w2',
+      },
+      {
+        name: '전신마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
+      },
+      {
+        name: '발마사지',
+        price: '10,000원',
+        desc: '전신을 마사지',
+        src:
+          'http://health.chosun.com/site/data/img_dir/2019/04/18/2019041801309_0.jpg',
       },
     ],
   },

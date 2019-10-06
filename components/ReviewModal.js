@@ -22,12 +22,10 @@ export default ReviewModal = props => {
       <TouchableOpacity onPress={() => setReviewVisible(false)}>
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
-      <Block flex={1} row space="between">
-        <Block>
-          <Text h1 bold>
-            후기
-          </Text>
-        </Block>
+      <Block row space="between" style={{flex: 0, height: 50}}>
+        <Text h1 bold>
+          후기
+        </Text>
         <Block>
           <Text h4 right>
             {reviewCnt
@@ -47,22 +45,14 @@ export default ReviewModal = props => {
           </Block>
         </Block>
       </Block>
-      <Block flex={12}>
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{marginTop: 20}}>
-          {reviews
-            ? reviews.map((review, idx) => (
-                <Reviews key={idx} review={review} />
-              ))
-            : null}
-          {reviews
-            ? reviews.map((review, idx) => (
-                <Reviews key={idx} review={review} />
-              ))
-            : null}
-        </ScrollView>
-      </Block>
+      <ScrollView showsVerticalScrollIndicator={false} style={{marginTop: 10}}>
+        {reviews
+          ? reviews.map((review, idx) => <Reviews key={idx} review={review} />)
+          : null}
+        {reviews
+          ? reviews.map((review, idx) => <Reviews key={idx} review={review} />)
+          : null}
+      </ScrollView>
     </Block>
   );
 };

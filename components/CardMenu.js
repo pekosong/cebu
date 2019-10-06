@@ -1,50 +1,35 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import Block from './Block';
 import Text from './Text';
 import CachedImage from './CachedImage';
-import {theme} from '../constants';
-
-const {height, width} = Dimensions.get('window');
 
 export default CardMenu = props => {
-  const {style, children, item} = props;
+  const {style, item} = props;
 
   useEffect(() => {});
 
   return (
     <TouchableOpacity onPress={() => {}}>
-      <Block style={styles.elementContainer}>
-        <Block flex={2}>
-          <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
+      <Block row space="between" style={{marginBottom: 10}}>
+        <Block>
+          <Text h3>{item.name}</Text>
+          <Text h3 bold style={{marginVertical: 10}}>
+            {item.price}
+          </Text>
+          <Text caption>{item.desc}</Text>
         </Block>
-        <Block row flex={1}>
-          <Block flex={3} middle>
-            <Text h4 bold style={{marginVertical: 2}}>
-              {item.name}
-            </Text>
-            <Text caption>{item.desc}</Text>
-          </Block>
-          <Block flex={2} middle>
-            {children}
-          </Block>
-        </Block>
+        <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
       </Block>
     </TouchableOpacity>
   );
 };
 
 export const styles = StyleSheet.create({
-  elementContainer: {
-    borderRadius: 3,
-    width: width / 2 - theme.sizes.padding,
-    height: 150,
-    marginRight: 20,
-  },
   imageStyle: {
-    width: '100%',
-    height: '100%',
+    width: 100,
+    height: 100,
     resizeMode: 'cover',
     borderRadius: 3,
   },

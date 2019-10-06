@@ -30,29 +30,6 @@ import {updateFavorite} from '../../redux/action';
 
 const {height, width} = Dimensions.get('window');
 
-const items = [
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-  {
-    name: '전신마사지',
-    desc: '전신을 마사지',
-    src: 'http://cfile227.uf.daum.net/image/2777364652F46F7D2BE666',
-  },
-];
-
 export default function ShopScreen(props) {
   const {navigation, recommendList} = props;
 
@@ -66,28 +43,14 @@ export default function ShopScreen(props) {
   const [starCount, setStarCount] = useState(5);
 
   const user = useSelector(state => state.user, shallowEqual);
-  const shops = useSelector(state => state.shops, shallowEqual);
-  const [isLoaded, setIsLoaded] = useState(false);
 
   const dispatch = useDispatch();
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    if (
-      Object.entries(user).length !== 0 &&
-      Object.entries(shops).length !== 0
-    ) {
-      let shopCode = navigation.getParam('shopCode');
-      if (shopCode) {
-        let myShop = shops.filter(e => e.id == shopCode);
-        setShop(myShop[0]);
-        setIsLoaded(true);
-      } else {
-        setShop(navigation.getParam('shop'));
-        setIsLoaded(true);
-      }
+    if (Object.entries(user).length !== 0) {
+      setShop(navigation.getParam('shop'));
       setTodo(navigation.getParam('todo'));
-      setIsLoaded(true);
     }
   }, [user, todo]);
 
@@ -378,32 +341,13 @@ export default function ShopScreen(props) {
         </Block>
 
         <Divider />
-
         <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            주요 메뉴 및 가격
+          <Text h3 bold style={{...styles.content, marginBottom: 25}}>
+            추천메뉴
           </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}>
-            {items.map((item, idx) => (
-              <CardMenu key={idx} item={item}>
-                <Text
-                  gray
-                  caption
-                  style={{
-                    textDecorationLine: 'line-through',
-                    textDecorationStyle: 'solid',
-                  }}>
-                  20,000원
-                </Text>
-                <Text h4 bold style={{marginTop: 5}}>
-                  30,000원
-                </Text>
-              </CardMenu>
-            ))}
-          </ScrollView>
+          {shop.menus
+            ? shop.menus.map((item, idx) => <CardMenu key={idx} item={item} />)
+            : null}
         </Block>
         <Divider />
 
@@ -487,9 +431,9 @@ export default function ShopScreen(props) {
           </ScrollView>
         </Block>
       </ScrollView>
+
       <Block
         row
-        middle
         style={{
           position: 'absolute',
           bottom: 0,
@@ -502,16 +446,16 @@ export default function ShopScreen(props) {
           style={{
             marginLeft: theme.sizes.padding,
           }}>
-          <Block row style={{marginTop: 10, marginBottom: -5}}>
+          <Block row center style={{marginTop: 5, marginBottom: -5}}>
             <StarRating
               disabled={false}
               maxStars={5}
               rating={shop.review}
-              starSize={15}
+              starSize={16}
               fullStarColor={theme.colors.accent}
               containerStyle={{width: 70}}
             />
-            <Text style={{marginLeft: 7}}>
+            <Text style={{marginLeft: 12, fontSize: 16}}>
               {shop.reviewCnt
                 ? shop.reviewCnt
                     .toString()
@@ -520,13 +464,13 @@ export default function ShopScreen(props) {
               Reviews
             </Text>
           </Block>
-          <Block row>
+          <Block row center>
             <Ionicons
-              size={15}
+              size={16}
               color={theme.colors.accent}
               name={'ios-heart'}
             />
-            <Text style={{marginLeft: 7}}>
+            <Text style={{marginLeft: 10, fontSize: 16}}>
               {shop.likes
                 ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
                   ' '
