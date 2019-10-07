@@ -204,6 +204,27 @@ const MyShopScreen = props => {
     });
   };
 
+  renderList = (item, idx) => {
+    return (
+      <TouchableOpacity key={idx} onPress={() => setMenuSelected(idx)}>
+        <Block style={styles.categoryContainer}>
+          <Image
+            style={{
+              borderRadius: 3,
+              width: '100%',
+              height: 70,
+              resizeMode: 'cover',
+            }}
+            source={item.src}></Image>
+
+          <Text black style={{padding: 8}}>
+            {item.id}
+          </Text>
+        </Block>
+      </TouchableOpacity>
+    );
+  };
+
   return isLoaded ? (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block flex={false} row center space="between" style={styles.header}>
@@ -292,6 +313,14 @@ const MyShopScreen = props => {
             <Text h3 gray style={{marginBottom: 10}}>
               추천메뉴
             </Text>
+            <Block style={{...styles.content, height: 130}}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                scrollEnabled={true}>
+                {myShop.menus.map((item, idx) => renderList(item, idx))}
+              </ScrollView>
+            </Block>
             <Block row>
               {myShop.menus.map((item, idx) => {
                 return (
@@ -527,6 +556,22 @@ const styles = StyleSheet.create({
     borderBottomWidth: 0.2,
     paddingBottom: 10,
     borderBottomColor: theme.colors.gray,
+  },
+  categoryContainer: {
+    flex: 0,
+    borderRadius: 3,
+    width: 120,
+    height: 120,
+    marginRight: 20,
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 2,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 5,
   },
 });
 

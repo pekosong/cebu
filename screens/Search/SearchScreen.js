@@ -46,8 +46,8 @@ const SearchScreen = props => {
             style={{
               borderRadius: 3,
               width: '100%',
-              height: 70,
               resizeMode: 'cover',
+              height: 70,
             }}
             source={item.src}></Image>
 
