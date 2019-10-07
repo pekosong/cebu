@@ -7,8 +7,9 @@ import {
   Switch,
   ActivityIndicator,
   Dimensions,
+  Animated,
 } from 'react-native';
-import {Button, Block, Text, CachedImage, Test} from '../../components';
+import {Button, Block, Text, CachedImage} from '../../components';
 import {theme} from '../../constants';
 import firebase from '../../constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
@@ -28,6 +29,10 @@ const MyShopScreen = props => {
   const [name, setName] = useState('');
   const [engName, setEngName] = useState('');
   const [address, setAddress] = useState('');
+  const [menuName, setMenuName] = useState('');
+  const [menuPrice, setMenuPrice] = useState('');
+  const [menuDesc, setMenuDesc] = useState('');
+  const [menuImg, setMenuImg] = useState('');
   const [engAddress, setEngAddress] = useState('');
   const [openTime, setOpenTime] = useState('');
   const [closeTime, setCloseTime] = useState('');
@@ -37,6 +42,8 @@ const MyShopScreen = props => {
   const [myShop, setMyShop] = useState({});
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
+  const [image, setImage] = useState('');
+
   const [progress, setProgress] = useState(null);
   const [menuSelected, setMenuSelected] = useState(null);
   const [saved, setSaved] = useState(false);
@@ -44,6 +51,8 @@ const MyShopScreen = props => {
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
   const shopImages = useSelector(state => state.shopImages, shallowEqual);
+
+  const [hideAnim] = useState(new Animated.Value(0));
 
   const dispatch = useDispatch();
 
@@ -121,10 +130,17 @@ const MyShopScreen = props => {
       () => {
         uploadTask.snapshot.ref.getDownloadURL().then(downloadURL => {
           console.log('File available at', downloadURL);
-          let newImages = images;
-          newImages.push(downloadURL);
-          setImages(newImages);
-          setProgress(null);
+          if (menuSelected != null) {
+            setMenuImg(downloadURL);
+            setImage(downloadURL);
+            setProgress(null);
+            console.log('song');
+          } else {
+            let newImages = images;
+            newImages.push(downloadURL);
+            setImages(newImages);
+            setProgress(null);
+          }
         });
       },
     );
@@ -155,9 +171,20 @@ const MyShopScreen = props => {
   };
 
   saveShop = () => {
+    let newMenu = {
+      name: menuName,
+      price: menuPrice,
+      desc: menuDesc,
+      src: menuImg,
+    };
+    let newMenus = myShop.menus;
+    newMenus[menuSelected] = newMenu;
+
     setSaved(true);
+
     let newShop = {
       ...myShop,
+      menus: menuSelected != null ? newMenus : myShop.menus,
       name: name,
       engName: engName,
       category: category,
@@ -170,10 +197,20 @@ const MyShopScreen = props => {
       pickup: pickup,
       phone: phone,
     };
+
     dispatch(updateShop(newShop)).then(() => {
       setMyShop(newShop);
       setChanged(!changed);
       setSaved(false);
+      Animated.timing(hideAnim, {
+        toValue: 1,
+        duration: 300,
+      }).start();
+      if (menuSelected != null) {
+        setTimeout(() => {
+          setMenuSelected(null);
+        }, 200);
+      }
     });
   };
 
@@ -204,21 +241,55 @@ const MyShopScreen = props => {
     });
   };
 
+  handleMenu = idx => {
+    if (menuSelected == idx) {
+      Animated.timing(hideAnim, {
+        toValue: 0,
+        duration: 300,
+      }).start();
+      setTimeout(() => {
+        setMenuSelected(null);
+      }, 200);
+      return;
+    }
+    setMenuSelected(idx);
+    setMenuName(myShop.menus[idx].name);
+    setMenuPrice(myShop.menus[idx].price);
+    setMenuDesc(myShop.menus[idx].desc);
+    setMenuImg(myShop.menus[idx].src);
+
+    Animated.timing(hideAnim, {
+      toValue: 1,
+      duration: 300,
+    }).start();
+  };
+
   renderList = (item, idx) => {
     return (
-      <TouchableOpacity key={idx} onPress={() => setMenuSelected(idx)}>
-        <Block style={styles.categoryContainer}>
-          <Image
+      <TouchableOpacity key={idx} onPress={() => handleMenu(idx)}>
+        <Block
+          style={{
+            ...styles.categoryContainer,
+            backgroundColor:
+              menuSelected == idx ? theme.colors.accent : 'white',
+          }}>
+          <CachedImage
             style={{
               borderRadius: 3,
+              borderColor: 'red',
               width: '100%',
               height: 70,
               resizeMode: 'cover',
             }}
-            source={item.src}></Image>
+            uri={item.src}></CachedImage>
 
-          <Text black style={{padding: 8}}>
-            {item.id}
+          <Text
+            style={{
+              color:
+                menuSelected == idx ? theme.colors.white : theme.colors.black,
+              padding: 8,
+            }}>
+            {item.name}
           </Text>
         </Block>
       </TouchableOpacity>
@@ -245,7 +316,7 @@ const MyShopScreen = props => {
       </Block>
       <ScrollView>
         <Block style={styles.inputs}>
-          <Block style={{marginBottom: 10}}>
+          <Block style={{marginBottom: 20}}>
             <Block row space="between" style={{marginBottom: 10}}>
               <Block flex={1}>
                 <Text h3 gray>
@@ -310,10 +381,12 @@ const MyShopScreen = props => {
             </Block>
           </Block>
           <Block style={{marginBottom: 20}}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              추천메뉴
-            </Text>
-            <Block style={{...styles.content, height: 130}}>
+            <Block row space="between">
+              <Text h3 gray style={{marginBottom: 15}}>
+                추천메뉴
+              </Text>
+            </Block>
+            <Block style={{...styles.content}}>
               <ScrollView
                 horizontal={true}
                 showsHorizontalScrollIndicator={false}
@@ -321,66 +394,64 @@ const MyShopScreen = props => {
                 {myShop.menus.map((item, idx) => renderList(item, idx))}
               </ScrollView>
             </Block>
-            <Block row>
-              {myShop.menus.map((item, idx) => {
-                return (
-                  <Block
-                    center
-                    middle
-                    key={idx}
-                    style={{
-                      padding: 5,
-                      marginRight: 5,
-                      backgroundColor: theme.colors.accent,
-                      borderRadius: 5,
-                    }}>
-                    <TouchableOpacity onPress={() => setMenuSelected(idx)}>
-                      <Text white h4>
-                        {item.name}
-                      </Text>
+            {menuSelected != null ? (
+              <Block style={{height: 430}}>
+                <Animated.View
+                  style={{
+                    height: hideAnim.interpolate({
+                      inputRange: [0, 1],
+                      outputRange: [0, 300],
+                    }),
+                  }}>
+                  <Block style={styles.inputRow}>
+                    <Text h3 gray style={{marginBottom: 10}}>
+                      메뉴명
+                    </Text>
+                    <TextInput
+                      defaultValue={myShop.menus[menuSelected].name}
+                      onChangeText={e => {
+                        setMenuName(e);
+                      }}
+                      style={{fontSize: 16}}></TextInput>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3 gray style={{marginBottom: 10}}>
+                      가격
+                    </Text>
+                    <TextInput
+                      defaultValue={myShop.menus[menuSelected].price}
+                      onChangeText={e => {
+                        setMenuPrice(e);
+                      }}
+                      style={{fontSize: 16}}></TextInput>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3 gray style={{marginBottom: 10}}>
+                      설명
+                    </Text>
+                    <TextInput
+                      defaultValue={myShop.menus[menuSelected].desc}
+                      onChangeText={e => {
+                        setMenuDesc(e);
+                      }}
+                      style={{fontSize: 16}}></TextInput>
+                  </Block>
+                  <Block>
+                    <Text h3 gray style={{marginBottom: 10}}>
+                      이미지
+                    </Text>
+                    <TouchableOpacity onPress={() => _pickImage()}>
+                      {image ? (
+                        <CachedImage uri={image} style={styles.avatar} />
+                      ) : (
+                        <CachedImage
+                          uri={myShop.menus[menuSelected].src}
+                          style={styles.avatar}
+                        />
+                      )}
                     </TouchableOpacity>
                   </Block>
-                );
-              })}
-            </Block>
-            {menuSelected != null ? (
-              <Block>
-                <Block style={styles.inputRow}>
-                  <Text h3 gray style={{marginBottom: 10}}>
-                    메뉴명
-                  </Text>
-                  <TextInput
-                    defaultValue={myShop.menus[menuSelected].name}
-                    onChangeText={() => {}}
-                    style={{fontSize: 16}}></TextInput>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3 gray style={{marginBottom: 10}}>
-                    가격
-                  </Text>
-                  <TextInput
-                    defaultValue={myShop.menus[menuSelected].price}
-                    onChangeText={() => {}}
-                    style={{fontSize: 16}}></TextInput>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3 gray style={{marginBottom: 10}}>
-                    설명
-                  </Text>
-                  <TextInput
-                    defaultValue={myShop.menus[menuSelected].desc}
-                    onChangeText={() => {}}
-                    style={{fontSize: 16}}></TextInput>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3 gray style={{marginBottom: 10}}>
-                    이미지
-                  </Text>
-                  <CachedImage
-                    uri={myShop.menus[menuSelected].src}
-                    style={styles.avatar}
-                  />
-                </Block>
+                </Animated.View>
               </Block>
             ) : null}
           </Block>
@@ -560,18 +631,11 @@ const styles = StyleSheet.create({
   categoryContainer: {
     flex: 0,
     borderRadius: 3,
+    borderWidth: 1,
+    borderColor: theme.colors.gray2,
     width: 120,
     height: 120,
     marginRight: 20,
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 2,
-      height: 2,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 5,
   },
 });
 

@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  ActivityIndicator,
 } from 'react-native';
 
 import MapView from 'react-native-maps';

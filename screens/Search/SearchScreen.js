@@ -1,7 +1,7 @@
 import React, {useState, useEffect} from 'react';
 import {
-  StyleSheet,
   Image,
+  StyleSheet,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
@@ -11,7 +11,7 @@ import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
-const EMAIL = 'peko22@naver.com';
+const EMAIL = 'b@naver.com';
 
 const SearchScreen = props => {
   const {navigation, categories, recommendList, eventList} = props;

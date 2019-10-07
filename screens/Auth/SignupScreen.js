@@ -56,7 +56,7 @@ const SignupScreen = props => {
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
-            Email
+            Sign Up
           </Text>
           <Input
             label="Email"
@@ -95,13 +95,13 @@ const SignupScreen = props => {
               <ActivityIndicator size="small" color="white" />
             ) : (
               <Text bold white center>
-                Singup
+                가입 신청
               </Text>
             )}
           </Button>
           <Button shadow style={styles.shadow}>
             <Text center semibold onPress={() => navigation.goBack()}>
-              Back
+              뒤로
             </Text>
           </Button>
         </Block>

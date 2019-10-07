@@ -1,6 +1,6 @@
 {
   "expo": {
-    "name": "hello, 세부",
+    "name": "헬로우 세부",
     "slug": "hellocebu",
     "privacy": "public",
     "sdkVersion": "35.0.0",
@@ -26,6 +26,7 @@
     },
     "android": {
       "package": "com.os1.cebu",
+      "versionCode": 2,
       "config": {
         "googleMaps": {"apiKey": "AIzaSyDbJD2UXs-MRhCU0KXh1jzYrxVv3w3z9DA"}
       }

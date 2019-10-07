@@ -17,7 +17,6 @@ const PASSWORD = 'thdckdrms1';
 
 const LoginScreen = props => {
   const {navigation} = props;
-
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
   const [error, setError] = useState(null);
@@ -107,13 +106,13 @@ const LoginScreen = props => {
               <ActivityIndicator size="small" color="white" />
             ) : (
               <Text bold white center>
-                Login
+                로그인
               </Text>
             )}
           </Button>
           <Button shadow style={styles.shadow}>
             <Text center semibold onPress={() => navigation.navigate('Auth')}>
-              Back
+              뒤로
             </Text>
           </Button>
           <Button>
@@ -123,7 +122,7 @@ const LoginScreen = props => {
               center
               style={{textDecorationLine: 'underline'}}
               onPress={() => navigation.navigate('Forgot')}>
-              Forget your password?
+              비밀번호를 잊어버리셨나요?
             </Text>
           </Button>
         </Block>
