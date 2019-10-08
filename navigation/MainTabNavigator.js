@@ -5,6 +5,7 @@ import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
 import SearchScreen from '../screens/Search/SearchScreen';
 import CategoryScreen from '../screens/Search/CategoryScreen';
+import TestScreen from '../screens/Search/TestScreen';
 
 import MyTripScreen from '../screens/MyTrip/MyTripScreen';
 import TripSceen from '../screens/MyTrip/TripScreen';
@@ -34,6 +35,7 @@ const config = Platform.select({
 
 const SearchStack = createStackNavigator(
   {
+    Test: TestScreen,
     Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
