@@ -12,8 +12,8 @@ import firebase from '../../constants/store';
 import {useDispatch} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
-const EMAIL = 'peko22@naver.com';
-const PASSWORD = 'thdckdrms1';
+const EMAIL = '';
+const PASSWORD = '';
 
 const LoginScreen = props => {
   const {navigation} = props;
@@ -29,6 +29,13 @@ const LoginScreen = props => {
   handleLogin = () => {
     setLoading(true);
 
+    if ((email == '') | (password == '')) {
+      setError('모두 입력하세요');
+      setIsError(true);
+      setLoading(false);
+      return;
+    }
+
     checkUser().then(() => {
       firebase
         .auth()
@@ -42,8 +49,16 @@ const LoginScreen = props => {
           });
         })
         .catch(err => {
-          console.log(err.message);
-          setError(err.message);
+          console.log(err.code);
+          if (err.code == 'auth/invalid-email') {
+            setError('정확한 이메일을 입력하세요.');
+          } else if (err.code == 'auth/user-not-found') {
+            setError('이메일을 확인할 수 없습니다.');
+          } else if (err.code == 'auth/wrong-password') {
+            setError('비밀번호가 유효하지 않습니다.');
+          } else {
+            setError(err.message);
+          }
           setIsError(true);
           setLoading(false);
         });
@@ -80,7 +95,7 @@ const LoginScreen = props => {
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
-            Login
+            로그인
           </Text>
           <Input
             label="Email"

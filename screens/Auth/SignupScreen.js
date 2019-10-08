@@ -15,8 +15,8 @@ const SignupScreen = props => {
   const {navigation} = props;
 
   const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('1q2w3e4r');
-  const [confirmPassword, setConfirmPassword] = useState('1q2w3e4r');
+  const [password, setPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
 
   const [isError, setIsError] = useState(false);
   const [error, setError] = useState('');
@@ -56,7 +56,7 @@ const SignupScreen = props => {
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
-            Sign Up
+            회원 가입
           </Text>
           <Input
             label="Email"

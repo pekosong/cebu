@@ -41,7 +41,7 @@ const ForgotScreen = props => {
     <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block padding={[0, theme.sizes.padding]}>
         <Block middle>
-          <Text bold style={{fontSize: 40, paddingBottom: 15}}>
+          <Text bold style={{fontSize: 40, paddingBottom: 5}}>
             비밀번호
           </Text>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
