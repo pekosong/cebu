@@ -1,22 +1,22 @@
-import React, { useState, useRef } from "react";
+import React, {useState, useRef} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
   Image,
   Modal,
   TextInput,
-  Keyboard
-} from "react-native";
+  Keyboard,
+} from 'react-native';
 
-import Block from "./Block";
-import Text from "./Text";
-import { theme } from "../constants";
-import { Ionicons } from "@expo/vector-icons";
-import { FlatList } from "react-native-gesture-handler";
-import axios from "axios";
+import Block from './Block';
+import Text from './Text';
+import {theme} from '../constants';
+import {Ionicons} from '@expo/vector-icons';
+import {FlatList} from 'react-native-gesture-handler';
+import axios from 'axios';
 
 export default SearchBar = props => {
-  const { style, children } = props;
+  const {style, children} = props;
   const [showSearch, setShowSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const searchRef = useRef(null);
@@ -26,67 +26,62 @@ export default SearchBar = props => {
       <Modal
         animationType="slide"
         visible={showSearch}
-        onRequestClose={() => setShowSearch(false)}
-      >
+        onRequestClose={() => setShowSearch(false)}>
         <Block padding={[theme.sizes.padding, theme.sizes.padding]}>
           <TouchableOpacity
             onPress={() => {
               setSearchResult([]);
               setShowSearch(false);
-            }}
-          >
+            }}>
             <Ionicons size={50} color={theme.colors.black} name="ios-close" />
           </TouchableOpacity>
           <Text h1 bold>
             세부의 모든게 있어요
           </Text>
-          <Block flex={false} row style={{ marginVertical: 20 }}>
+          <Block flex={false} row style={{marginVertical: 20}}>
             <TextInput
               autoFocus={true}
-              style={{ fontSize: 20, width: "100%" }}
+              style={{fontSize: 20, width: '100%'}}
               placeholder="여기는 어떠세요?"
               onFocus={() => {
                 setShowSearch(true);
               }}
               onSubmitEditing={() => {
                 handleSearch();
-              }}
-            ></TextInput>
+              }}></TextInput>
           </Block>
           <FlatList
             data={searchResult}
             keyExtractor={item => item.name}
-            renderItem={item => renderSearchResult(item)}
-          ></FlatList>
+            renderItem={item => renderSearchResult(item)}></FlatList>
         </Block>
       </Modal>
     );
   };
 
-  renderSearchResult = ({ item }) => {
+  renderSearchResult = ({item}) => {
     return (
       <TouchableOpacity
         key={item.name}
         onPress={() =>
-          navigation.navigate("Shop", {
-            title: cateMap[navigation.getParam("category")],
-            shop: list
+          navigation.navigate('Shop', {
+            title: cateMap[navigation.getParam('category')],
+            shop: list,
           })
-        }
-      >
-        <Block row middle shadow style={{ paddingVertical: 10 }}>
+        }>
+        <Block row middle shadow style={{paddingVertical: 10}}>
           <Block flex={false}>
             <Image
-              style={{ width: 20, height: 20, resizeMode: "cover" }}
-              source={{ uri: item.icon }}
+              style={{width: 20, height: 20, resizeMode: 'cover'}}
+              source={{uri: item.icon}}
             />
           </Block>
-          <Block middle style={{ paddingLeft: 10 }}>
+          <Block middle style={{paddingLeft: 10}}>
             <Text h4 bold height={25}>
               {item.name}
             </Text>
             <Text caption h4>
-              {item.types.join(", ")}
+              {item.types.join(', ')}
             </Text>
             <Text caption h4>
               {item.vicinity}
@@ -98,13 +93,13 @@ export default SearchBar = props => {
   };
 
   handleSearch = () => {
-    location = "10.31672,123.89071";
-    key = "AIzaSyCo1nymGnZzH-3XzzmPV_UiNqfT4JbEWZQ";
-    rankby = "distance";
-    type = "food";
+    location = '10.31672,123.89071';
+    key = 'AIzaSyCo1nymGnZzH-3XzzmPV_UiNqfT4JbEWZQ';
+    rankby = 'distance';
+    type = 'food';
     axios
       .get(
-        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&rankby=${rankby}&type=${type}&key=${key}`
+        `https://maps.googleapis.com/maps/api/place/nearbysearch/json?location=${location}&rankby=${rankby}&type=${type}&key=${key}`,
       )
       .then(Response => {
         setSearchResult(Response.data.results);
@@ -113,24 +108,23 @@ export default SearchBar = props => {
 
   return (
     <Block flex={false} row center space="between" style={styles.header}>
-      <Block row style={styles.search}>
+      <Block row center style={styles.search}>
         <Ionicons
           size={20}
           color={theme.colors.primary}
           name="md-search"
-          style={{ width: "10%" }}
+          style={{width: '10%'}}
         />
         <TextInput
           ref={searchRef}
           refField={searchRef}
-          style={{ width: "90%" }}
+          style={{width: '90%'}}
           placeholder="여기는 어떠세요?"
           onFocus={() => {
             Keyboard.dismiss();
             searchRef.current.blur();
             setShowSearch(true);
-          }}
-        ></TextInput>
+          }}></TextInput>
       </Block>
       {renderSearch()}
     </Block>
@@ -141,18 +135,18 @@ export const styles = StyleSheet.create({
   header: {
     marginTop: theme.sizes.padding * 2.5,
     marginBottom: 5,
-    paddingHorizontal: theme.sizes.padding
+    paddingHorizontal: theme.sizes.padding,
   },
   search: {
     padding: 10,
     backgroundColor: theme.colors.white,
-    shadowColor: "#000",
+    shadowColor: '#000',
     shadowOffset: {
       width: 2,
-      height: 2
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5
-  }
+    elevation: 5,
+  },
 });

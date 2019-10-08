@@ -4,6 +4,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import CachedImage from './CachedImage';
+import {theme} from '../constants';
 
 export default CardMenu = props => {
   const {style, item} = props;
@@ -12,13 +13,23 @@ export default CardMenu = props => {
 
   return (
     <TouchableOpacity onPress={() => {}}>
-      <Block row space="between" style={{marginBottom: 10}}>
+      <Block
+        row
+        space="between"
+        style={{
+          marginBottom: 10,
+          paddingBottom: 10,
+          borderBottomWidth: 0.2,
+          borderBottomColor: theme.colors.gray2,
+        }}>
         <Block style={{marginRight: 10}}>
           <Text h3>{item.name}</Text>
-          <Text h3 bold style={{marginVertical: 5}}>
+          <Text h3 bold style={{marginTop: 5, marginBottom: 10}}>
             {item.price}
           </Text>
-          <Text>{item.desc}</Text>
+          <Text gray caption>
+            {item.desc}
+          </Text>
         </Block>
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
       </Block>

@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  SafeAreaView,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -76,7 +77,7 @@ export default function ShopScreen(props) {
   };
 
   return (
-    <Block>
+    <SafeAreaView style={{flex: 1}}>
       <Animated.View
         style={{
           ...styles.header,
@@ -416,7 +417,7 @@ export default function ShopScreen(props) {
           setReviewVisible={setReviewVisible}
         />
       </Modal>
-    </Block>
+    </SafeAreaView>
   );
 }
 

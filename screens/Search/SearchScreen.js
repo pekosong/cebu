@@ -5,13 +5,14 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  TouchableWithoutFeedback,
 } from 'react-native';
 import {Block, Text, Card, SearchBar} from '../../components';
 import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
-const EMAIL = 'b@naver.com';
+const EMAIL = 'peko22@naver.com';
 
 const SearchScreen = props => {
   const {navigation, categories, recommendList, eventList} = props;
@@ -22,19 +23,19 @@ const SearchScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    // let unsubscribe;
-    // unsubscribe = dispatch(watchUserData(EMAIL));
-    // dispatch(downloadShopData()).then(() => setIsLoaded(true));
+    let unsubscribe;
+    unsubscribe = dispatch(watchUserData(EMAIL));
+    dispatch(downloadShopData()).then(() => setIsLoaded(true));
     setIsLoaded(true);
     setCates(categories);
     return () => {
-      // unsubscribe();
+      unsubscribe();
     };
   }, []);
 
   renderList = item => {
     return (
-      <TouchableOpacity
+      <TouchableWithoutFeedback
         key={item.name}
         onPress={() =>
           navigation.navigate('Category', {
@@ -55,7 +56,7 @@ const SearchScreen = props => {
             {item.id}
           </Text>
         </Block>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   };
 
