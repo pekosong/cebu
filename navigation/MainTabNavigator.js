@@ -35,11 +35,11 @@ const config = Platform.select({
 
 const SearchStack = createStackNavigator(
   {
-    Test: TestScreen,
     Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
     Chat: ChatScreen,
+    Test: TestScreen,
   },
   config,
 );
@@ -59,7 +59,7 @@ SearchStack.path = '';
 const MyTripStack = createStackNavigator(
   {
     MyTrip: MyTripScreen,
-    Trip: TripSceen,
+    Shop: ShopScreen,
     Chat: ChatScreen,
   },
   config,

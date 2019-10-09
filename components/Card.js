@@ -23,13 +23,20 @@ export default Card = props => {
   }, [user]);
 
   handleHeart = async shop => {
-    if (myfavorites.includes(shop)) {
-      const idx = myfavorites.indexOf(shop);
-      myfavorites.splice(idx, 1);
+    oldfavorites = user.myfavorites.map(e => e.id);
+    newShop = {
+      id: shop.shopCode,
+      name: shop.shop,
+      src: shop.url,
+    };
+    let newfavorites = user.myfavorites;
+    if (oldfavorites.includes(shop.shopCode)) {
+      const idx = newfavorites.indexOf(newShop);
+      newfavorites.splice(idx, 1);
     } else {
-      myfavorites.push(shop);
+      newfavorites.push(newShop);
     }
-    dispatch(updateFavorite(myfavorites));
+    dispatch(updateFavorite(newfavorites));
   };
   return (
     <TouchableOpacity
@@ -42,18 +49,18 @@ export default Card = props => {
         <Block flex={2}>
           <Image style={styles.imageStyle} source={item.src}></Image>
           <TouchableOpacity
-            onPress={() => handleHeart(item.shopCode)}
+            onPress={() => handleHeart(item)}
             style={{position: 'absolute', top: 5, right: 10}}>
             {isLoaded ? (
               <Ionicons
                 size={30}
                 color={
-                  myfavorites.includes(item.shopCode)
+                  myfavorites.map(e => e.id).includes(item.shopCode)
                     ? 'red'
                     : theme.colors.white
                 }
                 name={
-                  myfavorites.includes(item.shopCode)
+                  myfavorites.map(e => e.id).includes(item.shopCode)
                     ? 'ios-heart'
                     : 'ios-heart-empty'
                 }

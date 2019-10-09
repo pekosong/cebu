@@ -4,11 +4,14 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
+  ActivityIndicator,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from '../../components';
 import {theme} from '../../constants';
 import firebase from '../../constants/store';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
@@ -24,6 +27,8 @@ const PersonalScreen = props => {
   const [sex, setSex] = useState('');
   const [birth, setBirth] = useState('');
   const [email, setEmail] = useState('');
+  const [phone, setPhone] = useState('');
+
   const [image, setImage] = useState('');
   const [saved, setSaved] = useState(false);
   const [profile, setProfile] = useState({});
@@ -34,10 +39,11 @@ const PersonalScreen = props => {
 
   useEffect(() => {
     setProfile(user);
-    setName(user.name ? user.name : '');
     setEmail(user.email ? user.email : '');
+    setName(user.name ? user.name : '');
     setSex(user.sex ? user.sex : '');
     setBirth(user.birth ? user.birth : '');
+    setPhone(user.phone ? user.phone : '');
     setImage(user.image ? user.image : '');
   }, []);
 
@@ -128,6 +134,7 @@ const PersonalScreen = props => {
       sex: sex,
       birth: birth,
       image: image,
+      phone: phone,
     };
     await firebase
       .firestore()
@@ -145,57 +152,70 @@ const PersonalScreen = props => {
   };
 
   return (
-    <KeyboardAvoidingView style={styles.login} behavior="padding">
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Button onPress={() => navigation.goBack()}>
-          <Block center row>
-            <Ionicons
-              size={35}
-              color={theme.colors.primary}
-              name="ios-arrow-back"
-            />
-          </Block>
-        </Button>
-        <TouchableOpacity onPress={() => savePerson()}>
-          <Text bold h2>
-            {progress ? progress : saved ? '완료' : '저장'}
-          </Text>
-        </TouchableOpacity>
-      </Block>
-      <ScrollView showsHorizontalScrollIndicator={false}>
-        <Block style={styles.inputs}>
-          <Block row style={{marginVertical: 20}}>
-            <Block flex={false}>
-              <CachedImage uri={image} style={styles.avatar} />
-            </Block>
-            <Block row style={{position: 'absolute', bottom: -10, left: 120}}>
-              <Button onPress={_pickImage} style={{marginRight: 20}}>
-                <Ionicons size={40} name="md-photos" />
+    <SafeAreaView>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView>
+          <Block style={styles.header}>
+            <Block row center space="between">
+              <Button onPress={() => navigation.goBack()}>
+                <Block center row>
+                  <Ionicons
+                    size={30}
+                    color={theme.colors.black}
+                    name="ios-arrow-back"
+                  />
+                </Block>
               </Button>
-              <Button onPress={_cameraImage}>
-                <Ionicons size={40} name="ios-camera" />
-              </Button>
+              <TouchableOpacity onPress={() => savePerson()}>
+                <Text bold h3>
+                  {progress ? progress : '저장'}
+                </Text>
+              </TouchableOpacity>
             </Block>
+            <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
+              내 정보 수정
+            </Text>
           </Block>
 
-          <Block
-            row
-            space="between"
-            style={{...styles.inputRow, borderBottomWidth: 0}}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                이메일
-              </Text>
+          <Block style={styles.inputs}>
+            <Block style={{marginBottom: 20}}>
+              <Block row space="between">
+                <Block flex={1}>
+                  <Text style={styles.textStyle}>사진 등록</Text>
+                </Block>
+                <Block right row flex={2}>
+                  <TouchableOpacity onPress={_cameraImage}>
+                    <AntDesign
+                      size={30}
+                      name={'camera'}
+                      style={{
+                        color: theme.colors.black,
+                        marginRight: 10,
+                      }}
+                    />
+                  </TouchableOpacity>
+                  <TouchableOpacity onPress={_pickImage}>
+                    <AntDesign
+                      size={30}
+                      name={'picture'}
+                      style={{
+                        color: theme.colors.black,
+                      }}
+                    />
+                  </TouchableOpacity>
+                </Block>
+              </Block>
+              <CachedImage uri={image} style={styles.avatar} />
+            </Block>
+
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>이메일</Text>
               <Text bold style={{fontSize: 20}}>
                 {email}
               </Text>
             </Block>
-          </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                이름
-              </Text>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>이름</Text>
               <TextInput
                 defaultValue={name}
                 placeholder="홍길동"
@@ -203,12 +223,8 @@ const PersonalScreen = props => {
                 style={{fontSize: 20}}
               />
             </Block>
-          </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                성별
-              </Text>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>성별</Text>
               <TextInput
                 defaultValue={sex}
                 placeholder="남/여"
@@ -216,12 +232,8 @@ const PersonalScreen = props => {
                 style={{fontSize: 20}}
               />
             </Block>
-          </Block>
-          <Block row space="between" style={styles.inputRow}>
-            <Block>
-              <Text h3 gray style={{marginBottom: 10}}>
-                생년월일
-              </Text>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>생년월일</Text>
               <TextInput
                 defaultValue={birth}
                 placeholder="2001-01-01"
@@ -229,10 +241,19 @@ const PersonalScreen = props => {
                 style={{fontSize: 20}}
               />
             </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>전화번호</Text>
+              <TextInput
+                defaultValue={phone}
+                placeholder="010-"
+                onChangeText={e => setPhone(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
           </Block>
-        </Block>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 
@@ -240,13 +261,10 @@ PersonalScreen.navigationOptions = {
   header: null,
 };
 PersonalScreen.defaultProps = {};
+
 const styles = StyleSheet.create({
-  login: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   header: {
-    marginTop: theme.sizes.base * 3,
+    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
@@ -254,12 +272,14 @@ const styles = StyleSheet.create({
     height: theme.sizes.base * 6,
     borderRadius: theme.sizes.base * 3,
   },
+  textStyle: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
   inputs: {
-    marginTop: theme.sizes.base * 0.5,
     paddingHorizontal: theme.sizes.padding,
   },
   inputRow: {
-    alignItems: 'flex-end',
     marginVertical: 15,
     borderBottomWidth: 0.2,
     paddingBottom: 10,

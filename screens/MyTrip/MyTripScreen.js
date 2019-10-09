@@ -106,9 +106,9 @@ function MyTripScreen(props) {
               <TouchableOpacity
                 key={shop.id + idx}
                 onPress={() =>
-                  navigation.navigate('Trip', {
+                  navigation.navigate('Shop', {
                     title: '내 일정',
-                    shop: shop,
+                    shopCode: shop.id,
                     todo: todo,
                     category: shop.category,
                   })
@@ -120,10 +120,7 @@ function MyTripScreen(props) {
                     paddingBottom: 5,
                   }}>
                   <Block left flex={1}>
-                    <CachedImage
-                      uri={shop.source[0]}
-                      style={styles.avatarChat}
-                    />
+                    <CachedImage uri={shop.src} style={styles.avatarChat} />
                   </Block>
                   <Block flex={2.2} style={{marginTop: 5, height: 48}}>
                     <Block middle row space="between">

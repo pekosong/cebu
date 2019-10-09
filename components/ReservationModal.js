@@ -89,7 +89,12 @@ export default ReservationModal = props => {
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
-    reservation['shop'] = shop;
+    reservation['shop'] = {
+      id: shop.id,
+      name: shop.name,
+      engName: shop.engName,
+      src: shop.source[0],
+    };
     reservation['text'] = text;
 
     let allPlans = user.plans;
@@ -104,7 +109,12 @@ export default ReservationModal = props => {
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
-    reservation['shop'] = shop;
+    reservation['shop'] = {
+      id: shop.id,
+      name: shop.name,
+      engName: shop.engName,
+      src: shop.source[0],
+    };
     reservation['text'] = text;
 
     let allPlans = user.plans;

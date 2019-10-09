@@ -8,6 +8,9 @@ import {
   ActivityIndicator,
   Dimensions,
   Animated,
+  TouchableWithoutFeedback,
+  SafeAreaView,
+  Platform,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from '../../components';
 import {theme} from '../../constants';
@@ -39,6 +42,8 @@ const MyShopScreen = props => {
   const [phone, setPhone] = useState('');
   const [category, setCategory] = useState('');
   const [pickup, setPickup] = useState(false);
+  const [baby, setBaby] = useState(false);
+  const [korean, setKorean] = useState(false);
   const [myShop, setMyShop] = useState({});
   const [tags, setTags] = useState([]);
   const [images, setImages] = useState([]);
@@ -76,6 +81,8 @@ const MyShopScreen = props => {
         setPickup(shop.pickup);
         setImages(shop.source);
         setTags(shop.tags);
+        setBaby(shop.baby);
+        setKorean(shop.korean);
         setIsLoaded(true);
       });
   }, [changed]);
@@ -196,6 +203,8 @@ const MyShopScreen = props => {
       closeTime: closeTime,
       pickup: pickup,
       phone: phone,
+      baby: baby,
+      korean: korean,
     };
 
     dispatch(updateShop(newShop)).then(() => {
@@ -245,11 +254,10 @@ const MyShopScreen = props => {
     if (menuSelected == idx) {
       Animated.timing(hideAnim, {
         toValue: 0,
-        duration: 300,
-      }).start();
-      setTimeout(() => {
+        duration: 500,
+      }).start(() => {
         setMenuSelected(null);
-      }, 200);
+      });
       return;
     }
     setMenuSelected(idx);
@@ -266,16 +274,14 @@ const MyShopScreen = props => {
 
   renderList = (item, idx) => {
     return (
-      <TouchableOpacity key={idx} onPress={() => handleMenu(idx)}>
+      <TouchableWithoutFeedback key={idx} onPress={() => handleMenu(idx)}>
         <Block
           style={{
             ...styles.categoryContainer,
-            backgroundColor:
-              menuSelected == idx ? theme.colors.accent : 'white',
+            backgroundColor: menuSelected == idx ? theme.colors.black : 'white',
           }}>
           <CachedImage
             style={{
-              borderRadius: 3,
               borderColor: 'red',
               width: '100%',
               height: 70,
@@ -292,300 +298,312 @@ const MyShopScreen = props => {
             {item.name}
           </Text>
         </Block>
-      </TouchableOpacity>
+      </TouchableWithoutFeedback>
     );
   };
 
   return isLoaded ? (
-    <KeyboardAvoidingView style={styles.login} behavior="padding">
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Button onPress={() => navigation.goBack()}>
-          <Block center row>
-            <Ionicons
-              size={35}
-              color={theme.colors.primary}
-              name="ios-arrow-back"
-            />
-          </Block>
-        </Button>
-        <TouchableOpacity onPress={() => saveShop()}>
-          <Text bold h2>
-            {progress ? progress : saved ? '완료' : '저장'}
-          </Text>
-        </TouchableOpacity>
-      </Block>
-      <ScrollView>
-        <Block style={styles.inputs}>
-          <Block style={{marginBottom: 20}}>
-            <Block row space="between" style={{marginBottom: 10}}>
-              <Block flex={1}>
-                <Text h3 gray>
-                  사진 등록
+    <SafeAreaView>
+      <KeyboardAvoidingView behavior="padding">
+        <ScrollView>
+          <Block style={styles.header}>
+            <Block row center space="between">
+              <Button onPress={() => navigation.goBack()}>
+                <Block center row>
+                  <Ionicons
+                    size={30}
+                    color={theme.colors.black}
+                    name="ios-arrow-back"
+                  />
+                </Block>
+              </Button>
+              <TouchableOpacity onPress={() => saveShop()}>
+                <Text bold h3>
+                  {progress ? progress : '저장'}
                 </Text>
-              </Block>
-              <Block right row flex={2}>
-                {shopImages.length != 0 ? (
-                  <TouchableOpacity onPress={() => handleDeleteImage()}>
+              </TouchableOpacity>
+            </Block>
+            <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
+              매장 정보 관리
+            </Text>
+          </Block>
+
+          <Block style={styles.inputs}>
+            <Block style={{marginBottom: 20}}>
+              <Block row space="between">
+                <Block flex={1}>
+                  <Text style={styles.textStyle}>사진 등록</Text>
+                </Block>
+                <Block right row flex={2}>
+                  {shopImages.length != 0 ? (
+                    <TouchableOpacity onPress={() => handleDeleteImage()}>
+                      <AntDesign
+                        size={30}
+                        name={'delete'}
+                        style={{
+                          color: theme.colors.primary,
+                          marginRight: 10,
+                        }}
+                      />
+                    </TouchableOpacity>
+                  ) : null}
+
+                  <TouchableOpacity onPress={_cameraImage}>
                     <AntDesign
                       size={30}
-                      name={'delete'}
+                      name={'camera'}
                       style={{
-                        color: theme.colors.primary,
+                        color: theme.colors.black,
                         marginRight: 10,
                       }}
                     />
                   </TouchableOpacity>
-                ) : null}
-
-                <TouchableOpacity onPress={_cameraImage}>
-                  <AntDesign
-                    size={30}
-                    name={'camera'}
-                    style={{
-                      color: theme.colors.accent,
-                      marginRight: 10,
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={_pickImage}>
-                  <AntDesign
-                    size={30}
-                    name={'picture'}
-                    style={{
-                      color: theme.colors.accent,
-                    }}
-                  />
-                </TouchableOpacity>
-              </Block>
-            </Block>
-            <Block row style={{flexWrap: 'wrap'}}>
-              {images.map((source, idx) => (
-                <Block key={idx} style={{...styles.avatar, flex: 0}}>
-                  <TouchableOpacity onPress={() => handleSelectImage(source)}>
-                    <CachedImage uri={source} style={styles.avatar} />
-                  </TouchableOpacity>
-                  {shopImages.includes(source) ? (
+                  <TouchableOpacity onPress={_pickImage}>
                     <AntDesign
                       size={30}
-                      name={'checkcircleo'}
+                      name={'picture'}
                       style={{
-                        color: theme.colors.accent,
-                        position: 'absolute',
-                        top: 5,
-                        right: 5,
+                        color: theme.colors.black,
                       }}
                     />
-                  ) : null}
+                  </TouchableOpacity>
+                </Block>
+              </Block>
+              <Block row style={{flexWrap: 'wrap'}}>
+                {images.map((source, idx) => (
+                  <Block key={idx} style={{...styles.avatar, flex: 0}}>
+                    <TouchableOpacity onPress={() => handleSelectImage(source)}>
+                      <CachedImage uri={source} style={styles.avatar} />
+                    </TouchableOpacity>
+                    {shopImages.includes(source) ? (
+                      <AntDesign
+                        size={30}
+                        name={'checkcircleo'}
+                        style={{
+                          color: theme.colors.accent,
+                          position: 'absolute',
+                          top: 5,
+                          right: 5,
+                        }}
+                      />
+                    ) : null}
+                  </Block>
+                ))}
+              </Block>
+            </Block>
+            <Block style={{marginBottom: 20}}>
+              <Block row space="between">
+                <Text style={styles.textStyle}>추천 메뉴</Text>
+              </Block>
+              <Block style={{...styles.content}}>
+                <ScrollView
+                  horizontal={true}
+                  showsHorizontalScrollIndicator={false}
+                  scrollEnabled={true}>
+                  {myShop.menus.map((item, idx) => renderList(item, idx))}
+                </ScrollView>
+              </Block>
+              {menuSelected != null ? (
+                <Block style={{height: 430}}>
+                  <Animated.View
+                    style={{
+                      height: hideAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 300],
+                      }),
+                      opacity: hideAnim.interpolate({
+                        inputRange: [0, 1],
+                        outputRange: [0, 1],
+                      }),
+                    }}>
+                    <Block style={{...styles.inputRow}}>
+                      <Text style={styles.textStyle}>메뉴명</Text>
+                      <TextInput
+                        defaultValue={myShop.menus[menuSelected].name}
+                        onChangeText={e => {
+                          setMenuName(e);
+                        }}
+                        style={{fontSize: 16}}></TextInput>
+                    </Block>
+                    <Block style={styles.inputRow}>
+                      <Text style={styles.textStyle}>가격</Text>
+                      <TextInput
+                        defaultValue={myShop.menus[menuSelected].price}
+                        onChangeText={e => {
+                          setMenuPrice(e);
+                        }}
+                        style={{fontSize: 16}}></TextInput>
+                    </Block>
+                    <Block style={styles.inputRow}>
+                      <Text style={styles.textStyle}>설명</Text>
+                      <TextInput
+                        defaultValue={myShop.menus[menuSelected].desc}
+                        onChangeText={e => {
+                          setMenuDesc(e);
+                        }}
+                        style={{fontSize: 16}}></TextInput>
+                    </Block>
+                    <Block>
+                      <Text h3 gray style={{marginBottom: 10}}>
+                        이미지
+                      </Text>
+                      <TouchableOpacity onPress={() => _pickImage()}>
+                        {image ? (
+                          <CachedImage uri={image} style={styles.avatar} />
+                        ) : (
+                          <CachedImage
+                            uri={myShop.menus[menuSelected].src}
+                            style={styles.avatar}
+                          />
+                        )}
+                      </TouchableOpacity>
+                    </Block>
+                  </Animated.View>
+                </Block>
+              ) : null}
+            </Block>
+            <Block style={{marginBottom: 20}}>
+              <Text style={{...styles.textStyle, marginBottom: 0}}>
+                매장 태그
+              </Text>
+              {tags.map((tag, idx) => (
+                <Block row key={idx} style={styles.inputRow}>
+                  <TextInput
+                    key={idx}
+                    defaultValue={tag}
+                    placeholder="한국음식, 배달가능"
+                    onChangeText={() => {}}
+                    style={{fontSize: 20, width: '100%'}}
+                  />
                 </Block>
               ))}
             </Block>
-          </Block>
-          <Block style={{marginBottom: 20}}>
-            <Block row space="between">
-              <Text h3 gray style={{marginBottom: 15}}>
-                추천메뉴
-              </Text>
-            </Block>
-            <Block style={{...styles.content}}>
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                scrollEnabled={true}>
-                {myShop.menus.map((item, idx) => renderList(item, idx))}
-              </ScrollView>
-            </Block>
-            {menuSelected != null ? (
-              <Block style={{height: 430}}>
-                <Animated.View
-                  style={{
-                    height: hideAnim.interpolate({
-                      inputRange: [0, 1],
-                      outputRange: [0, 300],
-                    }),
-                  }}>
-                  <Block style={styles.inputRow}>
-                    <Text h3 gray style={{marginBottom: 10}}>
-                      메뉴명
-                    </Text>
-                    <TextInput
-                      defaultValue={myShop.menus[menuSelected].name}
-                      onChangeText={e => {
-                        setMenuName(e);
-                      }}
-                      style={{fontSize: 16}}></TextInput>
-                  </Block>
-                  <Block style={styles.inputRow}>
-                    <Text h3 gray style={{marginBottom: 10}}>
-                      가격
-                    </Text>
-                    <TextInput
-                      defaultValue={myShop.menus[menuSelected].price}
-                      onChangeText={e => {
-                        setMenuPrice(e);
-                      }}
-                      style={{fontSize: 16}}></TextInput>
-                  </Block>
-                  <Block style={styles.inputRow}>
-                    <Text h3 gray style={{marginBottom: 10}}>
-                      설명
-                    </Text>
-                    <TextInput
-                      defaultValue={myShop.menus[menuSelected].desc}
-                      onChangeText={e => {
-                        setMenuDesc(e);
-                      }}
-                      style={{fontSize: 16}}></TextInput>
-                  </Block>
-                  <Block>
-                    <Text h3 gray style={{marginBottom: 10}}>
-                      이미지
-                    </Text>
-                    <TouchableOpacity onPress={() => _pickImage()}>
-                      {image ? (
-                        <CachedImage uri={image} style={styles.avatar} />
-                      ) : (
-                        <CachedImage
-                          uri={myShop.menus[menuSelected].src}
-                          style={styles.avatar}
-                        />
-                      )}
-                    </TouchableOpacity>
-                  </Block>
-                </Animated.View>
-              </Block>
-            ) : null}
-          </Block>
-          <Block style={{marginBottom: 20}}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 태그
-            </Text>
-            <Block row>
-              {tags.map((tag, idx) => (
-                <TextInput
-                  key={idx}
-                  defaultValue={tag}
-                  placeholder="한국음식, 배달가능"
-                  onChangeText={() => {}}
-                  style={{fontSize: 20, width: 80}}
-                />
-              ))}
-            </Block>
-          </Block>
 
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 이름
-            </Text>
-            <TextInput
-              defaultValue={name}
-              placeholder=""
-              onChangeText={e => setName(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 분류
-            </Text>
-            <TextInput
-              defaultValue={category}
-              placeholder=""
-              onChangeText={e => setCategory(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 영어 이름
-            </Text>
-            <TextInput
-              defaultValue={engName}
-              placeholder=""
-              onChangeText={e => setEngName(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>매장 이름</Text>
+              <TextInput
+                defaultValue={name}
+                placeholder=""
+                onChangeText={e => setName(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>매장 분류</Text>
+              <TextInput
+                defaultValue={category}
+                placeholder=""
+                onChangeText={e => setCategory(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>매장 영어 이름</Text>
+              <TextInput
+                defaultValue={engName}
+                placeholder=""
+                onChangeText={e => setEngName(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
 
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 주소
-            </Text>
-            <TextInput
-              defaultValue={address}
-              placeholder=""
-              onChangeText={e => setAddress(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              매장 영어 주소
-            </Text>
-            <TextInput
-              defaultValue={engAddress}
-              placeholder=""
-              onChangeText={e => setEngAddress(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              전화번호
-            </Text>
-            <TextInput
-              defaultValue={phone}
-              placeholder=""
-              onChangeText={e => setPhone(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>매장 주소</Text>
+              <TextInput
+                defaultValue={address}
+                placeholder=""
+                onChangeText={e => setAddress(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>매장 영어 주소</Text>
+              <TextInput
+                defaultValue={engAddress}
+                placeholder=""
+                onChangeText={e => setEngAddress(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>전화번호</Text>
+              <TextInput
+                defaultValue={phone}
+                placeholder=""
+                onChangeText={e => setPhone(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
 
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              오픈 시간
-            </Text>
-            <TextInput
-              defaultValue={openTime}
-              placeholder=""
-              onChangeText={e => {
-                setOpenTime(e);
-              }}
-              style={{fontSize: 20}}
-            />
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>오픈 시간</Text>
+              <TextInput
+                defaultValue={openTime}
+                placeholder=""
+                onChangeText={e => {
+                  setOpenTime(e);
+                }}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>마감 시간</Text>
+              <TextInput
+                defaultValue={closeTime}
+                placeholder=""
+                onChangeText={e => {
+                  setCloseTime(e);
+                }}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block
+              center
+              middle
+              row
+              space="between"
+              style={{...styles.inputRow, paddingVertigal: 15}}>
+              <Text h3>픽업가능 여부</Text>
+              <Switch
+                value={pickup}
+                onValueChange={value => setPickup(value)}
+              />
+            </Block>
+            <Block
+              center
+              middle
+              row
+              space="between"
+              style={{...styles.inputRow, paddingVertigal: 15}}>
+              <Text h3>베이티시터 여부</Text>
+              <Switch value={baby} onValueChange={value => setBaby(value)} />
+            </Block>
+            <Block
+              center
+              middle
+              row
+              space="between"
+              style={{...styles.inputRow, paddingVertigal: 15}}>
+              <Text h3>한국어 여부</Text>
+              <Switch
+                value={korean}
+                onValueChange={value => setKorean(value)}
+              />
+            </Block>
+
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>기타 정보</Text>
+              <TextInput
+                defaultValue={''}
+                placeholder=""
+                onChangeText={() => {}}
+                style={{fontSize: 20}}
+              />
+            </Block>
           </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              마감 시간
-            </Text>
-            <TextInput
-              defaultValue={closeTime}
-              placeholder=""
-              onChangeText={e => {
-                setCloseTime(e);
-              }}
-              style={{fontSize: 20}}
-            />
-          </Block>
-          <Block style={{marginBottom: 20}}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              픽업가능 여부
-            </Text>
-            <Switch value={pickup} onValueChange={e => setPickup(e)} />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text h3 gray style={{marginBottom: 10}}>
-              기타 정보
-            </Text>
-            <TextInput
-              defaultValue={''}
-              placeholder=""
-              onChangeText={() => {}}
-              style={{fontSize: 20}}
-            />
-          </Block>
-        </Block>
-      </ScrollView>
-    </KeyboardAvoidingView>
+        </ScrollView>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   ) : (
     <Block style={styles.full}>
       <ActivityIndicator
@@ -599,18 +617,20 @@ MyShopScreen.navigationOptions = {
   header: null,
 };
 MyShopScreen.defaultProps = {};
+
 const styles = StyleSheet.create({
   full: {
     flex: 1,
     justifyContent: 'center',
   },
-  login: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   header: {
-    marginTop: theme.sizes.base * 3,
+    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
+    marginBottom: theme.sizes.base,
     paddingHorizontal: theme.sizes.padding,
+  },
+  textStyle: {
+    fontSize: 16,
+    marginBottom: 10,
   },
   avatar: {
     width: width / 2 - theme.sizes.padding * 1 - 5,
@@ -619,7 +639,6 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   inputs: {
-    marginTop: theme.sizes.base * 0.5,
     paddingHorizontal: theme.sizes.padding,
   },
   inputRow: {

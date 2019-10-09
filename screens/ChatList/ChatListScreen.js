@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 
 import {Block, Text, CachedImage} from '../../components';
@@ -169,7 +170,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    marginTop: theme.sizes.base * 4.2,
+    marginTop:
+      Platform.OS === 'ios' ? theme.sizes.base * 4.2 : theme.sizes.base * 4,
     marginBottom: theme.sizes.base,
     paddingHorizontal: theme.sizes.padding,
   },

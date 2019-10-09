@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  TextInput,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -32,38 +31,36 @@ const {height, width} = Dimensions.get('window');
 
 export default function ShopScreen(props) {
   const {navigation, recommendList} = props;
-
   const [shop, setShop] = useState({});
-  const [todo, setTodo] = useState({});
-
   const [visible, setVisible] = useState(false);
-  const [showReview, setShowReview] = useState(false);
   const [reviewVisible, setReviewVisible] = useState(false);
-  const [text, setText] = useState('');
-  const [starCount, setStarCount] = useState(5);
 
   const user = useSelector(state => state.user, shallowEqual);
+  const shops = useSelector(state => state.shops, shallowEqual);
 
   const dispatch = useDispatch();
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    if (Object.entries(user).length !== 0) {
+    let shopCode = navigation.getParam('shopCode');
+    if (shopCode) {
+      let myShop = shops.filter(e => e.id == shopCode);
+      setShop(myShop[0]);
+    } else {
       setShop(navigation.getParam('shop'));
-      setTodo(navigation.getParam('todo'));
     }
-  }, [user, todo]);
+  }, [user]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 100,
+        duration: 50,
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 120) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 50,
+        duration: 25,
       }).start();
     }
   };
@@ -77,50 +74,6 @@ export default function ShopScreen(props) {
       newfavorites.push(shop);
     }
     dispatch(updateFavorite(newfavorites));
-  };
-
-  handleReview = () => {
-    return (
-      <Modal
-        animationType="slide"
-        visible={showReview}
-        onRequestClose={() => setShowReview(false)}>
-        <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
-          <TouchableOpacity onPress={() => setShowReview(false)}>
-            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
-          </TouchableOpacity>
-          <Text h1 bold style={{marginBottom: 20}}>
-            리뷰 작성
-          </Text>
-          <Block bottom style={{marginBottom: 50, marginHorizontal: 50}}>
-            <StarRating
-              disabled={false}
-              emptyStar={'ios-star-outline'}
-              fullStar={'ios-star'}
-              halfStar={'ios-star-half'}
-              iconSet={'Ionicons'}
-              fullStarColor={theme.colors.primary}
-              rating={starCount}
-              selectedStar={rating => setStarCount(rating)}></StarRating>
-          </Block>
-          <Text bold h3>
-            리뷰
-          </Text>
-          <TextInput
-            style={{fontSize: 20}}
-            defaultValue={text}
-            onChangeText={e => {
-              setText(e);
-            }}
-          />
-          <Button gradient onPress={() => setShowReview(false)}>
-            <Text white center bold>
-              작성완료
-            </Text>
-          </Button>
-        </Block>
-      </Modal>
-    );
   };
 
   return (
@@ -212,13 +165,13 @@ export default function ShopScreen(props) {
           </Block>
         </Block>
       </Animated.View>
+
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{marginBottom: 65, zIndex: -1}}
         scrollEventThrottle={360}
         onScroll={handleScrollByY}>
         <FullImageSlider source={shop.source}></FullImageSlider>
-
         <Block style={[styles.categories, {marginTop: 20}]}>
           <Block row space="between">
             <Block>
@@ -233,69 +186,39 @@ export default function ShopScreen(props) {
               {shop.tags}
             </Text>
           </Block>
+          <Text gray>
+            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
+            recusandae voluptate numquam consectetur quibusdam
+          </Text>
         </Block>
         <Divider />
-
+        <Block style={styles.categories}>
+          <Text h3 bold style={{...styles.content, marginBottom: 25}}>
+            추천메뉴
+          </Text>
+          {shop.menus
+            ? shop.menus.map((item, idx) => <CardMenu key={idx} item={item} />)
+            : null}
+        </Block>
+        <Divider />
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
-            예약정보
+            후기
           </Text>
-          <Block>
-            <Block style={styles.inputRow}>
-              <Text h3>예약인원</Text>
-              <Text color={theme.colors.black} bold h3>
-                {todo.people}명
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>예약시간</Text>
-              <Text color={theme.colors.black} bold h3>
-                {todo.time}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>예약정보</Text>
-              <Text color={theme.colors.black} bold h3>
-                {shop.category == 'Massage' ? '전신마사지' : '스테이크'}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>요청사항</Text>
-              <Text color={theme.colors.black} bold h3>
-                {todo.text}
-              </Text>
-            </Block>
-          </Block>
+          {shop.reviews
+            ? shop.reviews.map((review, idx) => (
+                <Reviews key={idx} review={review} />
+              ))
+            : null}
+          <TouchableOpacity
+            style={{marginTop: theme.sizes.padding}}
+            onPress={() => setReviewVisible(true)}>
+            <Text h3 bold color={theme.colors.accent}>
+              후기 모두 보기
+            </Text>
+          </TouchableOpacity>
         </Block>
         <Divider />
-
-        <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            픽업정보
-          </Text>
-          <Block>
-            <Block style={styles.inputRow}>
-              <Text h3>픽업장소</Text>
-              <Text color={theme.colors.black} bold h3>
-                호텔 정문
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>픽업시간</Text>
-              <Text color={theme.colors.black} bold h3>
-                {todo.time}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>픽업차량</Text>
-              <Text color={theme.colors.black} bold h3>
-                도요타 캠리 - 가가가
-              </Text>
-            </Block>
-          </Block>
-        </Block>
-        <Divider />
-
         <Block style={styles.categories}>
           <Text h3 bold style={styles.content}>
             업체정보
@@ -310,7 +233,7 @@ export default function ShopScreen(props) {
             <Block style={styles.inputRow}>
               <Text h3>픽업여부</Text>
               <Text color={theme.colors.black} bold h3>
-                가능
+                {shop.pickup ? '가능' : '불가'}
               </Text>
             </Block>
             <Block style={styles.inputRow}>
@@ -342,48 +265,18 @@ export default function ShopScreen(props) {
 
         <Divider />
         <Block style={styles.categories}>
-          <Text h3 bold style={{...styles.content, marginBottom: 25}}>
-            추천메뉴
-          </Text>
-          {shop.menus
-            ? shop.menus.map((item, idx) => <CardMenu key={idx} item={item} />)
-            : null}
-        </Block>
-        <Divider />
-
-        <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            후기
-          </Text>
-          {shop.reviews
-            ? shop.reviews.map((review, idx) => (
-                <Reviews key={idx} review={review} />
-              ))
-            : null}
-          <Block row space="between" style={{marginTop: theme.sizes.padding}}>
-            <TouchableOpacity onPress={() => setReviewVisible(true)}>
-              <Text h3 bold color={theme.colors.accent}>
-                후기 모두 보기
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setShowReview(true)}>
-              <Text h3 bold color={theme.colors.accent}>
-                후기 작성
-              </Text>
-            </TouchableOpacity>
-          </Block>
-        </Block>
-        <Divider />
-
-        <Block style={styles.categories}>
           <Text h3 bold>
             위치
           </Text>
+          <Block row space="between" style={{marginTop: 10}}>
+            <Text h3>{shop.address}</Text>
+            <Text h3>{shop.engAddress}</Text>
+          </Block>
           <MapView
             style={{
               flex: 1,
               height: 200,
-              marginTop: theme.sizes.padding,
+              marginTop: theme.sizes.padding / 2,
             }}
             initialRegion={{
               latitude: 37.78825,
@@ -396,7 +289,6 @@ export default function ShopScreen(props) {
             />
           </MapView>
         </Block>
-
         <Divider
           style={{
             marginTop: 20,
@@ -480,15 +372,27 @@ export default function ShopScreen(props) {
           </Block>
         </Block>
         <Block flex={1} style={{marginRight: theme.sizes.padding}}>
-          <Button
-            gradient
-            onPress={() => {
-              setVisible(true);
-            }}>
-            <Text white center bold>
-              예약 변경
-            </Text>
-          </Button>
+          {Object.keys(user.plans).length > 0 ? (
+            <Button
+              gradient
+              onPress={() => {
+                setVisible(true);
+              }}>
+              <Text white center bold>
+                예약 요청
+              </Text>
+            </Button>
+          ) : (
+            <Button
+              gradient
+              onPress={() => {
+                navigation.navigate('Profile');
+              }}>
+              <Text white center bold>
+                일정 등록
+              </Text>
+            </Button>
+          )}
         </Block>
       </Block>
       <Modal
@@ -513,14 +417,11 @@ export default function ShopScreen(props) {
           setReviewVisible={setReviewVisible}
         />
       </Modal>
-      {handleReview()}
     </Block>
   );
 }
 
 ShopScreen.defaultProps = {
-  profiles: mocks.profiles,
-  categories: mocks.categories,
   recommendList: mocks.recommendList,
   eventList: mocks.eventList,
 };

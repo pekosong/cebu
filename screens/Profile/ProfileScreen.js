@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView} from 'react-native';
 import {Block, Text, WideText} from '../../components';
 import {theme} from '../../constants';
 import firebase from '../../constants/store';
-import {Ionicons} from '@expo/vector-icons';
+import {MaterialCommunityIcons} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
@@ -12,36 +12,36 @@ import {Notifications} from 'expo';
 import * as Permissions from 'expo-permissions';
 
 const profileList = [
-  {title: '개인 정보', navigation: 'Personal', icon: 'md-person'},
+  {title: '내 정보', navigation: 'Personal', icon: 'account-outline'},
   {
     title: '내 여행 정보',
     navigation: 'TripInfos',
-    icon: 'ios-planet',
+    icon: 'map-marker-outline',
   },
-  {title: '알림', navigation: 'Notice', icon: 'md-notifications'},
+  {title: '알림', navigation: 'Notice', icon: 'bell-outline'},
 ];
 
 const hostList = [
-  {title: '매장 정보', navigation: 'MyShop', icon: 'ios-home'},
+  {title: '매장 정보', navigation: 'MyShop', icon: 'home-outline'},
   {
     title: '예약 관리',
     navigation: '',
-    icon: 'md-book',
+    icon: 'folder-multiple-outline',
   },
-  {title: '고객 정보', navigation: '', icon: 'md-people'},
-  {title: '이벤트 등록', navigation: '=', icon: 'ios-basket'},
+  {title: '고객 정보', navigation: '', icon: 'account-multiple-outline'},
+  {title: '이벤트 등록', navigation: '', icon: 'cart-outline'},
 ];
 
 const helpList = [
   {
     title: '도움말',
     navigation: '',
-    icon: 'md-information-circle',
+    icon: 'information-outline',
   },
   {
     title: '의견 남기기',
     navigation: '',
-    icon: 'ios-paper',
+    icon: 'clipboard-text-outline',
   },
   ,
 ];
@@ -80,8 +80,15 @@ const ProfileScreen = props => {
       .doc(user.email)
       .update({token: token});
   };
+
   useEffect(() => {
     registerForPushNotificationsAsync();
+    let unsubscribe;
+    unsubscribe = dispatch(watchUserData('b@naver.com'));
+    dispatch(downloadShopData()).then(() => {});
+    return () => {
+      unsubscribe();
+    };
   }, []);
 
   handleLogout = () => {
@@ -122,59 +129,55 @@ const ProfileScreen = props => {
       <ScrollView showsHorizontalScrollIndicator={false}>
         <Block style={styles.inputs}>
           <Block margin={[10, 0]}>
-            <Text h3 gray>
-              My Profile
-            </Text>
+            <Text h3>계정 관리</Text>
           </Block>
           {profileList.map((item, idx) => (
             <WideText
               item={item}
               key={idx}
               onPress={() => navigation.navigate(item.navigation)}>
-              <Text h3>{item.title}</Text>
-              <Ionicons
-                size={25}
+              <Text h2>{item.title}</Text>
+              <MaterialCommunityIcons
+                size={30}
                 name={item.icon}
-                style={{color: theme.colors.primary}}></Ionicons>
+                style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </WideText>
           ))}
           {user.host ? (
             <Fragment>
               <Block style={{marginTop: 20, marginBottom: 10}}>
-                <Text h3 gray>
-                  Hosting
-                </Text>
+                <Text h3>호스팅</Text>
               </Block>
               {hostList.map((item, idx) => (
                 <WideText
                   item={item}
                   key={idx}
                   onPress={() => navigation.navigate(item.navigation)}>
-                  <Text h3>{item.title}</Text>
-                  <Ionicons
-                    size={25}
+                  <Text h2>{item.title}</Text>
+                  <MaterialCommunityIcons
+                    size={30}
                     name={item.icon}
-                    style={{color: theme.colors.primary}}></Ionicons>
+                    style={{
+                      color: theme.colors.black,
+                    }}></MaterialCommunityIcons>
                 </WideText>
               ))}
             </Fragment>
           ) : null}
 
           <Block style={{marginTop: 20, marginBottom: 10}}>
-            <Text h3 gray>
-              지원
-            </Text>
+            <Text h3>지원</Text>
           </Block>
           {helpList.map((item, idx) => (
             <WideText
               item={item}
               key={idx}
               onPress={() => navigation.navigate(item.navigation)}>
-              <Text h3>{item.title}</Text>
-              <Ionicons
-                size={25}
+              <Text h2>{item.title}</Text>
+              <MaterialCommunityIcons
+                size={30}
                 name={item.icon}
-                style={{color: theme.colors.primary}}></Ionicons>
+                style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </WideText>
           ))}
           <TouchableOpacity onPress={() => handleNotification()}>
@@ -183,12 +186,13 @@ const ProfileScreen = props => {
               space="between"
               style={{
                 ...styles.inputRow,
+                marginTop: 10,
               }}>
-              <Text h3>알림 테스트</Text>
-              <Ionicons
-                size={25}
-                name="md-book"
-                style={{color: theme.colors.primary}}></Ionicons>
+              <Text h2>알림 테스트</Text>
+              <MaterialCommunityIcons
+                size={30}
+                name="lightbulb-on-outline"
+                style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </Block>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleLogout()}>
@@ -199,13 +203,13 @@ const ProfileScreen = props => {
                 ...styles.inputRow,
                 marginVertical: 30,
               }}>
-              <Text color={theme.colors.primary} h3>
+              <Text color={theme.colors.primary} h2>
                 로그아웃
               </Text>
-              <Ionicons
-                size={25}
-                name="md-log-out"
-                style={{color: theme.colors.primary}}></Ionicons>
+              <MaterialCommunityIcons
+                size={30}
+                name="close-outline"
+                style={{color: theme.colors.primary}}></MaterialCommunityIcons>
             </Block>
           </TouchableOpacity>
         </Block>

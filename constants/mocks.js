@@ -257,16 +257,20 @@ const profiles = {
 const recommendList = [
   {
     shop: '메디핑거',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa',
     src: require('../assets/images/cebu_massage1.jpg'),
     tag: '편안함, 피로싹',
-
     desc: '전신 아로마 마사지',
     shopCode: 'massage1',
     afterPrice: '30,000',
     beforePrice: '20,000',
+    category: 'Massage',
   },
   {
     shop: '프라나스파',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614',
     src: require('../assets/images/cebu_massage2.jpeg'),
     tag: '편안함, 피로싹',
 
@@ -274,60 +278,85 @@ const recommendList = [
     shopCode: 'massage2',
     afterPrice: '30,000',
     beforePrice: '20,000',
+    category: 'Massage',
   },
   {
     shop: '오션스파',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=99f5159f-0efb-438d-841f-0d63967f3f34',
+
     src: require('../assets/images/cebu_massage3.jpg'),
     tag: '편안함, 피로싹',
     desc: '전신 아로마 마사지',
     shopCode: 'massage3',
     afterPrice: '30,000',
     beforePrice: '20,000',
+    category: 'Massage',
   },
   {
     shop: '에코스파',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f',
+
     src: require('../assets/images/cebu_massage4.jpg'),
     tag: '편안함, 피로싹',
     desc: '전신 아로마 마사지',
     shopCode: 'massage4',
     afterPrice: '30,000',
     beforePrice: '20,000',
+    category: 'Massage',
   },
 ];
 
 const eventList = [
   {
     shop: '점보 7',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food1.jpg?alt=media&token=18bc43f0-1ae4-4a9c-938d-0502bb86dee3',
+
     src: require('../assets/images/cebu_food1.jpg'),
     tag: '전통',
 
     desc: '태국 전통 음식',
     event: '1+1 행사 중',
     shopCode: 'restaurant1',
+    category: 'Restaurant',
   },
   {
     shop: '부페 레스토랑',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food2.jpeg?alt=media&token=123bd2cd-a92c-474e-a4c7-fc85d5d29e7a',
+
     src: require('../assets/images/cebu_food2.jpeg'),
     tag: '전통',
     desc: '태국 전통 음식',
     event: '1+1 행사 중',
     shopCode: 'restaurant2',
+    category: 'Restaurant',
   },
   {
     shop: '란타 코르도바',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913',
+
     src: require('../assets/images/cebu_food3.jpeg'),
     tag: '전통',
     desc: '태국 전통 음식',
     event: '1+1 행사 중',
     shopCode: 'restaurant3',
+    category: 'Restaurant',
   },
   {
     shop: '아인 레스토랑',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d',
+
     src: require('../assets/images/cebu_food4.jpg'),
     tag: '전통',
     desc: '태국 전통 음식',
     event: '1+1 행사 중',
     shopCode: 'restaurant4',
+    category: 'Restaurant',
   },
 ];
 

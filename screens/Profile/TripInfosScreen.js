@@ -1,5 +1,12 @@
 import React, {useState, useEffect} from 'react';
-import {StyleSheet, ScrollView, TextInput} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  SafeAreaView,
+  TextInput,
+  TouchableOpacity,
+  Platform,
+} from 'react-native';
 import {Button, Block, Text} from '../../components';
 import {theme} from '../../constants';
 import firebase from '../../constants/store';
@@ -45,19 +52,30 @@ const TripInfosScreen = props => {
   };
 
   return (
-    <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Button onPress={() => navigation.goBack()}>
-          <Block center row>
-            <Ionicons
-              size={35}
-              color={theme.colors.primary}
-              name="ios-arrow-back"
-            />
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView>
+        <Block style={styles.header}>
+          <Block row center space="between">
+            <Button onPress={() => navigation.goBack()}>
+              <Block center row>
+                <Ionicons
+                  size={30}
+                  color={theme.colors.black}
+                  name="ios-arrow-back"
+                />
+              </Block>
+            </Button>
+            <TouchableOpacity onPress={() => {}}>
+              <Text bold h3>
+                저장
+              </Text>
+            </TouchableOpacity>
           </Block>
-        </Button>
-      </Block>
-      <ScrollView showsHorizontalScrollIndicator={false}>
+          <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
+            내 여행 정보 수정
+          </Text>
+        </Block>
+
         <Block style={styles.inputs}>
           <Block space="between" row style={styles.plan}>
             <Text h3 bold>
@@ -89,7 +107,7 @@ const TripInfosScreen = props => {
           </Text>
         </Button>
       </Block>
-    </Block>
+    </SafeAreaView>
   );
 };
 
@@ -99,7 +117,7 @@ TripInfosScreen.navigationOptions = {
 TripInfosScreen.defaultProps = {};
 const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.base * 3,
+    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding,
   },
   avatar: {
@@ -107,7 +125,6 @@ const styles = StyleSheet.create({
     height: theme.sizes.base * 6,
   },
   inputs: {
-    marginTop: theme.sizes.base * 0.5,
     paddingHorizontal: theme.sizes.padding,
     marginVertical: 10,
   },

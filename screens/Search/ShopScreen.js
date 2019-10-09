@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  SafeAreaView,
+  TextInput,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -22,6 +22,7 @@ import {
   FullImageSlider,
   ReservationModal,
   ReviewModal,
+  NewReviewModal,
 } from '../../components';
 import {theme, mocks} from '../../constants';
 
@@ -32,11 +33,16 @@ const {height, width} = Dimensions.get('window');
 
 export default function ShopScreen(props) {
   const {navigation, recommendList} = props;
+
   const [shop, setShop] = useState({});
-  const [visible, setVisible] = useState(false);
-  const [reviewVisible, setReviewVisible] = useState(false);
+  const [todo, setTodo] = useState({});
+
   const user = useSelector(state => state.user, shallowEqual);
   const shops = useSelector(state => state.shops, shallowEqual);
+
+  const [visible, setVisible] = useState(false);
+  const [reviewVisible, setReviewVisible] = useState(false);
+  const [newReviewVisible, setNewReviewVisible] = useState(false);
 
   const dispatch = useDispatch();
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -46,10 +52,12 @@ export default function ShopScreen(props) {
     if (shopCode) {
       let myShop = shops.filter(e => e.id == shopCode);
       setShop(myShop[0]);
+      setTodo(navigation.getParam('todo'));
     } else {
       setShop(navigation.getParam('shop'));
+      setTodo(navigation.getParam('todo'));
     }
-  }, [user, shops]);
+  }, [user, shop, todo]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
@@ -66,18 +74,24 @@ export default function ShopScreen(props) {
   };
 
   handleAddHeart = async shop => {
+    oldfavorites = user.myfavorites.map(e => e.id);
+    newShop = {
+      id: shop.id,
+      name: shop.name,
+      src: shop.source[0],
+    };
     let newfavorites = user.myfavorites;
-    if (newfavorites.includes(shop)) {
-      const idx = newfavorites.indexOf(shop);
+    if (oldfavorites.includes(shop.id)) {
+      const idx = newfavorites.indexOf(newShop);
       newfavorites.splice(idx, 1);
     } else {
-      newfavorites.push(shop);
+      newfavorites.push(newShop);
     }
     dispatch(updateFavorite(newfavorites));
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <Block>
       <Animated.View
         style={{
           ...styles.header,
@@ -141,13 +155,13 @@ export default function ShopScreen(props) {
               </Animated.Text>
             </TouchableOpacity>
 
-            <TouchableOpacity onPress={() => handleAddHeart(shop.id)}>
+            <TouchableOpacity onPress={() => handleAddHeart(shop)}>
               <Animated.Text
                 style={{
                   color: fadeAnim.interpolate({
                     inputRange: [0, 1],
                     outputRange:
-                      user.myfavorites.indexOf(shop.id) == -1
+                      user.myfavorites.map(e => e.id).indexOf(shop.id) == -1
                         ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
                         : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
                   }),
@@ -155,7 +169,7 @@ export default function ShopScreen(props) {
                 <Ionicons
                   size={30}
                   name={
-                    user.myfavorites.indexOf(shop.id) == -1
+                    user.myfavorites.map(e => e.id).indexOf(shop.id) == -1
                       ? 'ios-heart-empty'
                       : 'ios-heart'
                   }
@@ -192,6 +206,70 @@ export default function ShopScreen(props) {
           </Text>
         </Block>
         <Divider />
+
+        {todo && Object.entries(todo).length !== 0 ? (
+          <Fragment>
+            <Block style={styles.categories}>
+              <Text h3 bold style={styles.content}>
+                예약정보
+              </Text>
+              <Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>예약인원</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    {todo.people}명
+                  </Text>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>예약시간</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    {todo.time}
+                  </Text>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>예약정보</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    {shop.category == 'Massage' ? '전신마사지' : '스테이크'}
+                  </Text>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>요청사항</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    {todo.text}
+                  </Text>
+                </Block>
+              </Block>
+            </Block>
+            <Divider />
+            <Block style={styles.categories}>
+              <Text h3 bold style={styles.content}>
+                픽업정보
+              </Text>
+              <Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>픽업장소</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    호텔 정문
+                  </Text>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>픽업시간</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    {todo.time}
+                  </Text>
+                </Block>
+                <Block style={styles.inputRow}>
+                  <Text h3>픽업차량</Text>
+                  <Text color={theme.colors.black} bold h3>
+                    도요타 캠리 - 가가가
+                  </Text>
+                </Block>
+              </Block>
+            </Block>
+            <Divider />
+          </Fragment>
+        ) : null}
+
         <Block style={styles.categories}>
           <Text h3 bold style={{...styles.content, marginBottom: 25}}>
             추천메뉴
@@ -210,13 +288,18 @@ export default function ShopScreen(props) {
                 <Reviews key={idx} review={review} />
               ))
             : null}
-          <TouchableOpacity
-            style={{marginTop: theme.sizes.padding}}
-            onPress={() => setReviewVisible(true)}>
-            <Text h3 bold color={theme.colors.accent}>
-              후기 모두 보기
-            </Text>
-          </TouchableOpacity>
+          <Block row space="between" style={{marginTop: theme.sizes.padding}}>
+            <TouchableOpacity onPress={() => setReviewVisible(true)}>
+              <Text h3 bold color={theme.colors.accent}>
+                후기 모두 보기
+              </Text>
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
+              <Text h3 bold color={theme.colors.accent}>
+                후기 작성
+              </Text>
+            </TouchableOpacity>
+          </Block>
         </Block>
         <Divider />
         <Block style={styles.categories}>
@@ -379,7 +462,9 @@ export default function ShopScreen(props) {
                 setVisible(true);
               }}>
               <Text white center bold>
-                예약 요청
+                {todo && Object.entries(todo).length !== 0
+                  ? '예약 변경'
+                  : '예약 요청'}
               </Text>
             </Button>
           ) : (
@@ -417,7 +502,16 @@ export default function ShopScreen(props) {
           setReviewVisible={setReviewVisible}
         />
       </Modal>
-    </SafeAreaView>
+      <Modal
+        animationType="slide"
+        visible={newReviewVisible}
+        onRequestClose={() => setNewReviewVisible(false)}>
+        <NewReviewModal
+          navigation={navigation}
+          setNewReviewVisible={setNewReviewVisible}
+        />
+      </Modal>
+    </Block>
   );
 }
 

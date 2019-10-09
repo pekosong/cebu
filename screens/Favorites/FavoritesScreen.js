@@ -24,6 +24,7 @@ function FavoritesScreen(props) {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
+
   const [favorites, setFavorites] = useState([]);
 
   const [selectedFavorites, setSelectedFavorites] = useState([]);
@@ -42,7 +43,7 @@ function FavoritesScreen(props) {
           const song = [];
           const category = new Set(['All']);
           querySnapshot.forEach(doc => {
-            if (user.myfavorites.indexOf(doc.data().id) != -1) {
+            if (user.myfavorites.map(e => e.id).indexOf(doc.data().id) != -1) {
               song.push(doc.data());
               category.add(doc.data().category);
             }
@@ -76,31 +77,31 @@ function FavoritesScreen(props) {
     if (tab == 'All') {
       setSelectedFavorites(favorites);
     } else {
-      setSelectedFavorites(favorites.filter(item => item.category == tab));
+      setSelectedFavorites(favorites.filter(shop => shop.category == tab));
     }
     setActive(tab);
   };
 
   handleRemoveHeart = shop => {
     let newfavorites = user.myfavorites;
-    const idx = newfavorites.indexOf(shop);
+    const idx = newfavorites.map(e => e.id).indexOf(shop);
     newfavorites.splice(idx, 1);
     dispatch(updateFavorite(newfavorites));
   };
 
-  renderList = item => {
+  renderList = shop => {
     return (
       <TouchableOpacity
-        key={item.name}
+        key={shop.name}
         onPress={() =>
           navigation.navigate('Shop', {
             title: '저장소',
-            shop: item,
+            shop: shop,
           })
         }>
-        <Block key={item.name} style={styles.categories}>
+        <Block key={shop.name} style={styles.categories}>
           <TouchableOpacity
-            onPress={() => handleRemoveHeart(item.id)}
+            onPress={() => handleRemoveHeart(shop.id)}
             style={{position: 'absolute', top: 5, right: 30, zIndex: 10}}>
             <Ionicons
               size={30}
@@ -114,7 +115,7 @@ function FavoritesScreen(props) {
             />
           </TouchableOpacity>
           <CachedImage
-            uri={item.source[0]}
+            uri={shop.source[0]}
             style={{
               height: 200,
               width: width - theme.sizes.padding * 2,
@@ -122,15 +123,15 @@ function FavoritesScreen(props) {
               resizeMode: 'cover',
             }}
           />
-          <Text style={{marginTop: 5}}>{item.category}</Text>
+          <Text style={{marginTop: 5}}>{shop.category}</Text>
           <Text h2 bold style={{marginVertical: 5}}>
-            {item.name + '  '}
-            <Text>{item.engName}</Text>
+            {shop.name + '  '}
+            <Text>{shop.engName}</Text>
           </Text>
           <StarRating
             disabled={false}
             maxStars={5}
-            rating={item.review}
+            rating={shop.review}
             starSize={10}
             fullStarColor={theme.colors.accent}
             containerStyle={{width: 20}}
@@ -152,7 +153,7 @@ function FavoritesScreen(props) {
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={true}>
-          {selectedFavorites.map(item => renderList(item))}
+          {selectedFavorites.map(shop => renderList(shop))}
         </ScrollView>
       ) : (
         <Block style={styles.full}>

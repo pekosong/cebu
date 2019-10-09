@@ -198,7 +198,7 @@ export default function ChatScreen(props) {
           <Block center row>
             <Ionicons
               size={30}
-              color={theme.colors.primary}
+              color={theme.colors.black}
               name="ios-arrow-back"
             />
           </Block>

@@ -14,6 +14,7 @@ import Reviews from './Reviews';
 import FullImageSlider from './FullImageSlider';
 import ReservationModal from './ReservationModal';
 import ReviewModal from './ReviewModal';
+import NewReviewModal from './NewReviewModal';
 import CachedImage from './CachedImage';
 import Test from './Test';
 
@@ -34,6 +35,7 @@ export {
   FullImageSlider,
   ReservationModal,
   ReviewModal,
+  NewReviewModal,
   CachedImage,
   Test,
 };
