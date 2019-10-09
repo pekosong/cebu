@@ -161,7 +161,7 @@ function MyTripScreen(props) {
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Block style={{marginBottom: 40}}>
+          <Block style={{marginTop: 20, marginBottom: 40}}>
             {Object.values(selectedDates).map((day, idx) => {
               lastItem =
                 Object.values(selectedDates).length == idx + 1 ? true : false;
@@ -222,7 +222,6 @@ const styles = StyleSheet.create({
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,
-    marginVertical: theme.sizes.base * 1,
   },
 });
 

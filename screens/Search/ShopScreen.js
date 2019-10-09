@@ -186,224 +186,228 @@ export default function ShopScreen(props) {
         scrollEventThrottle={360}
         onScroll={handleScrollByY}>
         <FullImageSlider source={shop.source}></FullImageSlider>
-        <Block style={[styles.categories, {marginTop: 20}]}>
-          <Block row space="between">
-            <Block>
-              <Text bold style={{fontSize: 25, marginBottom: 5}}>
-                {shop.name}
-              </Text>
-              <Text h3 gray style={styles.content}>
-                {shop.engName}
+        <Block style={{paddingHorizontal: theme.sizes.padding}}>
+          <Block style={[styles.categories, {marginTop: 20}]}>
+            <Block row space="between">
+              <Block>
+                <Text bold style={{fontSize: 25, marginBottom: 5}}>
+                  {shop.name}
+                </Text>
+                <Text h3 gray style={styles.content}>
+                  {shop.engName}
+                </Text>
+              </Block>
+              <Text bold style={{color: theme.colors.accent}}>
+                {shop.tags}
               </Text>
             </Block>
-            <Text bold style={{color: theme.colors.accent}}>
-              {shop.tags}
+            <Text gray>
+              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
+              unde recusandae voluptate numquam consectetur quibusdam
             </Text>
           </Block>
-          <Text gray>
-            Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit unde
-            recusandae voluptate numquam consectetur quibusdam
-          </Text>
-        </Block>
-        <Divider />
+          <Divider />
 
-        {todo && Object.entries(todo).length !== 0 ? (
-          <Fragment>
-            <Block style={styles.categories}>
-              <Text h3 bold style={styles.content}>
-                예약정보
-              </Text>
-              <Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>예약인원</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {todo.people}명
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>예약시간</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {todo.time}
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>예약정보</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {shop.category == 'Massage' ? '전신마사지' : '스테이크'}
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>요청사항</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {todo.text}
-                  </Text>
+          {todo && Object.entries(todo).length !== 0 ? (
+            <Fragment>
+              <Block style={styles.categories}>
+                <Text h3 bold style={styles.content}>
+                  예약정보
+                </Text>
+                <Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>예약인원</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      {todo.people}명
+                    </Text>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>예약시간</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      {todo.time}
+                    </Text>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>예약정보</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      {shop.category == 'Massage' ? '전신마사지' : '스테이크'}
+                    </Text>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>요청사항</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      {todo.text}
+                    </Text>
+                  </Block>
                 </Block>
               </Block>
-            </Block>
-            <Divider />
-            <Block style={styles.categories}>
-              <Text h3 bold style={styles.content}>
-                픽업정보
-              </Text>
-              <Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>픽업장소</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    호텔 정문
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>픽업시간</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    {todo.time}
-                  </Text>
-                </Block>
-                <Block style={styles.inputRow}>
-                  <Text h3>픽업차량</Text>
-                  <Text color={theme.colors.black} bold h3>
-                    도요타 캠리 - 가가가
-                  </Text>
+              <Divider />
+              <Block style={styles.categories}>
+                <Text h3 bold style={styles.content}>
+                  픽업정보
+                </Text>
+                <Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>픽업장소</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      호텔 정문
+                    </Text>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>픽업시간</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      {todo.time}
+                    </Text>
+                  </Block>
+                  <Block style={styles.inputRow}>
+                    <Text h3>픽업차량</Text>
+                    <Text color={theme.colors.black} bold h3>
+                      도요타 캠리 - 가가가
+                    </Text>
+                  </Block>
                 </Block>
               </Block>
-            </Block>
-            <Divider />
-          </Fragment>
-        ) : null}
+              <Divider />
+            </Fragment>
+          ) : null}
 
-        <Block style={styles.categories}>
-          <Text h3 bold style={{...styles.content, marginBottom: 25}}>
-            추천메뉴
-          </Text>
-          {shop.menus
-            ? shop.menus.map((item, idx) => <CardMenu key={idx} item={item} />)
-            : null}
-        </Block>
-        <Divider />
-        <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            후기
-          </Text>
-          {shop.reviews
-            ? shop.reviews.map((review, idx) => (
-                <Reviews key={idx} review={review} />
-              ))
-            : null}
-          <Block row space="between" style={{marginTop: theme.sizes.padding}}>
-            <TouchableOpacity onPress={() => setReviewVisible(true)}>
-              <Text h3 bold color={theme.colors.accent}>
-                후기 모두 보기
-              </Text>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
-              <Text h3 bold color={theme.colors.accent}>
-                후기 작성
-              </Text>
-            </TouchableOpacity>
+          <Block style={styles.categories}>
+            <Text h3 bold style={{...styles.content, marginBottom: 25}}>
+              추천메뉴
+            </Text>
+            {shop.menus
+              ? shop.menus.map((item, idx) => (
+                  <CardMenu key={idx} item={item} />
+                ))
+              : null}
           </Block>
-        </Block>
-        <Divider />
-        <Block style={styles.categories}>
-          <Text h3 bold style={styles.content}>
-            업체정보
-          </Text>
-          <Block>
-            <Block style={styles.inputRow}>
-              <Text h3>언어</Text>
-              <Text color={theme.colors.black} bold h3>
-                한국어, 영어
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>픽업여부</Text>
-              <Text color={theme.colors.black} bold h3>
-                {shop.pickup ? '가능' : '불가'}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>베이비시터</Text>
-              <Text color={theme.colors.black} bold h3>
-                가능
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>영업시간</Text>
-              <Text color={theme.colors.black} bold h3>
-                {shop.openTime} ~ {shop.closeTime}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>주소</Text>
-              <Text color={theme.colors.black} bold h3>
-                {shop.address}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text h3>전화번호</Text>
-              <Text color={theme.colors.black} bold h3>
-                {shop.phone}
-              </Text>
+          <Divider />
+          <Block style={styles.categories}>
+            <Text h3 bold style={styles.content}>
+              후기
+            </Text>
+            {shop.reviews
+              ? shop.reviews.map((review, idx) => (
+                  <Reviews key={idx} review={review} />
+                ))
+              : null}
+            <Block row space="between" style={{marginTop: theme.sizes.padding}}>
+              <TouchableOpacity onPress={() => setReviewVisible(true)}>
+                <Text h3 bold color={theme.colors.accent}>
+                  후기 모두 보기
+                </Text>
+              </TouchableOpacity>
+              <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
+                <Text h3 bold color={theme.colors.accent}>
+                  후기 작성
+                </Text>
+              </TouchableOpacity>
             </Block>
           </Block>
-        </Block>
+          <Divider />
+          <Block style={styles.categories}>
+            <Text h3 bold style={styles.content}>
+              업체정보
+            </Text>
+            <Block>
+              <Block style={styles.inputRow}>
+                <Text h3>언어</Text>
+                <Text color={theme.colors.black} bold h3>
+                  한국어, 영어
+                </Text>
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text h3>픽업여부</Text>
+                <Text color={theme.colors.black} bold h3>
+                  {shop.pickup ? '가능' : '불가'}
+                </Text>
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text h3>베이비시터</Text>
+                <Text color={theme.colors.black} bold h3>
+                  가능
+                </Text>
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text h3>영업시간</Text>
+                <Text color={theme.colors.black} bold h3>
+                  {shop.openTime} ~ {shop.closeTime}
+                </Text>
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text h3>주소</Text>
+                <Text color={theme.colors.black} bold h3>
+                  {shop.address}
+                </Text>
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text h3>전화번호</Text>
+                <Text color={theme.colors.black} bold h3>
+                  {shop.phone}
+                </Text>
+              </Block>
+            </Block>
+          </Block>
 
-        <Divider />
-        <Block style={styles.categories}>
-          <Text h3 bold>
-            위치
-          </Text>
-          <Block row space="between" style={{marginTop: 10}}>
-            <Text h3>{shop.address}</Text>
-            <Text h3>{shop.engAddress}</Text>
+          <Divider />
+          <Block style={styles.categories}>
+            <Text h3 bold>
+              위치
+            </Text>
+            <Block row space="between" style={{marginTop: 10}}>
+              <Text h3>{shop.address}</Text>
+              <Text h3>{shop.engAddress}</Text>
+            </Block>
+            <MapView
+              style={{
+                flex: 1,
+                height: 200,
+                marginTop: theme.sizes.padding / 2,
+              }}
+              initialRegion={{
+                latitude: 37.78825,
+                longitude: -122.4324,
+                latitudeDelta: 0.0922,
+                longitudeDelta: 0.0421,
+              }}>
+              <MapView.Marker
+                coordinate={{latitude: 37.78825, longitude: -122.4324}}
+              />
+            </MapView>
           </Block>
-          <MapView
+          <Divider
             style={{
-              flex: 1,
-              height: 200,
-              marginTop: theme.sizes.padding / 2,
-            }}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            <MapView.Marker
-              coordinate={{latitude: 37.78825, longitude: -122.4324}}
-            />
-          </MapView>
-        </Block>
-        <Divider
-          style={{
-            marginTop: 20,
-          }}></Divider>
-        <Block style={{...styles.categories, marginTop: 10}}>
-          <Text h3 bold style={styles.content}>
-            이 근처의 추천 장소
-          </Text>
-          <Text h4 style={{marginBottom: 10}}>
-            {shop.name} 근처의 이런 곳은 어때요?
-          </Text>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}>
-            {recommendList.map((item, idx) => (
-              <Card key={idx} item={item} navigation={navigation}>
-                <Text
-                  gray
-                  caption
-                  style={{
-                    textDecorationLine: 'line-through',
-                    textDecorationStyle: 'solid',
-                  }}>
-                  {item.beforePrice}원
-                </Text>
-                <Text h4 bold style={{marginTop: 5}}>
-                  {item.afterPrice}원
-                </Text>
-              </Card>
-            ))}
-          </ScrollView>
+              marginTop: 20,
+            }}></Divider>
+          <Block style={{...styles.categories, marginTop: 10}}>
+            <Text h3 bold style={styles.content}>
+              이 근처의 추천 장소
+            </Text>
+            <Text h4 style={{marginBottom: 10}}>
+              {shop.name} 근처의 이런 곳은 어때요?
+            </Text>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              scrollEnabled={true}>
+              {recommendList.map((item, idx) => (
+                <Card key={idx} item={item} navigation={navigation}>
+                  <Text
+                    gray
+                    caption
+                    style={{
+                      textDecorationLine: 'line-through',
+                      textDecorationStyle: 'solid',
+                    }}>
+                    {item.beforePrice}원
+                  </Text>
+                  <Text h4 bold style={{marginTop: 5}}>
+                    {item.afterPrice}원
+                  </Text>
+                </Card>
+              ))}
+            </ScrollView>
+          </Block>
         </Block>
       </ScrollView>
 
@@ -414,14 +418,10 @@ export default function ShopScreen(props) {
           bottom: 0,
           borderTopWidth: 1,
           borderTopColor: theme.colors.gray2,
+          paddingHorizontal: theme.sizes.padding,
         }}>
-        <Block
-          flex={2}
-          left
-          style={{
-            marginLeft: theme.sizes.padding,
-          }}>
-          <Block row center style={{marginTop: 5, marginBottom: -5}}>
+        <Block flex={2}>
+          <Block row center style={{marginTop: 2, marginBottom: -10}}>
             <StarRating
               disabled={false}
               maxStars={5}
@@ -454,7 +454,7 @@ export default function ShopScreen(props) {
             </Text>
           </Block>
         </Block>
-        <Block flex={1} style={{marginRight: theme.sizes.padding}}>
+        <Block flex={1}>
           {Object.keys(user.plans).length > 0 ? (
             <Button
               gradient
@@ -538,7 +538,6 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
   categories: {
-    paddingHorizontal: theme.sizes.padding,
     marginVertical: 10,
   },
   content: {
