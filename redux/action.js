@@ -93,13 +93,21 @@ const updateShop = shop => {
   };
 };
 
-const makeResevation = allPlans => {
+const makeResevation = (allPlans, allReservations, email, shopId) => {
   return () => {
     firebase
       .firestore()
       .collection('users')
-      .doc(store.getState().user.email)
+      .doc(email)
       .update({plans: allPlans})
+      .then(() => {
+        console.log('made reservation');
+      });
+    firebase
+      .firestore()
+      .collection('shops')
+      .doc(shopId)
+      .update({reservations: allReservations})
       .then(() => {
         console.log('made reservation');
       });

@@ -1,9 +1,14 @@
-import React, {useState, useEffect} from 'react';
-import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
+import React, {useState, useEffect, Fragment} from 'react';
+import {
+  Platform,
+  StyleSheet,
+  TouchableOpacity,
+  ScrollView,
+  TextInput,
+} from 'react-native';
 
 import Block from './Block';
 import Text from './Text';
-import Input from './Input';
 import Button from './Button';
 
 import {theme} from '../constants';
@@ -31,13 +36,17 @@ export default ReservationModal = props => {
   const [todo, setTodo] = useState({});
 
   const [date, setDate] = useState({});
-  const [selectedDate, setSelectedDate] = useState('');
   const [reservationDate, setReservationDate] = useState('');
-  const [time, setTime] = useState('');
   const [reservationTime, setReservationTime] = useState('');
   const [timeCan, setTimeCan] = useState([]);
+
+  const [selectedDate, setSelectedDate] = useState('');
+  const [time, setTime] = useState('');
   const [people, setPeople] = useState(1);
   const [text, setText] = useState('');
+  const [pickuptime, setPickupTime] = useState('');
+  const [pickupLocation, setPickupLocation] = useState('');
+  const [pickupCar, setPickpCar] = useState('');
 
   const [isChange, setIsChange] = useState(false);
 
@@ -84,62 +93,76 @@ export default ReservationModal = props => {
     }
   }, [user]);
 
-  handleReservation = () => {
+  handleMakeResercation = () => {
     let reservation = {};
+    reservation['createdDate'] = new Date();
+    reservation['email'] = user.email;
+    reservation['name'] = user.name;
+    reservation['phone'] = user.phone;
+    reservation['sex'] = user.sex;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
+    reservation['text'] = text;
+    reservation['pickupLocation'] = pickupLocation;
+    reservation['pickTime'] = pickuptime;
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
       engName: shop.engName,
       src: shop.source[0],
     };
-    reservation['text'] = text;
 
     let allPlans = user.plans;
+    let allReservations = shop.reservations;
     allPlans[selectedDate][time] = reservation;
+    allReservations.push(reservation);
 
-    dispatch(makeResevation(allPlans));
+    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
     setVisible(false);
   };
 
   handleChangeReservation = () => {
     let reservation = {};
+    reservation['createdDate'] = new Date();
+    reservation['email'] = user.email;
+    reservation['name'] = user.name;
+    reservation['phone'] = user.phone;
+    reservation['sex'] = user.sex;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
+    reservation['text'] = text;
+    reservation['pickupLocation'] = pickupLocation;
+    reservation['pickTime'] = pickuptime;
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
       engName: shop.engName,
       src: shop.source[0],
     };
-    reservation['text'] = text;
 
     let allPlans = user.plans;
+    let allReservations = shop.reservations;
 
     delete allPlans[todo.date][todo.time];
+    allReservations = allReservations.filter(e => e.email != user.email);
 
     allPlans[selectedDate][time] = reservation;
+    allReservations.push(reservation);
 
-    dispatch(makeResevation(allPlans));
+    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
     navigation.goBack();
   };
 
   handleDeleteReservation = () => {
-    let reservation = {};
-    reservation['time'] = time;
-    reservation['people'] = people;
-    reservation['date'] = selectedDate;
-    reservation['shop'] = shop;
-    reservation['text'] = text;
-
     let allPlans = user.plans;
+    let allReservations = shop.reservations;
 
     delete allPlans[todo.date][todo.time];
+    allReservations = allReservations.filter(e => e.email != user.email);
 
-    dispatch(makeResevation(allPlans));
+    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
     navigation.goBack();
   };
 
@@ -181,9 +204,7 @@ export default ReservationModal = props => {
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block>
-          <Text bold h3 style={{marginVertical: 10}}>
-            예약일
-          </Text>
+          <Text style={{...styles.textStyle, marginTop: 20}}>예약일</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Block row>
               {Object.keys(date).map(t => (
@@ -219,9 +240,7 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-          <Text bold h3 style={{marginTop: 10, marginBottom: 5}}>
-            예약시간
-          </Text>
+          <Text style={{...styles.textStyle, marginTop: 20}}>예약시간</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Block row>
               {TIMES.map(t => (
@@ -257,7 +276,7 @@ export default ReservationModal = props => {
             </Block>
           </ScrollView>
 
-          <Text bold h3 style={{marginTop: 10, marginBottom: 5}}>
+          <Text style={{...styles.textStyle, marginTop: 20, marginBottom: 15}}>
             예약인원
           </Text>
           <Block
@@ -296,17 +315,47 @@ export default ReservationModal = props => {
               </Text>
             </TouchableOpacity>
           </Block>
+          {shop.pickup ? (
+            <Fragment>
+              <Block style={styles.inputRow}>
+                <Text style={styles.textStyle}>픽업 시간</Text>
+                <TextInput
+                  defaultValue={pickuptime}
+                  placeholder="10시 30분"
+                  onChangeText={e => setPickupTime(e)}
+                  style={{fontSize: 20}}
+                />
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text style={styles.textStyle}>픽업 장소</Text>
+                <TextInput
+                  defaultValue={pickupLocation}
+                  placeholder="호텔 정문"
+                  onChangeText={e => setPickupLocation(e)}
+                  style={{fontSize: 20}}
+                />
+              </Block>
+              <Block style={styles.inputRow}>
+                <Text style={styles.textStyle}>픽업 차량</Text>
+                <TextInput
+                  defaultValue={pickupCar}
+                  placeholder="예약 확정 시 "
+                  onChangeText={e => setPickpCar(e)}
+                  style={{fontSize: 20}}
+                />
+              </Block>
+            </Fragment>
+          ) : null}
 
-          <Text bold h3 style={{marginVertical: 5}}>
-            추가 요청 사항
-          </Text>
-          <Input
-            style={styles.input}
-            defaultValue={text}
-            onChangeText={e => {
-              setText(e);
-            }}
-          />
+          <Block style={styles.inputRow}>
+            <Text style={styles.textStyle}>추가 요청 사항</Text>
+            <TextInput
+              defaultValue={text}
+              placeholder=""
+              onChangeText={e => setText(e)}
+              style={{fontSize: 20}}
+            />
+          </Block>
         </Block>
 
         <Block row space="between" style={{marginVertical: 20}}>
@@ -356,7 +405,7 @@ export default ReservationModal = props => {
           <Button
             gradient
             onPress={() => {
-              handleReservation();
+              handleMakeResercation();
             }}>
             <Text bold white center>
               예약 요청
@@ -415,5 +464,15 @@ export const styles = StyleSheet.create({
     borderWidth: 0,
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
+  },
+  textStyle: {
+    fontSize: 16,
+    marginBottom: 10,
+  },
+  inputRow: {
+    marginVertical: 15,
+    borderBottomWidth: 0.2,
+    paddingBottom: 10,
+    borderBottomColor: theme.colors.gray,
   },
 });

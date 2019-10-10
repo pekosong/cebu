@@ -3,6 +3,7 @@ import Badge from './Badge';
 import Button from './Button';
 import Card from './Card';
 import CardMenu from './CardMenu';
+import CardWrap from './CardWrap';
 import Input from './Input';
 import Text from './Text';
 import Progress from './Progress';
@@ -24,6 +25,7 @@ export {
   Button,
   Card,
   CardMenu,
+  CardWrap,
   Input,
   Text,
   Progress,

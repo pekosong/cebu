@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
   TouchableWithoutFeedback,
 } from 'react-native';
-import {Block, Text, Card, SearchBar} from '../../components';
+import {Block, Text, Card, CardWrap, SearchBar} from '../../components';
 import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
@@ -15,7 +15,7 @@ import {watchUserData, downloadShopData} from '../../redux/action';
 const EMAIL = 'b@naver.com';
 
 const SearchScreen = props => {
-  const {navigation, categories, recommendList, eventList} = props;
+  const {navigation, categories, recommendList, eventList, loveList} = props;
   const [cates, setCates] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -64,7 +64,7 @@ const SearchScreen = props => {
     <Block>
       <SearchBar />
       {isLoaded ? (
-        <ScrollView vertival={true}>
+        <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
           <Block style={styles.title}>
             <Text h1 bold>
               평생 잊지 못할 세부를 원하세요?
@@ -118,6 +118,31 @@ const SearchScreen = props => {
 
           <Block style={styles.title}>
             <Text h1 bold>
+              많은 분들이 사랑하는 곳
+            </Text>
+            <Text h4 style={{marginTop: 6}}>
+              Hello, Cebu 이용객들이 많은 곳이에요
+            </Text>
+          </Block>
+          <Block
+            style={{
+              marginHorizontal: theme.sizes.padding,
+
+              flexDirection: 'row',
+              flexWrap: 'wrap',
+            }}>
+            {loveList.map((item, idx) => (
+              <CardWrap
+                key={idx}
+                item={item}
+                navigation={navigation}
+                favorite={user.myfavorites}
+                idx={idx}></CardWrap>
+            ))}
+          </Block>
+
+          <Block style={styles.title}>
+            <Text h1 bold>
               지금 이벤트 중이에요
             </Text>
             <Text h4 style={{marginTop: 6}}>
@@ -162,6 +187,7 @@ SearchScreen.defaultProps = {
   categories: mocks.categories,
   recommendList: mocks.recommendList,
   eventList: mocks.eventList,
+  loveList: mocks.loveList,
 };
 
 const styles = StyleSheet.create({

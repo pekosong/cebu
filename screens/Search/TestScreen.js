@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useLayoutEffect,
-  createRef,
-} from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import {
   Image,
   View,
@@ -12,7 +6,6 @@ import {
   ScrollView,
   Dimensions,
   Animated,
-  SafeAreaView,
   TouchableOpacity,
   TouchableWithoutFeedback,
 } from 'react-native';
@@ -57,7 +50,7 @@ const TestScrenn = props => {
         setImage(myImages[idx]);
         Animated.timing(showAnim, {
           toValue: 1,
-          duration: 500,
+          duration: 300,
         }).start();
       },
     );
@@ -92,12 +85,12 @@ const TestScrenn = props => {
         <View
           style={{...StyleSheet.absoluteFill}}
           pointerEvents={image ? 'auto' : 'none'}>
-          <ScrollView>
+          <ScrollView
+            showsVerticalScrollIndicator={false}
+            style={{backgroundColor: 'white'}}>
             <View
               style={{
                 zIndex: 1000,
-                height: height,
-                backgroundColor: 'white',
               }}>
               <Animated.Image
                 source={{uri: image ? image : null}}
@@ -113,7 +106,7 @@ const TestScrenn = props => {
                     }),
                     height: showAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [oldPosition.height, height / 2],
+                      outputRange: [oldPosition.height, height / 2.5],
                     }),
                     width: showAnim.interpolate({
                       inputRange: [0, 1],
@@ -131,7 +124,7 @@ const TestScrenn = props => {
                 onPress={() => {
                   Animated.timing(showAnim, {
                     toValue: 0,
-                    duration: 500,
+                    duration: 300,
                   }).start(() => {
                     setImage(null);
                   });
@@ -148,8 +141,6 @@ const TestScrenn = props => {
             </View>
             <Animated.View
               style={{
-                position: 'absolute',
-                top: height / 2,
                 flex: 1,
                 zIndex: 1001,
                 backgroundColor: 'white',

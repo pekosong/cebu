@@ -360,4 +360,53 @@ const eventList = [
   },
 ];
 
-export {categories, profiles, plans, lists, recommendList, eventList};
+const loveList = [
+  {
+    shop: '아인 레스토랑',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d',
+
+    src: require('../assets/images/cebu_food4.jpg'),
+    tag: '전통',
+    desc: '태국 전통 음식',
+    star: 5,
+    shopCode: 'restaurant4',
+    category: 'Restaurant',
+  },
+  {
+    shop: '에코스파',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f',
+    src: require('../assets/images/cebu_massage4.jpg'),
+    tag: '편안함, 피로싹',
+    star: 5,
+    desc: '전신 아로마 마사지',
+    shopCode: 'massage4',
+    category: 'Massage',
+  },
+  {
+    shop: '란타 코르도바',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food3.jpeg?alt=media&token=100c4811-8977-465b-994c-b1227264b913',
+
+    src: require('../assets/images/cebu_food3.jpeg'),
+    tag: '전통',
+    desc: '태국 전통 음식',
+    star: 4.5,
+    shopCode: 'restaurant3',
+    category: 'Restaurant',
+  },
+  {
+    shop: '아인 레스토랑',
+    url:
+      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_food4.jpg?alt=media&token=1df930aa-61e9-4a80-90c6-eb5cf443aa0d',
+
+    src: require('../assets/images/cebu_food4.jpg'),
+    tag: '전통',
+    desc: '태국 전통 음식',
+    star: 4.5,
+    shopCode: 'restaurant4',
+    category: 'Restaurant',
+  },
+];
+export {categories, profiles, plans, lists, recommendList, eventList, loveList};
