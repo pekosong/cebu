@@ -82,13 +82,13 @@ const ProfileScreen = props => {
   };
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
-    let unsubscribe;
-    unsubscribe = dispatch(watchUserData('b@naver.com'));
-    dispatch(downloadShopData()).then(() => {});
-    return () => {
-      unsubscribe();
-    };
+    // registerForPushNotificationsAsync();
+    // let unsubscribe;
+    // unsubscribe = dispatch(watchUserData('b@naver.com'));
+    // dispatch(downloadShopData()).then(() => {});
+    // return () => {
+    //   unsubscribe();
+    // };
   }, []);
 
   handleLogout = () => {

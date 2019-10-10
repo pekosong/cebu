@@ -63,7 +63,7 @@ const TestScrenn = props => {
     );
   };
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <View style={{flex: 1}}>
       <ScrollView style={{flex: 1}}>
         {myImages.map((item, idx) => (
           <TouchableWithoutFeedback key={idx} onPress={() => handlePress(idx)}>
@@ -92,8 +92,13 @@ const TestScrenn = props => {
         <View
           style={{...StyleSheet.absoluteFill}}
           pointerEvents={image ? 'auto' : 'none'}>
-          <ScrollView style={{flex: 1, zIndex: 1001, backgroundColor: 'white'}}>
-            <View style={{flex: 2, zIndex: 1001, backgroundColor: 'white'}}>
+          <ScrollView>
+            <View
+              style={{
+                zIndex: 1000,
+                height: height,
+                backgroundColor: 'white',
+              }}>
               <Animated.Image
                 source={{uri: image ? image : null}}
                 style={[
@@ -143,15 +148,17 @@ const TestScrenn = props => {
             </View>
             <Animated.View
               style={{
+                position: 'absolute',
+                top: height / 2,
                 flex: 1,
-                zIndex: 1000,
+                zIndex: 1001,
                 backgroundColor: 'white',
                 padding: 10,
                 transform: [
                   {
                     translateY: showAnim.interpolate({
                       inputRange: [0, 1],
-                      outputRange: [-200, 0],
+                      outputRange: [500, 0],
                     }),
                   },
                 ],
@@ -166,11 +173,53 @@ const TestScrenn = props => {
                 consequatur nihil maxime, rem quam quibusdam dolor atque fugit
                 ipsa esse, corporis asperiores.
               </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
+              <Text>
+                Lorem ipsum dolor sit amet consectetur adipisicing elit. Non
+                consequuntur vitae, veritatis aliquid facilis veniam sed error
+                consequatur nihil maxime, rem quam quibusdam dolor atque fugit
+                ipsa esse, corporis asperiores.
+              </Text>
             </Animated.View>
           </ScrollView>
         </View>
       ) : null}
-    </SafeAreaView>
+    </View>
   );
 };
 

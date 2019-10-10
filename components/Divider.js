@@ -25,8 +25,8 @@ export const styles = StyleSheet.create({
     marginRight: -theme.sizes.padding,
     height: 0,
     marginVertical: theme.sizes.base * 1.5,
-    borderWidth: 2,
-    borderColor: '#ccc',
+    borderWidth: 4,
+    borderColor: '#eee',
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
