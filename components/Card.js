@@ -31,7 +31,7 @@ export default Card = props => {
     };
     let newfavorites = user.myfavorites;
     if (oldfavorites.includes(shop.shopCode)) {
-      const idx = newfavorites.indexOf(newShop);
+      const idx = user.myfavorites.map(e => e.id).indexOf(shop.shopCode);
       newfavorites.splice(idx, 1);
     } else {
       newfavorites.push(newShop);
