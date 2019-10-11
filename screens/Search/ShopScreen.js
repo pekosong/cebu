@@ -6,7 +6,6 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
-  TextInput,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -14,6 +13,7 @@ import {Ionicons, AntDesign} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 
 import {
+  Card,
   Button,
   Block,
   Text,

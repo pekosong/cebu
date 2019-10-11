@@ -28,7 +28,7 @@ export default NewReviewModal = props => {
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
-        리뷰 작성
+        후기 작성
       </Text>
       <Block bottom style={{marginBottom: 50, marginHorizontal: 50}}>
         <StarRating
@@ -42,7 +42,7 @@ export default NewReviewModal = props => {
           selectedStar={rating => setStarCount(rating)}></StarRating>
       </Block>
       <Text bold h3>
-        리뷰
+        후기
       </Text>
       <TextInput
         style={{fontSize: 20}}

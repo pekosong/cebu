@@ -181,7 +181,7 @@ const PersonalScreen = props => {
             <Block style={{marginBottom: 20}}>
               <Block row space="between">
                 <Block flex={1}>
-                  <Text style={styles.textStyle}>사진 등록</Text>
+                  <Text style={styles.textStyle}>사진</Text>
                 </Block>
                 <Block right row flex={2}>
                   <TouchableOpacity onPress={_cameraImage}>
@@ -208,7 +208,7 @@ const PersonalScreen = props => {
               <CachedImage uri={image} style={styles.avatar} />
             </Block>
 
-            <Block style={styles.inputRow}>
+            <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
               <Text style={styles.textStyle}>이메일</Text>
               <Text bold style={{fontSize: 20}}>
                 {email}
