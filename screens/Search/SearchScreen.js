@@ -23,7 +23,12 @@ import {watchUserData, downloadShopData} from '../../redux/action';
 
 const EMAIL = 'b@naver.com';
 const {height, width} = Dimensions.get('window');
-
+const MAP = {
+  Restaurant: '식당',
+  Massage: '마사지',
+  Nail: '네일',
+  Activity: '액티비티',
+};
 const SearchScreen = props => {
   const {navigation, categories, recommendList, eventList, loveList} = props;
   const [cates, setCates] = useState([]);
@@ -53,19 +58,24 @@ const SearchScreen = props => {
           })
         }>
         <Block style={styles.categoryContainer}>
-          <Image
+          <Block
             style={{
               borderTopLeftRadius: 10,
               borderTopRightRadius: 10,
-              width: '100%',
-              resizeMode: 'cover',
-              height: 85,
-            }}
-            source={item.src}></Image>
+              overflow: 'hidden',
+            }}>
+            <Image
+              style={{
+                width: '100%',
+                resizeMode: 'cover',
+                height: 85,
+              }}
+              source={item.src}></Image>
 
-          <Text black style={{padding: 8}}>
-            {item.id}
-          </Text>
+            <Text black style={{padding: 12}}>
+              {MAP[item.id]}
+            </Text>
+          </Block>
         </Block>
       </TouchableWithoutFeedback>
     );
@@ -92,7 +102,7 @@ const SearchScreen = props => {
 
           <Block style={styles.title}>
             <Text h1 bold>
-              이런 활동은 어떠세요?
+              이런 활동은 어떠세요
             </Text>
           </Block>
           <Block style={{paddingHorizontal: theme.sizes.padding}}>
@@ -169,7 +179,6 @@ const SearchScreen = props => {
           <Block
             style={{
               marginHorizontal: theme.sizes.padding,
-
               flexDirection: 'row',
               flexWrap: 'wrap',
             }}>

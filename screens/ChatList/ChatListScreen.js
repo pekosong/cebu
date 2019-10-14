@@ -99,30 +99,35 @@ const ChatListScreen = props => {
           row
           style={{
             marginVertical: 10,
-            paddingBottom: 5,
+            paddingBottom: 20,
+            borderBottomWidth: 0.5,
+            borderBottomColor: theme.colors.gray2,
           }}>
           <Block left flex={1}>
             <CachedImage uri={item.avatar} style={styles.avatarChat} />
           </Block>
-          <Block flex={3.5} style={{marginTop: 15, height: 40}}>
-            <Block middle row space="between">
+          <Block flex={4.5}>
+            <Block row space="between">
               <Text h4 bold>
                 {user.host ? item.email : item.shopName}
               </Text>
               <Block flex={false}>
-                <Text caption style={{textAlign: 'right'}}>
+                <Text h4 right style={{marginBottom: 5}}>
                   {item.date}
                 </Text>
-                <Text caption style={{textAlign: 'right'}}>
+                <Text h4 right>
                   {item.time}
                 </Text>
               </Block>
             </Block>
-            <Block bottom>
-              <Text>
+            <Block>
+              <Text h4 style={{marginVertical: 10, marginTop: -10}}>
                 {item.message.length > 15
                   ? `${item.message.slice(0, 15)}...`
                   : item.message}
+              </Text>
+              <Text accent>
+                예약완료<Text> - 10월 15일</Text>
               </Text>
             </Block>
           </Block>
@@ -142,7 +147,10 @@ const ChatListScreen = props => {
           </Block>
           <ScrollView
             showsVerticalScrollIndicator={false}
-            style={{marginHorizontal: theme.sizes.padding}}>
+            style={{
+              marginHorizontal: theme.sizes.padding,
+              paddingTop: theme.sizes.padding,
+            }}>
             <FlatList
               data={chatList}
               keyExtractor={item => (user.host ? item.email : item.shopName)}
@@ -176,8 +184,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding,
   },
   avatarChat: {
-    width: theme.sizes.base * 4,
-    height: theme.sizes.base * 4,
+    width: theme.sizes.base * 3,
+    height: theme.sizes.base * 3,
+    borderRadius: theme.sizes.base * 1.5,
   },
 });
 

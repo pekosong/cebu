@@ -52,7 +52,7 @@ export default Card = props => {
         style={[
           styles.elementContainer,
           {paddingRight: idx % 2 == 0 ? 16 : 0},
-          {marginBottom: idx == 1 || idx == 0 ? 25 : 0},
+          {marginBottom: idx == 1 || idx == 0 ? 30 : 0},
           {
             width:
               idx % 2 == 0
@@ -87,25 +87,29 @@ export default Card = props => {
             ) : null}
           </TouchableOpacity>
         </Block>
-        <Block style={{marginTop: 3}}>
+        <Block style={{marginTop: 6}}>
           <Block flex={3} middle>
-            <Text style={{fontWeight: 'bold', color: theme.colors.accent}}>
+            <Text caption style={{color: theme.colors.primary}}>
               {item.tag}
             </Text>
-            <Text bold style={{marginTop: 2, marginBottom: 6}}>
+            <Text bold style={{marginVertical: 5}}>
               {item.shop}
             </Text>
             <Block center row>
+              <Text accent style={{paddingBottom: 3, marginRight: 5}}>
+                {item.star}
+              </Text>
+
               <StarRating
                 disabled={false}
                 maxStars={5}
                 rating={item.star}
-                starSize={14}
+                starSize={12}
                 fullStarColor={theme.colors.accent}
-                containerStyle={{width: 20}}
+                containerStyle={{width: 12, marginTop: 3}}
               />
-              <Text style={{marginLeft: 50, paddingBottom: 3}}>
-                {item.star}
+              <Text accent style={{marginLeft: 50}}>
+                123
               </Text>
             </Block>
           </Block>

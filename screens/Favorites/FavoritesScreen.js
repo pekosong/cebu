@@ -132,7 +132,7 @@ function FavoritesScreen(props) {
             disabled={false}
             maxStars={5}
             rating={shop.review}
-            starSize={10}
+            starSize={12}
             fullStarColor={theme.colors.accent}
             containerStyle={{width: 20}}
           />
