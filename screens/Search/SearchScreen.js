@@ -6,13 +6,23 @@ import {
   TouchableOpacity,
   ActivityIndicator,
   TouchableWithoutFeedback,
+  Dimensions,
 } from 'react-native';
-import {Block, Text, Card, CardWrap, SearchBar} from '../../components';
+import {
+  Block,
+  Text,
+  Card,
+  CardWrap,
+  SearchBar,
+  CachedImage,
+  Button,
+} from '../../components';
 import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
 const EMAIL = 'b@naver.com';
+const {height, width} = Dimensions.get('window');
 
 const SearchScreen = props => {
   const {navigation, categories, recommendList, eventList, loveList} = props;
@@ -45,10 +55,11 @@ const SearchScreen = props => {
         <Block style={styles.categoryContainer}>
           <Image
             style={{
-              borderRadius: 3,
+              borderTopLeftRadius: 10,
+              borderTopRightRadius: 10,
               width: '100%',
               resizeMode: 'cover',
-              height: 70,
+              height: 85,
             }}
             source={item.src}></Image>
 
@@ -70,13 +81,44 @@ const SearchScreen = props => {
               평생 잊지 못할 세부를 원하세요?
             </Text>
           </Block>
-          <Block style={{...styles.content, height: 130}}>
+          <Block style={{...styles.content, height: 140}}>
             <ScrollView
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               scrollEnabled={true}>
               {cates.map(item => renderList(item))}
             </ScrollView>
+          </Block>
+
+          <Block style={styles.title}>
+            <Text h1 bold>
+              이런 활동은 어떠세요?
+            </Text>
+          </Block>
+          <Block style={{paddingHorizontal: theme.sizes.padding}}>
+            <CachedImage
+              style={{
+                height: 350,
+                width: width - theme.sizes.padding * 2,
+                borderRadius: 10,
+              }}
+              uri={
+                'https://cebu365.com/wp-content/uploads/2016/12/hopping-tour-1.jpg'
+              }></CachedImage>
+            <Block center style={{width: width, position: 'absolute', top: 30}}>
+              <Text white>헬로우 세부와 함께하는</Text>
+              <Text white bold h3 style={{paddingVertical: 15}}>
+                다양한 Activity
+              </Text>
+              <Button
+                style={{
+                  width: 120,
+                }}>
+                <Text center black>
+                  자세히 알아보기
+                </Text>
+              </Button>
+            </Block>
           </Block>
           {/* 할인 정보 */}
           <Block style={styles.title}>
@@ -206,10 +248,10 @@ const styles = StyleSheet.create({
   },
   categoryContainer: {
     flex: 0,
-    borderRadius: 3,
-    width: 120,
-    height: 120,
-    marginRight: 20,
+    borderRadius: 10,
+    width: 130,
+    height: 130,
+    marginRight: 15,
     backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
