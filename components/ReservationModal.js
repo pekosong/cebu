@@ -115,6 +115,7 @@ export default ReservationModal = props => {
 
     let allPlans = user.plans;
     let allReservations = shop.reservations;
+    console.log(shop);
     allPlans[selectedDate][time] = reservation;
     allReservations.push(reservation);
 

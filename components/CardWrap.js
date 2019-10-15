@@ -92,7 +92,7 @@ export default Card = props => {
             <Text caption style={{color: theme.colors.primary}}>
               {item.tag}
             </Text>
-            <Text bold style={{marginVertical: 5}}>
+            <Text bold style={{marginBottom: 5}}>
               {item.shop}
             </Text>
             <Block center row>
