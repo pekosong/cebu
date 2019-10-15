@@ -7,14 +7,17 @@ import {
   TextInput,
 } from 'react-native';
 
+import Divider from './Divider';
 import Block from './Block';
 import Text from './Text';
 import Button from './Button';
+import CachedImage from './CachedImage';
 
 import {theme} from '../constants';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {makeResevation} from '../redux/action';
+import StarRating from 'react-native-star-rating';
 
 const TIMES = [
   '10:00',
@@ -110,15 +113,13 @@ export default ReservationModal = props => {
       id: shop.id,
       name: shop.name,
       engName: shop.engName,
-      src: shop.source[0],
+      src: shop.preview,
     };
 
     let allPlans = user.plans;
     let allReservations = shop.reservations;
-    console.log(shop);
     allPlans[selectedDate][time] = reservation;
     allReservations.push(reservation);
-
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
     setVisible(false);
   };
@@ -183,9 +184,9 @@ export default ReservationModal = props => {
 
   seletedTimeColor = t => {
     return reservationDate == selectedDate && t == reservationTime
-      ? theme.colors.white
+      ? theme.colors.accent
       : timeCan.indexOf(t) != -1
-      ? theme.colors.white
+      ? theme.colors.primary
       : t == time
       ? theme.colors.white
       : theme.colors.black;
@@ -205,7 +206,36 @@ export default ReservationModal = props => {
       </Text>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block>
-          <Text style={{...styles.textStyle, marginTop: 20}}>예약일</Text>
+          <Block row space="between">
+            <Block>
+              <Text h3 bold>
+                {shop.name}
+              </Text>
+              <Text h4 accent style={{marginVertical: 5}}>
+                {shop.engName}
+              </Text>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={shop.review}
+                starSize={16}
+                fullStarColor={theme.colors.accent}
+                containerStyle={{width: 20, marginTop: 3}}
+              />
+            </Block>
+            <CachedImage
+              uri={shop.preview}
+              style={{height: 80, width: 120}}></CachedImage>
+          </Block>
+
+          <Block
+            style={{
+              marginVertical: 20,
+              borderWidth: 1,
+              borderColor: theme.colors.gray2,
+            }}></Block>
+
+          <Text style={{...styles.textStyle}}>예약일</Text>
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Block row>
               {Object.keys(date).map(t => (
@@ -222,7 +252,6 @@ export default ReservationModal = props => {
                   }}>
                   <Block middle center>
                     <Text
-                      caption
                       style={{
                         color: selectedDateColor(t),
                         marginBottom: 2,
@@ -251,7 +280,6 @@ export default ReservationModal = props => {
                   onPress={() => setTime(t)}>
                   <Block center middle>
                     <Text
-                      caption
                       style={{
                         color: seletedTimeColor(t),
                       }}>
@@ -276,13 +304,13 @@ export default ReservationModal = props => {
               ))}
             </Block>
           </ScrollView>
-
           <Text style={{...styles.textStyle, marginTop: 20, marginBottom: 15}}>
             예약인원
           </Text>
           <Block
             style={{
-              backgroundColor: theme.colors.black,
+              borderWidth: 1,
+              borderColor: theme.colors.black,
               borderRadius: 5,
               marginBottom: 15,
               height: 45,
@@ -298,11 +326,11 @@ export default ReservationModal = props => {
               onPress={() => {
                 setPeople(people == 1 ? people : people - 1);
               }}>
-              <Text h1 bold white>
+              <Text h1 bold black>
                 -
               </Text>
             </TouchableOpacity>
-            <Text white h3>
+            <Text black h3>
               {people + '명'}
             </Text>
             <TouchableOpacity
@@ -311,7 +339,7 @@ export default ReservationModal = props => {
                 right: 20,
               }}
               onPress={() => setPeople(people + 1)}>
-              <Text h1 bold white>
+              <Text h1 black>
                 +
               </Text>
             </TouchableOpacity>
@@ -359,16 +387,22 @@ export default ReservationModal = props => {
           </Block>
         </Block>
 
+        <Block
+          style={{
+            marginTop: 40,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2,
+          }}></Block>
         <Block row space="between" style={{marginVertical: 20}}>
           <Block flex={2}>
             <Text style={{marginBottom: 5}}>예약일</Text>
-            <Text h2 bold primary>
+            <Text h2 accent>
               {selectedDate}
             </Text>
           </Block>
           <Block center flex={2}>
             <Text style={{marginBottom: 5}}>예약시간</Text>
-            <Text h2 bold primary>
+            <Text h2 accent>
               {time}
             </Text>
           </Block>
@@ -376,11 +410,17 @@ export default ReservationModal = props => {
             <Text right style={{marginBottom: 5}}>
               예약인원
             </Text>
-            <Text right h2 bold primary>
+            <Text right h2 accent>
               {people + '명'}
             </Text>
           </Block>
         </Block>
+        <Block
+          style={{
+            marginBottom: 20,
+            borderWidth: 1,
+            borderColor: theme.colors.gray2,
+          }}></Block>
         {isChange ? (
           <Block>
             <Button
@@ -432,15 +472,15 @@ export const styles = StyleSheet.create({
   },
   onTime: {
     backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white,
+    borderColor: theme.colors.black,
   },
   noTime: {
-    backgroundColor: theme.colors.primary,
-    borderColor: theme.colors.white,
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.primary,
   },
   reserTime: {
-    backgroundColor: theme.colors.accent,
-    borderColor: theme.colors.white,
+    backgroundColor: theme.colors.white,
+    borderColor: theme.colors.accent,
   },
   date: {
     width: 100,

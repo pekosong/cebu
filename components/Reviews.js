@@ -16,10 +16,7 @@ export default Reviews = props => {
     <TouchableOpacity>
       <Block style={{marginVertical: theme.sizes.padding / 3}}>
         <Block row space="between">
-          <CachedImage
-            uri={'https://i.pravatar.cc/301'}
-            style={styles.avatarChat}
-          />
+          <CachedImage uri={review.src} style={styles.avatarChat} />
           <Block bottom style={{marginLeft: 10}}>
             <Text>2019년 9월</Text>
             <Text>{review.writer}</Text>

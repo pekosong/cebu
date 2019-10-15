@@ -36,18 +36,21 @@ const lists = [
     reviewCnt: 1212,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
@@ -110,24 +113,28 @@ const lists = [
     reviewCnt: 231,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['부페', '전통음식'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -184,24 +191,28 @@ const lists = [
     reviewCnt: 342,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['동동', '전통음식'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -258,24 +269,28 @@ const lists = [
     reviewCnt: 545,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['스테이크', '전통음식'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -332,24 +347,28 @@ const lists = [
     reviewCnt: 200,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['전통태국마사지'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -405,24 +424,28 @@ const lists = [
     reviewCnt: 234,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['전통태국마사지'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -478,24 +501,28 @@ const lists = [
     reviewCnt: 156,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['전통태국마사지'],
     openTime: '11:00',
     closeTime: '24:00',
@@ -551,24 +578,28 @@ const lists = [
     reviewCnt: 270,
     reviews: [
       {
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
         writer: 'peko22@naver.com',
         comment: '너무 좋아요',
         star: 5,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
         writer: 'peko2@naver.com',
         comment: '좋긴 한데 서비스가 조금 별로 였어요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
         writer: 'peko1@naver.com',
         comment: '다음에 꼭 다시 오고 싶어요',
         star: 4,
         date: new Date(),
       },
     ],
+
     tags: ['전통태국마사지'],
     openTime: '11:00',
     closeTime: '24:00',

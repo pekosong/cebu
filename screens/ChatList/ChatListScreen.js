@@ -60,7 +60,7 @@ const ChatListScreen = props => {
                   )[0].avatar;
                 } else {
                   chat.avatar =
-                    'https://img.icons8.com/wired/64/000000/guest-male.png';
+                    'https://randomuser.me/api/portraits/men/32.jpg';
                 }
               }
               chat.message = message;
@@ -121,7 +121,7 @@ const ChatListScreen = props => {
               </Block>
             </Block>
             <Block>
-              <Text h4 style={{marginVertical: 10, marginTop: -10}}>
+              <Text h4 style={{marginVertical: 6, marginTop: -18}}>
                 {item.message.length > 15
                   ? `${item.message.slice(0, 15)}...`
                   : item.message}

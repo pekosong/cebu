@@ -21,7 +21,7 @@ import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
-const EMAIL = 'b@naver.com';
+const EMAIL = 'peko22@naver.com';
 const {height, width} = Dimensions.get('window');
 const MAP = {
   Restaurant: '식당',
