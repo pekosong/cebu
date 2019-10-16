@@ -8,7 +8,6 @@ import CategoryScreen from '../screens/Search/CategoryScreen';
 import TestScreen from '../screens/Search/TestScreen';
 
 import MyTripScreen from '../screens/MyTrip/MyTripScreen';
-import TripSceen from '../screens/MyTrip/TripScreen';
 
 import ChatListScreen from '../screens/ChatList/ChatListScreen';
 import ChatScreen from '../screens/ChatList/ChatScreen';
@@ -21,6 +20,7 @@ import NoticeScreen from '../screens/Profile/NoticeScreen';
 import TripInfosScreen from '../screens/Profile/TripInfosScreen';
 import TripInfoScreen from '../screens/Profile/TripInfoScreen';
 import MyShopScreen from '../screens/Profile/MyShopScreen';
+import ReservationScreen from '../screens/Profile/ReservationScreen';
 
 import ShopScreen from '../screens/Search/ShopScreen';
 
@@ -125,6 +125,7 @@ const ProfileStack = createStackNavigator(
     TripInfos: TripInfosScreen,
     TripInfo: TripInfoScreen,
     MyShop: MyShopScreen,
+    Reservation: ReservationScreen,
   },
   config,
 );

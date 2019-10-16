@@ -113,15 +113,14 @@ const ChatListScreen = props => {
               </Text>
               <Block flex={false}>
                 <Text h4 right style={{marginBottom: 5}}>
-                  {item.date}
-                </Text>
-                <Text h4 right>
-                  {item.time}
+                  {`${new Date(item.date).getMonth() + 1}월 ${new Date(
+                    item.date,
+                  ).getDate() + 1}일`}
                 </Text>
               </Block>
             </Block>
             <Block>
-              <Text h4 style={{marginVertical: 6, marginTop: -18}}>
+              <Text h4 style={{marginVertical: 6, marginTop: 0}}>
                 {item.message.length > 15
                   ? `${item.message.slice(0, 15)}...`
                   : item.message}

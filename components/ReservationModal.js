@@ -99,10 +99,12 @@ export default ReservationModal = props => {
   handleMakeResercation = () => {
     let reservation = {};
     reservation['createdDate'] = new Date();
+    reservation['status'] = 'wait';
     reservation['email'] = user.email;
     reservation['name'] = user.name;
     reservation['phone'] = user.phone;
     reservation['sex'] = user.sex;
+    reservation['image'] = user.image;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
@@ -127,10 +129,12 @@ export default ReservationModal = props => {
   handleChangeReservation = () => {
     let reservation = {};
     reservation['createdDate'] = new Date();
+    reservation['status'] = 'wait';
     reservation['email'] = user.email;
     reservation['name'] = user.name;
     reservation['phone'] = user.phone;
     reservation['sex'] = user.sex;
+    reservation['image'] = user.image;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;

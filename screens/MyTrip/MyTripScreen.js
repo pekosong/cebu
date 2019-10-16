@@ -29,13 +29,13 @@ function MyTripScreen(props) {
       let days = {};
 
       Object.keys(myPlans).forEach((key, idx) => {
-        days[`Day ${idx + 1}`] = key;
+        days[`${idx + 1}일차`] = key;
       });
 
-      setActive('All');
+      setActive('전체');
       setDates(days);
       setSelectedDates(days);
-      setTabs(['All'].concat(Object.keys(days)));
+      setTabs(['전체'].concat(Object.keys(days)));
       setPlans(myPlans);
       setIsLoaded(true);
     }
@@ -57,7 +57,7 @@ function MyTripScreen(props) {
   };
 
   handleTripTab = tab => {
-    if (tab == 'All') {
+    if (tab == '전체') {
       setSelectedDates(dates);
     } else {
       setSelectedDates({tab: dates[tab]});

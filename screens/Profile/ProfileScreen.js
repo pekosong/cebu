@@ -25,7 +25,7 @@ const hostList = [
   {title: '매장 정보', navigation: 'MyShop', icon: 'home-outline'},
   {
     title: '예약 관리',
-    navigation: '',
+    navigation: 'Reservation',
     icon: 'folder-multiple-outline',
   },
   {title: '고객 정보', navigation: '', icon: 'account-multiple-outline'},

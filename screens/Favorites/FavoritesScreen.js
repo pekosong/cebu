@@ -20,6 +20,18 @@ import {updateFavorite} from '../../redux/action';
 
 const {height, width} = Dimensions.get('window');
 
+const cateMap = {
+  All: '전체',
+  Restaurant: '식당',
+  Message: '마사지',
+  Cafe: '카페',
+  Bar: '술집',
+  Nail: '네일',
+  SeaSports: '수상스포츠',
+  Activity: '액티비티',
+  Shopping: '쇼핑',
+};
+
 function FavoritesScreen(props) {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
@@ -67,7 +79,7 @@ function FavoritesScreen(props) {
         onPress={() => handleTab(tab)}
         style={[styles.tab, isActive ? styles.active : null]}>
         <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {tab}
+          {cateMap[tab]}
         </Text>
       </TouchableOpacity>
     );
