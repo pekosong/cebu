@@ -31,6 +31,7 @@ const ReservationScreen = props => {
   const {navigation} = props;
   const user = useSelector(state => state.user, shallowEqual);
   const [notifications, setNotifications] = useState(true);
+  const [dates, setDates] = useState([]);
   const [reservations, setReservations] = useState([]);
 
   useEffect(() => {
@@ -43,10 +44,10 @@ const ReservationScreen = props => {
         const shop = doc.data();
         let reservations = shop.reservations;
         reservations.sort(function(a, b) {
-          // Turn your strings into dates, and then subtract them
-          // to get a value that is either negative, positive, or zero.
           return new Date(a.date) - new Date(b.date);
         });
+        const days = new Set(reservations.map(e => e.date));
+        setDates(Array.from(days));
         setReservations(reservations);
       });
   }, []);
@@ -70,44 +71,80 @@ const ReservationScreen = props => {
             예약 관리
           </Text>
         </Block>
-
         <Block style={styles.inputs}>
           <Divider></Divider>
-          {reservations.length > 0 ? (
-            reservations.map((e, idx) => (
+          {dates.length > 0 ? (
+            dates.map((day, idx) => (
               <Fragment key={idx}>
-                <TouchableOpacity>
-                  <Block row>
-                    <Block center flex={false}>
-                      <Text h4 bold>
-                        {`${new Date(e.date).getMonth() + 1}월 ${new Date(
-                          e.date,
-                        ).getDate() + 1}일`}
-                      </Text>
-                      <Text h4 bold style={{marginTop: 5}}>
-                        {`(${WEEKMAP[new Date(e.date).getDay()]})`}
-                      </Text>
-                    </Block>
-                    <Block style={{paddingHorizontal: 10}}>
-                      <Text bold>{e.name}</Text>
-                      <Text style={{marginTop: 5}}>
-                        TIME : {e.time}, PEOPLE : {e.people}
-                      </Text>
-                      <Text style={{marginTop: 5}}>{e.phone}</Text>
-                      <Text style={{marginTop: 5}}>{e.email}</Text>
-                    </Block>
-                    <Block flex={false}>
-                      <Text bold h4 accent>
-                        {MAP[e.status]}
-                      </Text>
-                    </Block>
+                <Block row>
+                  <Block center flex={false}>
+                    <Text h4 bold>
+                      {`${new Date(day).getMonth() + 1}월 ${new Date(
+                        day,
+                      ).getDate()}일`}
+                    </Text>
+                    <Text h4 bold style={{marginTop: 3}}>
+                      {`(${WEEKMAP[new Date(day).getDay()]})`}
+                    </Text>
                   </Block>
-                </TouchableOpacity>
+                  <Block>
+                    {reservations
+                      .filter(e => e.date == day)
+                      .map((e, eIdx) => {
+                        let maxLength =
+                          reservations.filter(e => e.date == day).length - 1;
+                        if (day == e.date) {
+                          return (
+                            <Fragment key={eIdx}>
+                              <TouchableOpacity>
+                                <Block row>
+                                  <Block style={{paddingHorizontal: 10}}>
+                                    <Block row>
+                                      <CachedImage
+                                        uri={e.image}
+                                        style={styles.avatarChat}></CachedImage>
+                                      <Block style={{marginLeft: 10}}>
+                                        <Text
+                                          bold
+                                          accent
+                                          style={{marginBottom: 3}}>
+                                          {e.name}
+                                        </Text>
+                                        <Text bold>{e.phone}</Text>
+                                      </Block>
+                                    </Block>
+                                    <Text bold style={{marginTop: 5}}>
+                                      예약시간: {e.time}, 예약인원: {e.people}
+                                    </Text>
+                                  </Block>
+                                  <Block flex={false}>
+                                    <Text bold h4 accent>
+                                      {MAP[e.status]}
+                                    </Text>
+                                  </Block>
+                                </Block>
+                              </TouchableOpacity>
+                              <Block
+                                style={{
+                                  marginBottom: maxLength == eIdx ? 0 : 10,
+                                  borderBottomWidth:
+                                    maxLength == eIdx ? 0 : 0.5,
+                                  borderBottomColor: theme.colors.gray2,
+                                  paddingBottom: maxLength == eIdx ? 0 : 10,
+                                }}></Block>
+                            </Fragment>
+                          );
+                        }
+                      })}
+                  </Block>
+                </Block>
                 <Divider></Divider>
               </Fragment>
             ))
           ) : (
-            <ActivityIndicator></ActivityIndicator>
+            <ActivityIndicator
+              size="large"
+              color={theme.colors.primary}></ActivityIndicator>
           )}
         </Block>
       </ScrollView>
@@ -120,6 +157,10 @@ ReservationScreen.navigationOptions = {
 };
 ReservationScreen.defaultProps = {};
 const styles = StyleSheet.create({
+  full: {
+    flex: 1,
+    justifyContent: 'center',
+  },
   header: {
     marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
     marginBottom: theme.sizes.base,
