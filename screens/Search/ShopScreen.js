@@ -22,7 +22,7 @@ import {
   FullImageSlider,
   ReservationModal,
   ReviewModal,
-  NewReviewModal,
+  ReviewNewModal,
 } from '../../components';
 import {theme, mocks} from '../../constants';
 
@@ -88,6 +88,16 @@ export default function ShopScreen(props) {
       newfavorites.push(newShop);
     }
     dispatch(updateFavorite(newfavorites));
+  };
+
+  renderReviews = () => {
+    sortedReviews = shop.reviews.sort((a, b) => {
+      return b.date.seconds - a.date.seconds;
+    });
+
+    return sortedReviews
+      .slice(0, 3)
+      .map((review, idx) => <Reviews key={idx} review={review} />);
   };
 
   return (
@@ -286,11 +296,7 @@ export default function ShopScreen(props) {
             <Text h3 bold style={styles.content}>
               후기
             </Text>
-            {shop.reviews
-              ? shop.reviews.map((review, idx) => (
-                  <Reviews key={idx} review={review} />
-                ))
-              : null}
+            {shop.reviews ? renderReviews() : null}
             <Block row space="between" style={{marginTop: theme.sizes.padding}}>
               <TouchableOpacity onPress={() => setReviewVisible(true)}>
                 <Text h3 bold color={theme.colors.accent}>
@@ -311,9 +317,9 @@ export default function ShopScreen(props) {
             </Text>
             <Block>
               <Block style={styles.inputRow}>
-                <Text h3>언어</Text>
+                <Text h3>한국어</Text>
                 <Text color={theme.colors.black} bold h3>
-                  한국어, 영어
+                  {shop.korean ? '가능' : '불가'}
                 </Text>
               </Block>
               <Block style={styles.inputRow}>
@@ -325,7 +331,7 @@ export default function ShopScreen(props) {
               <Block style={styles.inputRow}>
                 <Text h3>베이비시터</Text>
                 <Text color={theme.colors.black} bold h3>
-                  가능
+                  {shop.baby ? '가능' : '불가'}
                 </Text>
               </Block>
               <Block style={styles.inputRow}>
@@ -506,8 +512,10 @@ export default function ShopScreen(props) {
         animationType="slide"
         visible={newReviewVisible}
         onRequestClose={() => setNewReviewVisible(false)}>
-        <NewReviewModal
+        <ReviewNewModal
           navigation={navigation}
+          user={user}
+          shop={shop}
           setNewReviewVisible={setNewReviewVisible}
         />
       </Modal>

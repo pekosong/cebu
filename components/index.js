@@ -19,7 +19,7 @@ import Test from './Test';
 import ReviewModal from './ReviewModal';
 import ReservationModal from './ReservationModal';
 import ReservationConfirmModal from './ReservationConfirmModal';
-import NewReviewModal from './NewReviewModal';
+import ReviewNewModal from './ReviewNewModal';
 
 export {
   Block,
@@ -42,5 +42,5 @@ export {
   ReservationModal,
   ReservationConfirmModal,
   ReviewModal,
-  NewReviewModal,
+  ReviewNewModal,
 };

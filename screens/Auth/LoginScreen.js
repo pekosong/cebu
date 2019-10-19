@@ -78,8 +78,13 @@ const LoginScreen = props => {
             createAt: new Date(),
             myfavorites: [],
             plans: {},
-            image:
-              'https://img.icons8.com/plasticine/16/000000/person-male.png',
+            sex: '',
+            phone: '',
+            name: '',
+            host: false,
+            shops: [],
+            birth: '',
+            image: 'https://randomuser.me/api/portraits/men/43.jpg',
           };
           return firebase
             .firestore()

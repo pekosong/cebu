@@ -11,7 +11,9 @@ import StarRating from 'react-native-star-rating';
 export default ReviewModal = props => {
   const {setReviewVisible, reviews, review, reviewCnt} = props;
 
-  useEffect(() => {}, []);
+  useEffect(() => {
+    console.log(reviews);
+  }, []);
 
   return (
     <Block

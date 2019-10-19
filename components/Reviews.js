@@ -7,6 +7,8 @@ import CachedImage from './CachedImage';
 import {theme} from '../constants';
 import StarRating from 'react-native-star-rating';
 
+import moment from 'moment';
+
 export default Reviews = props => {
   const {review} = props;
 
@@ -18,7 +20,7 @@ export default Reviews = props => {
         <Block row space="between">
           <CachedImage uri={review.src} style={styles.avatarChat} />
           <Block bottom style={{marginLeft: 10}}>
-            <Text>2019년 9월</Text>
+            <Text>{moment.unix(review.date.seconds).format('YYYY-MM-DD')}</Text>
             <Text>{review.writer}</Text>
           </Block>
           <Block style={{position: 'absolute', right: 50, bottom: 0}}>

@@ -191,19 +191,16 @@ export default ReservationConfirmModal = props => {
           flex: 0,
           height: 50,
           width: '100%',
-          marginVertical: 20,
+          marginTop: 20,
           paddingHorizontal: theme.sizes.padding,
         }}>
         <TouchableOpacity onPress={() => setVisible(false)}>
           <Ionicons size={50} color={theme.colors.black} name="ios-close" />
         </TouchableOpacity>
-        <Text h1 bold primary>
+        <Text h1 bold>
           {MAP[reservation.status]}
         </Text>
       </Block>
-      <Text h1 bold style={{paddingHorizontal: theme.sizes.padding}}>
-        예약 관리
-      </Text>
       {renderConfirmPage()}
     </Block>
   );

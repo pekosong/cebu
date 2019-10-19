@@ -50,7 +50,7 @@ const ReservationScreen = props => {
   const [active, setActive] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const tabs = ['전체', '예약요청', '예약완료', '종료'];
+  const tabs = ['전체', '예약요청', '예약완료', '종료', '예약불가'];
 
   useEffect(() => {
     firebase

@@ -65,22 +65,21 @@ export default ReservationModal = props => {
     let myPlans = user.plans;
 
     if (reservation) {
+      const {date, time, people, text} = reservation;
       let days = {};
       Object.keys(myPlans).forEach((key, idx) => {
         days[key] = `Day ${idx + 1}`;
       });
       setDate(days);
       setTodo(reservation);
-      setSelectedDate(reservation.date);
-      setReservationDate(reservation.date);
-      setTime(reservation.time);
-      setReservationTime(reservation.time);
-      setPeople(reservation.people);
-      setText(reservation.text);
+      setSelectedDate(date);
+      setReservationDate(date);
+      setTime(time);
+      setReservationTime(time);
+      setPeople(people);
+      setText(text);
       setTimeCan(
-        Object.keys(user.plans[reservation.date]).filter(
-          e => e != 'hotel' && e != 'nDay',
-        ),
+        Object.keys(user.plans[date]).filter(e => e != 'hotel' && e != 'nDay'),
       );
       setIsChange(true);
     } else {
@@ -124,12 +123,10 @@ export default ReservationModal = props => {
     };
     let allPlans = user.plans;
     let allReservations = shop.reservations;
-    console.log(allReservations);
     allPlans[selectedDate][time] = reservation;
     allReservations.push(reservation);
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    let newShop = {...shop, reservations: allReservations};
-    dispatch(updateShop(newShop));
+    dispatch(updateShop({...shop, reservations: allReservations}));
     setVisible(false);
   };
 
@@ -161,15 +158,14 @@ export default ReservationModal = props => {
     let allPlans = user.plans;
     let allReservations = shop.reservations;
 
-    delete allPlans[todo.date][todo.time];
+    delete allPlans[selectedDate][time];
     allReservations = allReservations.filter(e => e.email != user.email);
 
     allPlans[selectedDate][time] = reservation;
     allReservations.push(reservation);
 
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    let newShop = {...shop, reservations: allReservations};
-    dispatch(updateShop(newShop));
+    dispatch(updateShop({...shop, reservations: allReservations}));
     navigation.goBack();
   };
 
@@ -181,8 +177,7 @@ export default ReservationModal = props => {
     allReservations = allReservations.filter(e => e.email != user.email);
 
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    let newShop = {...shop, reservations: allReservations};
-    dispatch(updateShop(newShop));
+    dispatch(updateShop({...shop, reservations: allReservations}));
     navigation.goBack();
   };
 
@@ -482,50 +477,26 @@ export default ReservationModal = props => {
           {text}
         </Text>
       </Block>
-
-      {isChange ? (
-        <Block>
-          <Button
-            gradient
-            onPress={() => {
-              handleChangeReservation();
-            }}>
-            <Text bold white center>
-              예약 변경 요청
-            </Text>
-          </Button>
-          <Button
-            shadow
-            onPress={() => {
-              handleDeleteReservation();
-            }}>
-            <Text center bold primary>
-              취소 요청
-            </Text>
-          </Button>
-        </Block>
-      ) : (
-        <Block>
-          <Button
-            gradient
-            onPress={() => {
-              handleMakeReservation();
-            }}>
-            <Text bold white center>
-              예약 신청
-            </Text>
-          </Button>
-          <Button
-            shadow
-            onPress={() => {
-              setEdit(true);
-            }}>
-            <Text center bold primary>
-              뒤로
-            </Text>
-          </Button>
-        </Block>
-      )}
+      <Block>
+        <Button
+          gradient
+          onPress={() => {
+            handleMakeReservation();
+          }}>
+          <Text bold white center>
+            예약 신청
+          </Text>
+        </Button>
+        <Button
+          shadow
+          onPress={() => {
+            setEdit(true);
+          }}>
+          <Text center bold primary>
+            뒤로
+          </Text>
+        </Button>
+      </Block>
     </ScrollView>
   );
 
