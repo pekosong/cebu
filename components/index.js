@@ -13,11 +13,13 @@ import SearchBar from './SearchBar';
 import WideText from './WideText';
 import Reviews from './Reviews';
 import FullImageSlider from './FullImageSlider';
-import ReservationModal from './ReservationModal';
-import ReviewModal from './ReviewModal';
-import NewReviewModal from './NewReviewModal';
 import CachedImage from './CachedImage';
 import Test from './Test';
+
+import ReviewModal from './ReviewModal';
+import ReservationModal from './ReservationModal';
+import ReservationConfirmModal from './ReservationConfirmModal';
+import NewReviewModal from './NewReviewModal';
 
 export {
   Block,
@@ -35,9 +37,10 @@ export {
   WideText,
   Reviews,
   FullImageSlider,
-  ReservationModal,
-  ReviewModal,
-  NewReviewModal,
   CachedImage,
   Test,
+  ReservationModal,
+  ReservationConfirmModal,
+  ReviewModal,
+  NewReviewModal,
 };

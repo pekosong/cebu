@@ -12,6 +12,13 @@ import {theme, mocks} from '../../constants';
 
 import {useSelector, shallowEqual} from 'react-redux';
 
+const MAP = {
+  wait: '예약요청',
+  confirm: '예약확정',
+  end: '종료',
+  not: '예약불가',
+};
+
 function MyTripScreen(props) {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
@@ -127,10 +134,13 @@ function MyTripScreen(props) {
                       <Text h3 bold>
                         {shop.name}
                       </Text>
-                      <Text h3>{todo.time}</Text>
+                      <Text h4>{todo.time}</Text>
                     </Block>
-                    <Block>
+                    <Block middle row space="between" style={{marginTop: 5}}>
                       <Text>{shop.engName}</Text>
+                      <Text h3 accent>
+                        {MAP[todo.status]}
+                      </Text>
                     </Block>
                   </Block>
                 </Block>

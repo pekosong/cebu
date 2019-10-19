@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, Fragment, useRef} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -7,7 +7,6 @@ import {
   TextInput,
 } from 'react-native';
 
-import Divider from './Divider';
 import Block from './Block';
 import Text from './Text';
 import Button from './Button';
@@ -16,7 +15,7 @@ import CachedImage from './CachedImage';
 import {theme} from '../constants';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {makeResevation} from '../redux/action';
+import {updateShop, makeResevation} from '../redux/action';
 import StarRating from 'react-native-star-rating';
 
 const TIMES = [
@@ -51,7 +50,11 @@ export default ReservationModal = props => {
   const [pickupLocation, setPickupLocation] = useState('');
   const [pickupCar, setPickpCar] = useState('');
 
+  const [errMsg, setErrMsg] = useState('');
   const [isChange, setIsChange] = useState(false);
+  const [edit, setEdit] = useState(true);
+
+  const editPage = useRef(null);
 
   const user = useSelector(state => state.user, shallowEqual);
 
@@ -96,51 +99,58 @@ export default ReservationModal = props => {
     }
   }, [user]);
 
-  handleMakeResercation = () => {
+  handleMakeReservation = () => {
+    const {email, name, phone, sex, image} = user;
     let reservation = {};
     reservation['createdDate'] = new Date();
     reservation['status'] = 'wait';
-    reservation['email'] = user.email;
-    reservation['name'] = user.name;
-    reservation['phone'] = user.phone;
-    reservation['sex'] = user.sex;
-    reservation['image'] = user.image;
+    reservation['email'] = email;
+    reservation['name'] = name;
+    reservation['phone'] = phone;
+    reservation['sex'] = sex;
+    reservation['image'] = image;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
     reservation['text'] = text;
     reservation['pickupLocation'] = pickupLocation;
-    reservation['pickTime'] = pickuptime;
+    reservation['pickupTime'] = pickuptime;
+    reservation['pickupCar'] = '';
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
       engName: shop.engName,
       src: shop.preview,
     };
-
     let allPlans = user.plans;
     let allReservations = shop.reservations;
+    console.log(allReservations);
     allPlans[selectedDate][time] = reservation;
     allReservations.push(reservation);
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
+    let newShop = {...shop, reservations: allReservations};
+    dispatch(updateShop(newShop));
     setVisible(false);
   };
 
   handleChangeReservation = () => {
+    const {email, name, phone, sex, image} = user;
+
     let reservation = {};
     reservation['createdDate'] = new Date();
     reservation['status'] = 'wait';
-    reservation['email'] = user.email;
-    reservation['name'] = user.name;
-    reservation['phone'] = user.phone;
-    reservation['sex'] = user.sex;
-    reservation['image'] = user.image;
+    reservation['email'] = email;
+    reservation['name'] = name;
+    reservation['phone'] = phone;
+    reservation['sex'] = sex;
+    reservation['image'] = image;
     reservation['time'] = time;
     reservation['people'] = people;
     reservation['date'] = selectedDate;
     reservation['text'] = text;
     reservation['pickupLocation'] = pickupLocation;
-    reservation['pickTime'] = pickuptime;
+    reservation['pickupTime'] = pickuptime;
+    reservation['pickupCar'] = '';
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
@@ -158,6 +168,8 @@ export default ReservationModal = props => {
     allReservations.push(reservation);
 
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
+    let newShop = {...shop, reservations: allReservations};
+    dispatch(updateShop(newShop));
     navigation.goBack();
   };
 
@@ -169,6 +181,8 @@ export default ReservationModal = props => {
     allReservations = allReservations.filter(e => e.email != user.email);
 
     dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
+    let newShop = {...shop, reservations: allReservations};
+    dispatch(updateShop(newShop));
     navigation.goBack();
   };
 
@@ -196,6 +210,325 @@ export default ReservationModal = props => {
       : theme.colors.black;
   };
 
+  renderEditPage = () => (
+    <ScrollView ref={editPage} showsVerticalScrollIndicator={false}>
+      <Block>
+        <Text style={{...styles.textStyle}}>예약일</Text>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <Block row>
+            {Object.keys(date).map(t => (
+              <Button
+                key={t}
+                style={t == selectedDate ? styles.onDate : styles.date}
+                onPress={() => {
+                  setTimeCan(
+                    Object.keys(user.plans[t]).filter(
+                      e => e != 'hotel' && e != 'nDay',
+                    ),
+                  );
+                  setSelectedDate(t);
+                }}>
+                <Block middle center>
+                  <Text
+                    style={{
+                      color: selectedDateColor(t),
+                      marginBottom: 2,
+                    }}>
+                    {date[t]}
+                  </Text>
+                  <Text
+                    style={{
+                      color: selectedDateColor(t),
+                      fontSize: 12,
+                    }}>
+                    {t}
+                  </Text>
+                </Block>
+              </Button>
+            ))}
+          </Block>
+        </ScrollView>
+        <Text style={{...styles.textStyle, marginTop: 20}}>예약시간</Text>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <Block row>
+            {TIMES.map(t => (
+              <Button
+                key={t}
+                style={[styles.timeStyle, seletedTimeStyle(t)]}
+                onPress={() => setTime(t)}>
+                <Block center middle>
+                  <Text
+                    style={{
+                      color: seletedTimeColor(t),
+                    }}>
+                    {reservationDate == selectedDate && reservationTime == t
+                      ? '현예약'
+                      : timeCan.indexOf(t) != -1
+                      ? `예약중`
+                      : t}
+                  </Text>
+                  {reservationDate == selectedDate &&
+                  reservationTime == t ? null : timeCan.indexOf(t) != -1 ? (
+                    <Text
+                      style={{
+                        color: seletedTimeColor(t),
+                        fontSize: 12,
+                      }}>
+                      {user.plans[selectedDate][t]['shop']['name']}
+                    </Text>
+                  ) : null}
+                </Block>
+              </Button>
+            ))}
+          </Block>
+        </ScrollView>
+        <Text style={{...styles.textStyle, marginTop: 20, marginBottom: 15}}>
+          예약인원
+        </Text>
+        <Block
+          style={{
+            borderWidth: 1,
+            borderColor: theme.colors.black,
+            borderRadius: 5,
+            marginBottom: 15,
+            height: 45,
+          }}
+          row
+          middle
+          center>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              left: 20,
+            }}
+            onPress={() => {
+              setPeople(people == 1 ? people : people - 1);
+            }}>
+            <Text h1 bold black>
+              -
+            </Text>
+          </TouchableOpacity>
+          <Text black h3>
+            {people + '명'}
+          </Text>
+          <TouchableOpacity
+            style={{
+              position: 'absolute',
+              right: 20,
+            }}
+            onPress={() => setPeople(people + 1)}>
+            <Text h1 black>
+              +
+            </Text>
+          </TouchableOpacity>
+        </Block>
+        {shop.pickup ? (
+          <Fragment>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>픽업 시간</Text>
+              <TextInput
+                defaultValue={pickuptime}
+                placeholder="10시 30분"
+                onChangeText={e => setPickupTime(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+            <Block style={styles.inputRow}>
+              <Text style={styles.textStyle}>픽업 장소</Text>
+              <TextInput
+                defaultValue={pickupLocation}
+                placeholder="호텔 정문"
+                onChangeText={e => setPickupLocation(e)}
+                style={{fontSize: 20}}
+              />
+            </Block>
+          </Fragment>
+        ) : null}
+
+        <Block style={styles.inputRow}>
+          <Text style={styles.textStyle}>추가 요청 사항</Text>
+          <TextInput
+            defaultValue={text}
+            placeholder=""
+            onChangeText={e => setText(e)}
+            style={{fontSize: 20}}
+          />
+        </Block>
+      </Block>
+
+      {errMsg ? (
+        <Text h4 primary style={{marginVertical: 20}}>
+          {errMsg}
+        </Text>
+      ) : null}
+
+      {isChange ? (
+        <Block>
+          <Button
+            gradient
+            onPress={() => {
+              handleChangeReservation();
+            }}>
+            <Text bold white center>
+              예약 변경 요청
+            </Text>
+          </Button>
+          <Button
+            shadow
+            onPress={() => {
+              handleDeleteReservation();
+            }}>
+            <Text center bold primary>
+              취소 요청
+            </Text>
+          </Button>
+        </Block>
+      ) : (
+        <Block>
+          <Button
+            gradient
+            onPress={() => {
+              if (selectedDate == '' || time == '' || people == '') {
+                setErrMsg('예약 일시 / 시간 / 인원 입력을 필수 입니다');
+              } else {
+                editPage.current.scrollTo({x: 0, y: 0, animated: true});
+                setErrMsg('');
+                setEdit(false);
+              }
+            }}>
+            <Text bold white center>
+              다음
+            </Text>
+          </Button>
+          <Button
+            shadow
+            onPress={() => {
+              setVisible(false);
+            }}>
+            <Text center bold primary>
+              뒤로
+            </Text>
+          </Button>
+        </Block>
+      )}
+    </ScrollView>
+  );
+
+  renderConfirmPage = () => (
+    <ScrollView showsVerticalScrollIndicator={false}>
+      <Block row space="between" style={{marginBottom: 30, marginTop: 20}}>
+        <Block>
+          <Text h3 bold>
+            {shop.name}
+          </Text>
+          <Text h4 accent style={{marginVertical: 5}}>
+            {shop.engName}
+          </Text>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={shop.review}
+            starSize={16}
+            fullStarColor={theme.colors.accent}
+            containerStyle={{width: 20, marginTop: 3}}
+          />
+        </Block>
+        <CachedImage
+          uri={shop.preview}
+          style={{height: 80, width: 120}}></CachedImage>
+      </Block>
+
+      <Block row space="between" style={styles.inputRow}>
+        <Text h2>예약 일시</Text>
+        <Text h2 bold accent>
+          {selectedDate}
+        </Text>
+      </Block>
+
+      <Block row space="between" style={styles.inputRow}>
+        <Text h2>예약 시간</Text>
+        <Text h2 bold accent>
+          {time}
+        </Text>
+      </Block>
+
+      <Block row space="between" style={styles.inputRow}>
+        <Text h2>예약 인원</Text>
+        <Text h2 bold accent>
+          {people}명
+        </Text>
+      </Block>
+
+      {shop.pickup ? (
+        <Fragment>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h2>픽업 시간</Text>
+            <Text h2 bold accent>
+              {pickuptime}
+            </Text>
+          </Block>
+          <Block row space="between" style={styles.inputRow}>
+            <Text h2>픽업 장소</Text>
+            <Text h2 bold accent>
+              {pickupLocation}
+            </Text>
+          </Block>
+        </Fragment>
+      ) : null}
+
+      <Block style={styles.inputRow}>
+        <Text h2>추가 요청 사항</Text>
+        <Text h3 style={{marginTop: 10}}>
+          {text}
+        </Text>
+      </Block>
+
+      {isChange ? (
+        <Block>
+          <Button
+            gradient
+            onPress={() => {
+              handleChangeReservation();
+            }}>
+            <Text bold white center>
+              예약 변경 요청
+            </Text>
+          </Button>
+          <Button
+            shadow
+            onPress={() => {
+              handleDeleteReservation();
+            }}>
+            <Text center bold primary>
+              취소 요청
+            </Text>
+          </Button>
+        </Block>
+      ) : (
+        <Block>
+          <Button
+            gradient
+            onPress={() => {
+              handleMakeReservation();
+            }}>
+            <Text bold white center>
+              예약 신청
+            </Text>
+          </Button>
+          <Button
+            shadow
+            onPress={() => {
+              setEdit(true);
+            }}>
+            <Text center bold primary>
+              뒤로
+            </Text>
+          </Button>
+        </Block>
+      )}
+    </ScrollView>
+  );
+
   return (
     <Block
       padding={[
@@ -206,258 +539,9 @@ export default ReservationModal = props => {
         <Ionicons size={50} color={theme.colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
-        {isChange ? '예약 변경' : '예약 신청'}
+        {edit != true ? '예약 내역' : isChange ? '예약 변경' : '예약 신청'}
       </Text>
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block>
-          <Block row space="between">
-            <Block>
-              <Text h3 bold>
-                {shop.name}
-              </Text>
-              <Text h4 accent style={{marginVertical: 5}}>
-                {shop.engName}
-              </Text>
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={shop.review}
-                starSize={16}
-                fullStarColor={theme.colors.accent}
-                containerStyle={{width: 20, marginTop: 3}}
-              />
-            </Block>
-            <CachedImage
-              uri={shop.preview}
-              style={{height: 80, width: 120}}></CachedImage>
-          </Block>
-
-          <Block
-            style={{
-              marginVertical: 20,
-              borderWidth: 1,
-              borderColor: theme.colors.gray2,
-            }}></Block>
-
-          <Text style={{...styles.textStyle}}>예약일</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <Block row>
-              {Object.keys(date).map(t => (
-                <Button
-                  key={t}
-                  style={t == selectedDate ? styles.onDate : styles.date}
-                  onPress={() => {
-                    setTimeCan(
-                      Object.keys(user.plans[t]).filter(
-                        e => e != 'hotel' && e != 'nDay',
-                      ),
-                    );
-                    setSelectedDate(t);
-                  }}>
-                  <Block middle center>
-                    <Text
-                      style={{
-                        color: selectedDateColor(t),
-                        marginBottom: 2,
-                      }}>
-                      {date[t]}
-                    </Text>
-                    <Text
-                      style={{
-                        color: selectedDateColor(t),
-                        fontSize: 12,
-                      }}>
-                      {t}
-                    </Text>
-                  </Block>
-                </Button>
-              ))}
-            </Block>
-          </ScrollView>
-          <Text style={{...styles.textStyle, marginTop: 20}}>예약시간</Text>
-          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-            <Block row>
-              {TIMES.map(t => (
-                <Button
-                  key={t}
-                  style={[styles.timeStyle, seletedTimeStyle(t)]}
-                  onPress={() => setTime(t)}>
-                  <Block center middle>
-                    <Text
-                      style={{
-                        color: seletedTimeColor(t),
-                      }}>
-                      {reservationDate == selectedDate && reservationTime == t
-                        ? '현예약'
-                        : timeCan.indexOf(t) != -1
-                        ? `예약중`
-                        : t}
-                    </Text>
-                    {reservationDate == selectedDate &&
-                    reservationTime == t ? null : timeCan.indexOf(t) != -1 ? (
-                      <Text
-                        style={{
-                          color: seletedTimeColor(t),
-                          fontSize: 12,
-                        }}>
-                        {user.plans[selectedDate][t]['shop']['name']}
-                      </Text>
-                    ) : null}
-                  </Block>
-                </Button>
-              ))}
-            </Block>
-          </ScrollView>
-          <Text style={{...styles.textStyle, marginTop: 20, marginBottom: 15}}>
-            예약인원
-          </Text>
-          <Block
-            style={{
-              borderWidth: 1,
-              borderColor: theme.colors.black,
-              borderRadius: 5,
-              marginBottom: 15,
-              height: 45,
-            }}
-            row
-            middle
-            center>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                left: 20,
-              }}
-              onPress={() => {
-                setPeople(people == 1 ? people : people - 1);
-              }}>
-              <Text h1 bold black>
-                -
-              </Text>
-            </TouchableOpacity>
-            <Text black h3>
-              {people + '명'}
-            </Text>
-            <TouchableOpacity
-              style={{
-                position: 'absolute',
-                right: 20,
-              }}
-              onPress={() => setPeople(people + 1)}>
-              <Text h1 black>
-                +
-              </Text>
-            </TouchableOpacity>
-          </Block>
-          {shop.pickup ? (
-            <Fragment>
-              <Block style={styles.inputRow}>
-                <Text style={styles.textStyle}>픽업 시간</Text>
-                <TextInput
-                  defaultValue={pickuptime}
-                  placeholder="10시 30분"
-                  onChangeText={e => setPickupTime(e)}
-                  style={{fontSize: 20}}
-                />
-              </Block>
-              <Block style={styles.inputRow}>
-                <Text style={styles.textStyle}>픽업 장소</Text>
-                <TextInput
-                  defaultValue={pickupLocation}
-                  placeholder="호텔 정문"
-                  onChangeText={e => setPickupLocation(e)}
-                  style={{fontSize: 20}}
-                />
-              </Block>
-              <Block style={styles.inputRow}>
-                <Text style={styles.textStyle}>픽업 차량</Text>
-                <TextInput
-                  defaultValue={pickupCar}
-                  placeholder="예약 확정 시 "
-                  onChangeText={e => setPickpCar(e)}
-                  style={{fontSize: 20}}
-                />
-              </Block>
-            </Fragment>
-          ) : null}
-
-          <Block style={styles.inputRow}>
-            <Text style={styles.textStyle}>추가 요청 사항</Text>
-            <TextInput
-              defaultValue={text}
-              placeholder=""
-              onChangeText={e => setText(e)}
-              style={{fontSize: 20}}
-            />
-          </Block>
-        </Block>
-
-        <Block
-          style={{
-            marginTop: 40,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2,
-          }}></Block>
-        <Block row space="between" style={{marginVertical: 20}}>
-          <Block flex={2}>
-            <Text style={{marginBottom: 5}}>예약일</Text>
-            <Text h2 accent>
-              {selectedDate}
-            </Text>
-          </Block>
-          <Block center flex={2}>
-            <Text style={{marginBottom: 5}}>예약시간</Text>
-            <Text h2 accent>
-              {time}
-            </Text>
-          </Block>
-          <Block flex={1}>
-            <Text right style={{marginBottom: 5}}>
-              예약인원
-            </Text>
-            <Text right h2 accent>
-              {people + '명'}
-            </Text>
-          </Block>
-        </Block>
-        <Block
-          style={{
-            marginBottom: 20,
-            borderWidth: 1,
-            borderColor: theme.colors.gray2,
-          }}></Block>
-        {isChange ? (
-          <Block>
-            <Button
-              gradient
-              onPress={() => {
-                handleChangeReservation();
-              }}>
-              <Text bold white center>
-                예약 변경 요청
-              </Text>
-            </Button>
-            <Button
-              shadow
-              onPress={() => {
-                handleDeleteReservation();
-              }}>
-              <Text center bold primary>
-                취소 요청
-              </Text>
-            </Button>
-          </Block>
-        ) : (
-          <Button
-            gradient
-            onPress={() => {
-              handleMakeResercation();
-            }}>
-            <Text bold white center>
-              예약 요청
-            </Text>
-          </Button>
-        )}
-      </ScrollView>
+      {edit ? renderEditPage() : renderConfirmPage()}
     </Block>
   );
 };
