@@ -13,7 +13,7 @@ import {theme, mocks} from '../../constants';
 import {useSelector, shallowEqual} from 'react-redux';
 
 const MAP = {
-  wait: '예약요청',
+  wait: '예약확인중',
   confirm: '예약확정',
   end: '종료',
   not: '예약불가',
@@ -24,6 +24,8 @@ function MyTripScreen(props) {
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
   const [plans, setPlans] = useState({});
+  const [reservations, setReservations] = useState([]);
+
   const [dates, setDates] = useState([]);
   const [selectedDates, setSelectedDates] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
@@ -43,6 +45,7 @@ function MyTripScreen(props) {
       setDates(days);
       setSelectedDates(days);
       setTabs(['전체'].concat(Object.keys(days)));
+      setReservations(user.reservations);
       setPlans(myPlans);
       setIsLoaded(true);
     }
@@ -87,10 +90,10 @@ function MyTripScreen(props) {
   };
 
   renderList = (day, lastItem) => {
+    let items = reservations.filter(e => e.date == day);
+
     let korDay = makeMonDay(day);
     let item = plans[day];
-    let times = Object.keys(item);
-    times = times.filter(e => e != 'hotel' && e != 'nDay');
 
     return (
       <Block key={day} style={styles.categories}>
@@ -105,19 +108,17 @@ function MyTripScreen(props) {
             {'in ' + item.hotel}
           </Text>
         </Block>
-        {times.length != 0 ? (
-          times.map((time, idx) => {
-            const todo = item[time];
-            const shop = item[time]['shop'];
+        {items.length != 0 ? (
+          items.map((item, idx) => {
+            const todo = item;
+            const shop = item.shop;
             return (
               <TouchableOpacity
                 key={shop.id + idx}
                 onPress={() =>
                   navigation.navigate('Shop', {
-                    title: '내 일정',
-                    shopCode: shop.id,
+                    shopId: shop.id,
                     todo: todo,
-                    category: shop.category,
                   })
                 }>
                 <Block
@@ -138,7 +139,14 @@ function MyTripScreen(props) {
                     </Block>
                     <Block middle row space="between" style={{marginTop: 5}}>
                       <Text>{shop.engName}</Text>
-                      <Text h3 accent>
+                      <Text
+                        h3
+                        style={{
+                          color:
+                            todo.status == 'not'
+                              ? theme.colors.primary
+                              : theme.colors.accent,
+                        }}>
                         {MAP[todo.status]}
                       </Text>
                     </Block>
@@ -150,7 +158,7 @@ function MyTripScreen(props) {
         ) : (
           <Button gradient onPress={() => navigation.navigate('Search')}>
             <Text bold white center>
-              일정을 등록하세요
+              새로운 일정을 등록하세요
             </Text>
           </Button>
         )}

@@ -48,8 +48,8 @@ const CategoryScreen = props => {
         e => e.category == navigation.getParam('category'),
       );
 
-      filteredShops = filteredShops.sort(function(a, b) {
-        return b['review'] - a['review'];
+      filteredShops = filteredShops.sort((a, b) => {
+        return b.review - a.review;
       });
 
       setSelectedLists(filteredShops);
@@ -58,7 +58,7 @@ const CategoryScreen = props => {
   }, [shops]);
 
   handleCatTab = tab => {
-    sortedLists = selectedLists.sort(function(a, b) {
+    sortedLists = selectedLists.sort((a, b) => {
       return b[filerMap[tab]] - a[filerMap[tab]];
     });
     setActive(tab);
@@ -94,34 +94,34 @@ const CategoryScreen = props => {
   };
 
   renderShopList = () => {
-    return selectedLists.map(list => (
+    return selectedLists.map(shop => (
       <TouchableOpacity
-        key={list.name}
-        onPress={() =>
+        key={shop.name}
+        onPress={() => {
           navigation.navigate('Shop', {
-            shop: list,
-          })
-        }>
+            shopId: shop.id,
+          });
+        }}>
         <Block middle shadow style={styles.category}>
           <Block flex={1}>
             <CachedImage
-              key={list.source[0]}
-              uri={list.source[0]}
+              key={shop.preview}
+              uri={shop.preview}
               style={{height: 70, width: '100%'}}
             />
           </Block>
           <Block middle flex={2.8} style={{paddingLeft: 10}}>
             <Text h4 bold height={25}>
-              {list.name}
+              {shop.name}
             </Text>
             <Text caption h4>
-              {list.tags.join(', ')}
+              {shop.tags.join(', ')}
             </Text>
             <Block row style={{marginTop: 5}}>
               <StarRating
                 disabled={false}
                 maxStars={5}
-                rating={list.review}
+                rating={shop.review}
                 starSize={15}
                 fullStarColor={theme.colors.accent}
                 containerStyle={{width: 20}}
@@ -129,7 +129,7 @@ const CategoryScreen = props => {
               <Text caption style={{marginLeft: 50}}>
                 {'  '}
                 리뷰{' '}
-                {list.reviewCnt
+                {shop.reviewCnt
                   .toString()
                   .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
               </Text>
@@ -138,7 +138,7 @@ const CategoryScreen = props => {
           <Block middle center flex={0.4} style={{position: 'relative'}}>
             <Text>1.5</Text>
             <Text>km</Text>
-            {list.pickup ? (
+            {shop.pickup ? (
               <Badge
                 size={18}
                 style={{

@@ -72,38 +72,50 @@ const TripInfosScreen = props => {
             </TouchableOpacity>
           </Block>
           <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
-            내 여행 정보 수정
+            내 여행 정보
           </Text>
         </Block>
-
-        <Block style={styles.inputs}>
-          <Block space="between" row style={styles.plan}>
-            <Text h3 bold>
-              일정
-            </Text>
-            <Text h3 bold>
-              호텔
+        {Object.entries(plans).length != 0 ? (
+          <Block style={styles.inputs}>
+            <Block
+              space="between"
+              row
+              style={{...styles.plan, borderBottomWidth: 0}}>
+              <Text h2 bold>
+                일정
+              </Text>
+              <Text h2 bold>
+                호텔
+              </Text>
+            </Block>
+            {Object.keys(plans).map((key, idx) => {
+              return (
+                <Block space="between" row key={idx} style={styles.plan}>
+                  <Text h3>
+                    {key}
+                    {' (' + NUMTOWEEK[moment(key).day()] + ')'}
+                  </Text>
+                  <Text h3>{plans[key].hotel}</Text>
+                </Block>
+              );
+            })}
+          </Block>
+        ) : (
+          <Block center style={{marginTop: 200}}>
+            <Text h1 bold>
+              여행 정보를 등록하세요
             </Text>
           </Block>
-          {Object.keys(plans).map((key, idx) => {
-            return (
-              <Block space="between" row key={idx} style={styles.plan}>
-                <Text h4>
-                  {key}
-                  {' (' + NUMTOWEEK[moment(key).day()] + ')'}
-                </Text>
-                <Text h4>{plans[key].hotel}</Text>
-              </Block>
-            );
-          })}
-        </Block>
+        )}
       </ScrollView>
       <Block
         flex={false}
         style={{marginHorizontal: theme.sizes.padding, marginBottom: 10}}>
         <Button gradient onPress={() => navigation.navigate('TripInfo')}>
           <Text bold white center>
-            새로운 여행 등록
+            {Object.entries(plans).length != 0
+              ? '여행 정보 변경'
+              : '새로운 여행 등록'}
           </Text>
         </Button>
       </Block>

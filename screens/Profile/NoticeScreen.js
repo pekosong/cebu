@@ -10,13 +10,76 @@ import {
 import {Button, Block, Text} from '../../components';
 import {theme} from '../../constants';
 import {Ionicons} from '@expo/vector-icons';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+import firebase from '../../constants/store';
 
 const NoticeScreen = props => {
   const {navigation} = props;
-  const [notifications, setNotifications] = useState(true);
-  const [newsletters, setNewsletters] = useState(false);
 
-  useEffect(() => {}, []);
+  const [messageEmail, setMessageEmail] = useState(false);
+  const [messagePush, setMessagePush] = useState(false);
+  const [messageSms, setMessageSms] = useState(false);
+
+  const [noticeEmail, setNoticeEmail] = useState(false);
+  const [noticePush, setNoticePush] = useState(false);
+  const [noticeSms, setNoticeSms] = useState(false);
+
+  const [promotionEmail, setPromotionEmail] = useState(false);
+  const [promotionPush, setPromotionPush] = useState(false);
+  const [promotionSms, setPromotionSms] = useState(false);
+
+  const user = useSelector(state => state.user, shallowEqual);
+  const dispatch = useDispatch();
+
+  useEffect(() => {
+    const {notice} = user;
+
+    setMessageEmail(notice.message.email);
+    setMessagePush(notice.message.push);
+    setMessageSms(notice.message.sms);
+
+    setNoticeEmail(notice.notice.email);
+    setNoticePush(notice.notice.push);
+    setNoticeSms(notice.notice.sms);
+
+    setPromotionEmail(notice.promotion.email);
+    setPromotionPush(notice.promotion.push);
+    setPromotionSms(notice.promotion.sms);
+  }, []);
+
+  saveNotice = async () => {
+    let newUser = {
+      ...user,
+      notice: {
+        message: {
+          email: messageEmail,
+          push: messagePush,
+          sms: messageSms,
+        },
+        notice: {
+          email: noticeEmail,
+          push: noticePush,
+          sms: noticeSms,
+        },
+        promotion: {
+          email: promotionEmail,
+          push: promotionPush,
+          sms: promotionSms,
+        },
+      },
+    };
+    await firebase
+      .firestore()
+      .collection('users')
+      .doc(user.email)
+      .update(newUser)
+      .then(() => {
+        dispatch({type: 'UPDATE', payload: newUser});
+      })
+      .catch(err => {
+        console.log(err);
+      });
+  };
 
   return (
     <SafeAreaView>
@@ -32,7 +95,10 @@ const NoticeScreen = props => {
                 />
               </Block>
             </Button>
-            <TouchableOpacity onPress={() => {}}>
+            <TouchableOpacity
+              onPress={() => {
+                saveNotice();
+              }}>
               <Text bold h3>
                 저장
               </Text>
@@ -53,22 +119,22 @@ const NoticeScreen = props => {
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
-              value={notifications}
-              onValueChange={value => setNotifications(value)}
+              value={messageEmail}
+              onValueChange={value => setMessageEmail(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>푸쉬알림</Text>
             <Switch
-              value={notifications}
-              onValueChange={value => setNotifications(value)}
+              value={messagePush}
+              onValueChange={value => setMessagePush(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>문자메시지</Text>
             <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
+              value={messageSms}
+              onValueChange={value => setMessageSms(value)}
             />
           </Block>
           <Text h2 bold style={{marginBottom: 10, marginTop: 30}}>
@@ -80,22 +146,22 @@ const NoticeScreen = props => {
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
-              value={notifications}
-              onValueChange={value => setNotifications(value)}
+              value={noticeEmail}
+              onValueChange={value => setNoticeEmail(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>푸시 알림</Text>
             <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
+              value={noticePush}
+              onValueChange={value => setNoticePush(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>문자 메시지</Text>
             <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
+              value={noticeSms}
+              onValueChange={value => setNoticeSms(value)}
             />
           </Block>
           <Text h2 bold style={{marginBottom: 10, marginTop: 30}}>
@@ -107,22 +173,22 @@ const NoticeScreen = props => {
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
-              value={notifications}
-              onValueChange={value => setNotifications(value)}
+              value={promotionEmail}
+              onValueChange={value => setPromotionEmail(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>푸시 알림</Text>
             <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
+              value={promotionPush}
+              onValueChange={value => setPromotionPush(value)}
             />
           </Block>
           <Block center middle row space="between" style={styles.inputRow}>
             <Text h3>문자 메시지</Text>
             <Switch
-              value={newsletters}
-              onValueChange={value => setNewsletters(value)}
+              value={promotionSms}
+              onValueChange={value => setPromotionSms(value)}
             />
           </Block>
         </Block>

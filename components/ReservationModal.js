@@ -12,6 +12,8 @@ import Text from './Text';
 import Button from './Button';
 import CachedImage from './CachedImage';
 
+import uuidv1 from 'uuid/v1';
+
 import {theme} from '../constants';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
@@ -36,6 +38,7 @@ const TIMES = [
 export default ReservationModal = props => {
   const {shop, navigation, setVisible} = props;
   const [todo, setTodo] = useState({});
+  const [myReservations, setMyReservations] = useState([]);
 
   const [date, setDate] = useState({});
   const [reservationDate, setReservationDate] = useState('');
@@ -43,6 +46,7 @@ export default ReservationModal = props => {
   const [timeCan, setTimeCan] = useState([]);
 
   const [selectedDate, setSelectedDate] = useState('');
+  const [reservationId, setReservationId] = useState('');
   const [time, setTime] = useState('');
   const [people, setPeople] = useState(1);
   const [text, setText] = useState('');
@@ -63,37 +67,36 @@ export default ReservationModal = props => {
   useEffect(() => {
     let reservation = navigation.getParam('todo');
     let myPlans = user.plans;
+    let days = {};
+    Object.keys(myPlans).forEach((key, idx) => {
+      days[key] = `Day ${idx + 1}`;
+    });
+
+    setMyReservations(user.reservations);
 
     if (reservation) {
-      const {date, time, people, text} = reservation;
-      let days = {};
-      Object.keys(myPlans).forEach((key, idx) => {
-        days[key] = `Day ${idx + 1}`;
-      });
+      const {date, time, people, text, reservationId} = reservation;
+
       setDate(days);
-      setTodo(reservation);
       setSelectedDate(date);
       setReservationDate(date);
+      setReservationId(reservationId);
       setTime(time);
       setReservationTime(time);
       setPeople(people);
       setText(text);
       setTimeCan(
-        Object.keys(user.plans[date]).filter(e => e != 'hotel' && e != 'nDay'),
+        user.reservations.filter(e => e.date == date).map(e => e.time),
       );
       setIsChange(true);
     } else {
-      let days = {};
-      Object.keys(myPlans).forEach((key, idx) => {
-        days[key] = `Day ${idx + 1}`;
-      });
+      const firstDay = Object.keys(days)[0];
+
       setDate(days);
       setTimeCan(
-        Object.keys(user.plans[Object.keys(days)[0]]).filter(
-          e => e != 'hotel' && e != 'nDay',
-        ),
+        user.reservations.filter(e => e.date == firstDay).map(e => e.time),
       );
-      setSelectedDate(Object.keys(days)[0]);
+      setSelectedDate(firstDay);
       setIsChange(false);
     }
   }, [user]);
@@ -101,6 +104,7 @@ export default ReservationModal = props => {
   handleMakeReservation = () => {
     const {email, name, phone, sex, image} = user;
     let reservation = {};
+    reservation['reservationId'] = new Date().getUTCMilliseconds();
     reservation['createdDate'] = new Date();
     reservation['status'] = 'wait';
     reservation['email'] = email;
@@ -121,19 +125,24 @@ export default ReservationModal = props => {
       engName: shop.engName,
       src: shop.preview,
     };
-    let allPlans = user.plans;
-    let allReservations = shop.reservations;
-    allPlans[selectedDate][time] = reservation;
-    allReservations.push(reservation);
-    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    dispatch(updateShop({...shop, reservations: allReservations}));
-    setVisible(false);
+
+    let userReservations = user.reservations;
+    let shopReservations = shop.reservations;
+    userReservations.push(reservation);
+    shopReservations.push(reservation);
+    dispatch(
+      makeResevation(userReservations, shopReservations, user.email, shop.id),
+    );
+    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
+      setVisible(false),
+    );
   };
 
   handleChangeReservation = () => {
     const {email, name, phone, sex, image} = user;
 
     let reservation = {};
+    reservation['reservationId'] = reservationId;
     reservation['createdDate'] = new Date();
     reservation['status'] = 'wait';
     reservation['email'] = email;
@@ -152,33 +161,46 @@ export default ReservationModal = props => {
       id: shop.id,
       name: shop.name,
       engName: shop.engName,
-      src: shop.source[0],
+      src: shop.preview,
     };
 
-    let allPlans = user.plans;
-    let allReservations = shop.reservations;
+    let userReservations = user.reservations;
+    let shopReservations = shop.reservations;
 
-    delete allPlans[selectedDate][time];
-    allReservations = allReservations.filter(e => e.email != user.email);
+    userReservations = userReservations.filter(
+      e => e.reservationId != reservationId,
+    );
+    shopReservations = shopReservations.filter(
+      e => e.reservationId != reservationId,
+    );
 
-    allPlans[selectedDate][time] = reservation;
-    allReservations.push(reservation);
-
-    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    dispatch(updateShop({...shop, reservations: allReservations}));
-    navigation.goBack();
+    userReservations.push(reservation);
+    shopReservations.push(reservation);
+    dispatch(
+      makeResevation(userReservations, shopReservations, user.email, shop.id),
+    );
+    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
+      navigation.goBack(),
+    );
   };
 
   handleDeleteReservation = () => {
-    let allPlans = user.plans;
-    let allReservations = shop.reservations;
+    let userReservations = user.reservations;
+    let shopReservations = shop.reservations;
 
-    delete allPlans[todo.date][todo.time];
-    allReservations = allReservations.filter(e => e.email != user.email);
+    userReservations = userReservations.filter(
+      e => e.reservationId != reservationId,
+    );
+    shopReservations = shopReservations.filter(
+      e => e.reservationId != reservationId,
+    );
 
-    dispatch(makeResevation(allPlans, allReservations, user.email, shop.id));
-    dispatch(updateShop({...shop, reservations: allReservations}));
-    navigation.goBack();
+    dispatch(
+      makeResevation(userReservations, shopReservations, user.email, shop.id),
+    );
+    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
+      navigation.goBack(),
+    );
   };
 
   selectedDateColor = t => {
@@ -205,6 +227,12 @@ export default ReservationModal = props => {
       : theme.colors.black;
   };
 
+  renderName = t => {
+    return myReservations.filter(e => e.date == selectedDate && e.time == t)[0][
+      'shop'
+    ]['name'];
+  };
+
   renderEditPage = () => (
     <ScrollView ref={editPage} showsVerticalScrollIndicator={false}>
       <Block>
@@ -217,9 +245,7 @@ export default ReservationModal = props => {
                 style={t == selectedDate ? styles.onDate : styles.date}
                 onPress={() => {
                   setTimeCan(
-                    Object.keys(user.plans[t]).filter(
-                      e => e != 'hotel' && e != 'nDay',
-                    ),
+                    myReservations.filter(e => e.date == t).map(e => e.time),
                   );
                   setSelectedDate(t);
                 }}>
@@ -269,7 +295,7 @@ export default ReservationModal = props => {
                         color: seletedTimeColor(t),
                         fontSize: 12,
                       }}>
-                      {user.plans[selectedDate][t]['shop']['name']}
+                      {renderName(t)}
                     </Text>
                   ) : null}
                 </Block>

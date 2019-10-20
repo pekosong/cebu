@@ -6,7 +6,7 @@ import {store} from './store';
 // //
 
 const SETUSER = 'SETUSER';
-const GETSHOP = 'GETSHOP';
+const SETSHOPS = 'SETSHOPS';
 const DELIMAGES = 'DELIMAGES';
 
 const setUserData = userData => {
@@ -18,7 +18,7 @@ const setUserData = userData => {
 
 const setShopData = shopData => {
   return {
-    type: GETSHOP,
+    type: SETSHOPS,
     payload: shopData,
   };
 };
@@ -47,6 +47,19 @@ const watchUserData = email => {
   };
 };
 
+const updateFavorite = myfavorites => {
+  return () => {
+    firebase
+      .firestore()
+      .collection('users')
+      .doc(store.getState().user.email)
+      .update({myfavorites: myfavorites})
+      .then(() => {
+        console.log('updated favorites');
+      });
+  };
+};
+
 const downloadShopData = () => {
   return dispatch => {
     return firebase
@@ -62,17 +75,14 @@ const downloadShopData = () => {
       });
   };
 };
-
-const updateFavorite = myfavorites => {
-  return () => {
-    firebase
+const getShop = shopId => {
+  return dispatch => {
+    return firebase
       .firestore()
-      .collection('users')
-      .doc(store.getState().user.email)
-      .update({myfavorites: myfavorites})
-      .then(() => {
-        console.log('updated favorites');
-      });
+      .collection('shops')
+      .doc(shopId)
+      .get()
+      .then(doc => doc.data());
   };
 };
 
@@ -93,13 +103,13 @@ const updateShop = shop => {
   };
 };
 
-const makeResevation = (allPlans, allReservations, email, shopId) => {
+const makeResevation = (userReservations, shopReservations, email, shopId) => {
   return () => {
     firebase
       .firestore()
       .collection('users')
       .doc(email)
-      .update({plans: allPlans})
+      .update({reservations: userReservations})
       .then(() => {
         console.log('made reservation');
       });
@@ -107,7 +117,7 @@ const makeResevation = (allPlans, allReservations, email, shopId) => {
       .firestore()
       .collection('shops')
       .doc(shopId)
-      .update({reservations: allReservations})
+      .update({reservations: shopReservations})
       .then(() => {
         console.log('made reservation');
       });
@@ -122,4 +132,5 @@ export {
   makeResevation,
   updateShop,
   setImagesData,
+  getShop,
 };

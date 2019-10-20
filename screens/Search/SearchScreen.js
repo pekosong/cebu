@@ -22,7 +22,7 @@ import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 
 const EMAIL = 'b@naver.com';
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 const MAP = {
   Restaurant: '식당',
   Massage: '마사지',
@@ -38,9 +38,8 @@ const SearchScreen = props => {
   const dispatch = useDispatch();
 
   useEffect(() => {
-    let unsubscribe;
-    unsubscribe = dispatch(watchUserData(EMAIL));
-    dispatch(downloadShopData()).then(() => setIsLoaded(true));
+    const unsubscribe = dispatch(watchUserData(EMAIL));
+    dispatch(downloadShopData());
     setIsLoaded(true);
     setCates(categories);
     return () => {

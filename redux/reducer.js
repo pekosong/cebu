@@ -8,7 +8,7 @@ const reducer = (state = initialState, action) => {
   switch (action.type) {
     case 'SETUSER':
       return {...state, user: action.payload};
-    case 'GETSHOP':
+    case 'SETSHOPS':
       return {...state, shops: action.payload};
     case 'DELIMAGES':
       return {...state, shopImages: action.payload};

@@ -42,7 +42,7 @@ export default Card = props => {
     <TouchableOpacity
       onPress={() => {
         navigation.push('Shop', {
-          shopCode: item.shopCode,
+          shopId: item.shopCode,
         });
       }}>
       <Block style={styles.elementContainer}>

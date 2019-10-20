@@ -173,7 +173,7 @@ const PersonalScreen = props => {
               </TouchableOpacity>
             </Block>
             <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
-              내 정보 수정
+              내 정보
             </Text>
           </Block>
 

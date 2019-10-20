@@ -50,15 +50,14 @@ const ReservationScreen = props => {
   const [active, setActive] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const tabs = ['전체', '예약요청', '예약완료', '종료', '예약불가'];
+  const tabs = ['전체', '예약요청', '예약확정', '종료', '예약불가'];
 
   useEffect(() => {
-    firebase
+    let unsubscribe = firebase
       .firestore()
       .collection('shops')
       .doc(user.shops[0])
-      .get()
-      .then(doc => {
+      .onSnapshot(doc => {
         const shop = doc.data();
         let reservations = shop.reservations;
         reservations.sort(function(a, b) {
@@ -71,6 +70,7 @@ const ReservationScreen = props => {
         setIsLoaded(true);
         setActive('전체');
       });
+    return () => unsubscribe();
   }, []);
 
   renderReservationTab = tab => {
@@ -79,7 +79,7 @@ const ReservationScreen = props => {
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
-        onPress={() => handleTripTab(tab)}
+        onPress={() => handleReservationTap(tab)}
         style={[styles.tab, isActive ? styles.active : null]}>
         <Text size={16} medium gray={!isActive} secondary={isActive}>
           {tab}
@@ -88,7 +88,7 @@ const ReservationScreen = props => {
     );
   };
 
-  handleTripTab = tab => {
+  handleReservationTap = tab => {
     if (tab == '전체') {
       setSelectedReservations(reservations);
     } else {
@@ -143,7 +143,15 @@ const ReservationScreen = props => {
                           </Text>
                         </Block>
                         <Block flex={false}>
-                          <Text bold h4 accent>
+                          <Text
+                            bold
+                            h4
+                            style={{
+                              color:
+                                e.status == 'not'
+                                  ? theme.colors.primary
+                                  : theme.colors.accent,
+                            }}>
                             {MAP[e.status]}
                           </Text>
                         </Block>
@@ -186,7 +194,12 @@ const ReservationScreen = props => {
       </Block>
 
       <Block flex={false} row style={{...styles.tabs, marginBottom: 10}}>
-        {tabs.map(tab => renderReservationTab(tab))}
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {tabs.map(tab => renderReservationTab(tab))}
+        </ScrollView>
       </Block>
 
       <ScrollView>
@@ -222,7 +235,7 @@ const styles = StyleSheet.create({
   },
   header: {
     marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    marginBottom: theme.sizes.base,
+    marginBottom: theme.sizes.base * 2,
     paddingHorizontal: theme.sizes.padding,
   },
   inputRow: {

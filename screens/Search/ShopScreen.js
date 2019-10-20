@@ -11,6 +11,7 @@ import {
 import MapView from 'react-native-maps';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
+import firebase from '../../constants/store';
 
 import {
   Card,
@@ -27,7 +28,7 @@ import {
 import {theme, mocks} from '../../constants';
 
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite} from '../../redux/action';
+import {updateFavorite, getShop} from '../../redux/action';
 
 const {height, width} = Dimensions.get('window');
 
@@ -38,7 +39,6 @@ export default function ShopScreen(props) {
   const [todo, setTodo] = useState({});
 
   const user = useSelector(state => state.user, shallowEqual);
-  const shops = useSelector(state => state.shops, shallowEqual);
 
   const [visible, setVisible] = useState(false);
   const [reviewVisible, setReviewVisible] = useState(false);
@@ -48,16 +48,18 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    let shopCode = navigation.getParam('shopCode');
-    if (shopCode) {
-      let myShop = shops.filter(e => e.id == shopCode);
-      setShop(myShop[0]);
-      setTodo(navigation.getParam('todo'));
-    } else {
-      setShop(navigation.getParam('shop'));
-      setTodo(navigation.getParam('todo'));
-    }
-  }, [user, shop, todo]);
+    let shopId = navigation.getParam('shopId');
+    let unsubscribe = firebase
+      .firestore()
+      .collection('shops')
+      .doc(shopId)
+      .onSnapshot(doc => setShop(doc.data()));
+
+    setTodo(navigation.getParam('todo'));
+    return () => {
+      unsubscribe();
+    };
+  }, [user, todo]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {

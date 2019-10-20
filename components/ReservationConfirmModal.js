@@ -28,11 +28,9 @@ const MAP = {
 export default ReservationConfirmModal = props => {
   const {setVisible, reservation} = props;
 
-  const [userReservations, setUserReservations] = useState({});
+  const [userReservations, setUserReservations] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [pickupCar, setPickpCar] = useState('');
-
-  const user = useSelector(state => state.user, shallowEqual);
 
   const dispatch = useDispatch();
 
@@ -43,29 +41,33 @@ export default ReservationConfirmModal = props => {
       .collection('users')
       .doc(email)
       .get()
-      .then(doc => setUserReservations(doc.data().plans));
+      .then(doc => setUserReservations(doc.data().reservations));
     firebase
       .firestore()
       .collection('shops')
       .doc(shop.id)
       .get()
       .then(doc => setShopReservations(doc.data().reservations));
-  }, [user]);
+  }, []);
 
   handleConfirmReservation = status => {
     let NewReservation = {...reservation, status: status, pickupCar: pickupCar};
-    const {date, time, email, shop} = reservation;
+    const {email, shop, reservationId} = reservation;
 
-    let allPlans = userReservations;
+    let userReservation = userReservations;
     let shopReservation = shopReservations;
 
-    delete allPlans[date][time];
-    shopReservation = shopReservation.filter(e => e.email != email);
+    userReservation = userReservation.filter(
+      e => e.reservationId != reservationId,
+    );
+    shopReservation = shopReservation.filter(
+      e => e.reservationId != reservationId,
+    );
 
-    allPlans[date][time] = NewReservation;
+    userReservation.push(NewReservation);
     shopReservation.push(NewReservation);
 
-    dispatch(makeResevation(allPlans, shopReservation, email, shop.id));
+    dispatch(makeResevation(userReservation, shopReservation, email, shop.id));
     setVisible(false);
   };
 

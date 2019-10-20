@@ -324,7 +324,7 @@ const MyShopScreen = props => {
               </TouchableOpacity>
             </Block>
             <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
-              매장 정보 관리
+              매장 정보
             </Text>
           </Block>
 

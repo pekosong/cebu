@@ -84,7 +84,24 @@ const LoginScreen = props => {
             host: false,
             shops: [],
             birth: '',
-            image: 'https://randomuser.me/api/portraits/men/43.jpg',
+            notice: {
+              message: {
+                email: true,
+                push: true,
+                sms: true,
+              },
+              notice: {
+                email: true,
+                push: true,
+                sms: true,
+              },
+              promotion: {
+                email: true,
+                push: true,
+                sms: true,
+              },
+            },
+            image: 'https://randomuser.me/api/portraits/men/41.jpg',
           };
           return firebase
             .firestore()

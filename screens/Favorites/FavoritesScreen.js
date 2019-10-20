@@ -18,7 +18,7 @@ import firebase from '../../constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateFavorite} from '../../redux/action';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const cateMap = {
   All: '전체',
@@ -52,16 +52,16 @@ function FavoritesScreen(props) {
         .collection('shops')
         .get()
         .then(querySnapshot => {
-          const song = [];
+          const shopList = [];
           const category = new Set(['All']);
           querySnapshot.forEach(doc => {
             if (user.myfavorites.map(e => e.id).indexOf(doc.data().id) != -1) {
-              song.push(doc.data());
+              shopList.push(doc.data());
               category.add(doc.data().category);
             }
           });
-          setFavorites(song);
-          setSelectedFavorites(song);
+          setFavorites(shopList);
+          setSelectedFavorites(shopList);
           setActive('All');
           setTabs(Array.from(category));
           setIsLoaded(true);
@@ -102,18 +102,19 @@ function FavoritesScreen(props) {
   };
 
   renderList = shop => {
+    const {name, id, preview, engName, review, category} = shop;
     return (
       <TouchableOpacity
-        key={shop.name}
+        key={id}
         onPress={() =>
           navigation.navigate('Shop', {
             title: '저장소',
-            shop: shop,
+            shopId: id,
           })
         }>
-        <Block key={shop.name} style={styles.categories}>
+        <Block key={name} style={styles.categories}>
           <TouchableOpacity
-            onPress={() => handleRemoveHeart(shop.id)}
+            onPress={() => handleRemoveHeart(id)}
             style={{position: 'absolute', top: 5, right: 30, zIndex: 10}}>
             <Ionicons
               size={30}
@@ -127,7 +128,7 @@ function FavoritesScreen(props) {
             />
           </TouchableOpacity>
           <CachedImage
-            uri={shop.source[0]}
+            uri={preview}
             style={{
               height: 200,
               width: width - theme.sizes.padding * 2,
@@ -135,15 +136,15 @@ function FavoritesScreen(props) {
               resizeMode: 'cover',
             }}
           />
-          <Text style={{marginTop: 5}}>{shop.category}</Text>
+          <Text style={{marginTop: 5}}>{category}</Text>
           <Text h2 bold style={{marginVertical: 5}}>
-            {shop.name + '  '}
-            <Text>{shop.engName}</Text>
+            {name + '  '}
+            <Text>{engName}</Text>
           </Text>
           <StarRating
             disabled={false}
             maxStars={5}
-            rating={shop.review}
+            rating={review}
             starSize={12}
             fullStarColor={theme.colors.accent}
             containerStyle={{width: 20}}
