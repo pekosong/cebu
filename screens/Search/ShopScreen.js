@@ -30,7 +30,7 @@ import {theme, mocks} from '../../constants';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateFavorite, getShop} from '../../redux/action';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export default function ShopScreen(props) {
   const {navigation, recommendList} = props;
@@ -59,7 +59,7 @@ export default function ShopScreen(props) {
     return () => {
       unsubscribe();
     };
-  }, [user, todo]);
+  }, []);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 120) {
@@ -80,7 +80,7 @@ export default function ShopScreen(props) {
     newShop = {
       id: shop.id,
       name: shop.name,
-      src: shop.source[0],
+      src: shop.preview,
     };
     let newfavorites = user.myfavorites;
     if (oldfavorites.includes(shop.id)) {
