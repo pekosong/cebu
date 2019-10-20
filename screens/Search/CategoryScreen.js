@@ -43,19 +43,17 @@ const CategoryScreen = props => {
   const shops = useSelector(state => state.shops, shallowEqual);
 
   useEffect(() => {
-    if (Object.entries(shops).length !== 0) {
-      filteredShops = shops.filter(
-        e => e.category == navigation.getParam('category'),
-      );
+    filteredShops = shops.filter(
+      e => e.category == navigation.getParam('category'),
+    );
 
-      filteredShops = filteredShops.sort((a, b) => {
-        return b.review - a.review;
-      });
+    filteredShops = filteredShops.sort((a, b) => {
+      return b.review - a.review;
+    });
 
-      setSelectedLists(filteredShops);
-      setIsLoaded(true);
-    }
-  }, [shops]);
+    setSelectedLists(filteredShops);
+    setIsLoaded(true);
+  }, []);
 
   handleCatTab = tab => {
     sortedLists = selectedLists.sort((a, b) => {
