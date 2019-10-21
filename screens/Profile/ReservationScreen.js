@@ -50,7 +50,7 @@ const ReservationScreen = props => {
   const [active, setActive] = useState('');
   const [visible, setVisible] = useState(false);
 
-  const tabs = ['전체', '예약요청', '예약확정', '종료', '예약불가'];
+  const tabs = ['전체', '예약요청', '예약확정', '예약불가', '종료'];
 
   useEffect(() => {
     let unsubscribe = firebase

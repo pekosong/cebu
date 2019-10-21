@@ -16,76 +16,126 @@ import moment from 'moment';
 import firebase from '../../constants/store';
 import {useSelector, shallowEqual} from 'react-redux';
 
+const MAP = {
+  wait: '예약요청',
+  confirm: '예약확정',
+  end: '종료',
+  not: '예약불가',
+};
+
 const ChatListScreen = props => {
   const {navigation} = props;
   const [chatList, setChatlist] = useState([]);
+  const [shopReservations, setShopReservations] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
 
   useEffect(() => {
-    if (Object.entries(user).length !== 0) {
-      let unsubscribe = firebase
+    let userUnsubscribe;
+    let shopUnsubscribe;
+
+    if (user.host) {
+      userUnsubscribe = firebase
         .firestore()
-        .collection(user.host ? 'shops' : 'users')
-        .doc(user.host ? user.shops[0] : user.email)
+        .collection('shops')
+        .doc(user.shops[0])
         .collection('messages')
         .onSnapshot(querySnapshot => {
           let myList = [];
-          querySnapshot.forEach((doc, idx) => {
+          querySnapshot.forEach(doc => {
             let chat = {};
             data = doc.data();
 
-            if (data.message.length > 0) {
-              mm = data.message.reduce(function(p, v) {
-                if (p.createdAt) {
-                  return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-                } else {
-                  return v;
-                }
-              });
-              date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
-              time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
-              message = mm.text;
-              chat.email = data.email;
-              chat.shop = data.shop;
-              chat.shopName = data.shopName;
-
-              users = data.message.map(e => e.user);
-              if (user.host) {
-                chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
+            mm = data.message.reduce(function(p, v) {
+              if (p.createdAt) {
+                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
               } else {
-                if (users.filter(e => e._id != data.email).length > 0) {
-                  chat.avatar = users.filter(
-                    e => e._id != data.email,
-                  )[0].avatar;
-                } else {
-                  chat.avatar =
-                    'https://randomuser.me/api/portraits/men/32.jpg';
-                }
+                return v;
               }
-              chat.message = message;
-              chat.timeStamp = mm.createdAt.seconds;
-              chat.date = date;
-              chat.time = time;
-              myList.push(chat);
-            } else {
-              message = '대화가 없습니다.';
-            }
+            });
+            date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
+            time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
+            message = mm.text;
+            chat.email = data.email;
+            chat.shop = data.shop;
+            chat.shopName = data.shopName;
+
+            users = data.message.map(e => e.user);
+            chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
+            chat.message = message;
+            chat.timeStamp = mm.createdAt.seconds;
+            chat.date = date;
+            chat.time = time;
+            myList.push(chat);
           });
           myList = myList.sort(function(a, b) {
             return b.timeStamp - a.timeStamp;
           });
-
-          setIsLoaded(true);
           setChatlist(myList);
         });
-      return () => {
-        unsubscribe();
-      };
+
+      shopUnsubscribe = firebase
+        .firestore()
+        .collection('shops')
+        .doc(user.shops[0])
+        .onSnapshot(doc => {
+          const shop = doc.data();
+          setShopReservations(shop.reservations);
+          setIsLoaded(true);
+        });
+    } else {
+      userUnsubscribe = firebase
+        .firestore()
+        .collection('users')
+        .doc(user.email)
+        .collection('messages')
+        .onSnapshot(querySnapshot => {
+          let myList = [];
+          querySnapshot.forEach(doc => {
+            let chat = {};
+            data = doc.data();
+
+            mm = data.message.reduce(function(p, v) {
+              if (p.createdAt) {
+                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
+              } else {
+                return v;
+              }
+            });
+            date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
+            time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
+            message = mm.text;
+            chat.email = data.email;
+            chat.shop = data.shop;
+            chat.shopName = data.shopName;
+
+            users = data.message.map(e => e.user);
+            chat.avatar = users.filter(e => e._id != data.email)[0].avatar;
+            chat.message = message;
+            chat.timeStamp = mm.createdAt.seconds;
+            chat.date = date;
+            chat.time = time;
+            myList.push(chat);
+          });
+          myList = myList.sort(function(a, b) {
+            return b.timeStamp - a.timeStamp;
+          });
+          setChatlist(myList);
+          setIsLoaded(true);
+        });
     }
-  }, [user]);
+    return () => {
+      userUnsubscribe();
+      shopUnsubscribe();
+    };
+  }, []);
 
   renderList = ({item}) => {
+    if (user.host) {
+      reservation = shopReservations.filter(e => e.email == item.email)[0];
+    } else {
+      reservation = user.reservations.filter(e => e.shop.id == item.shop)[0];
+    }
     return (
       <TouchableOpacity
         onPress={() =>
@@ -126,7 +176,14 @@ const ChatListScreen = props => {
                   : item.message}
               </Text>
               <Text accent>
-                예약완료<Text> - 10월 15일</Text>
+                {MAP[reservation.status]}
+                <Text>
+                  {' '}
+                  -{' '}
+                  {`${new Date(reservation.date).getMonth() + 1}월 ${new Date(
+                    reservation.date,
+                  ).getDate() + 1}일`}
+                </Text>
               </Text>
             </Block>
           </Block>
@@ -159,9 +216,7 @@ const ChatListScreen = props => {
         </Block>
       ) : (
         <Block style={styles.full}>
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.primary}></ActivityIndicator>
+          <ActivityIndicator size="large"></ActivityIndicator>
         </Block>
       )}
     </Block>

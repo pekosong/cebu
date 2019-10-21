@@ -170,9 +170,7 @@ function FavoritesScreen(props) {
         </ScrollView>
       ) : (
         <Block style={styles.full}>
-          <ActivityIndicator
-            size="large"
-            color={theme.colors.primary}></ActivityIndicator>
+          <ActivityIndicator size="large"></ActivityIndicator>
         </Block>
       )}
     </Block>

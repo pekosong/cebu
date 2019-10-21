@@ -30,7 +30,7 @@ export default ReservationConfirmModal = props => {
 
   const [userReservations, setUserReservations] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
-  const [pickupCar, setPickpCar] = useState('');
+  const [pickupCar, setPickupCar] = useState('');
 
   const dispatch = useDispatch();
 
@@ -139,9 +139,9 @@ export default ReservationConfirmModal = props => {
             <Block style={styles.inputRow}>
               <Text h2>픽업 차량</Text>
               <TextInput
-                defaultValue={pickupCar}
+                defaultValue={reservation.pickupCar}
                 placeholder="픽업 차량 정보를 입력하세요."
-                onChangeText={e => setPickpCar(e)}
+                onChangeText={e => setPickupCar(e)}
                 style={{fontSize: 20, marginTop: 15}}
               />
             </Block>

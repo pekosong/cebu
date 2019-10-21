@@ -6,6 +6,7 @@ import {
   TouchableOpacity,
   Modal,
   Animated,
+  ActivityIndicator,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -40,6 +41,8 @@ export default function ShopScreen(props) {
 
   const user = useSelector(state => state.user, shallowEqual);
 
+  const [isLoaded, setIsLoaded] = useState(false);
+
   const [visible, setVisible] = useState(false);
   const [reviewVisible, setReviewVisible] = useState(false);
   const [newReviewVisible, setNewReviewVisible] = useState(false);
@@ -53,7 +56,10 @@ export default function ShopScreen(props) {
       .firestore()
       .collection('shops')
       .doc(shopId)
-      .onSnapshot(doc => setShop(doc.data()));
+      .onSnapshot(doc => {
+        setShop(doc.data());
+        setIsLoaded(true);
+      });
 
     setTodo(navigation.getParam('todo'));
     return () => {
@@ -84,7 +90,7 @@ export default function ShopScreen(props) {
     };
     let newfavorites = user.myfavorites;
     if (oldfavorites.includes(shop.id)) {
-      const idx = user.myfavorites.map(e => e.id).indexOf(shop.shopCode);
+      const idx = user.myfavorites.map(e => e.id).indexOf(shop.id);
       newfavorites.splice(idx, 1);
     } else {
       newfavorites.push(newShop);
@@ -102,7 +108,7 @@ export default function ShopScreen(props) {
       .map((review, idx) => <Reviews key={idx} review={review} />);
   };
 
-  return (
+  return isLoaded ? (
     <Block>
       <Animated.View
         style={{
@@ -254,32 +260,36 @@ export default function ShopScreen(props) {
                 </Block>
               </Block>
               <Divider />
-              <Block style={styles.categories}>
-                <Text h3 bold style={styles.content}>
-                  픽업정보
-                </Text>
-                <Block>
-                  <Block style={styles.inputRow}>
-                    <Text h3>픽업장소</Text>
-                    <Text color={theme.colors.black} bold h3>
-                      호텔 정문
+              {todo.pickupTime ? (
+                <Fragment>
+                  <Block style={styles.categories}>
+                    <Text h3 bold style={styles.content}>
+                      픽업정보
                     </Text>
+                    <Block>
+                      <Block style={styles.inputRow}>
+                        <Text h3>픽업장소</Text>
+                        <Text color={theme.colors.black} bold h3>
+                          {todo.pickupLocation}
+                        </Text>
+                      </Block>
+                      <Block style={styles.inputRow}>
+                        <Text h3>픽업시간</Text>
+                        <Text color={theme.colors.black} bold h3>
+                          {todo.pickupTime}
+                        </Text>
+                      </Block>
+                      <Block style={styles.inputRow}>
+                        <Text h3>픽업차량</Text>
+                        <Text color={theme.colors.black} bold h3>
+                          {todo.pickupCar ? todo.pickupCar : '확인중'}
+                        </Text>
+                      </Block>
+                    </Block>
                   </Block>
-                  <Block style={styles.inputRow}>
-                    <Text h3>픽업시간</Text>
-                    <Text color={theme.colors.black} bold h3>
-                      {todo.time}
-                    </Text>
-                  </Block>
-                  <Block style={styles.inputRow}>
-                    <Text h3>픽업차량</Text>
-                    <Text color={theme.colors.black} bold h3>
-                      도요타 캠리 - 가가가
-                    </Text>
-                  </Block>
-                </Block>
-              </Block>
-              <Divider />
+                  <Divider />
+                </Fragment>
+              ) : null}
             </Fragment>
           ) : null}
 
@@ -287,18 +297,16 @@ export default function ShopScreen(props) {
             <Text h3 bold style={{...styles.content, marginBottom: 25}}>
               추천메뉴
             </Text>
-            {shop.menus
-              ? shop.menus.map((item, idx) => (
-                  <CardMenu key={idx} item={item} />
-                ))
-              : null}
+            {shop.menus.map((item, idx) => (
+              <CardMenu key={idx} item={item} />
+            ))}
           </Block>
           <Divider />
           <Block style={styles.categories}>
             <Text h3 bold style={styles.content}>
               후기
             </Text>
-            {shop.reviews ? renderReviews() : null}
+            {renderReviews()}
             <Block row space="between" style={{marginTop: theme.sizes.padding}}>
               <TouchableOpacity onPress={() => setReviewVisible(true)}>
                 <Text h3 bold color={theme.colors.accent}>
@@ -439,11 +447,8 @@ export default function ShopScreen(props) {
               containerStyle={{width: 70}}
             />
             <Text style={{marginLeft: 12, fontSize: 16}}>
-              {shop.reviewCnt
-                ? shop.reviewCnt
-                    .toString()
-                    .replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' '
-                : null}
+              {shop.reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+                ' '}
               Reviews
             </Text>
           </Block>
@@ -454,10 +459,8 @@ export default function ShopScreen(props) {
               name={'ios-heart'}
             />
             <Text style={{marginLeft: 10, fontSize: 16}}>
-              {shop.likes
-                ? shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
-                  ' '
-                : null}
+              {shop.likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+                ' '}
               Likes
             </Text>
           </Block>
@@ -521,6 +524,10 @@ export default function ShopScreen(props) {
           setNewReviewVisible={setNewReviewVisible}
         />
       </Modal>
+    </Block>
+  ) : (
+    <Block style={styles.full}>
+      <ActivityIndicator size="large"></ActivityIndicator>
     </Block>
   );
 }
