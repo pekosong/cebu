@@ -157,6 +157,7 @@ export default function ShopScreen(props) {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Chat', {
+                  email: user.email,
                   shopId: shop.id,
                   shopName: shop.name,
                 })

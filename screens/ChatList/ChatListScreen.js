@@ -34,101 +34,129 @@ const ChatListScreen = props => {
     let userUnsubscribe;
     let shopUnsubscribe;
 
-    if (user.host) {
-      userUnsubscribe = firebase
-        .firestore()
-        .collection('shops')
-        .doc(user.shops[0])
-        .collection('messages')
-        .onSnapshot(querySnapshot => {
-          let myList = [];
-          querySnapshot.forEach(doc => {
-            let chat = {};
-            data = doc.data();
+    if (Object.entries(user).length > 0) {
+      if (user.host) {
+        userUnsubscribe = firebase
+          .firestore()
+          .collection('shops')
+          .doc(user.shops[0])
+          .collection('messages')
+          .onSnapshot(querySnapshot => {
+            let myList = [];
+            querySnapshot.forEach(doc => {
+              let chat = {};
+              data = doc.data();
 
-            mm = data.message.reduce(function(p, v) {
-              if (p.createdAt) {
-                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-              } else {
-                return v;
+              if (data.message.length > 0) {
+                mm = data.message.reduce(function(p, v) {
+                  if (p.createdAt) {
+                    return p.createdAt.seconds > v.createdAt.seconds ? p : v;
+                  } else {
+                    return v;
+                  }
+                });
+                date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
+                time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
+                message = mm.text;
+                chat.email = data.email;
+                chat.shop = data.shop;
+                chat.shopName = data.shopName;
+
+                users = data.message.map(e => e.user);
+                chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
+                chat.message = message;
+                chat.timeStamp = mm.createdAt.seconds;
+                chat.date = date;
+                chat.time = time;
+                myList.push(chat);
               }
             });
-            date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
-            time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
-            message = mm.text;
-            chat.email = data.email;
-            chat.shop = data.shop;
-            chat.shopName = data.shopName;
-
-            users = data.message.map(e => e.user);
-            chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
-            chat.message = message;
-            chat.timeStamp = mm.createdAt.seconds;
-            chat.date = date;
-            chat.time = time;
-            myList.push(chat);
+            myList = myList.sort(function(a, b) {
+              return b.timeStamp - a.timeStamp;
+            });
+            setChatlist(myList);
           });
-          myList = myList.sort(function(a, b) {
-            return b.timeStamp - a.timeStamp;
+
+        shopUnsubscribe = firebase
+          .firestore()
+          .collection('shops')
+          .doc(user.shops[0])
+          .onSnapshot(doc => {
+            const shop = doc.data();
+            setShopReservations(shop.reservations);
+            setIsLoaded(true);
           });
-          setChatlist(myList);
-        });
+      } else {
+        userUnsubscribe = firebase
+          .firestore()
+          .collection('users')
+          .doc(user.email)
+          .collection('messages')
+          .onSnapshot(querySnapshot => {
+            let myList = [];
+            querySnapshot.forEach(doc => {
+              let chat = {};
+              data = doc.data();
 
-      shopUnsubscribe = firebase
-        .firestore()
-        .collection('shops')
-        .doc(user.shops[0])
-        .onSnapshot(doc => {
-          const shop = doc.data();
-          setShopReservations(shop.reservations);
-          setIsLoaded(true);
-        });
-    } else {
-      userUnsubscribe = firebase
-        .firestore()
-        .collection('users')
-        .doc(user.email)
-        .collection('messages')
-        .onSnapshot(querySnapshot => {
-          let myList = [];
-          querySnapshot.forEach(doc => {
-            let chat = {};
-            data = doc.data();
+              if (data.message.length > 0) {
+                mm = data.message.reduce(function(p, v) {
+                  if (p.createdAt) {
+                    return p.createdAt.seconds > v.createdAt.seconds ? p : v;
+                  } else {
+                    return v;
+                  }
+                });
+                date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
+                time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
+                message = mm.text;
+                chat.email = data.email;
+                chat.shop = data.shop;
+                chat.shopName = data.shopName;
 
-            mm = data.message.reduce(function(p, v) {
-              if (p.createdAt) {
-                return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-              } else {
-                return v;
+                avatar = data.message
+                  .map(e => e.user)
+                  .filter(e => e._id != data.email);
+                chat.avatar =
+                  avatar.length == 1
+                    ? avatar[0].avatar
+                    : 'https://randomuser.me/api/portraits/men/1.jpg';
+                chat.message = message;
+                chat.timeStamp = mm.createdAt.seconds;
+                chat.date = date;
+                chat.time = time;
+                myList.push(chat);
               }
             });
-            date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
-            time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
-            message = mm.text;
-            chat.email = data.email;
-            chat.shop = data.shop;
-            chat.shopName = data.shopName;
-
-            users = data.message.map(e => e.user);
-            chat.avatar = users.filter(e => e._id != data.email)[0].avatar;
-            chat.message = message;
-            chat.timeStamp = mm.createdAt.seconds;
-            chat.date = date;
-            chat.time = time;
-            myList.push(chat);
+            myList = myList.sort(function(a, b) {
+              return b.timeStamp - a.timeStamp;
+            });
+            setChatlist(myList);
+            setIsLoaded(true);
           });
-          myList = myList.sort(function(a, b) {
-            return b.timeStamp - a.timeStamp;
-          });
-          setChatlist(myList);
-          setIsLoaded(true);
-        });
+      }
     }
+
     return () => {
-      userUnsubscribe();
-      shopUnsubscribe();
+      if (user.host) {
+        userUnsubscribe();
+        shopUnsubscribe();
+      } else {
+        userUnsubscribe();
+      }
     };
-  }, []);
+  }, [user]);
+
+  makeYM = item => {
+    return `${new Date(item.date).getMonth() + 1}월 ${new Date(
+      item.date,
+    ).getDate() + 1}일`;
+  };
+
+  shottenMsg = item => {
+    return item.message.length > 15
+      ? `${item.message.slice(0, 15)}...`
+      : item.message;
+  };
 
   renderList = ({item}) => {
     if (user.host) {
@@ -149,42 +177,30 @@ const ChatListScreen = props => {
           row
           style={{
             marginVertical: 10,
-            paddingBottom: 20,
-            borderBottomWidth: 0.5,
-            borderBottomColor: theme.colors.gray2,
+            paddingBottom: 5,
           }}>
-          <Block left flex={1}>
+          <Block left flex={1.2}>
             <CachedImage uri={item.avatar} style={styles.avatarChat} />
           </Block>
-          <Block flex={4.5}>
+          <Block flex={4}>
             <Block row space="between">
-              <Text h4 bold>
+              <Text h3 bold>
                 {user.host ? item.email : item.shopName}
               </Text>
               <Block flex={false}>
-                <Text h4 right style={{marginBottom: 5}}>
-                  {`${new Date(item.date).getMonth() + 1}월 ${new Date(
-                    item.date,
-                  ).getDate() + 1}일`}
+                <Text caption right>
+                  {makeYM(item)}
                 </Text>
               </Block>
             </Block>
             <Block>
-              <Text h4 style={{marginVertical: 6, marginTop: 0}}>
-                {item.message.length > 15
-                  ? `${item.message.slice(0, 15)}...`
-                  : item.message}
-              </Text>
-              <Text accent>
-                {MAP[reservation.status]}
-                <Text>
-                  {' '}
-                  -{' '}
-                  {`${new Date(reservation.date).getMonth() + 1}월 ${new Date(
-                    reservation.date,
-                  ).getDate() + 1}일`}
+              <Text style={{marginBottom: 3}}>{shottenMsg(item)}</Text>
+              {reservation ? (
+                <Text accent>
+                  {MAP[reservation.status]}
+                  <Text> - {makeYM(reservation)}</Text>
                 </Text>
-              </Text>
+              ) : null}
             </Block>
           </Block>
         </Block>
@@ -238,9 +254,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding,
   },
   avatarChat: {
-    width: theme.sizes.base * 3,
-    height: theme.sizes.base * 3,
-    borderRadius: theme.sizes.base * 1.5,
+    width: theme.sizes.base * 4,
+    height: theme.sizes.base * 4,
+    borderRadius: theme.sizes.base * 2,
   },
 });
 
