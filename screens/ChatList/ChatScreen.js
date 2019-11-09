@@ -26,9 +26,7 @@ export default function ChatScreen(props) {
   useEffect(() => {
     const shop = navigation.getParam('shopId');
     const shopName = navigation.getParam('shopName');
-    const email = navigation.getParam('email')
-      ? navigation.getParam('email')
-      : user.email;
+    const email = navigation.getParam('email');
 
     setShopId(shop);
     setTitle(shopName);
@@ -210,8 +208,7 @@ export default function ChatScreen(props) {
             </Text>
           </Button>
         ) : (
-          <Button
-            onPress={() => navigation.navigate('Shop', {shopCode: shopId})}>
+          <Button onPress={() => navigation.navigate('Shop', {shopId: shopId})}>
             <Text h1 bold>
               {title}
             </Text>
