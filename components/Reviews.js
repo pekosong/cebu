@@ -16,7 +16,7 @@ export default Reviews = props => {
 
   return (
     <TouchableOpacity>
-      <Block style={{marginVertical: theme.sizes.padding / 3}}>
+      <Block style={styles.reviewWrapper}>
         <Block row space="between">
           <CachedImage uri={review.src} style={styles.avatarChat} />
           <Block bottom style={{marginLeft: 10}}>
@@ -34,7 +34,7 @@ export default Reviews = props => {
             />
           </Block>
         </Block>
-        <Block style={{marginTop: theme.sizes.padding / 2}}>
+        <Block style={{marginTop: theme.sizes.padding / 1.5}}>
           <Text h3>{review.comment}</Text>
         </Block>
       </Block>
@@ -43,17 +43,10 @@ export default Reviews = props => {
 };
 
 export const styles = StyleSheet.create({
-  elementContainer: {
-    borderRadius: 3,
-    width: 250,
-    height: 250,
-    marginRight: 20,
-  },
-  imageStyle: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
-    borderRadius: 3,
+  reviewWrapper: {
+    paddingVertical: 16,
+    borderBottomWidth: 0.6,
+    borderBottomColor: theme.colors.gray2,
   },
   avatarChat: {
     width: theme.sizes.base * 4,

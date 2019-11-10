@@ -6,12 +6,13 @@ import {
   Platform,
   ActivityIndicator,
   Dimensions,
+  Image,
 } from 'react-native';
 
 import StarRating from 'react-native-star-rating';
 
 import {Ionicons} from '@expo/vector-icons';
-import {Block, Text, CachedImage} from '../../components';
+import {Block, Text, CardShop, CachedImage} from '../../components';
 import {theme, mocks} from '../../constants';
 
 import firebase from '../../constants/store';
@@ -23,15 +24,18 @@ const {width} = Dimensions.get('window');
 const cateMap = {
   All: '전체',
   Restaurant: '식당',
-  Message: '마사지',
-  Cafe: '카페',
-  Bar: '술집',
+  Massage: '마사지',
   Nail: '네일',
-  SeaSports: '수상스포츠',
   Activity: '액티비티',
-  Shopping: '쇼핑',
 };
 
+const cateSrc = {
+  All: require('../../assets/images/search/activity.jpg'),
+  Restaurant: require('../../assets/images/search/restaurant.jpg'),
+  Massage: require('../../assets/images/search/massage.jpg'),
+  Nail: require('../../assets/images/search/nail.jpg'),
+  Activity: require('../../assets/images/search/seasports.jpg'),
+};
 function FavoritesScreen(props) {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
@@ -77,8 +81,24 @@ function FavoritesScreen(props) {
       <TouchableOpacity
         key={`tab-${tab}`}
         onPress={() => handleTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}>
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
+        style={styles.tab}>
+        <Block style={{flex: 0, width: 60, height: 60}}>
+          <Image
+            style={{
+              height: '100%',
+              width: '100%',
+              resizeMode: 'cover',
+              borderRadius: 30,
+            }}
+            source={cateSrc[tab]}></Image>
+        </Block>
+        <Text
+          bold
+          center
+          size={16}
+          gray={!isActive}
+          accent={isActive}
+          style={{marginTop: 10}}>
           {cateMap[tab]}
         </Text>
       </TouchableOpacity>
@@ -94,66 +114,6 @@ function FavoritesScreen(props) {
     setActive(tab);
   };
 
-  handleRemoveHeart = shop => {
-    let newfavorites = user.myfavorites;
-    const idx = newfavorites.map(e => e.id).indexOf(shop);
-    newfavorites.splice(idx, 1);
-    dispatch(updateFavorite(newfavorites));
-  };
-
-  renderList = shop => {
-    const {name, id, preview, engName, review, category} = shop;
-    return (
-      <TouchableOpacity
-        key={id}
-        onPress={() =>
-          navigation.navigate('Shop', {
-            title: '저장소',
-            shopId: id,
-          })
-        }>
-        <Block key={name} style={styles.categories}>
-          <TouchableOpacity
-            onPress={() => handleRemoveHeart(id)}
-            style={{position: 'absolute', top: 5, right: 30, zIndex: 10}}>
-            <Ionicons
-              size={30}
-              color={'red'}
-              name={'ios-heart'}
-              style={{
-                textShadowColor: theme.colors.black,
-                textShadowOffset: {width: 0.5, height: 1},
-                textShadowRadius: 1,
-              }}
-            />
-          </TouchableOpacity>
-          <CachedImage
-            uri={preview}
-            style={{
-              height: 200,
-              width: width - theme.sizes.padding * 2,
-              borderRadius: 5,
-              resizeMode: 'cover',
-            }}
-          />
-          <Text style={{marginTop: 5}}>{category}</Text>
-          <Text h2 bold style={{marginVertical: 5}}>
-            {name + '  '}
-            <Text>{engName}</Text>
-          </Text>
-          <StarRating
-            disabled={false}
-            maxStars={5}
-            rating={review}
-            starSize={12}
-            fullStarColor={theme.colors.accent}
-            containerStyle={{width: 20}}
-          />
-        </Block>
-      </TouchableOpacity>
-    );
-  };
-
   return (
     <Block>
       <Block flex={false} style={styles.header}>
@@ -165,8 +125,13 @@ function FavoritesScreen(props) {
         {tabs.map(tab => renderTab(tab))}
       </Block>
       {isLoaded ? (
-        <ScrollView showsVerticalScrollIndicator={false} scrollEnabled={true}>
-          {selectedFavorites.map(shop => renderList(shop))}
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          scrollEnabled={true}
+          style={{paddingTop: theme.sizes.base}}>
+          {selectedFavorites.map((shop, idx) => (
+            <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
+          ))}
         </ScrollView>
       ) : (
         <Block style={styles.full}>
@@ -200,17 +165,13 @@ const styles = StyleSheet.create({
   tabs: {
     borderBottomColor: theme.colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical:
-      Platform.OS === 'ios' ? theme.sizes.base * 1.1 : theme.sizes.base,
+    marginBottom: 5,
+    marginTop: theme.sizes.base,
     marginHorizontal: theme.sizes.padding,
   },
   tab: {
-    marginRight: theme.sizes.base,
+    marginRight: theme.sizes.base * 1.2,
     paddingBottom: theme.sizes.base,
-  },
-  active: {
-    borderBottomColor: theme.colors.secondary,
-    borderBottomWidth: 3,
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,

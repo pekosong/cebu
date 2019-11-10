@@ -138,7 +138,7 @@ const ProfileScreen = props => {
               onPress={() => navigation.navigate(item.navigation)}>
               <Text h2>{item.title}</Text>
               <MaterialCommunityIcons
-                size={30}
+                size={28}
                 name={item.icon}
                 style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </WideText>
@@ -155,7 +155,7 @@ const ProfileScreen = props => {
                   onPress={() => navigation.navigate(item.navigation)}>
                   <Text h2>{item.title}</Text>
                   <MaterialCommunityIcons
-                    size={30}
+                    size={28}
                     name={item.icon}
                     style={{
                       color: theme.colors.black,
@@ -175,7 +175,7 @@ const ProfileScreen = props => {
               onPress={() => navigation.navigate(item.navigation)}>
               <Text h2>{item.title}</Text>
               <MaterialCommunityIcons
-                size={30}
+                size={28}
                 name={item.icon}
                 style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </WideText>
@@ -190,7 +190,7 @@ const ProfileScreen = props => {
               }}>
               <Text h2>알림 테스트</Text>
               <MaterialCommunityIcons
-                size={30}
+                size={28}
                 name="lightbulb-on-outline"
                 style={{color: theme.colors.black}}></MaterialCommunityIcons>
             </Block>
@@ -207,7 +207,7 @@ const ProfileScreen = props => {
                 로그아웃
               </Text>
               <MaterialCommunityIcons
-                size={30}
+                size={28}
                 name="close-outline"
                 style={{color: theme.colors.primary}}></MaterialCommunityIcons>
             </Block>

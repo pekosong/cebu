@@ -2,24 +2,23 @@ import React, {useState, useEffect} from 'react';
 import {
   Dimensions,
   StyleSheet,
-  Image,
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
 } from 'react-native';
 
-import StarRating from 'react-native-star-rating';
 import {Ionicons} from '@expo/vector-icons';
-import {Badge, Button, Block, Text, CachedImage} from '../../components';
+import {Block, Text, CardShop} from '../../components';
 import {theme} from '../../constants';
 
 import {useSelector, shallowEqual} from 'react-redux';
+import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const {width} = Dimensions.get('window');
+const {height, width} = Dimensions.get('window');
 
 const cateMap = {
   Restaurant: '식당',
-  Message: '마사지',
+  Massage: '마사지',
   Cafe: '카페',
   Bar: '술집',
   Nail: '네일',
@@ -34,6 +33,29 @@ const filerMap = {
   거리: 'hello',
 };
 
+const activityList = [
+  {
+    src: 'http://thecebu.co.kr/wp-content/uploads/2019/01/005.jpg',
+    category: '호핑',
+    title: '물고기들과 교감',
+    sub: 'Cebu',
+  },
+  {
+    src:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/30884/194557_large_1525764053.jpg',
+    category: '투어',
+    title: '상어 투어',
+    sub: 'Cebu',
+  },
+  {
+    src:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/7979/44910_large_1525337841.jpg',
+    category: '시티투어',
+    title: '전망대, 카지노',
+    sub: 'Cebu',
+  },
+];
+
 const CategoryScreen = props => {
   const {navigation} = props;
   const [active, setActive] = useState('추천');
@@ -43,17 +65,19 @@ const CategoryScreen = props => {
   const shops = useSelector(state => state.shops, shallowEqual);
 
   useEffect(() => {
-    filteredShops = shops.filter(
-      e => e.category == navigation.getParam('category'),
-    );
+    if (Object.entries(shops).length != 0) {
+      filteredShops = shops.filter(
+        e => e.category == navigation.getParam('category'),
+      );
 
-    filteredShops = filteredShops.sort((a, b) => {
-      return b.review - a.review;
-    });
+      filteredShops = filteredShops.sort((a, b) => {
+        return b.review - a.review;
+      });
 
-    setSelectedLists(filteredShops);
-    setIsLoaded(true);
-  }, []);
+      setSelectedLists(filteredShops);
+      setIsLoaded(true);
+    }
+  }, [shops]);
 
   handleCatTab = tab => {
     sortedLists = selectedLists.sort((a, b) => {
@@ -78,108 +102,42 @@ const CategoryScreen = props => {
     );
   };
 
-  renderStar = cnt => {
-    return (
-      <StarRating
-        disabled={false}
-        maxStars={5}
-        rating={cnt}
-        starSize={10}
-        fullStarColor={theme.colors.accent}
-        containerStyle={{width: 20}}
-      />
-    );
-  };
-
   renderShopList = () => {
-    return selectedLists.map(shop => (
-      <TouchableOpacity
-        key={shop.name}
-        onPress={() => {
-          navigation.navigate('Shop', {
-            shopId: shop.id,
-          });
-        }}>
-        <Block middle shadow style={styles.category}>
-          <Block flex={1}>
-            <CachedImage
-              key={shop.preview}
-              uri={shop.preview}
-              style={{height: 70, width: '100%'}}
-            />
-          </Block>
-          <Block middle flex={2.8} style={{paddingLeft: 10}}>
-            <Text h4 bold height={25}>
-              {shop.name}
-            </Text>
-            <Text caption h4>
-              {shop.tags.join(', ')}
-            </Text>
-            <Block row style={{marginTop: 5}}>
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={shop.review}
-                starSize={15}
-                fullStarColor={theme.colors.accent}
-                containerStyle={{width: 20}}
-              />
-              <Text caption style={{marginLeft: 50}}>
-                {'  '}
-                리뷰{' '}
-                {shop.reviewCnt
-                  .toString()
-                  .replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-              </Text>
-            </Block>
-          </Block>
-          <Block middle center flex={0.4} style={{position: 'relative'}}>
-            <Text>1.5</Text>
-            <Text>km</Text>
-            {shop.pickup ? (
-              <Badge
-                size={18}
-                style={{
-                  position: 'absolute',
-                  top: -5,
-                  right: -5,
-                }}
-                color={theme.colors.primary}>
-                <Ionicons color={theme.colors.white} size={12} name="md-car" />
-              </Badge>
-            ) : null}
-          </Block>
-        </Block>
-      </TouchableOpacity>
+    return selectedLists.map((shop, idx) => (
+      <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
     ));
   };
 
   return (
     <Block>
       <Block flex={false} row center space="between" style={styles.header}>
-        <Button onPress={() => navigation.goBack()}>
-          <Block center row>
-            <Ionicons
-              size={30}
-              color={theme.colors.black}
-              name="ios-arrow-back"
-            />
-          </Block>
-        </Button>
-        <Button>
-          <Text h1 bold>
+        <Block row center>
+          <TouchableWithoutFeedback
+            onPress={() => navigation.goBack()}
+            style={{marginRight: 12}}>
+            <Ionicons size={30} name="ios-arrow-back" />
+          </TouchableWithoutFeedback>
+          <Text h2 bold>
             {cateMap[navigation.getParam('category')]}
           </Text>
-        </Button>
-      </Block>
-      <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderCatTab(tab))}
+        </Block>
+
+        <Block row bottom center>
+          <Text h2 style={{marginRight: 15}}>
+            추천순
+          </Text>
+          <Ionicons size={26} name="ios-options" />
+        </Block>
       </Block>
       {isLoaded ? (
         <ScrollView showsVerticalScrollIndicator={false}>
-          <Block flex={false} row space="between" style={styles.categories}>
-            {renderShopList()}
-          </Block>
+          <Block
+            style={{
+              paddingVertical: 15,
+            }}></Block>
+          {selectedLists.map((shop, idx) => (
+            <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
+          ))}
         </ScrollView>
       ) : (
         <Block style={styles.full}>
@@ -202,8 +160,19 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    marginTop: theme.sizes.base * 3,
+    backgroundColor: 'white',
+    paddingTop: theme.sizes.padding * 2.5,
+    paddingBottom: 10,
+    marginBottom: 2,
     paddingHorizontal: theme.sizes.padding,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
   },
   avatar: {
     width: theme.sizes.base * 2.2,
@@ -222,11 +191,6 @@ const styles = StyleSheet.create({
   active: {
     borderBottomColor: theme.colors.secondary,
     borderBottomWidth: 3,
-  },
-  categories: {
-    flexWrap: 'wrap',
-    marginHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 1,
   },
   category: {
     flexDirection: 'row',

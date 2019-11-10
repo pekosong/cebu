@@ -1,43 +1,15 @@
-import React, {useState, useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity, Image} from 'react-native';
 
 import Block from './Block';
 import Text from './Text';
+import Favorite from './Favorite';
+
 import {theme} from '../constants';
-import {Ionicons} from '@expo/vector-icons';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite} from '../redux/action';
 
 export default Card = props => {
   const {style, children, item, navigation} = props;
-  const [myfavorites, setMyfavorites] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
 
-  useEffect(() => {
-    if (user.myfavorites) {
-      setMyfavorites(user.myfavorites);
-      setIsLoaded(true);
-    }
-  }, [user]);
-
-  handleHeart = async shop => {
-    oldfavorites = user.myfavorites.map(e => e.id);
-    newShop = {
-      id: shop.shopCode,
-      name: shop.shop,
-      src: shop.url,
-    };
-    let newfavorites = user.myfavorites;
-    if (oldfavorites.includes(shop.shopCode)) {
-      const idx = user.myfavorites.map(e => e.id).indexOf(shop.shopCode);
-      newfavorites.splice(idx, 1);
-    } else {
-      newfavorites.push(newShop);
-    }
-    dispatch(updateFavorite(newfavorites));
-  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -47,31 +19,16 @@ export default Card = props => {
       }}>
       <Block style={styles.elementContainer}>
         <Block flex={2}>
-          <Image style={styles.imageStyle} source={item.src}></Image>
-          <TouchableOpacity
-            onPress={() => handleHeart(item)}
-            style={{position: 'absolute', top: 5, right: 10}}>
-            {isLoaded ? (
-              <Ionicons
-                size={30}
-                color={
-                  myfavorites.map(e => e.id).includes(item.shopCode)
-                    ? 'red'
-                    : theme.colors.white
-                }
-                name={
-                  myfavorites.map(e => e.id).includes(item.shopCode)
-                    ? 'ios-heart'
-                    : 'ios-heart-empty'
-                }
-                style={{
-                  textShadowColor: theme.colors.red,
-                  textShadowOffset: {width: 0.5, height: 1},
-                  textShadowRadius: 1,
-                }}
-              />
-            ) : null}
-          </TouchableOpacity>
+          <Image
+            style={[styles.imageStyle, styles.shodow]}
+            source={item.src}></Image>
+
+          <Favorite
+            shop={{
+              id: item.shopCode,
+              name: item.shop,
+              preview: item.url,
+            }}></Favorite>
 
           <Block
             style={{
@@ -87,6 +44,16 @@ export default Card = props => {
               오늘
             </Text>
           </Block>
+          <Block
+            style={{
+              position: 'absolute',
+              width: '100%',
+              height: '100%',
+              top: 0,
+              left: 0,
+              backgroundColor: 'rgba(0,0,0,0.1)',
+              borderRadius: 5,
+            }}></Block>
         </Block>
         <Block row flex={1}>
           <Block flex={3} middle>
@@ -119,5 +86,15 @@ export const styles = StyleSheet.create({
     height: '100%',
     resizeMode: 'cover',
     borderRadius: 3,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
   },
 });

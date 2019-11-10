@@ -8,7 +8,7 @@ import Text from './Text';
 const {height, width} = Dimensions.get('window');
 
 export default FullImageSlider = props => {
-  const {source} = props;
+  const {source, height} = props;
   const [imageNum, setImageNum] = useState(1);
 
   const [maxImageNum, setMaxImageNum] = useState(1);
@@ -40,7 +40,7 @@ export default FullImageSlider = props => {
             <CachedImage
               key={e}
               uri={e}
-              style={{height: 250, width: width, resizeMode: 'contain'}}
+              style={{height: height, width: width, resizeMode: 'cover'}}
             />
           ))
         ) : (

@@ -17,8 +17,8 @@ export default CardMenu = props => {
         row
         space="between"
         style={{
-          marginBottom: 10,
-          paddingBottom: 10,
+          marginBottom: 15,
+          paddingBottom: 15,
           borderBottomWidth: 0.2,
           borderBottomColor: theme.colors.gray2,
         }}>

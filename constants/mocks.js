@@ -145,20 +145,20 @@ const categories = [
     src: require('../assets/images/search/massage.jpg'),
   },
   {
-    id: 'Nail',
-    name: '네일',
-    tags: ['all', 'aesthetic'],
-    count: 16,
-    icon: 'ios-hand',
-    src: require('../assets/images/search/nail.jpg'),
-  },
-  {
     id: 'Activity',
     name: '액티비티',
     tags: ['all', 'activity'],
     count: 47,
     icon: 'ios-bicycle',
     src: require('../assets/images/search/seasports.jpg'),
+  },
+  {
+    id: 'Nail',
+    name: '네일',
+    tags: ['all', 'aesthetic'],
+    count: 16,
+    icon: 'ios-hand',
+    src: require('../assets/images/search/nail.jpg'),
   },
 ];
 

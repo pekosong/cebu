@@ -21,14 +21,14 @@
       "bundleIdentifier": "com.os1.cebu",
       "supportsTablet": true,
       "config": {
-        "googleMapsApiKey": "AIzaSyCo1nymGnZzH-3XzzmPV_UiNqfT4JbEWZQ"
+        "googleMapsApiKey": "AIzaSyC9ynj-JUZBPOvYD47yVPwEJWMd1H-vQMU"
       }
     },
     "android": {
       "package": "com.os1.cebu",
       "versionCode": 2,
       "config": {
-        "googleMaps": {"apiKey": "AIzaSyDbJD2UXs-MRhCU0KXh1jzYrxVv3w3z9DA"}
+        "googleMaps": {"apiKey": "AIzaSyDyyvIklbv_-NEHHIWYp5PRu-iG0UH8rKM"}
       }
     }
   }

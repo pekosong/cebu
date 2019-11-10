@@ -208,10 +208,9 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding,
   },
   inputRow: {
-    marginVertical: 10,
-    borderBottomWidth: 0.2,
-    paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    paddingVertical: 15,
+    borderBottomWidth: 0.6,
+    borderBottomColor: theme.colors.gray2,
   },
   inputs: {
     paddingHorizontal: theme.sizes.padding,

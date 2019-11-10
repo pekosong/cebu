@@ -23,6 +23,8 @@ import MyShopScreen from '../screens/Profile/MyShopScreen';
 import ReservationScreen from '../screens/Profile/ReservationScreen';
 
 import ShopScreen from '../screens/Search/ShopScreen';
+import ActivityScreen from '../screens/Search/ActivityScreen';
+import CategoryActivityScreen from '../screens/Search/CategoryActivityScreen';
 
 import TabBarIcon from '../components/TabBarIcon';
 
@@ -38,6 +40,8 @@ const SearchStack = createStackNavigator(
     Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
+    Activity: ActivityScreen,
+    CategoryActivity: CategoryActivityScreen,
     Chat: ChatScreen,
     Test: TestScreen,
   },
@@ -61,6 +65,7 @@ const MyTripStack = createStackNavigator(
     MyTrip: MyTripScreen,
     Shop: ShopScreen,
     Chat: ChatScreen,
+    Activity: ActivityScreen,
   },
   config,
 );
@@ -69,6 +74,7 @@ const FavoritesStack = createStackNavigator(
   {
     Favorites: FavoritesScreen,
     Shop: ShopScreen,
+    Activity: ActivityScreen,
   },
   config,
 );
@@ -101,6 +107,7 @@ const ChatStack = createStackNavigator(
     ChatLists: ChatListScreen,
     Chat: ChatScreen,
     Shop: ShopScreen,
+    Activity: ActivityScreen,
   },
   config,
 );
@@ -156,13 +163,14 @@ const tabNavigator = createBottomTabNavigator(
       inactiveTintColor: theme.colors.gray2,
       style: {
         margin: 0,
+        paddingTop: 5,
         paddingHorizontal: 20,
         backgroundColor: 'white',
         borderTopWidth: 0,
         shadowOffset: {width: 5, height: 3},
         shadowColor: 'black',
         shadowOpacity: 0.5,
-        elevation: 5,
+        elevation: 2,
       },
     },
   },

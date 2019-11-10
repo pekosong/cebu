@@ -29,11 +29,33 @@ import {
 import {theme, mocks} from '../../constants';
 
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite, getShop} from '../../redux/action';
+import {updateFavorite} from '../../redux/action';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
+const activityList = [
+  {
+    src: 'http://thecebu.co.kr/wp-content/uploads/2019/01/005.jpg',
+    category: '호핑',
+    title: '물고기들과 교감',
+    sub: 'Cebu',
+  },
+  {
+    src:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/30884/194557_large_1525764053.jpg',
+    category: '투어',
+    title: '상어 투어',
+    sub: 'Cebu',
+  },
+  {
+    src:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/7979/44910_large_1525337841.jpg',
+    category: '시티투어',
+    title: '전망대, 카지노',
+    sub: 'Cebu',
+  },
+];
 
-export default function ShopScreen(props) {
+export default function ActivityScreen(props) {
   const {navigation, recommendList} = props;
 
   const [shop, setShop] = useState({});
@@ -51,7 +73,9 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
 
   useEffect(() => {
-    let shopId = navigation.getParam('shopId');
+    // let shopId = navigation.getParam('shopId');
+    let shopId = 'massage1';
+
     let unsubscribe = firebase
       .firestore()
       .collection('shops')
@@ -107,7 +131,46 @@ export default function ShopScreen(props) {
       .slice(0, 3)
       .map((review, idx) => <Reviews key={idx} review={review} />);
   };
-
+  renderActivityList = (e, idx) => {
+    return (
+      <Block
+        key={idx}
+        style={{
+          marginTop: 40,
+          marginBottom: 20,
+          marginLeft: idx != 0 ? 20 : 0,
+          marginRight: idx == 2 ? 40 : 0,
+        }}>
+        <CachedImage
+          key={e.src}
+          uri={e.src}
+          style={{
+            borderRadius: 5,
+            height: 200,
+            width: 160,
+            resizeMode: 'cover',
+          }}
+        />
+        <Block
+          style={{
+            height: '100%',
+            width: '100%',
+            position: 'absolute',
+            backgroundColor: 'rgba(0, 0,0, 0.3)',
+          }}>
+          <Text center h4 white style={{marginTop: 20}}>
+            {e.category}
+          </Text>
+          <Text center h3 white bold style={{marginTop: 100}}>
+            {e.title}
+          </Text>
+          <Text center h3 white bold>
+            {e.sub}
+          </Text>
+        </Block>
+      </Block>
+    );
+  };
   return isLoaded ? (
     <Block>
       <Animated.View
@@ -117,26 +180,8 @@ export default function ShopScreen(props) {
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0.1)', 'rgba(255, 255, 255, 1)'],
           }),
-          shadowColor: '#000',
-          shadowOffset: {
-            width: 0,
-            height: fadeAnim.interpolate({
-              inputRange: [0, 1],
-              outputRange: [0, 2],
-            }),
-          },
-          shadowOpacity: fadeAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 0.25],
-          }),
-          shadowRadius: fadeAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 3.84],
-          }),
-          elevation: fadeAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 2],
-          }),
+          borderWidth: fadeAnim,
+          borderColor: theme.colors.gray2,
         }}>
         <Block middle center row space="between">
           <Block>
@@ -169,7 +214,7 @@ export default function ShopScreen(props) {
               opacity: fadeAnim,
               marginRight: 30,
             }}>
-            {shop.name}
+            라라호핑
           </Animated.Text>
           <Block middle row right style={{marginRight: 2}}>
             <TouchableOpacity
@@ -222,29 +267,178 @@ export default function ShopScreen(props) {
         style={{marginBottom: 65, zIndex: -1}}
         scrollEventThrottle={360}
         onScroll={handleScrollByY}>
-        <FullImageSlider source={shop.source} height={250}></FullImageSlider>
+        <FullImageSlider
+          source={[
+            'http://www.jumphopping.com/wp-content/uploads/2018/08/1-18.jpg',
+          ]}
+          height={height * 0.7}></FullImageSlider>
         <Block style={{paddingHorizontal: theme.sizes.padding}}>
           <Block style={[styles.categories, {marginTop: 20}]}>
             <Block row space="between">
               <Block>
+                <Text accent bold style={{fontSize: 20, marginBottom: 5}}>
+                  호핑
+                </Text>
                 <Text bold style={{fontSize: 25, marginBottom: 5}}>
-                  {shop.name}
+                  세부 3섬 스페셜 호핑투어
                 </Text>
                 <Text h3 gray style={styles.content}>
-                  {shop.engName}
+                  하루 동안 즐기는 세부 인기 3섬
                 </Text>
               </Block>
-              <Text bold style={{color: theme.colors.accent}}>
-                {shop.tags}
+            </Block>
+          </Block>
+          <Divider />
+          <Block style={[styles.categories, {marginTop: 10}]}>
+            <Text h3 bold style={{...styles.content, marginBottom: 30}}>
+              기본정보
+            </Text>
+            <Block row space="between">
+              <Block>
+                <Ionicons size={25} name="ios-time" style={{marginBottom: 5}} />
+                <Text h4 style={{marginBottom: 5}}>
+                  진행시간
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  8시간
+                </Text>
+              </Block>
+              <Block>
+                <Ionicons
+                  size={25}
+                  name="ios-people"
+                  style={{marginBottom: 5}}
+                />
+                <Text h4 style={{marginBottom: 5}}>
+                  그룹당 인원
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  최대 20명
+                </Text>
+              </Block>
+            </Block>
+            <Block row space="between" style={{marginTop: 20}}>
+              <Block>
+                <Ionicons
+                  size={25}
+                  name="ios-document"
+                  style={{marginBottom: 5}}
+                />
+                <Text h4 style={{marginBottom: 5}}>
+                  포함사항
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  식사, 음료수
+                </Text>
+              </Block>
+              <Block>
+                <Ionicons size={25} name="ios-map" style={{marginBottom: 5}} />
+                <Text h4 style={{marginBottom: 5}}>
+                  제공언어
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  한국어, 영어
+                </Text>
+              </Block>
+            </Block>
+            <Block row space="between" style={{marginTop: 20}}>
+              <Block>
+                <Ionicons size={25} name="ios-car" style={{marginBottom: 5}} />
+                <Text h4 style={{marginBottom: 5}}>
+                  픽업
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  호텔 픽업
+                </Text>
+              </Block>
+              <Block>
+                <Ionicons size={25} name="ios-hand" style={{marginBottom: 5}} />
+                <Text h4 style={{marginBottom: 5}}>
+                  취소가능 여부
+                </Text>
+                <Text h3 bold style={styles.content}>
+                  가능
+                </Text>
+              </Block>
+            </Block>
+          </Block>
+          <Divider />
+          <Block style={[styles.categories, {marginTop: 10}]}>
+            <Text h3 bold style={{...styles.content, marginBottom: 30}}>
+              프로그램
+            </Text>
+            <Block>
+              <Text h2 bold style={styles.content}>
+                세부 호핑투어! 왕복 픽업+스노클링+중식+BBQ중식 까지!
+              </Text>
+              <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
+                <Ionicons size={25} name="ios-checkmark" /> 세부자유여행객을
+                위한 막탄 내 리조트 무료픽업 &드랍서비스
+              </Text>
+              <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
+                <Ionicons size={25} name="ios-checkmark" />{' '}
+                세부액티비티호핑투어를 즐기고 선상BBQ중식제공(선셋투어 시 석시)
+              </Text>
+              <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
+                <Ionicons size={25} name="ios-checkmark" /> 세부여행 최고
+                액티비티 최신스노클링장비 세부여행추억담기
+              </Text>
+              <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
+                <Ionicons size={25} name="ios-checkmark" /> 수중카메라
+                촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미 서비스
               </Text>
             </Block>
-            <Text gray>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-              unde recusandae voluptate numquam consectetur quibusdam
+            <CachedImage
+              key={
+                'http://www.jumphopping.com/wp-content/uploads/2018/08/1-18.jpg'
+              }
+              uri={
+                'http://www.jumphopping.com/wp-content/uploads/2018/08/1-18.jpg'
+              }
+              style={{
+                borderRadius: 5,
+                marginTop: 40,
+                height: 200,
+                width: width - theme.sizes.padding * 2,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+              수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑
+              도우미 서비스
+            </Text>
+            <CachedImage
+              key={'https://hanoitbs.com/files/sanpham/76/1/jpg/.jpg'}
+              uri={'https://hanoitbs.com/files/sanpham/76/1/jpg/.jpg'}
+              style={{
+                borderRadius: 5,
+                marginTop: 40,
+                height: 200,
+                width: width - theme.sizes.padding * 2,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+              수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑
+              도우미 서비스
+            </Text>
+            <CachedImage
+              key={'http://thecebu.co.kr/wp-content/uploads/2019/01/005.jpg'}
+              uri={'http://thecebu.co.kr/wp-content/uploads/2019/01/005.jpg'}
+              style={{
+                borderRadius: 5,
+                marginTop: 40,
+                height: 200,
+                width: width - theme.sizes.padding * 2,
+                resizeMode: 'contain',
+              }}
+            />
+            <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+              수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑
+              도우미 서비스
             </Text>
           </Block>
           <Divider />
-
           {todo && Object.entries(todo).length !== 0 ? (
             <Fragment>
               <Block style={styles.categories}>
@@ -311,26 +505,6 @@ export default function ShopScreen(props) {
               ) : null}
             </Fragment>
           ) : null}
-
-          <Block style={styles.categories}>
-            <Block
-              row
-              space="between"
-              style={{...styles.content, marginBottom: 25}}>
-              <Text h3 bold>
-                추천메뉴
-              </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Text h3 bold color={theme.colors.accent}>
-                  더보기
-                </Text>
-              </TouchableOpacity>
-            </Block>
-            {shop.menus.map((item, idx) => (
-              <CardMenu key={idx} item={item} />
-            ))}
-          </Block>
-          <Divider />
           <Block style={styles.categories}>
             <Block
               row
@@ -580,13 +754,14 @@ export default function ShopScreen(props) {
   );
 }
 
-ShopScreen.defaultProps = {
+ActivityScreen.defaultProps = {
   recommendList: mocks.recommendList,
   eventList: mocks.eventList,
 };
 
-ShopScreen.navigationOptions = {
+ActivityScreen.navigationOptions = {
   header: null,
+  tabBarVisible: false,
 };
 
 const styles = StyleSheet.create({
@@ -595,8 +770,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    paddingTop: theme.sizes.padding * 2,
-    height: 90,
+    paddingTop: theme.sizes.padding * 1.8,
+    height: 85,
     width: width,
     paddingHorizontal: theme.sizes.padding,
     position: 'absolute',

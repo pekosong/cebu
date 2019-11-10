@@ -2,8 +2,11 @@ import Block from './Block';
 import Badge from './Badge';
 import Button from './Button';
 import Card from './Card';
+import CardCategory from './CardCategory';
+import CardShop from './CardShop';
+
 import CardMenu from './CardMenu';
-import CardWrap from './CardWrap';
+import CardRect from './CardRect';
 import Input from './Input';
 import Text from './Text';
 import Progress from './Progress';
@@ -16,6 +19,8 @@ import FullImageSlider from './FullImageSlider';
 import CachedImage from './CachedImage';
 import Test from './Test';
 
+import Favorite from './Favorite';
+
 import ReviewModal from './ReviewModal';
 import ReservationModal from './ReservationModal';
 import ReservationConfirmModal from './ReservationConfirmModal';
@@ -26,8 +31,11 @@ export {
   Badge,
   Button,
   Card,
+  CardCategory,
+  CardShop,
   CardMenu,
-  CardWrap,
+  CardRect,
+  Favorite,
   Input,
   Text,
   Progress,

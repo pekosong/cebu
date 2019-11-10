@@ -1,14 +1,14 @@
-import React from "react";
-import { Ionicons } from "@expo/vector-icons";
+import React from 'react';
+import {Ionicons} from '@expo/vector-icons';
 
-import { theme } from "../constants";
+import {theme} from '../constants';
 
 export default function TabBarIcon(props) {
   return (
     <Ionicons
       name={props.name}
-      size={26}
-      style={{ marginBottom: -3 }}
+      size={27}
+      style={{marginBottom: -3}}
       color={props.focused ? theme.colors.primary : theme.colors.gray}
     />
   );

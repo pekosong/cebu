@@ -132,18 +132,14 @@ const styles = StyleSheet.create({
     marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
     paddingHorizontal: theme.sizes.padding,
   },
-  avatar: {
-    width: theme.sizes.base * 6,
-    height: theme.sizes.base * 6,
-  },
   inputs: {
     paddingHorizontal: theme.sizes.padding,
     marginVertical: 10,
   },
   plan: {
     paddingVertical: 15,
-    borderBottomWidth: 0.5,
-    borderBottomColor: theme.colors.gray,
+    borderBottomWidth: 0.6,
+    borderBottomColor: theme.colors.gray2,
   },
 });
 

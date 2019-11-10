@@ -7,19 +7,20 @@ import {theme} from '../constants';
 export default WideText = props => {
   const {style, onPress, children} = props;
   return (
-    <TouchableOpacity style={style} onPress={onPress}>
-      <Block row space="between" style={styles.inputRow}>
-        {children}
-      </Block>
-    </TouchableOpacity>
+    <Block style={styles.inputRow}>
+      <TouchableOpacity onPress={onPress}>
+        <Block center middle row space="between">
+          {children}
+        </Block>
+      </TouchableOpacity>
+    </Block>
   );
 };
 
 export const styles = StyleSheet.create({
   inputRow: {
-    paddingBottom: 6,
-    marginVertical: 10,
-    borderBottomWidth: 0.2,
-    borderBottomColor: theme.colors.gray,
+    paddingVertical: 15,
+    borderBottomWidth: 0.6,
+    borderBottomColor: theme.colors.gray2,
   },
 });
