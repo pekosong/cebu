@@ -5,8 +5,7 @@ import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
 import {theme} from '../constants';
-import StarRating from 'react-native-star-rating';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 
@@ -36,7 +35,7 @@ export default CardShop = props => {
         <CachedImage
           uri={preview}
           style={{
-            height: 200,
+            height: 170,
             width: width - theme.sizes.padding * 2,
             borderRadius: 5,
             resizeMode: 'cover',
@@ -45,39 +44,39 @@ export default CardShop = props => {
         <Block
           style={{
             width: '100%',
-            height: 200,
+            height: 170,
             position: 'absolute',
             borderRadius: 5,
             backgroundColor: 'rgba(0,0,0,0.1)',
           }}></Block>
         <Favorite shop={shop}></Favorite>
-        <Block row space="between" style={{marginTop: 10}}>
+        <Block row space="between" style={{marginTop: 5}}>
           <Text>{category}</Text>
           <Text h4>{tags.join(', ')}</Text>
         </Block>
-        <Text h2 bold style={{marginVertical: 5}}>
+        <Text h3 bold style={{marginVertical: 2}}>
           {name}
         </Text>
         <Block row center>
-          <Ionicons
-            size={20}
-            name="ios-star"
+          <AntDesign
+            size={18}
+            name="star"
             style={{color: theme.colors.accent}}
           />
           <Text h4 style={{marginLeft: 5}}>
             {review}
           </Text>
-          <Ionicons
-            size={20}
-            name="ios-heart"
+          <AntDesign
+            size={18}
+            name="heart"
             style={{color: theme.colors.accent, marginLeft: 10}}
           />
           <Text h4 style={{marginLeft: 5}}>
             {likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
           </Text>
-          <Ionicons
-            size={20}
-            name="ios-today"
+          <AntDesign
+            size={18}
+            name="like1"
             style={{color: theme.colors.accent, marginLeft: 10}}
           />
           <Text h4 style={{marginLeft: 5}}>
@@ -91,15 +90,17 @@ export default CardShop = props => {
               middle
               style={{
                 flex: 0,
-                width: 30,
-                height: 30,
-                borderRadius: 15,
+                width: 24,
+                height: 24,
+                borderRadius: 12,
                 backgroundColor: theme.colors.accent,
                 marginRight: 7,
               }}>
-              <Text white bold>
-                한
-              </Text>
+              <AntDesign
+                size={18}
+                name="customerservice"
+                style={{color: 'white'}}
+              />
             </Block>
           ) : null}
           {pickup ? (
@@ -108,13 +109,13 @@ export default CardShop = props => {
               middle
               style={{
                 flex: 0,
-                width: 30,
-                height: 30,
-                borderRadius: 15,
+                width: 24,
+                height: 24,
+                borderRadius: 12,
                 backgroundColor: theme.colors.accent,
                 marginRight: 7,
               }}>
-              <Ionicons size={20} name="ios-car" style={{color: 'white'}} />
+              <AntDesign size={18} name="car" style={{color: 'white'}} />
             </Block>
           ) : null}
           {baby ? (
@@ -123,12 +124,12 @@ export default CardShop = props => {
               middle
               style={{
                 flex: 0,
-                width: 30,
-                height: 30,
-                borderRadius: 15,
+                width: 24,
+                height: 24,
+                borderRadius: 12,
                 backgroundColor: theme.colors.accent,
               }}>
-              <Ionicons size={20} name="ios-hand" style={{color: 'white'}} />
+              <AntDesign size={18} name="smileo" style={{color: 'white'}} />
             </Block>
           ) : null}
         </Block>
@@ -140,6 +141,6 @@ export default CardShop = props => {
 export const styles = StyleSheet.create({
   categories: {
     marginHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 2,
+    marginBottom: theme.sizes.base * 1.6,
   },
 });

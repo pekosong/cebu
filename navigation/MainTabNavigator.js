@@ -50,12 +50,7 @@ const SearchStack = createStackNavigator(
 
 SearchStack.navigationOptions = {
   tabBarLabel: '찾기',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-search' : 'md-search'}
-    />
-  ),
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'search1'} />,
 };
 
 SearchStack.path = '';
@@ -81,22 +76,14 @@ const FavoritesStack = createStackNavigator(
 
 FavoritesStack.navigationOptions = {
   tabBarLabel: '저장소',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `ios-heart` : 'ios-heart'}
-    />
-  ),
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'hearto'} />,
 };
 
 FavoritesStack.path = '';
 MyTripStack.navigationOptions = {
   tabBarLabel: '내 일정',
   tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? `logo-google` : 'logo-google'}
-    />
+    <TabBarIcon focused={focused} name={'enviromento'} />
   ),
 };
 
@@ -114,12 +101,7 @@ const ChatStack = createStackNavigator(
 
 ChatStack.navigationOptions = {
   tabBarLabel: '메시지',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'ios-chatbubbles' : 'ios-chatbubbles'}
-    />
-  ),
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'message1'} />,
 };
 
 ChatStack.path = '';
@@ -139,12 +121,7 @@ const ProfileStack = createStackNavigator(
 
 ProfileStack.navigationOptions = {
   tabBarLabel: '내 정보',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon
-      focused={focused}
-      name={Platform.OS === 'ios' ? 'md-person' : 'md-person'}
-    />
-  ),
+  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'user'} />,
 };
 
 ProfileStack.path = '';
@@ -159,15 +136,19 @@ const tabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: theme.colors.primary,
+      activeTintColor: theme.colors.accent,
       inactiveTintColor: theme.colors.gray2,
+      labelStyle: {
+        fontSize: 12,
+      },
       style: {
-        margin: 0,
-        paddingTop: 5,
-        paddingHorizontal: 20,
+        height: 60,
+        paddingTop: 10,
+        paddingBottom: 5,
+        paddingHorizontal: 10,
         backgroundColor: 'white',
-        borderTopWidth: 0,
-        shadowOffset: {width: 5, height: 3},
+        borderTopWidth: 0.6,
+        shadowOffset: {width: 2, height: 3},
         shadowColor: 'black',
         shadowOpacity: 0.5,
         elevation: 2,

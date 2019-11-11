@@ -175,6 +175,7 @@ const ChatListScreen = props => {
         }>
         <Block
           row
+          center
           style={{
             marginVertical: 10,
             paddingBottom: 5,
@@ -183,8 +184,8 @@ const ChatListScreen = props => {
             <CachedImage uri={item.avatar} style={styles.avatarChat} />
           </Block>
           <Block flex={4}>
-            <Block row space="between">
-              <Text h3 bold>
+            <Block row center space="between">
+              <Text h4 bold>
                 {user.host ? item.email : item.shopName}
               </Text>
               <Block flex={false}>
@@ -194,7 +195,7 @@ const ChatListScreen = props => {
               </Block>
             </Block>
             <Block>
-              <Text style={{marginBottom: 3}}>{shottenMsg(item)}</Text>
+              <Text style={{marginVertical: 3}}>{shottenMsg(item)}</Text>
               {reservation ? (
                 <Text accent>
                   {MAP[reservation.status]}

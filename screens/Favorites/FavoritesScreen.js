@@ -7,6 +7,7 @@ import {
   ActivityIndicator,
   Dimensions,
   Image,
+  StatusBar,
 } from 'react-native';
 
 import StarRating from 'react-native-star-rating';
@@ -98,7 +99,7 @@ function FavoritesScreen(props) {
           size={16}
           gray={!isActive}
           accent={isActive}
-          style={{marginTop: 10}}>
+          style={{marginTop: 6}}>
           {cateMap[tab]}
         </Text>
       </TouchableOpacity>
@@ -117,12 +118,14 @@ function FavoritesScreen(props) {
   return (
     <Block>
       <Block flex={false} style={styles.header}>
-        <Text h1 bold>
-          저장소
-        </Text>
-      </Block>
-      <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTab(tab))}
+        <Block flex={false}>
+          <Text h1 bold>
+            저장소
+          </Text>
+        </Block>
+        <Block flex={false} row style={styles.tabs}>
+          {tabs.map(tab => renderTab(tab))}
+        </Block>
       </Block>
       {isLoaded ? (
         <ScrollView
@@ -158,20 +161,24 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   header: {
-    marginTop: theme.sizes.base * 4,
-    marginBottom: theme.sizes.base,
+    backgroundColor: 'white',
+    paddingTop: theme.sizes.base * 4,
     paddingHorizontal: theme.sizes.padding,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
   },
   tabs: {
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginBottom: 5,
-    marginTop: theme.sizes.base,
-    marginHorizontal: theme.sizes.padding,
+    marginTop: 20,
   },
   tab: {
     marginRight: theme.sizes.base * 1.2,
-    paddingBottom: theme.sizes.base,
+    paddingBottom: theme.sizes.base * 0.8,
   },
   categories: {
     paddingHorizontal: theme.sizes.padding,

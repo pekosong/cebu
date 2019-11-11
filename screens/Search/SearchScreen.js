@@ -222,7 +222,7 @@ const SearchScreen = props => {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}></ActivityIndicator>
+            color={theme.colors.accent}></ActivityIndicator>
         </Block>
       )}
     </Block>

@@ -7,7 +7,7 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {Block, Text, CardShop} from '../../components';
 import {theme} from '../../constants';
 
@@ -126,7 +126,7 @@ const CategoryScreen = props => {
           <Text h2 style={{marginRight: 15}}>
             추천순
           </Text>
-          <Ionicons size={26} name="ios-options" />
+          <AntDesign size={26} name="bars" />
         </Block>
       </Block>
       {isLoaded ? (
@@ -143,7 +143,7 @@ const CategoryScreen = props => {
         <Block style={styles.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}></ActivityIndicator>
+            color={theme.colors.accent}></ActivityIndicator>
         </Block>
       )}
     </Block>

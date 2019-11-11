@@ -3,7 +3,7 @@ import {StyleSheet, ScrollView} from 'react-native';
 import {Block, Text, WideText} from '../../components';
 import {theme} from '../../constants';
 import firebase from '../../constants/store';
-import {MaterialCommunityIcons} from '@expo/vector-icons';
+import {MaterialCommunityIcons, Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
@@ -12,36 +12,36 @@ import {Notifications} from 'expo';
 import * as Permissions from 'expo-permissions';
 
 const profileList = [
-  {title: '내 정보', navigation: 'Personal', icon: 'account-outline'},
+  {title: '내 정보', navigation: 'Personal', icon: 'user'},
   {
     title: '내 여행 정보',
     navigation: 'TripInfos',
-    icon: 'map-marker-outline',
+    icon: 'earth',
   },
-  {title: '알림', navigation: 'Notice', icon: 'bell-outline'},
+  {title: '알림', navigation: 'Notice', icon: 'bells'},
 ];
 
 const hostList = [
-  {title: '매장 정보', navigation: 'MyShop', icon: 'home-outline'},
+  {title: '매장 정보', navigation: 'MyShop', icon: 'home'},
   {
     title: '예약 관리',
     navigation: 'Reservation',
-    icon: 'folder-multiple-outline',
+    icon: 'inbox',
   },
-  {title: '고객 정보', navigation: '', icon: 'account-multiple-outline'},
-  {title: '이벤트 등록', navigation: '', icon: 'cart-outline'},
+  {title: '고객 정보', navigation: '', icon: 'addusergroup'},
+  {title: '이벤트 등록', navigation: '', icon: 'Safety'},
 ];
 
 const helpList = [
   {
     title: '도움말',
     navigation: '',
-    icon: 'information-outline',
+    icon: 'infocirlceo',
   },
   {
     title: '의견 남기기',
     navigation: '',
-    icon: 'clipboard-text-outline',
+    icon: 'copy1',
   },
   ,
 ];
@@ -136,11 +136,11 @@ const ProfileScreen = props => {
               item={item}
               key={idx}
               onPress={() => navigation.navigate(item.navigation)}>
-              <Text h2>{item.title}</Text>
-              <MaterialCommunityIcons
-                size={28}
+              <Text h3>{item.title}</Text>
+              <AntDesign
+                size={26}
                 name={item.icon}
-                style={{color: theme.colors.black}}></MaterialCommunityIcons>
+                style={{color: theme.colors.black}}></AntDesign>
             </WideText>
           ))}
           {user.host ? (
@@ -153,13 +153,13 @@ const ProfileScreen = props => {
                   item={item}
                   key={idx}
                   onPress={() => navigation.navigate(item.navigation)}>
-                  <Text h2>{item.title}</Text>
-                  <MaterialCommunityIcons
-                    size={28}
+                  <Text h3>{item.title}</Text>
+                  <AntDesign
+                    size={26}
                     name={item.icon}
                     style={{
                       color: theme.colors.black,
-                    }}></MaterialCommunityIcons>
+                    }}></AntDesign>
                 </WideText>
               ))}
             </Fragment>
@@ -173,11 +173,11 @@ const ProfileScreen = props => {
               item={item}
               key={idx}
               onPress={() => navigation.navigate(item.navigation)}>
-              <Text h2>{item.title}</Text>
-              <MaterialCommunityIcons
-                size={28}
+              <Text h3>{item.title}</Text>
+              <AntDesign
+                size={26}
                 name={item.icon}
-                style={{color: theme.colors.black}}></MaterialCommunityIcons>
+                style={{color: theme.colors.black}}></AntDesign>
             </WideText>
           ))}
           <TouchableOpacity onPress={() => handleNotification()}>
@@ -188,11 +188,11 @@ const ProfileScreen = props => {
                 ...styles.inputRow,
                 marginTop: 10,
               }}>
-              <Text h2>알림 테스트</Text>
-              <MaterialCommunityIcons
-                size={28}
-                name="lightbulb-on-outline"
-                style={{color: theme.colors.black}}></MaterialCommunityIcons>
+              <Text h3>알림 테스트</Text>
+              <AntDesign
+                size={26}
+                name="dingding"
+                style={{color: theme.colors.black}}></AntDesign>
             </Block>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleLogout()}>
@@ -203,13 +203,13 @@ const ProfileScreen = props => {
                 ...styles.inputRow,
                 marginVertical: 30,
               }}>
-              <Text color={theme.colors.primary} h2>
+              <Text h3 primary>
                 로그아웃
               </Text>
-              <MaterialCommunityIcons
-                size={28}
-                name="close-outline"
-                style={{color: theme.colors.primary}}></MaterialCommunityIcons>
+              <AntDesign
+                size={26}
+                name="logout"
+                style={{color: theme.colors.primary}}></AntDesign>
             </Block>
           </TouchableOpacity>
         </Block>

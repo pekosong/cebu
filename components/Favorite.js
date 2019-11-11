@@ -2,7 +2,7 @@ import React, {useState, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {theme} from '../constants';
-import {Ionicons} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateFavorite} from '../redux/action';
 
@@ -42,7 +42,7 @@ export default Favorite = props => {
       onPress={() => handleFavorite(shop)}
       style={{position: 'absolute', top: 10, right: 10, zIndex: 10}}>
       {isLoaded ? (
-        <Ionicons
+        <AntDesign
           size={25}
           color={
             myfavorites.map(e => e.id).includes(shop.id)
@@ -50,11 +50,10 @@ export default Favorite = props => {
               : theme.colors.white
           }
           name={
-            myfavorites.map(e => e.id).includes(shop.id)
-              ? 'ios-heart'
-              : 'ios-heart-empty'
+            myfavorites.map(e => e.id).includes(shop.id) ? 'heart' : 'hearto'
           }
           style={{
+            margin: 2,
             textShadowColor: theme.colors.red,
             textShadowOffset: {width: 0.5, height: 1},
             textShadowRadius: 1,

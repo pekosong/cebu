@@ -115,7 +115,7 @@ export default function ShopScreen(props) {
           ...styles.header,
           backgroundColor: fadeAnim.interpolate({
             inputRange: [0, 1],
-            outputRange: ['rgba(0, 0, 0, 0.1)', 'rgba(255, 255, 255, 1)'],
+            outputRange: ['rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)'],
           }),
           shadowColor: '#000',
           shadowOffset: {
@@ -478,11 +478,18 @@ export default function ShopScreen(props) {
       <Block
         row
         style={{
+          backgroundColor: 'white',
           position: 'absolute',
           bottom: 0,
-          borderTopWidth: 1,
-          borderTopColor: theme.colors.gray2,
           paddingHorizontal: theme.sizes.padding,
+          shadowColor: '#000',
+          shadowOffset: {
+            width: 2,
+            height: 2,
+          },
+          shadowOpacity: 0.25,
+          shadowRadius: 3.84,
+          elevation: 2,
         }}>
         <Block flex={2}>
           <Block row center style={{marginTop: 2, marginBottom: -10}}>
