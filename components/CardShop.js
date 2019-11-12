@@ -50,88 +50,93 @@ export default CardShop = props => {
             backgroundColor: 'rgba(0,0,0,0.1)',
           }}></Block>
         <Favorite shop={shop}></Favorite>
-        <Block row space="between" style={{marginTop: 5}}>
-          <Text>{category}</Text>
-          <Text h4>{tags.join(', ')}</Text>
-        </Block>
-        <Text h3 bold style={{marginVertical: 2}}>
-          {name}
-        </Text>
-        <Block row center>
-          <AntDesign
-            size={18}
-            name="star"
-            style={{color: theme.colors.accent}}
-          />
-          <Text h4 style={{marginLeft: 5}}>
-            {review}
-          </Text>
-          <AntDesign
-            size={18}
-            name="heart"
-            style={{color: theme.colors.accent, marginLeft: 10}}
-          />
-          <Text h4 style={{marginLeft: 5}}>
-            {likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
-          </Text>
-          <AntDesign
-            size={18}
-            name="like1"
-            style={{color: theme.colors.accent, marginLeft: 10}}
-          />
-          <Text h4 style={{marginLeft: 5}}>
-            {reviews.length}
-          </Text>
-        </Block>
-        <Block row style={{position: 'absolute', bottom: 0, right: 0}}>
-          {korean ? (
-            <Block
-              center
-              middle
-              style={{
-                flex: 0,
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                backgroundColor: theme.colors.accent,
-                marginRight: 7,
-              }}>
-              <AntDesign
-                size={18}
-                name="customerservice"
-                style={{color: 'white'}}
-              />
-            </Block>
-          ) : null}
-          {pickup ? (
-            <Block
-              center
-              middle
-              style={{
-                flex: 0,
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                backgroundColor: theme.colors.accent,
-                marginRight: 7,
-              }}>
-              <AntDesign size={18} name="car" style={{color: 'white'}} />
-            </Block>
-          ) : null}
-          {baby ? (
-            <Block
-              center
-              middle
-              style={{
-                flex: 0,
-                width: 24,
-                height: 24,
-                borderRadius: 12,
-                backgroundColor: theme.colors.accent,
-              }}>
-              <AntDesign size={18} name="smileo" style={{color: 'white'}} />
-            </Block>
-          ) : null}
+        <Block
+          style={{
+            height: 55,
+          }}>
+          <Block row space="between" style={{marginTop: 8, marginBottom: 5}}>
+            <Text h3 bold>
+              {name}
+            </Text>
+            <Text h4>{tags.join(', ')}</Text>
+          </Block>
+
+          <Block row center>
+            <AntDesign
+              size={18}
+              name="star"
+              style={{color: theme.colors.accent}}
+            />
+            <Text h4 style={{marginLeft: 5}}>
+              {review}
+            </Text>
+            <AntDesign
+              size={18}
+              name="heart"
+              style={{color: theme.colors.accent, marginLeft: 10}}
+            />
+            <Text h4 style={{marginLeft: 5}}>
+              {likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+            </Text>
+            <AntDesign
+              size={18}
+              name="like1"
+              style={{color: theme.colors.accent, marginLeft: 10}}
+            />
+            <Text h4 style={{marginLeft: 5}}>
+              {reviews.length}
+            </Text>
+          </Block>
+          <Block row style={{position: 'absolute', bottom: 0, right: 0}}>
+            {korean ? (
+              <Block
+                center
+                middle
+                style={{
+                  flex: 0,
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  backgroundColor: theme.colors.accent,
+                  marginRight: 7,
+                }}>
+                <AntDesign
+                  size={18}
+                  name="customerservice"
+                  style={{color: 'white'}}
+                />
+              </Block>
+            ) : null}
+            {pickup ? (
+              <Block
+                center
+                middle
+                style={{
+                  flex: 0,
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  backgroundColor: theme.colors.accent,
+                  marginRight: 7,
+                }}>
+                <AntDesign size={18} name="car" style={{color: 'white'}} />
+              </Block>
+            ) : null}
+            {baby ? (
+              <Block
+                center
+                middle
+                style={{
+                  flex: 0,
+                  width: 24,
+                  height: 24,
+                  borderRadius: 12,
+                  backgroundColor: theme.colors.accent,
+                }}>
+                <AntDesign size={18} name="smileo" style={{color: 'white'}} />
+              </Block>
+            ) : null}
+          </Block>
         </Block>
       </Block>
     </TouchableOpacity>

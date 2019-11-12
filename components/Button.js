@@ -17,6 +17,7 @@ class Button extends Component {
       locations,
       shadow,
       children,
+      border,
       ...props
     } = this.props;
 
@@ -45,7 +46,16 @@ class Button extends Component {
         </TouchableOpacity>
       );
     }
-
+    if (border) {
+      return (
+        <TouchableOpacity
+          style={[buttonStyles, styles.border]}
+          activeOpacity={opacity}
+          {...props}>
+          {children}
+        </TouchableOpacity>
+      );
+    }
     return (
       <TouchableOpacity
         style={buttonStyles}
@@ -75,6 +85,10 @@ const styles = StyleSheet.create({
     height: theme.sizes.base * 3,
     justifyContent: 'center',
     marginVertical: theme.sizes.padding / 3,
+  },
+  border: {
+    borderWidth: 1,
+    borderColor: theme.colors.accent,
   },
   shadow: {
     shadowColor: theme.colors.black,

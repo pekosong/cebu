@@ -3,22 +3,16 @@ import {
   ScrollView,
   StyleSheet,
   TouchableOpacity,
-  Platform,
   ActivityIndicator,
   Dimensions,
   Image,
-  StatusBar,
 } from 'react-native';
 
-import StarRating from 'react-native-star-rating';
-
-import {Ionicons} from '@expo/vector-icons';
 import {Block, Text, CardShop, CachedImage} from '../../components';
 import {theme, mocks} from '../../constants';
 
 import firebase from '../../constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite} from '../../redux/action';
 
 const {width} = Dimensions.get('window');
 
@@ -46,7 +40,6 @@ function FavoritesScreen(props) {
 
   const [selectedFavorites, setSelectedFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const dispatch = useDispatch();
 
   const user = useSelector(state => state.user, shallowEqual);
 
@@ -94,12 +87,12 @@ function FavoritesScreen(props) {
             source={cateSrc[tab]}></Image>
         </Block>
         <Text
-          bold
           center
           size={16}
-          gray={!isActive}
-          accent={isActive}
-          style={{marginTop: 6}}>
+          style={{
+            marginTop: 6,
+            color: isActive ? theme.colors.black : theme.colors.gray,
+          }}>
           {cateMap[tab]}
         </Text>
       </TouchableOpacity>
@@ -131,7 +124,7 @@ function FavoritesScreen(props) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
-          style={{paddingTop: theme.sizes.base}}>
+          style={{paddingTop: theme.sizes.base * 0.8}}>
           {selectedFavorites.map((shop, idx) => (
             <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
           ))}

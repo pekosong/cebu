@@ -111,7 +111,7 @@ export default SearchBar = props => {
       <Block row center style={styles.search}>
         <Ionicons
           size={20}
-          color={theme.colors.primary}
+          color={theme.colors.black}
           name="md-search"
           style={{width: '10%'}}
         />

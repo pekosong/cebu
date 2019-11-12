@@ -386,11 +386,11 @@ export default ReservationModal = props => {
       {isChange ? (
         <Block>
           <Button
-            gradient
+            border
             onPress={() => {
               handleChangeReservation();
             }}>
-            <Text bold white center>
+            <Text bold accent center>
               예약 변경 요청
             </Text>
           </Button>
@@ -399,7 +399,7 @@ export default ReservationModal = props => {
             onPress={() => {
               handleDeleteReservation();
             }}>
-            <Text center bold primary>
+            <Text center bold accent>
               취소 요청
             </Text>
           </Button>
@@ -407,7 +407,7 @@ export default ReservationModal = props => {
       ) : (
         <Block>
           <Button
-            gradient
+            border
             onPress={() => {
               if (selectedDate == '' || time == '' || people == '') {
                 setErrMsg('예약 일시 / 시간 / 인원 입력을 필수 입니다');
@@ -417,16 +417,15 @@ export default ReservationModal = props => {
                 setEdit(false);
               }
             }}>
-            <Text bold white center>
+            <Text bold accent center>
               다음
             </Text>
           </Button>
           <Button
-            shadow
             onPress={() => {
               setVisible(false);
             }}>
-            <Text center bold primary>
+            <Text center bold accent>
               뒤로
             </Text>
           </Button>
@@ -505,20 +504,19 @@ export default ReservationModal = props => {
       </Block>
       <Block>
         <Button
-          gradient
+          border
           onPress={() => {
             handleMakeReservation();
           }}>
-          <Text bold white center>
+          <Text bold accent center>
             예약 신청
           </Text>
         </Button>
         <Button
-          shadow
           onPress={() => {
             setEdit(true);
           }}>
-          <Text center bold primary>
+          <Text center bold accent>
             뒤로
           </Text>
         </Button>

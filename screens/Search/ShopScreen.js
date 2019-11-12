@@ -7,6 +7,7 @@ import {
   Modal,
   Animated,
   ActivityIndicator,
+  View,
 } from 'react-native';
 
 import MapView from 'react-native-maps';
@@ -116,6 +117,8 @@ export default function ShopScreen(props) {
           backgroundColor: fadeAnim.interpolate({
             inputRange: [0, 1],
             outputRange: ['rgba(0, 0, 0, 0)', 'rgba(255, 255, 255, 1)'],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
           }),
           shadowColor: '#000',
           shadowOffset: {
@@ -123,19 +126,27 @@ export default function ShopScreen(props) {
             height: fadeAnim.interpolate({
               inputRange: [0, 1],
               outputRange: [0, 2],
+              extrapolate: 'clamp',
+              useNativeDriver: true,
             }),
           },
           shadowOpacity: fadeAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [0, 0.25],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
           }),
           shadowRadius: fadeAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [0, 3.84],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
           }),
           elevation: fadeAnim.interpolate({
             inputRange: [0, 1],
             outputRange: [0, 2],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
           }),
         }}>
         <Block middle center row space="between">
@@ -154,6 +165,8 @@ export default function ShopScreen(props) {
                     color: fadeAnim.interpolate({
                       inputRange: [0, 1],
                       outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                      extrapolate: 'clamp',
+                      useNativeDriver: true,
                     }),
                   }}>
                   <Ionicons size={30} name="ios-arrow-back" />
@@ -186,6 +199,8 @@ export default function ShopScreen(props) {
                   color: fadeAnim.interpolate({
                     inputRange: [0, 1],
                     outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                    extrapolate: 'clamp',
+                    useNativeDriver: true,
                   }),
                 }}>
                 <AntDesign size={26} name="message1" />
@@ -201,6 +216,8 @@ export default function ShopScreen(props) {
                       user.myfavorites.map(e => e.id).indexOf(shop.id) == -1
                         ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
                         : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
+                    extrapolate: 'clamp',
+                    useNativeDriver: true,
                   }),
                 }}>
                 <Ionicons
@@ -219,30 +236,40 @@ export default function ShopScreen(props) {
 
       <ScrollView
         showsVerticalScrollIndicator={false}
-        style={{marginBottom: 65, zIndex: -1}}
+        style={{marginBottom: 55, zIndex: -1}}
         scrollEventThrottle={360}
         onScroll={handleScrollByY}>
         <FullImageSlider source={shop.source} height={250}></FullImageSlider>
         <Block style={{paddingHorizontal: theme.sizes.padding}}>
-          <Block style={[styles.categories, {marginTop: 20}]}>
-            <Block row space="between">
-              <Block>
-                <Text bold style={{fontSize: 25, marginBottom: 5}}>
-                  {shop.name}
-                </Text>
-                <Text h3 gray style={styles.content}>
-                  {shop.engName}
+          <Animated.View style={[styles.categories, {marginTop: -30}]}>
+            <View style={styles.shopTitle}>
+              <Block top row space="between">
+                <Block>
+                  <Text
+                    bold
+                    style={{fontSize: 25, marginBottom: 5, marginRight: 5}}>
+                    {shop.name}
+                  </Text>
+                  <Text h3 gray style={styles.content}>
+                    {shop.engName}
+                  </Text>
+                </Block>
+                <Text bold style={{color: theme.colors.accent}}>
+                  {shop.tags[0]}
                 </Text>
               </Block>
-              <Text bold style={{color: theme.colors.accent}}>
-                {shop.tags}
+              <Text gray style={{fontSize: 14}}>
+                {'별점 ' +
+                  shop.review +
+                  ' | ' +
+                  '리뷰 ' +
+                  shop.reviewCnt +
+                  ' | ' +
+                  '저장 ' +
+                  shop.likes}
               </Text>
-            </Block>
-            <Text gray>
-              Lorem ipsum dolor sit amet consectetur adipisicing elit. Velit
-              unde recusandae voluptate numquam consectetur quibusdam
-            </Text>
-          </Block>
+            </View>
+          </Animated.View>
           <Divider />
 
           {todo && Object.entries(todo).length !== 0 ? (
@@ -523,11 +550,11 @@ export default function ShopScreen(props) {
         <Block flex={1}>
           {Object.keys(user.plans).length > 0 ? (
             <Button
-              gradient
+              border
               onPress={() => {
                 setVisible(true);
               }}>
-              <Text white center bold>
+              <Text accent center bold>
                 {todo && Object.entries(todo).length !== 0
                   ? '예약 변경'
                   : '예약 요청'}
@@ -608,6 +635,19 @@ const styles = StyleSheet.create({
     paddingHorizontal: theme.sizes.padding,
     position: 'absolute',
     zIndex: 100,
+  },
+  shopTitle: {
+    backgroundColor: 'white',
+    marginHorizontal: 25,
+    padding: theme.sizes.padding * 0.8,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
   },
   categories: {
     marginVertical: 10,

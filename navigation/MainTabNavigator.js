@@ -136,19 +136,18 @@ const tabNavigator = createBottomTabNavigator(
   },
   {
     tabBarOptions: {
-      activeTintColor: theme.colors.accent,
-      inactiveTintColor: theme.colors.gray2,
+      activeTintColor: theme.colors.black,
+      inactiveTintColor: theme.colors.gray,
       labelStyle: {
         fontSize: 12,
       },
       style: {
-        height: 60,
-        paddingTop: 10,
+        height: 55,
+        paddingTop: 15,
         paddingBottom: 5,
         paddingHorizontal: 10,
         backgroundColor: 'white',
-        borderTopWidth: 0.6,
-        shadowOffset: {width: 2, height: 3},
+        shadowOffset: {width: 1, height: 1},
         shadowColor: 'black',
         shadowOpacity: 0.5,
         elevation: 2,

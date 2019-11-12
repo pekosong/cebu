@@ -156,8 +156,8 @@ function MyTripScreen(props) {
             );
           })
         ) : (
-          <Button gradient onPress={() => navigation.navigate('Search')}>
-            <Text bold white center>
+          <Button border onPress={() => navigation.navigate('Search')}>
+            <Text accent center>
               새로운 일정을 등록하세요
             </Text>
           </Button>
