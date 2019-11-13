@@ -54,6 +54,7 @@ function cacheImages(images) {
 
 async function loadResourcesAsync() {
   const imageAssets = cacheImages([
+    require('./assets/images/search/activity.jpg'),
     require('./assets/images/cebu_food1.jpg'),
     require('./assets/images/cebu_food2.jpeg'),
     require('./assets/images/cebu_food3.jpeg'),

@@ -22,7 +22,9 @@ import TripInfoScreen from '../screens/Profile/TripInfoScreen';
 import MyShopScreen from '../screens/Profile/MyShopScreen';
 import ReservationScreen from '../screens/Profile/ReservationScreen';
 
-import ShopScreen from '../screens/Search/ShopScreen';
+// import ShopScreen from '../screens/Search/ShopScreen';
+import ShopScreen from '../screens/Shop/ShopScreen';
+
 import ActivityScreen from '../screens/Search/ActivityScreen';
 import CategoryActivityScreen from '../screens/Search/CategoryActivityScreen';
 
