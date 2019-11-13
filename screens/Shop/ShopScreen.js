@@ -28,7 +28,6 @@ export default function ShopScreen(props) {
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
-  const [positionY, setPositionY] = useState(0);
 
   const user = useSelector(state => state.user, shallowEqual);
 
