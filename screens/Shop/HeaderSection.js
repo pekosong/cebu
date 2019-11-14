@@ -31,7 +31,7 @@ export default HeaderSection = props => {
         position: 'absolute',
         top: top.interpolate({
           inputRange: [0, 200],
-          outputRange: [0, -50],
+          outputRange: [0, -150],
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
@@ -43,7 +43,6 @@ export default HeaderSection = props => {
         }),
         width: width,
         height: 250,
-        zIndex: -10,
       }}>
       <ScrollView
         horizontal={true}
@@ -61,7 +60,6 @@ export default HeaderSection = props => {
                 height: 250,
                 width: width,
                 resizeMode: 'cover',
-                zIndex: 0,
               }}
             />
           ))

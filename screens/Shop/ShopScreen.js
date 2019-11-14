@@ -1,25 +1,21 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Animated,
-  ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, Animated, ActivityIndicator} from 'react-native';
 
 import firebase from '../../constants/store';
 
-import {Block, Divider, FullImageSlider} from '../../components';
+import {Block, Divider} from '../../components';
 import {theme} from '../../constants';
 
 import AppBar from './AppBar';
 import HeaderSection from './HeaderSection';
+import TabBarSection from './TabBarSection';
 
 import ReservationSection from './ReservationSection';
 import MenuSection from './MenuSection';
 import ReviewSection from './ReviewSection';
 import ShopInfoSection from './ShopInfoSection';
 import BottomSection from './BottomSection';
-import RecommedSection from './RecommedSection';
+import RecommendSection from './RecommendSection';
 
 import {useSelector, shallowEqual} from 'react-redux';
 
@@ -28,6 +24,8 @@ export default function ShopScreen(props) {
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
+
+  const [show, setShow] = useState('menu');
 
   const user = useSelector(state => state.user, shallowEqual);
 
@@ -91,7 +89,9 @@ export default function ShopScreen(props) {
         source={shop.source}
         shop={shop}
         yAnim={yAnim}></HeaderSection>
-
+      <TabBarSection
+        top={animatedScrollYValue}
+        setShow={setShow}></TabBarSection>
       <Animated.ScrollView
         showsVerticalScrollIndicator={false}
         style={{
@@ -110,25 +110,33 @@ export default function ShopScreen(props) {
         scrollEventThrottle={360}>
         <Animated.View
           style={{
-            marginTop: 330,
+            marginTop: 360,
+            paddingTop: animatedScrollYValue.interpolate({
+              inputRange: [0, 200],
+              outputRange: [60, 0],
+              extrapolate: 'clamp',
+              useNativeDriver: true,
+            }),
             paddingHorizontal: theme.sizes.padding,
             backgroundColor: 'white',
           }}>
-          <Divider style={{marginTop: 10}} />
           <ReservationSection todo={todo} shop={shop}></ReservationSection>
-          <MenuSection menus={shop.menus}></MenuSection>
-          <Divider />
-          <ReviewSection
-            user={user}
-            shop={shop}
-            navigation={navigation}></ReviewSection>
-          <Divider />
-          <ShopInfoSection shop={shop}></ShopInfoSection>
+          {show === 'menu' ? (
+            <MenuSection menus={shop.menus}></MenuSection>
+          ) : show === 'review' ? (
+            <ReviewSection
+              user={user}
+              shop={shop}
+              navigation={navigation}></ReviewSection>
+          ) : (
+            <ShopInfoSection shop={shop}></ShopInfoSection>
+          )}
+
           <Divider
             style={{
               marginTop: 20,
             }}></Divider>
-          <RecommedSection shop={shop}></RecommedSection>
+          <RecommendSection shop={shop}></RecommendSection>
         </Animated.View>
       </Animated.ScrollView>
       <BottomSection
