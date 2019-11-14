@@ -1,5 +1,10 @@
 import React, {useState, useEffect, useRef} from 'react';
-import {StyleSheet, Animated, ActivityIndicator} from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  ActivityIndicator,
+  ScrollView,
+} from 'react-native';
 
 import firebase from '../../constants/store';
 
@@ -24,8 +29,9 @@ export default function ShopScreen(props) {
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
-
   const [show, setShow] = useState('menu');
+
+  const shopScroll = useRef(null);
 
   const user = useSelector(state => state.user, shallowEqual);
 
@@ -50,6 +56,10 @@ export default function ShopScreen(props) {
       unsubscribe();
     };
   }, []);
+
+  goTop = () => {
+    shopScroll.current.scrollTo({x: 0, y: 200, animated: true});
+  };
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 130) {
@@ -91,8 +101,10 @@ export default function ShopScreen(props) {
         yAnim={yAnim}></HeaderSection>
       <TabBarSection
         top={animatedScrollYValue}
-        setShow={setShow}></TabBarSection>
-      <Animated.ScrollView
+        setShow={setShow}
+        goTop={goTop}></TabBarSection>
+      <ScrollView
+        ref={shopScroll}
         showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
@@ -136,9 +148,11 @@ export default function ShopScreen(props) {
             style={{
               marginTop: 20,
             }}></Divider>
-          <RecommendSection shop={shop}></RecommendSection>
+          <RecommendSection
+            navigation={navigation}
+            shop={shop}></RecommendSection>
         </Animated.View>
-      </Animated.ScrollView>
+      </ScrollView>
       <BottomSection
         navigation={navigation}
         shop={shop}

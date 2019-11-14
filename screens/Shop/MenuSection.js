@@ -22,6 +22,9 @@ export default function MenuSection(props) {
       {menus.map((item, idx) => (
         <CardMenu key={idx} item={item} />
       ))}
+      {menus.map((item, idx) => (
+        <CardMenu key={idx} item={item} />
+      ))}
     </Block>
   );
 }

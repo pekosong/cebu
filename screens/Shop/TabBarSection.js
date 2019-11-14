@@ -18,7 +18,7 @@ const MAP = {
   기본정보: 'info',
 };
 export default TabBarSection = props => {
-  const {top, setShow} = props;
+  const {top, setShow, goTop} = props;
   const [active, setActive] = useState('메뉴');
   const [xAnim] = useState(new Animated.Value(theme.sizes.padding));
 
@@ -29,21 +29,23 @@ export default TabBarSection = props => {
   handleShopTab = tab => {
     setShow(MAP[tab]);
     setActive(tab);
+    goTop();
+    goTop();
     if (tab == '메뉴') {
       Animated.timing(xAnim, {
         toValue: theme.sizes.padding,
-        duration: 50,
+        duration: 400,
       }).start();
     } else if (tab == '후기') {
       Animated.timing(xAnim, {
         toValue: theme.sizes.padding + (width - theme.sizes.padding * 2) / 3,
-        duration: 50,
+        duration: 400,
       }).start();
     } else {
       Animated.timing(xAnim, {
         toValue:
           theme.sizes.padding + ((width - theme.sizes.padding * 2) / 3) * 2,
-        duration: 50,
+        duration: 400,
       }).start();
     }
   };
@@ -81,17 +83,11 @@ export default TabBarSection = props => {
         height: 50,
         width: width,
         backgroundColor: 'white',
-        zIndex: 100,
+        zIndex: 1000,
         paddingHorizontal: theme.sizes.padding,
         justifyContent: 'center',
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 2,
-          height: 2,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 2,
+        borderBottomWidth: 0.4,
+        borderBottomColor: theme.colors.gray2,
       }}>
       <Block flex={false} row style={styles.tabs}>
         {['메뉴', '후기', '기본정보'].map(tab => renderShopTab(tab))}

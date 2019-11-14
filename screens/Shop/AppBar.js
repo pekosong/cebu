@@ -76,7 +76,7 @@ export default function AppBar(props) {
         <Block>
           <TouchableOpacity
             onPressIn={() => {
-              navigation.goBack();
+              navigation.navigate('Category', {});
             }}
             style={{
               height: 100,

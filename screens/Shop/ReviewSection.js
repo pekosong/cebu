@@ -42,6 +42,7 @@ export default function ReviewSection(props) {
           </TouchableOpacity>
         </Block>
         {renderReviews()}
+        {renderReviews()}
         <Block style={{marginTop: theme.sizes.padding}}>
           <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
             <Text right h3 bold color={theme.colors.accent}>

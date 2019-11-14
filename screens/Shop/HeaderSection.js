@@ -35,14 +35,15 @@ export default HeaderSection = props => {
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
-        opacity: yAnim.interpolate({
-          inputRange: [0, 1],
+        opacity: top.interpolate({
+          inputRange: [170, 200],
           outputRange: [1, 0],
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
         width: width,
         height: 250,
+        zIndex: -10,
       }}>
       <ScrollView
         horizontal={true}
@@ -138,8 +139,8 @@ const styles = StyleSheet.create({
       height: 1,
     },
     shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 2,
+    shadowRadius: 2,
+    elevation: 1,
     zIndex: 100,
   },
   content: {
