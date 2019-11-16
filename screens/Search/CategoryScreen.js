@@ -10,6 +10,8 @@ import {
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {Block, Text, CardShop} from '../../components';
+import {mocks} from '../../constants';
+
 import {theme} from '../../styles';
 import {useSelector, shallowEqual} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
@@ -45,13 +47,12 @@ const activityCategory = [
 
 const cateSrc = {
   전체: require('../../assets/images/search/activity.jpg'),
-
-  호핑: require('../../assets/images/search/activity.jpg'),
-  고래투어: require('../../assets/images/search/restaurant.jpg'),
-  시티투어: require('../../assets/images/search/massage.jpg'),
-  다이빙: require('../../assets/images/search/nail.jpg'),
-  경비행기: require('../../assets/images/search/seasports.jpg'),
-  샌딩: require('../../assets/images/search/seasports.jpg'),
+  호핑: require('../../assets/images/search/hoping.jpg'),
+  고래투어: require('../../assets/images/search/gorae.jpg'),
+  시티투어: require('../../assets/images/search/city.jpg'),
+  다이빙: require('../../assets/images/search/diving.jpg'),
+  경비행기: require('../../assets/images/search/plane.jpg'),
+  샌딩: require('../../assets/images/search/sanding.jpg'),
 };
 
 const CategoryScreen = props => {
@@ -147,19 +148,33 @@ const CategoryScreen = props => {
             <AntDesign size={26} name="bars" />
           </Block>
         </Block>
-        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
-          <Block style={styles.tabs}>
-            {activityCategory.map(tab => renderSongTab(tab))}
-          </Block>
-        </ScrollView>
+        {navigation.getParam('category') === 'Activity' ? (
+          <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+            <Block style={styles.tabs}>
+              {activityCategory.map(tab => renderSongTab(tab))}
+            </Block>
+          </ScrollView>
+        ) : null}
       </Block>
       {isLoaded ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
           style={{paddingTop: theme.sizes.base * 0.8}}>
-          {selectedLists.map((shop, idx) => (
-            <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
-          ))}
+          {selectedLists.length != 0
+            ? selectedLists.map((shop, idx) => (
+                <CardShop
+                  key={idx}
+                  shop={shop}
+                  isActivity={false}
+                  navigation={navigation}></CardShop>
+              ))
+            : mocks.ActivityList.map((shop, idx) => (
+                <CardShop
+                  key={idx}
+                  shop={shop}
+                  isActivity={true}
+                  navigation={navigation}></CardShop>
+              ))}
         </ScrollView>
       ) : (
         <Block style={styles.full}>

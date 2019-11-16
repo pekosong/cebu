@@ -1,21 +1,16 @@
-import React, {useState, useEffect, useRef} from 'react';
-import {
-  StyleSheet,
-  Animated,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
+import React, {useState, useRef} from 'react';
+import {StyleSheet, Animated, ScrollView} from 'react-native';
 
-import firebase from '../../constants/store';
 import {Block, Divider} from '../../components';
-
+import {mocks} from '../../constants';
 import {theme} from '../../styles';
 import AppBar from './components/AppBar';
 import HeaderSection from './components/HeaderSection';
 import TabBarSection from './components/TabBarSection';
 
-import ReservationSection from './components/ReservationSection';
 import MenuSection from './components/MenuSection';
+import ProgramSection from './components/ProgramSection';
+
 import ReviewSection from './components/ReviewSection';
 import ShopInfoSection from './components/ShopInfoSection';
 import BottomSection from './components/BottomSection';
@@ -23,39 +18,19 @@ import RecommendSection from './components/RecommendSection';
 
 import {useSelector, shallowEqual} from 'react-redux';
 
-export default function ShopScreen(props) {
+export default function ActivityScreen(props) {
   const {navigation} = props;
 
-  const [shop, setShop] = useState({});
-  const [todo, setTodo] = useState({});
   const [show, setShow] = useState('menu');
 
+  const shop = mocks.ActivityList[0];
   const shopScroll = useRef(null);
 
   const user = useSelector(state => state.user, shallowEqual);
 
-  const [isLoaded, setIsLoaded] = useState(false);
-
   const [fadeAnim] = useState(new Animated.Value(0));
   const [yAnim] = useState(new Animated.Value(0));
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
-
-  useEffect(() => {
-    let shopId = navigation.getParam('shopId');
-    let unsubscribe = firebase
-      .firestore()
-      .collection('shops')
-      .doc(shopId)
-      .onSnapshot(doc => {
-        setShop(doc.data());
-        setIsLoaded(true);
-      });
-
-    setTodo(navigation.getParam('todo'));
-    return () => {
-      unsubscribe();
-    };
-  }, []);
 
   goTop = () => {
     shopScroll.current.scrollTo({x: 0, y: 210});
@@ -87,7 +62,7 @@ export default function ShopScreen(props) {
     }
   };
 
-  return isLoaded ? (
+  return (
     <Block>
       <AppBar
         navigation={navigation}
@@ -132,12 +107,11 @@ export default function ShopScreen(props) {
             paddingHorizontal: theme.sizes.padding,
             backgroundColor: theme.colors.white,
           }}>
-          <ReservationSection todo={todo} shop={shop}></ReservationSection>
           {shop.category != 'Activity' && show === 'menu' ? (
             <MenuSection shop={shop}></MenuSection>
           ) : null}
           {shop.category == 'Activity' && show === 'menu' ? (
-            <MenuSection shop={shop}></MenuSection>
+            <ProgramSection shop={shop}></ProgramSection>
           ) : null}
           {show === 'review' ? (
             <ReviewSection
@@ -159,16 +133,12 @@ export default function ShopScreen(props) {
         shop={shop}
         user={user}></BottomSection>
     </Block>
-  ) : (
-    <Block style={styles.full}>
-      <ActivityIndicator size="large"></ActivityIndicator>
-    </Block>
   );
 }
 
-ShopScreen.defaultProps = {};
+ActivityScreen.defaultProps = {};
 
-ShopScreen.navigationOptions = {
+ActivityScreen.navigationOptions = {
   header: null,
 };
 

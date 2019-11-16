@@ -14,6 +14,8 @@ const {width} = Dimensions.get('window');
 
 const MAPCAT = {
   Massage: '프로그램',
+  Activity: '프로그램',
+
   Restaurant: '메뉴',
 };
 const MAP = {

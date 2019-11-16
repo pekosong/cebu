@@ -1,3 +1,49 @@
+const ActivityList = [
+  {
+    id: 'activity1',
+    category: 'Activity',
+    name: '와일드호핑',
+    engName: 'jumbo7',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
+    preview:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/13026/80887_large_1525778153.jpg?1525778153',
+    source: [
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/13026/80887_large_1525778153.jpg?1525778153',
+    ],
+    review: 3.5,
+    reviewCnt: 1212,
+    tags: ['호핑', '시푸드BBQ'],
+    pickup: true,
+    openTime: '11:00',
+    closeTime: '24:00',
+    likes: 10,
+    reviews: [],
+  },
+  {
+    id: 'activity2',
+    category: 'Activity',
+    name: '호핑투어',
+    engName: 'Buffet',
+    address: '세부 막탄',
+    engAddress: 'cebu maktan',
+    phone: '010-9141-9090',
+    preview:
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/30227/190185_large_1525774849.jpg?1525774849',
+    source: [
+      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/13026/80887_large_1525778153.jpg?1525778153',
+    ],
+    review: 2.5,
+    reviewCnt: 231,
+    tags: ['호핑', '시푸드BBQ'],
+    pickup: false,
+    openTime: '11:00',
+    closeTime: '24:00',
+    likes: 10,
+    reviews: [],
+  },
+];
 const lists = {
   Restaurant: [
     {
@@ -409,4 +455,13 @@ const loveList = [
     category: 'Restaurant',
   },
 ];
-export {categories, profiles, plans, lists, recommendList, eventList, loveList};
+export {
+  categories,
+  profiles,
+  plans,
+  lists,
+  recommendList,
+  eventList,
+  loveList,
+  ActivityList,
+};

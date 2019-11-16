@@ -24,8 +24,9 @@ import ReservationScreen from '../screens/Profile/ReservationScreen';
 
 // import ShopScreen from '../screens/Search/ShopScreen';
 import ShopScreen from '../screens/Shop';
+import ActivityScreen from '../screens/Activity';
 
-import ActivityScreen from '../screens/Search/ActivityScreen';
+// import ActivityScreen from '../screens/Search/ActivityScreen';
 import CategoryActivityScreen from '../screens/Search/CategoryActivityScreen';
 
 import TabBarIcon from '../components/TabBarIcon';

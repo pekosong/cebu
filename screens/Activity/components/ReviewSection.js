@@ -16,8 +16,49 @@ export default function ReviewSection(props) {
   const [newReviewVisible, setNewReviewVisible] = useState(false);
 
   renderReviews = () => {
-    console.log(shop.reviews);
-    sortedReviews = shop.reviews.sort((a, b) => {
+    const reviews = [
+      {
+        comment: '아아아ㅏ아아아아아',
+        date: {
+          nanoseconds: 869000000,
+          seconds: 1571663107,
+        },
+        src: 'https://randomuser.me/api/portraits/women/41.jpg',
+        star: 3,
+        writer: 'b@naver.com',
+      },
+      {
+        comment: '너무 좋아요',
+        date: {
+          nanoseconds: 993000000,
+          seconds: 1571477949,
+        },
+        src: 'https://randomuser.me/api/portraits/women/68.jpg',
+        star: 5,
+        writer: 'peko22@naver.com',
+      },
+      {
+        comment: '좋긴 한데 서비스가 조금 별로 였어요',
+        date: {
+          nanoseconds: 993000000,
+          seconds: 1571477949,
+        },
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
+        star: 3,
+        writer: 'peko2@naver.com',
+      },
+      {
+        comment: '다음에 꼭 다시 오고 싶어요',
+        date: {
+          nanoseconds: 993000000,
+          seconds: 1571477949,
+        },
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
+        star: 4,
+        writer: 'peko1@naver.com',
+      },
+    ];
+    sortedReviews = reviews.sort((a, b) => {
       return b.date.seconds - a.date.seconds;
     });
 
