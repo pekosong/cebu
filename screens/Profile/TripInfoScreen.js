@@ -1,70 +1,70 @@
-import React, { useState } from "react";
+import React, {useState} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
-  Dimensions
-} from "react-native";
+  Dimensions,
+} from 'react-native';
 
-import { Button, Block, Input, Text } from "../../components";
-import { theme } from "../../constants";
-import firebase from "../../constants/store";
-import { Calendar, LocaleConfig } from "react-native-calendars";
-import { useSelector, useDispatch, shallowEqual } from "react-redux";
+import {Button, Block, Input, Text} from '../../components';
+import {theme} from '../../styles';
+import firebase from '../../constants/store';
+import {Calendar, LocaleConfig} from 'react-native-calendars';
+import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
-import moment from "moment";
+import moment from 'moment';
 
-const { height, width } = Dimensions.get("window");
+const {height, width} = Dimensions.get('window');
 
-LocaleConfig.locales["kor"] = {
+LocaleConfig.locales['kor'] = {
   monthNames: [
-    "Janvier",
-    "Février",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juillet",
-    "Août",
-    "Septembre",
-    "Octobre",
-    "Novembre",
-    "Décembre"
+    'Janvier',
+    'Février',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juillet',
+    'Août',
+    'Septembre',
+    'Octobre',
+    'Novembre',
+    'Décembre',
   ],
   monthNamesShort: [
-    "Janv.",
-    "Févr.",
-    "Mars",
-    "Avril",
-    "Mai",
-    "Juin",
-    "Juil.",
-    "Août",
-    "Sept.",
-    "Oct.",
-    "Nov.",
-    "Déc."
+    'Janv.',
+    'Févr.',
+    'Mars',
+    'Avril',
+    'Mai',
+    'Juin',
+    'Juil.',
+    'Août',
+    'Sept.',
+    'Oct.',
+    'Nov.',
+    'Déc.',
   ],
 
   dayNames: [
-    "일요일",
-    "월요일",
-    "화요일",
-    "수요일",
-    "목요일",
-    "금요일",
-    "토요일"
+    '일요일',
+    '월요일',
+    '화요일',
+    '수요일',
+    '목요일',
+    '금요일',
+    '토요일',
   ],
-  dayNamesShort: ["일", "월", "화", "수", "목", "금", "토"]
+  dayNamesShort: ['일', '월', '화', '수', '목', '금', '토'],
 };
-LocaleConfig.defaultLocale = "kor";
+LocaleConfig.defaultLocale = 'kor';
 
 const TripInfoScreen = props => {
-  const { navigation } = props;
+  const {navigation} = props;
   const [date, setDate] = useState({});
   const [dates, setDates] = useState([]);
-  const [hotel, setHotel] = useState("");
+  const [hotel, setHotel] = useState('');
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const user = useSelector(state => state.user, shallowEqual);
@@ -75,8 +75,8 @@ const TripInfoScreen = props => {
     let dateArray = new Array();
     let currentDate = startDate;
     while (currentDate <= stopDate) {
-      dateArray.push(moment(currentDate).format("YYYY-MM-DD"));
-      currentDate = moment(currentDate).add(1, "days");
+      dateArray.push(moment(currentDate).format('YYYY-MM-DD'));
+      currentDate = moment(currentDate).add(1, 'days');
     }
     return dateArray;
   };
@@ -91,7 +91,7 @@ const TripInfoScreen = props => {
         startingDay: true,
         color: theme.colors.primary,
         textColor: theme.colors.white,
-        endingDay: true
+        endingDay: true,
       };
       setDate(newDate);
       setDates(myDates);
@@ -103,14 +103,14 @@ const TripInfoScreen = props => {
       newDates.forEach((e, idx) => {
         option = new Object();
         if (idx == 0) {
-          option["startingDay"] = true;
+          option['startingDay'] = true;
         } else if (idx == newDates.length - 1) {
-          option["endingDay"] = true;
+          option['endingDay'] = true;
         } else {
-          option["selected"] = true;
+          option['selected'] = true;
         }
-        option["color"] = theme.colors.primary;
-        option["textColor"] = theme.colors.white;
+        option['color'] = theme.colors.primary;
+        option['textColor'] = theme.colors.white;
 
         newDate[e] = option;
       });
@@ -126,21 +126,21 @@ const TripInfoScreen = props => {
     let myPlans = date;
 
     Object.keys(myPlans).forEach((key, idx) => {
-      myPlans[key] = { hotel: hotel, nDay: idx };
+      myPlans[key] = {hotel: hotel, nDay: idx};
     });
     const newCus = {
       hotel: hotel,
       date: new Date(),
-      plans: myPlans
+      plans: myPlans,
     };
 
     await firebase
       .firestore()
-      .collection("users")
+      .collection('users')
       .doc(user.email)
       .update(newCus)
       .then(() => {
-        console.log("Document successfully written!");
+        console.log('Document successfully written!');
         setLoading(false);
         navigation.goBack();
       })
@@ -155,23 +155,23 @@ const TripInfoScreen = props => {
       return (
         <Block>
           <Block bottom padding={[0, theme.sizes.padding]}>
-            <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
+            <Text bold style={{fontSize: 40, paddingBottom: 40}}>
               일정
             </Text>
           </Block>
           <Calendar
             style={{
               width,
-              overflow: "hidden"
+              overflow: 'hidden',
             }}
             horizontal={true}
             pagingEnabled={true}
             calendarWidth={width}
             onVisibleMonthsChange={months => {
-              console.log("now these months are visible", months);
+              console.log('now these months are visible', months);
             }}
             onDayPress={day => handleDate(day)}
-            monthFormat={"yyyy MM"}
+            monthFormat={'yyyy MM'}
             hideExtraDays={true}
             disableMonthChange={true}
             onPressArrowLeft={substractMonth => substractMonth()}
@@ -182,14 +182,14 @@ const TripInfoScreen = props => {
               arrowColor: theme.colors.primary,
               todayTextColor: theme.colors.primary,
               mondayTextColor: theme.colors.primary,
-              "stylesheet.day.period": {
+              'stylesheet.day.period': {
                 base: {
-                  overflow: "hidden",
+                  overflow: 'hidden',
                   height: 34,
-                  alignItems: "center",
-                  width: 38
-                }
-              }
+                  alignItems: 'center',
+                  width: 38,
+                },
+              },
             }}
           />
 
@@ -199,8 +199,7 @@ const TripInfoScreen = props => {
               onPress={() => {
                 setStep(step + 1);
                 setLoading(false);
-              }}
-            >
+              }}>
               <Text bold white center>
                 다음
               </Text>
@@ -217,7 +216,7 @@ const TripInfoScreen = props => {
       return (
         <Block padding={[0, theme.sizes.padding]}>
           <Block middle>
-            <Text bold style={{ fontSize: 40, paddingBottom: 40 }}>
+            <Text bold style={{fontSize: 40, paddingBottom: 40}}>
               숙박
             </Text>
             <Input
@@ -232,8 +231,7 @@ const TripInfoScreen = props => {
               gradient
               onPress={() => {
                 handleSignUp();
-              }}
-            >
+              }}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
@@ -260,23 +258,23 @@ const TripInfoScreen = props => {
 };
 
 TripInfoScreen.navigationOptions = {
-  header: null
+  header: null,
 };
 
 const styles = StyleSheet.create({
   login: {
     flex: 1,
-    justifyContent: "center"
+    justifyContent: 'center',
   },
   input: {
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth
+    borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {
-    borderBottomColor: theme.colors.accent
-  }
+    borderBottomColor: theme.colors.accent,
+  },
 });
 
 export default TripInfoScreen;

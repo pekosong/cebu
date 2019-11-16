@@ -11,7 +11,7 @@ import Block from './Block';
 import Text from './Text';
 import Button from './Button';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 import {useDispatch} from 'react-redux';

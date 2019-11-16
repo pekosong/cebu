@@ -5,7 +5,7 @@ import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 
 export default Card = props => {
   const {style, children, item, navigation} = props;

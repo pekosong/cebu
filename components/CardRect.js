@@ -10,7 +10,7 @@ import {
 import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
-import {theme} from '../constants';
+import {theme} from '../styles';
 import StarRating from 'react-native-star-rating';
 
 const {width} = Dimensions.get('window');

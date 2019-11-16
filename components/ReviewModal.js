@@ -4,7 +4,7 @@ import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 

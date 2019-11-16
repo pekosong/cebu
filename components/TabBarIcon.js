@@ -1,7 +1,7 @@
 import React from 'react';
 import {AntDesign} from '@expo/vector-icons';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 
 export default function TabBarIcon(props) {
   return (

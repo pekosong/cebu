@@ -6,8 +6,9 @@ import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {Ionicons} from '@expo/vector-icons';
 import {Button, Block, Text} from '../../components';
-import {theme, mocks} from '../../constants';
 
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 import {useSelector, shallowEqual} from 'react-redux';
 

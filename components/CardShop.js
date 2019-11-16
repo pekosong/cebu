@@ -4,7 +4,7 @@ import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');

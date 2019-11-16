@@ -1,8 +1,9 @@
 import React, {useState, useEffect} from 'react';
 import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
 
-import {Block, CachedImage, Text} from '../../components';
-import {theme} from '../../constants';
+import {Block, CachedImage, Text} from '../../../components';
+import {AntDesign} from '@expo/vector-icons';
+import {theme} from '../../../styles';
 
 const {width} = Dimensions.get('window');
 
@@ -42,7 +43,7 @@ export default HeaderSection = props => {
           useNativeDriver: true,
         }),
         width: width,
-        height: 250,
+        height: 260,
         zIndex: -10,
       }}>
       <ScrollView
@@ -89,32 +90,33 @@ export default HeaderSection = props => {
         style={[
           styles.shopTitle,
           {
-            top: 200,
+            top: 210,
           },
         ]}>
-        <Block top row space="between">
-          <Block>
-            <Text bold style={{fontSize: 25, marginBottom: 5, marginRight: 5}}>
-              {shop.name}
-            </Text>
-            <Text h3 gray style={styles.content}>
-              {shop.engName}
+        <Block middle center>
+          <Text bold style={{fontSize: 30, marginRight: 5}}>
+            {shop.name}
+          </Text>
+          <Text style={{fontSize: 16, marginRight: 5}}>
+            {shop.tags.join(', ')}
+          </Text>
+          <Block left row center style={{marginVertical: 5}}>
+            <AntDesign
+              size={20}
+              color={theme.colors.primary}
+              name="heart"></AntDesign>
+            <Text bold style={{fontSize: 24, marginLeft: 5}}>
+              {shop.review}
             </Text>
           </Block>
-          <Text bold style={{color: theme.colors.accent}}>
-            {shop.tags[0]}
+          <Text style={{fontSize: 16}}>
+            {'리뷰 ' +
+              shop.reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') +
+              ' | ' +
+              '저장 ' +
+              shop.likes}
           </Text>
         </Block>
-        <Text gray style={{fontSize: 14}}>
-          {'별점 ' +
-            shop.review +
-            ' | ' +
-            '리뷰 ' +
-            shop.reviewCnt +
-            ' | ' +
-            '저장 ' +
-            shop.likes}
-        </Text>
       </Animated.View>
     </Animated.View>
   );
@@ -128,11 +130,11 @@ const styles = StyleSheet.create({
   },
   shopTitle: {
     position: 'absolute',
-    height: 120,
+    height: 140,
     width: width - 60,
     backgroundColor: 'white',
     marginHorizontal: 30,
-    padding: theme.sizes.padding * 0.8,
+    paddingVertical: theme.sizes.padding * 0.5,
     shadowColor: '#000',
     shadowOffset: {
       width: 1,

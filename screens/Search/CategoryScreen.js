@@ -5,12 +5,12 @@ import {
   ScrollView,
   TouchableOpacity,
   ActivityIndicator,
+  Image,
 } from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {Block, Text, CardShop} from '../../components';
-import {theme} from '../../constants';
-
+import {theme} from '../../styles';
 import {useSelector, shallowEqual} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
@@ -33,32 +33,32 @@ const filerMap = {
   거리: 'hello',
 };
 
-const activityList = [
-  {
-    src: 'http://thecebu.co.kr/wp-content/uploads/2019/01/005.jpg',
-    category: '호핑',
-    title: '물고기들과 교감',
-    sub: 'Cebu',
-  },
-  {
-    src:
-      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/30884/194557_large_1525764053.jpg',
-    category: '투어',
-    title: '상어 투어',
-    sub: 'Cebu',
-  },
-  {
-    src:
-      'https://d2ur7st6jjikze.cloudfront.net/offer_photos/7979/44910_large_1525337841.jpg',
-    category: '시티투어',
-    title: '전망대, 카지노',
-    sub: 'Cebu',
-  },
+const activityCategory = [
+  '전체',
+  '호핑',
+  '고래투어',
+  '시티투어',
+  '다이빙',
+  '경비행기',
+  '샌딩',
 ];
+
+const cateSrc = {
+  전체: require('../../assets/images/search/activity.jpg'),
+
+  호핑: require('../../assets/images/search/activity.jpg'),
+  고래투어: require('../../assets/images/search/restaurant.jpg'),
+  시티투어: require('../../assets/images/search/massage.jpg'),
+  다이빙: require('../../assets/images/search/nail.jpg'),
+  경비행기: require('../../assets/images/search/seasports.jpg'),
+  샌딩: require('../../assets/images/search/seasports.jpg'),
+};
 
 const CategoryScreen = props => {
   const {navigation} = props;
   const [active, setActive] = useState('추천');
+  const [catActive, setCatActive] = useState('전체');
+
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const tabs = ['추천', '리뷰수', '거리'];
@@ -79,62 +79,84 @@ const CategoryScreen = props => {
     }
   }, [shops]);
 
-  handleCatTab = tab => {
-    sortedLists = selectedLists.sort((a, b) => {
-      return b[filerMap[tab]] - a[filerMap[tab]];
-    });
-    setActive(tab);
-    setSelectedLists(sortedLists);
-  };
-
-  renderCatTab = tab => {
-    const isActive = active == tab;
-
-    return (
-      <TouchableOpacity
-        key={`tab-${tab}`}
-        onPress={() => handleCatTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}>
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {tab}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
   renderShopList = () => {
     return selectedLists.map((shop, idx) => (
       <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
     ));
   };
 
+  renderSongTab = tab => {
+    const isActive = catActive == tab;
+
+    return (
+      <TouchableOpacity
+        key={`tab-${tab}`}
+        onPress={() => handleSongTab(tab)}
+        style={styles.tab}>
+        <Block style={{flex: 0, width: 60, height: 60}}>
+          <Image
+            style={{
+              height: '100%',
+              width: '100%',
+              resizeMode: 'cover',
+              borderRadius: 30,
+            }}
+            source={cateSrc[tab]}></Image>
+        </Block>
+        <Text
+          center
+          size={16}
+          style={{
+            marginTop: 6,
+            color: isActive ? theme.colors.black : theme.colors.gray,
+          }}>
+          {tab}
+        </Text>
+      </TouchableOpacity>
+    );
+  };
+
+  handleSongTab = tab => {
+    // if (tab == 'All') {
+    //   setSelectedFavorites(favorites);
+    // } else {
+    //   setSelectedFavorites(favorites.filter(shop => shop.category == tab));
+    // }
+    setCatActive(tab);
+  };
+
   return (
     <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
-        <Block row center>
-          <TouchableWithoutFeedback
-            onPress={() => navigation.goBack()}
-            style={{marginRight: 12}}>
-            <Ionicons size={30} name="ios-arrow-back" />
-          </TouchableWithoutFeedback>
-          <Text h2 bold>
-            {cateMap[navigation.getParam('category')]}
-          </Text>
-        </Block>
+      <Block style={styles.header}>
+        <Block style={styles.appBar}>
+          <Block row center>
+            <TouchableWithoutFeedback
+              onPress={() => navigation.goBack()}
+              style={{marginRight: 12}}>
+              <Ionicons size={30} name="ios-arrow-back" />
+            </TouchableWithoutFeedback>
+            <Text h2 bold>
+              {cateMap[navigation.getParam('category')]}
+            </Text>
+          </Block>
 
-        <Block row bottom center>
-          <Text h2 style={{marginRight: 15}}>
-            추천순
-          </Text>
-          <AntDesign size={26} name="bars" />
+          <Block row bottom center>
+            <Text h2 style={{marginRight: 15}}>
+              추천순
+            </Text>
+            <AntDesign size={26} name="bars" />
+          </Block>
         </Block>
+        <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
+          <Block style={styles.tabs}>
+            {activityCategory.map(tab => renderSongTab(tab))}
+          </Block>
+        </ScrollView>
       </Block>
       {isLoaded ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Block
-            style={{
-              paddingVertical: 15,
-            }}></Block>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{paddingTop: theme.sizes.base * 0.8}}>
           {selectedLists.map((shop, idx) => (
             <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
           ))}
@@ -159,12 +181,18 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
   },
+  appBar: {
+    flex: 0,
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    paddingHorizontal: theme.sizes.padding,
+    marginBottom: 10,
+  },
   header: {
+    flex: 0,
     backgroundColor: 'white',
     paddingTop: theme.sizes.padding * 2.5,
-    paddingBottom: 10,
     marginBottom: 2,
-    paddingHorizontal: theme.sizes.padding,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -174,19 +202,15 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 2,
   },
-  avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2,
-  },
   tabs: {
-    borderBottomColor: theme.colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical: theme.sizes.base,
-    marginHorizontal: theme.sizes.padding,
+    flex: 0,
+    flexDirection: 'row',
+    paddingLeft: theme.sizes.padding,
+    marginTop: 5,
   },
   tab: {
-    marginRight: theme.sizes.padding,
-    paddingBottom: theme.sizes.base,
+    marginRight: theme.sizes.base * 1.2,
+    paddingBottom: theme.sizes.base * 0.8,
   },
   active: {
     borderBottomColor: theme.colors.secondary,

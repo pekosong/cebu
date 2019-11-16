@@ -2,8 +2,8 @@ import React, {Fragment} from 'react';
 import {StyleSheet} from 'react-native';
 import MapView from 'react-native-maps';
 
-import {Block, Text, Divider} from '../../components';
-import {theme} from '../../constants';
+import {Block, Text, Divider} from '../../../components';
+import {theme} from '../../../styles';
 
 export default function ShopInfoSection(props) {
   const {shop} = props;

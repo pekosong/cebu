@@ -8,7 +8,7 @@ import {
   Platform,
 } from 'react-native';
 import {Button, Block, Text} from '../../components';
-import {theme} from '../../constants';
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 import {Ionicons} from '@expo/vector-icons';
 import moment from 'moment';

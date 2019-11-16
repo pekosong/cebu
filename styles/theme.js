@@ -24,6 +24,7 @@ const sizes = {
   h2: 20,
   h3: 18,
   h4: 15,
+  h5: 13,
 
   title: 18,
   header: 16,
@@ -43,6 +44,9 @@ const fonts = {
   },
   h4: {
     fontSize: sizes.h4,
+  },
+  h5: {
+    fontSize: sizes.h5,
   },
   header: {
     fontSize: sizes.header,

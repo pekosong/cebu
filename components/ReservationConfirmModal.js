@@ -12,7 +12,7 @@ import Text from './Text';
 import Button from './Button';
 import Divider from './Divider';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {makeResevation} from '../redux/action';

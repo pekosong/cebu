@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 
 import {Block, Text, CachedImage} from '../../components';
-import {theme, mocks} from '../../constants';
 
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
 import moment from 'moment';
 
 import firebase from '../../constants/store';

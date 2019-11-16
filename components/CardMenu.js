@@ -4,7 +4,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import CachedImage from './CachedImage';
-import {theme} from '../constants';
+import {theme} from '../styles';
 
 export default CardMenu = props => {
   const {style, item} = props;

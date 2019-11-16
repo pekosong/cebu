@@ -8,8 +8,9 @@ import {
 } from 'react-native';
 
 import {Block, Text, Button, Divider, CachedImage} from '../../components';
-import {theme, mocks} from '../../constants';
 
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
 import {useSelector, shallowEqual} from 'react-redux';
 
 const MAP = {

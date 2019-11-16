@@ -1,17 +1,17 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {Block, Text} from '../../components';
-import {theme} from '../../constants';
+import {Block, Text, CardMenu, CardProgram} from '../../../components';
+import {theme} from '../../../styles';
 
 export default function MenuSection(props) {
-  const {menus} = props;
+  const {shop} = props;
 
   return (
     <Block style={styles.categories}>
       <Block row space="between" style={{...styles.content, marginBottom: 25}}>
         <Text h3 bold>
-          추천메뉴
+          {shop.category == 'Massage' ? '프로그램' : '메뉴'}
         </Text>
         <TouchableOpacity onPress={() => {}}>
           <Text h3 bold color={theme.colors.accent}>
@@ -19,12 +19,16 @@ export default function MenuSection(props) {
           </Text>
         </TouchableOpacity>
       </Block>
-      {menus.map((item, idx) => (
-        <CardMenu key={idx} item={item} />
-      ))}
-      {menus.map((item, idx) => (
-        <CardMenu key={idx} item={item} />
-      ))}
+      {shop.menus.map((item, idx) =>
+        shop.category == 'Massage' ? (
+          <CardProgram key={idx} item={item}></CardProgram>
+        ) : (
+          <CardMenu key={idx} item={item} />
+        ),
+      )}
+      {shop.menus.map((item, idx) =>
+        shop.category == 'Massage' ? null : <CardMenu key={idx} item={item} />,
+      )}
     </Block>
   );
 }

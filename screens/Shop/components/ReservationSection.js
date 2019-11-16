@@ -1,8 +1,8 @@
 import React, {Fragment} from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
-import {Block, Text, Divider} from '../../components';
-import {theme, mocks} from '../../constants';
+import {Block, Text, Divider} from '../../../components';
+import {theme} from '../../../styles';
 
 export default function ReservationSection(props) {
   const {todo, shop} = props;

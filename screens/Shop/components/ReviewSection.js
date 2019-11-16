@@ -6,8 +6,8 @@ import {
   Reviews,
   ReviewModal,
   ReviewNewModal,
-} from '../../components';
-import {theme} from '../../constants';
+} from '../../../components';
+import {theme} from '../../../styles';
 
 export default function ReviewSection(props) {
   const {navigation, shop, user} = props;

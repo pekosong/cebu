@@ -10,7 +10,7 @@ import {
 
 import Block from './Block';
 import Text from './Text';
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons} from '@expo/vector-icons';
 import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';

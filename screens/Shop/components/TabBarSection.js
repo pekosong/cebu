@@ -7,18 +7,19 @@ import {
   View,
 } from 'react-native';
 
-import {Text, Block} from '../../components';
-import {theme} from '../../constants';
+import {Text, Block} from '../../../components';
+import {theme} from '../../../styles';
 
 const {width} = Dimensions.get('window');
 
 const MAP = {
+  프로그램: 'menu',
   메뉴: 'menu',
   후기: 'review',
   기본정보: 'info',
 };
 export default TabBarSection = props => {
-  const {top, setShow, goTop} = props;
+  const {top, setShow, goTop, category} = props;
   const [active, setActive] = useState('메뉴');
   const [xAnim] = useState(new Animated.Value(theme.sizes.padding));
 
@@ -30,8 +31,7 @@ export default TabBarSection = props => {
     setShow(MAP[tab]);
     setActive(tab);
     goTop();
-    goTop();
-    if (tab == '메뉴') {
+    if (tab == '메뉴' || tab == '프로그램') {
       Animated.timing(xAnim, {
         toValue: theme.sizes.padding,
         duration: 400,
@@ -75,8 +75,8 @@ export default TabBarSection = props => {
       style={{
         position: 'absolute',
         top: top.interpolate({
-          inputRange: [0, 200],
-          outputRange: [350, 90],
+          inputRange: [0, 210],
+          outputRange: [360, 90],
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
@@ -90,7 +90,11 @@ export default TabBarSection = props => {
         borderBottomColor: theme.colors.gray2,
       }}>
       <Block flex={false} row style={styles.tabs}>
-        {['메뉴', '후기', '기본정보'].map(tab => renderShopTab(tab))}
+        {[
+          category == 'Massage' ? '프로그램' : '메뉴',
+          '후기',
+          '기본정보',
+        ].map(tab => renderShopTab(tab))}
       </Block>
       <Animated.View
         style={{

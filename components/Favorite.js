@@ -1,13 +1,13 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {AntDesign} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateFavorite} from '../redux/action';
 
 export default Favorite = props => {
-  const {shop} = props;
+  const {shop, style} = props;
   const [myfavorites, setMyfavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const user = useSelector(state => state.user, shallowEqual);
@@ -40,7 +40,7 @@ export default Favorite = props => {
   return (
     <TouchableOpacity
       onPress={() => handleFavorite(shop)}
-      style={{position: 'absolute', top: 10, right: 10, zIndex: 10}}>
+      style={{position: 'absolute', top: 10, right: 10, zIndex: 10, ...style}}>
       {isLoaded ? (
         <AntDesign
           size={25}

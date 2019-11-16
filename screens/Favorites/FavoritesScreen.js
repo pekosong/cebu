@@ -9,8 +9,9 @@ import {
 } from 'react-native';
 
 import {Block, Text, CardShop, CachedImage} from '../../components';
-import {theme, mocks} from '../../constants';
 
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 

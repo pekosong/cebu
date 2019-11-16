@@ -26,8 +26,8 @@ import {
   ReviewModal,
   ReviewNewModal,
 } from '../../components';
-import {theme, mocks} from '../../constants';
-
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateFavorite} from '../../redux/action';
 

@@ -1,7 +1,9 @@
 import React from 'react';
+
 import {StyleSheet, ScrollView} from 'react-native';
-import {Card, Block, Text} from '../../components';
-import {theme, mocks} from '../../constants';
+import {Card, Block, Text} from '../../../components';
+import {mocks} from '../../../constants';
+import {theme} from '../../../styles';
 
 export default function RecommendSection(props) {
   const {navigation, recommendList, shop} = props;

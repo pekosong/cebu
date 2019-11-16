@@ -7,20 +7,19 @@ import {
 } from 'react-native';
 
 import firebase from '../../constants/store';
-
 import {Block, Divider} from '../../components';
-import {theme} from '../../constants';
 
-import AppBar from './AppBar';
-import HeaderSection from './HeaderSection';
-import TabBarSection from './TabBarSection';
+import {theme} from '../../styles';
+import AppBar from './components/AppBar';
+import HeaderSection from './components/HeaderSection';
+import TabBarSection from './components/TabBarSection';
 
-import ReservationSection from './ReservationSection';
-import MenuSection from './MenuSection';
-import ReviewSection from './ReviewSection';
-import ShopInfoSection from './ShopInfoSection';
-import BottomSection from './BottomSection';
-import RecommendSection from './RecommendSection';
+import ReservationSection from './components/ReservationSection';
+import MenuSection from './components/MenuSection';
+import ReviewSection from './components/ReviewSection';
+import ShopInfoSection from './components/ShopInfoSection';
+import BottomSection from './components/BottomSection';
+import RecommendSection from './components/RecommendSection';
 
 import {useSelector, shallowEqual} from 'react-redux';
 
@@ -40,6 +39,7 @@ export default function ShopScreen(props) {
   const [fadeAnim] = useState(new Animated.Value(0));
   const [yAnim] = useState(new Animated.Value(0));
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
+
   useEffect(() => {
     let shopId = navigation.getParam('shopId');
     let unsubscribe = firebase
@@ -58,7 +58,7 @@ export default function ShopScreen(props) {
   }, []);
 
   goTop = () => {
-    shopScroll.current.scrollTo({x: 0, y: 200, animated: true});
+    shopScroll.current.scrollTo({x: 0, y: 210});
   };
 
   handleScrollByY = e => {
@@ -100,6 +100,7 @@ export default function ShopScreen(props) {
         shop={shop}
         yAnim={yAnim}></HeaderSection>
       <TabBarSection
+        category={shop.category}
         top={animatedScrollYValue}
         setShow={setShow}
         goTop={goTop}></TabBarSection>
@@ -108,7 +109,7 @@ export default function ShopScreen(props) {
         showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
-          marginBottom: 55,
+          marginBottom: 10,
           zIndex: 10,
         }}
         onScroll={Animated.event(
@@ -124,30 +125,26 @@ export default function ShopScreen(props) {
           style={{
             marginTop: 360,
             paddingTop: animatedScrollYValue.interpolate({
-              inputRange: [0, 200],
-              outputRange: [60, 0],
+              inputRange: [0, 210],
+              outputRange: [70, 0],
               extrapolate: 'clamp',
               useNativeDriver: true,
             }),
             paddingHorizontal: theme.sizes.padding,
-            backgroundColor: 'white',
+            backgroundColor: theme.colors.white,
           }}>
           <ReservationSection todo={todo} shop={shop}></ReservationSection>
-          {show === 'menu' ? (
-            <MenuSection menus={shop.menus}></MenuSection>
-          ) : show === 'review' ? (
+          {show === 'menu' ? <MenuSection shop={shop}></MenuSection> : null}
+          {show === 'review' ? (
             <ReviewSection
               user={user}
               shop={shop}
               navigation={navigation}></ReviewSection>
-          ) : (
+          ) : null}
+          {show === 'info' ? (
             <ShopInfoSection shop={shop}></ShopInfoSection>
-          )}
-
-          <Divider
-            style={{
-              marginTop: 20,
-            }}></Divider>
+          ) : null}
+          <Divider></Divider>
           <RecommendSection
             navigation={navigation}
             shop={shop}></RecommendSection>
@@ -156,7 +153,6 @@ export default function ShopScreen(props) {
       <BottomSection
         navigation={navigation}
         shop={shop}
-        todo={todo}
         user={user}></BottomSection>
     </Block>
   ) : (

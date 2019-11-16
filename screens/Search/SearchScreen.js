@@ -1,10 +1,8 @@
 import React, {useState, useEffect} from 'react';
 import {
-  Image,
   StyleSheet,
   ScrollView,
   ActivityIndicator,
-  TouchableWithoutFeedback,
   Dimensions,
 } from 'react-native';
 import {
@@ -19,7 +17,9 @@ import {
 } from '../../components';
 import {Ionicons} from '@expo/vector-icons';
 
-import {theme, mocks} from '../../constants';
+import {mocks} from '../../constants';
+import {theme} from '../../styles';
+
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {watchUserData, downloadShopData} from '../../redux/action';
 

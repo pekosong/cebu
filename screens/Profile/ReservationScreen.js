@@ -17,7 +17,7 @@ import {
   Divider,
   ReservationConfirmModal,
 } from '../../components';
-import {theme} from '../../constants';
+import {theme} from '../../styles';
 import {Ionicons} from '@expo/vector-icons';
 import firebase from '../../constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';

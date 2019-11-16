@@ -2,7 +2,7 @@ import React, {Component} from 'react';
 import {StyleSheet} from 'react-native';
 
 import Block from './Block';
-import {theme} from '../constants';
+import {theme} from '../styles';
 
 export default class Divider extends Component {
   render() {

@@ -14,7 +14,7 @@ import CachedImage from './CachedImage';
 
 import uuidv1 from 'uuid/v1';
 
-import {theme} from '../constants';
+import {theme} from '../styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 import {updateShop, makeResevation} from '../redux/action';

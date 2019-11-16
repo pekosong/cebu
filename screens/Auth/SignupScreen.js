@@ -7,8 +7,8 @@ import {
 } from 'react-native';
 
 import {Button, Block, Input, Text} from '../../components';
-import {theme} from '../../constants';
 
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 
 const SignupScreen = props => {

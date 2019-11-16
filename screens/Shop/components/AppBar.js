@@ -1,13 +1,12 @@
 import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
-
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
-import {Block} from '../../components';
-import {theme} from '../../constants';
+import {Block} from '../../../components';
 
+import {theme} from '../../../styles';
+import {updateFavorite} from '../../../redux/action';
 import {useDispatch} from 'react-redux';
-import {updateFavorite} from '../../redux/action';
 
 const {width} = Dimensions.get('window');
 
@@ -101,7 +100,7 @@ export default function AppBar(props) {
           style={{
             color: theme.colors.black,
             fontWeight: 'bold',
-            fontSize: 18,
+            fontSize: theme.sizes.h3,
             opacity: fadeAnim,
             marginRight: 30,
           }}>

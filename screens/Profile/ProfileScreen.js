@@ -1,7 +1,7 @@
 import React, {useEffect, Fragment} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import {Block, Text, WideText} from '../../components';
-import {theme} from '../../constants';
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 import {MaterialCommunityIcons, Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';

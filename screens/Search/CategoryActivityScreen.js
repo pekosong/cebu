@@ -9,7 +9,7 @@ import {
 
 import {Ionicons} from '@expo/vector-icons';
 import {Block, Text} from '../../components';
-import {theme} from '../../constants';
+import {theme} from '../../styles';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('window');

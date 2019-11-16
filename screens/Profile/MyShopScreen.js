@@ -13,7 +13,7 @@ import {
   Platform,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from '../../components';
-import {theme} from '../../constants';
+import {theme} from '../../styles';
 import firebase from '../../constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';

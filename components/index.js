@@ -1,11 +1,12 @@
 import Block from './Block';
-import Badge from './Badge';
 import Button from './Button';
 import Card from './Card';
 import CardCategory from './CardCategory';
 import CardShop from './CardShop';
 
 import CardMenu from './CardMenu';
+import CardProgram from './CardProgram';
+
 import CardRect from './CardRect';
 import Input from './Input';
 import Text from './Text';
@@ -28,12 +29,12 @@ import ReviewNewModal from './ReviewNewModal';
 
 export {
   Block,
-  Badge,
   Button,
   Card,
   CardCategory,
   CardShop,
   CardMenu,
+  CardProgram,
   CardRect,
   Favorite,
   Input,
