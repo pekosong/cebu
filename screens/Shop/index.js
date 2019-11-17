@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef} from 'react';
+import React, {useState, useEffect, useRef, createRef, Fragment} from 'react';
 import {
   StyleSheet,
   Animated,
@@ -11,7 +11,7 @@ import {Block, Divider} from 'app/components';
 
 import {mocks} from 'app/constants';
 
-import {sizes, colors} from 'app/styles';
+import {sizes, colors, style} from 'app/styles';
 
 import AppBar from './components/AppBar';
 import HeaderSection from './components/HeaderSection';
@@ -34,8 +34,10 @@ export default function ShopScreen(props) {
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
   const [show, setShow] = useState('menu');
+  const [recommend, setRecommend] = useState(false);
 
-  const shopScroll = useRef(null);
+  const shopScroll = createRef(null);
+  const recommendScroll = createRef(null);
 
   const user = useSelector(state => state.user, shallowEqual);
 
@@ -46,7 +48,12 @@ export default function ShopScreen(props) {
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
 
   useEffect(() => {
+    if (navigation.getParam('recommend')) {
+      setRecommend(true);
+    }
+
     let shopId = navigation.getParam('shopId');
+
     let unsubscribe;
     if (shopId) {
       unsubscribe = firebase
@@ -57,7 +64,6 @@ export default function ShopScreen(props) {
           setShop(doc.data());
           setIsLoaded(true);
         });
-
       setTodo(navigation.getParam('todo'));
     } else {
       setShop(mocks.ActivityList[0]);
@@ -72,7 +78,11 @@ export default function ShopScreen(props) {
   }, []);
 
   goTop = () => {
-    shopScroll.current.scrollTo({x: 0, y: 210});
+    if (recommend) {
+      recommendScroll.current.scrollTo({x: 0, y: 210});
+    } else {
+      shopScroll.current.scrollTo({x: 0, y: 210});
+    }
   };
 
   handleScrollByY = e => {
@@ -118,7 +128,7 @@ export default function ShopScreen(props) {
         setShow={setShow}
         goTop={goTop}></TabBarSection>
       <ScrollView
-        ref={shopScroll}
+        ref={recommend ? recommendScroll : shopScroll}
         showsVerticalScrollIndicator={false}
         style={{
           flex: 1,
@@ -162,10 +172,14 @@ export default function ShopScreen(props) {
           {show === 'info' ? (
             <ShopInfoSection shop={shop}></ShopInfoSection>
           ) : null}
-          <Divider></Divider>
-          <RecommendSection
-            navigation={navigation}
-            shop={shop}></RecommendSection>
+          {!recommend ? (
+            <Fragment>
+              <Divider></Divider>
+              <RecommendSection
+                navigation={navigation}
+                shop={shop}></RecommendSection>
+            </Fragment>
+          ) : null}
         </Animated.View>
       </ScrollView>
       <BottomSection
@@ -174,7 +188,7 @@ export default function ShopScreen(props) {
         user={user}></BottomSection>
     </Block>
   ) : (
-    <Block style={styles.full}>
+    <Block style={style.full}>
       <ActivityIndicator size="large"></ActivityIndicator>
     </Block>
   );
@@ -186,9 +200,4 @@ ShopScreen.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-});
+const styles = StyleSheet.create({});

@@ -28,7 +28,11 @@ export default function RecommendSection(props) {
             paddingLeft: sizes.padding,
           }}>
           {recommendList.map((item, idx) => (
-            <Card key={idx} item={item} navigation={navigation}>
+            <Card
+              key={idx}
+              item={item}
+              navigation={navigation}
+              shopId={shop.id}>
               <Text
                 gray
                 caption
