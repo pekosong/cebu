@@ -1,10 +1,10 @@
 import React, {useState} from 'react';
 import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
 
-import {Block, CachedImage, Text} from '../../../components';
+import {Block, CachedImage, Text} from 'app/components';
 import {AntDesign} from '@expo/vector-icons';
-import {theme} from '../../../styles';
-import {convertComma} from '../../../utils';
+import {sizes, colors} from 'app/styles';
+import {convertComma} from 'app/utils';
 
 const {width} = Dimensions.get('window');
 
@@ -20,7 +20,7 @@ export default HeaderSection = props => {
   return (
     <Animated.View
       style={{
-        position: 'absolute',
+        ...styles.container,
         top: top.interpolate({
           inputRange: [0, 200],
           outputRange: [0, -150],
@@ -33,17 +33,13 @@ export default HeaderSection = props => {
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
-        width: width,
-        height: 260,
-        zIndex: -10,
       }}>
       <ScrollView
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={360}
         pagingEnabled
-        onScroll={handleScrollByX}
-        style={{zIndex: 0}}>
+        onScroll={handleScrollByX}>
         {shop.source.map(e => (
           <CachedImage
             key={e}
@@ -56,13 +52,12 @@ export default HeaderSection = props => {
           />
         ))}
       </ScrollView>
-
       <Block style={styles.imageNum}>
         <Text white bold size={11}>
           {imageNum + ' / ' + shop.source.length}
         </Text>
       </Block>
-      <Animated.View style={styles.shopTitle}>
+      <Block style={styles.shopTitle}>
         <Block middle center>
           <Text h1 bold>
             {shop.name}
@@ -71,7 +66,7 @@ export default HeaderSection = props => {
           <Block left row center>
             <AntDesign
               size={20}
-              color={theme.colors.primary}
+              color={colors.primary}
               name="heart"></AntDesign>
             <Text h3 bold style={{marginLeft: 5}}>
               {shop.review}
@@ -85,12 +80,18 @@ export default HeaderSection = props => {
               shop.likes}
           </Text>
         </Block>
-      </Animated.View>
+      </Block>
     </Animated.View>
   );
 };
 
 const styles = StyleSheet.create({
+  container: {
+    position: 'absolute',
+    width: width,
+    height: 260,
+    zIndex: -10,
+  },
   shopTitle: {
     top: 210,
     position: 'absolute',
@@ -98,7 +99,7 @@ const styles = StyleSheet.create({
     width: width - 60,
     backgroundColor: 'white',
     marginHorizontal: 30,
-    paddingVertical: theme.sizes.padding * 0.8,
+    paddingVertical: sizes.padding * 0.8,
     shadowColor: '#000',
     shadowOffset: {
       width: 1,

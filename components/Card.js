@@ -5,7 +5,7 @@ import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
 
-import {theme} from '../styles';
+import {colors} from '../styles';
 
 export default Card = props => {
   const {style, children, item, navigation} = props;
@@ -58,7 +58,7 @@ export default Card = props => {
         </Block>
         <Block row flex={1}>
           <Block flex={3} middle>
-            <Text style={{fontWeight: 'bold', color: theme.colors.accent}}>
+            <Text style={{fontWeight: 'bold', color: colors.accent}}>
               {item.tag}
             </Text>
             <Text h3 bold style={{marginVertical: 2}}>

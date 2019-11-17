@@ -4,7 +4,7 @@ import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 
@@ -18,11 +18,11 @@ export default ReviewModal = props => {
   return (
     <Block
       padding={[
-        Platform.OS === 'ios' ? theme.sizes.padding * 2 : theme.sizes.padding,
-        theme.sizes.padding,
+        Platform.OS === 'ios' ? sizes.padding * 2 : sizes.padding,
+        sizes.padding,
       ]}>
       <TouchableOpacity onPress={() => setReviewVisible(false)}>
-        <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+        <Ionicons size={50} color={colors.black} name="ios-close" />
       </TouchableOpacity>
       <Block row space="between" style={{flex: 0, height: 50}}>
         <Text h1 bold>
@@ -41,7 +41,7 @@ export default ReviewModal = props => {
               maxStars={5}
               rating={review}
               starSize={20}
-              fullStarColor={theme.colors.accent}
+              fullStarColor={colors.accent}
               containerStyle={{width: 30}}
             />
           </Block>

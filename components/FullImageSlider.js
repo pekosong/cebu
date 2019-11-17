@@ -5,7 +5,7 @@ import CachedImage from './CachedImage';
 import Block from './Block';
 import Text from './Text';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 export default FullImageSlider = props => {
   const {source, height} = props;
@@ -48,18 +48,7 @@ export default FullImageSlider = props => {
         )}
       </ScrollView>
 
-      <Block
-        center
-        middle
-        style={{
-          position: 'absolute',
-          bottom: 10,
-          right: 5,
-          backgroundColor: 'rgba(255, 255, 255, 0.2)',
-          borderRadius: 10,
-          paddingVertical: 3,
-          paddingHorizontal: 8,
-        }}>
+      <Block style={styles.imageNum}>
         <Text white bold size={11}>
           {imageNum + ' / ' + maxImageNum}
         </Text>
@@ -69,9 +58,15 @@ export default FullImageSlider = props => {
 };
 
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    height: 250,
+  imageNum: {
     justifyContent: 'center',
+    alignItems: 'center',
+    position: 'absolute',
+    bottom: 10,
+    right: 5,
+    backgroundColor: 'rgba(255, 255, 255, 0.2)',
+    borderRadius: 10,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
   },
 });

@@ -1,20 +1,20 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {Block, Text, CardMenu, CardProgram} from '../../../components';
-import {theme} from '../../../styles';
+import {Block, Text, CardMenu, CardProgram} from 'app/components';
+import {colors, style} from 'app/styles';
 
 export default function MenuSection(props) {
   const {shop} = props;
 
   return (
-    <Block style={styles.categories}>
-      <Block row space="between" style={{...styles.content, marginBottom: 25}}>
+    <Block style={{marginTop: 10}}>
+      <Block row space="between" style={style.shop.content}>
         <Text h3 bold>
           {shop.category == 'Massage' ? '프로그램' : '메뉴'}
         </Text>
         <TouchableOpacity onPress={() => {}}>
-          <Text h3 bold color={theme.colors.accent}>
+          <Text h3 bold color={colors.accent}>
             더보기
           </Text>
         </TouchableOpacity>
@@ -39,11 +39,4 @@ MenuSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  categories: {
-    marginVertical: 10,
-  },
-  content: {
-    marginBottom: 15,
-  },
-});
+const styles = StyleSheet.create({});

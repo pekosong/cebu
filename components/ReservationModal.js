@@ -14,10 +14,10 @@ import CachedImage from './CachedImage';
 
 import uuidv1 from 'uuid/v1';
 
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateShop, makeResevation} from '../redux/action';
+import {updateShop, makeResevation} from 'app/redux/action';
 import StarRating from 'react-native-star-rating';
 
 const TIMES = [
@@ -204,7 +204,7 @@ export default ReservationModal = props => {
   };
 
   selectedDateColor = t => {
-    return t == selectedDate ? theme.colors.white : theme.colors.black;
+    return t == selectedDate ? colors.white : colors.black;
   };
 
   seletedTimeStyle = t => {
@@ -219,12 +219,12 @@ export default ReservationModal = props => {
 
   seletedTimeColor = t => {
     return reservationDate == selectedDate && t == reservationTime
-      ? theme.colors.accent
+      ? colors.accent
       : timeCan.indexOf(t) != -1
-      ? theme.colors.primary
+      ? colors.primary
       : t == time
-      ? theme.colors.white
-      : theme.colors.black;
+      ? colors.white
+      : colors.black;
   };
 
   renderName = t => {
@@ -309,7 +309,7 @@ export default ReservationModal = props => {
         <Block
           style={{
             borderWidth: 1,
-            borderColor: theme.colors.black,
+            borderColor: colors.black,
             borderRadius: 5,
             marginBottom: 15,
             height: 45,
@@ -449,7 +449,7 @@ export default ReservationModal = props => {
             maxStars={5}
             rating={shop.review}
             starSize={16}
-            fullStarColor={theme.colors.accent}
+            fullStarColor={colors.accent}
             containerStyle={{width: 20, marginTop: 3}}
           />
         </Block>
@@ -527,11 +527,11 @@ export default ReservationModal = props => {
   return (
     <Block
       padding={[
-        Platform.OS === 'ios' ? theme.sizes.padding * 2 : theme.sizes.padding,
-        theme.sizes.padding,
+        Platform.OS === 'ios' ? sizes.padding * 2 : sizes.padding,
+        sizes.padding,
       ]}>
       <TouchableOpacity onPress={() => setVisible(false)}>
-        <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+        <Ionicons size={50} color={colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
         {edit != true ? '예약 내역' : isChange ? '예약 변경' : '예약 신청'}
@@ -550,20 +550,20 @@ export const styles = StyleSheet.create({
     borderWidth: 1,
   },
   time: {
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black,
+    backgroundColor: colors.white,
+    borderColor: colors.black,
   },
   onTime: {
-    backgroundColor: theme.colors.black,
-    borderColor: theme.colors.black,
+    backgroundColor: colors.black,
+    borderColor: colors.black,
   },
   noTime: {
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.primary,
+    backgroundColor: colors.white,
+    borderColor: colors.primary,
   },
   reserTime: {
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.accent,
+    backgroundColor: colors.white,
+    borderColor: colors.accent,
   },
   date: {
     width: 100,
@@ -571,8 +571,8 @@ export const styles = StyleSheet.create({
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
-    backgroundColor: theme.colors.white,
-    borderColor: theme.colors.black,
+    backgroundColor: colors.white,
+    borderColor: colors.black,
   },
   onDate: {
     width: 100,
@@ -580,13 +580,13 @@ export const styles = StyleSheet.create({
     padding: 0,
     marginRight: 5,
     borderWidth: 1,
-    backgroundColor: theme.colors.black,
-    borderColor: theme.colors.white,
+    backgroundColor: colors.black,
+    borderColor: colors.white,
   },
   input: {
     borderRadius: 0,
     borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textStyle: {
@@ -597,6 +597,6 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
 });

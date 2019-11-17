@@ -9,14 +9,14 @@ import {
 } from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {Block, Text, CardShop} from '../../components';
-import {mocks} from '../../constants';
+import {Block, Text, CardShop} from 'app/components';
+import {mocks} from 'app/constants';
+import {colors, sizes, style} from 'app/styles';
 
-import {theme} from '../../styles';
 import {useSelector, shallowEqual} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
 const cateMap = {
   Restaurant: '식당',
@@ -46,13 +46,13 @@ const activityCategory = [
 ];
 
 const cateSrc = {
-  전체: require('../../assets/images/search/activity.jpg'),
-  호핑: require('../../assets/images/search/hoping.jpg'),
-  고래투어: require('../../assets/images/search/gorae.jpg'),
-  시티투어: require('../../assets/images/search/city.jpg'),
-  다이빙: require('../../assets/images/search/diving.jpg'),
-  경비행기: require('../../assets/images/search/plane.jpg'),
-  샌딩: require('../../assets/images/search/sanding.jpg'),
+  전체: require('app/assets/images/search/activity.jpg'),
+  호핑: require('app/assets/images/search/hoping.jpg'),
+  고래투어: require('app/assets/images/search/gorae.jpg'),
+  시티투어: require('app/assets/images/search/city.jpg'),
+  다이빙: require('app/assets/images/search/diving.jpg'),
+  경비행기: require('app/assets/images/search/plane.jpg'),
+  샌딩: require('app/assets/images/search/sanding.jpg'),
 };
 
 const CategoryScreen = props => {
@@ -109,7 +109,7 @@ const CategoryScreen = props => {
           size={16}
           style={{
             marginTop: 6,
-            color: isActive ? theme.colors.black : theme.colors.gray,
+            color: isActive ? colors.black : colors.gray,
           }}>
           {tab}
         </Text>
@@ -159,7 +159,7 @@ const CategoryScreen = props => {
       {isLoaded ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{paddingTop: theme.sizes.base * 0.8}}>
+          style={{paddingTop: sizes.base * 0.8}}>
           {selectedLists.length != 0
             ? selectedLists.map((shop, idx) => (
                 <CardShop
@@ -177,10 +177,10 @@ const CategoryScreen = props => {
               ))}
         </ScrollView>
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.accent}></ActivityIndicator>
+            color={colors.accent}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -192,21 +192,17 @@ CategoryScreen.navigationOptions = {
 };
 CategoryScreen.defaultProps = {};
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   appBar: {
     flex: 0,
     flexDirection: 'row',
     justifyContent: 'space-between',
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
     marginBottom: 10,
   },
   header: {
     flex: 0,
     backgroundColor: 'white',
-    paddingTop: theme.sizes.padding * 2.5,
+    paddingTop: sizes.padding * 2.5,
     marginBottom: 2,
     shadowColor: '#000',
     shadowOffset: {
@@ -220,21 +216,21 @@ const styles = StyleSheet.create({
   tabs: {
     flex: 0,
     flexDirection: 'row',
-    paddingLeft: theme.sizes.padding,
+    paddingLeft: sizes.padding,
     marginTop: 5,
   },
   tab: {
-    marginRight: theme.sizes.base * 1.2,
-    paddingBottom: theme.sizes.base * 0.8,
+    marginRight: sizes.base * 1.2,
+    paddingBottom: sizes.base * 0.8,
   },
   active: {
-    borderBottomColor: theme.colors.secondary,
+    borderBottomColor: colors.secondary,
     borderBottomWidth: 3,
   },
   category: {
     flexDirection: 'row',
-    paddingVertical: theme.sizes.base / 2,
-    width: width - theme.sizes.base * 3,
+    paddingVertical: sizes.base / 2,
+    width: width - sizes.base * 3,
   },
 });
 

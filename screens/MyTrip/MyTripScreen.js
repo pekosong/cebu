@@ -7,10 +7,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {Block, Text, Button, Divider, CachedImage} from '../../components';
+import {Block, Text, Button, Divider, CachedImage} from 'app/components';
 
-import {mocks} from '../../constants';
-import {theme} from '../../styles';
+import {mocks} from 'app/constants';
+import {colors, sizes, style} from 'app/styles';
 import {useSelector, shallowEqual} from 'react-redux';
 
 const MAP = {
@@ -105,7 +105,7 @@ function MyTripScreen(props) {
             <Text>{`Day ${item.nDay + 1}`}</Text>
             <Text>{'  '}</Text>
           </Text>
-          <Text h4 bold color={theme.colors.accent}>
+          <Text h4 bold color={colors.accent}>
             {'in ' + item.hotel}
           </Text>
         </Block>
@@ -145,8 +145,8 @@ function MyTripScreen(props) {
                         style={{
                           color:
                             todo.status == 'not'
-                              ? theme.colors.primary
-                              : theme.colors.accent,
+                              ? colors.primary
+                              : colors.accent,
                         }}>
                         {MAP[todo.status]}
                       </Text>
@@ -170,7 +170,7 @@ function MyTripScreen(props) {
 
   return (
     <Block>
-      <Block flex={false} style={styles.header}>
+      <Block flex={false} style={style.mainHeader}>
         <Text h1 bold>
           내 일정
         </Text>
@@ -189,7 +189,7 @@ function MyTripScreen(props) {
           </Block>
         </ScrollView>
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator size="large"></ActivityIndicator>
         </Block>
       )}
@@ -208,37 +208,27 @@ MyTripScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  header: {
-    marginTop: theme.sizes.base * 4,
-    marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding,
-  },
   avatarChat: {
-    width: theme.sizes.base * 6,
-    height: theme.sizes.base * 4,
+    width: sizes.base * 6,
+    height: sizes.base * 4,
     borderRadius: 3,
   },
   tabs: {
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical:
-      Platform.OS === 'ios' ? theme.sizes.base * 0.8 : theme.sizes.base,
-    marginHorizontal: theme.sizes.padding,
+    marginVertical: Platform.OS === 'ios' ? sizes.base * 0.8 : sizes.base,
+    marginHorizontal: sizes.padding,
   },
   tab: {
-    marginRight: theme.sizes.base,
-    paddingBottom: theme.sizes.base,
+    marginRight: sizes.base,
+    paddingBottom: sizes.base,
   },
   active: {
-    borderBottomColor: theme.colors.secondary,
+    borderBottomColor: colors.secondary,
     borderBottomWidth: 3,
   },
   categories: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
 });
 

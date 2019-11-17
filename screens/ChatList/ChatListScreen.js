@@ -5,16 +5,14 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
-  Platform,
 } from 'react-native';
 
-import {Block, Text, CachedImage} from '../../components';
+import {Block, Text, CachedImage} from 'app/components';
 
-import {mocks} from '../../constants';
-import {theme} from '../../styles';
-import moment from 'moment';
+import {sizes, style} from 'app/styles';
+import {msg2Chat, makeYM} from 'app/utils';
+import {shopApi, userApi} from 'app/api';
 
-import firebase from '../../constants/store';
 import {useSelector, shallowEqual} from 'react-redux';
 
 const MAP = {
@@ -37,101 +35,21 @@ const ChatListScreen = props => {
 
     if (Object.entries(user).length > 0) {
       if (user.host) {
-        userUnsubscribe = firebase
-          .firestore()
-          .collection('shops')
-          .doc(user.shops[0])
-          .collection('messages')
+        userUnsubscribe = shopApi
+          .streamShopMsg(user.shops[0])
           .onSnapshot(querySnapshot => {
-            let myList = [];
-            querySnapshot.forEach(doc => {
-              let chat = {};
-              data = doc.data();
-
-              if (data.message.length > 0) {
-                mm = data.message.reduce(function(p, v) {
-                  if (p.createdAt) {
-                    return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-                  } else {
-                    return v;
-                  }
-                });
-                date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
-                time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
-                message = mm.text;
-                chat.email = data.email;
-                chat.shop = data.shop;
-                chat.shopName = data.shopName;
-
-                users = data.message.map(e => e.user);
-                chat.avatar = users.filter(e => e._id == data.email)[0].avatar;
-                chat.message = message;
-                chat.timeStamp = mm.createdAt.seconds;
-                chat.date = date;
-                chat.time = time;
-                myList.push(chat);
-              }
-            });
-            myList = myList.sort(function(a, b) {
-              return b.timeStamp - a.timeStamp;
-            });
-            setChatlist(myList);
+            setChatlist(msg2Chat(querySnapshot, user.host));
           });
 
-        shopUnsubscribe = firebase
-          .firestore()
-          .collection('shops')
-          .doc(user.shops[0])
-          .onSnapshot(doc => {
-            const shop = doc.data();
-            setShopReservations(shop.reservations);
-            setIsLoaded(true);
-          });
+        shopUnsubscribe = shopApi.streamShop(user.shops[0]).onSnapshot(doc => {
+          setShopReservations(doc.data().reservations);
+          setIsLoaded(true);
+        });
       } else {
-        userUnsubscribe = firebase
-          .firestore()
-          .collection('users')
-          .doc(user.email)
-          .collection('messages')
+        userUnsubscribe = userApi
+          .streamUserMsg(user.email)
           .onSnapshot(querySnapshot => {
-            let myList = [];
-            querySnapshot.forEach(doc => {
-              let chat = {};
-              data = doc.data();
-
-              if (data.message.length > 0) {
-                mm = data.message.reduce(function(p, v) {
-                  if (p.createdAt) {
-                    return p.createdAt.seconds > v.createdAt.seconds ? p : v;
-                  } else {
-                    return v;
-                  }
-                });
-                date = moment.unix(mm.createdAt.seconds).format('YYYY-MM-DD');
-                time = moment.unix(mm.createdAt.seconds).format('HH:mm:ss');
-                message = mm.text;
-                chat.email = data.email;
-                chat.shop = data.shop;
-                chat.shopName = data.shopName;
-
-                avatar = data.message
-                  .map(e => e.user)
-                  .filter(e => e._id != data.email);
-                chat.avatar =
-                  avatar.length == 1
-                    ? avatar[0].avatar
-                    : 'https://randomuser.me/api/portraits/men/1.jpg';
-                chat.message = message;
-                chat.timeStamp = mm.createdAt.seconds;
-                chat.date = date;
-                chat.time = time;
-                myList.push(chat);
-              }
-            });
-            myList = myList.sort(function(a, b) {
-              return b.timeStamp - a.timeStamp;
-            });
-            setChatlist(myList);
+            setChatlist(msg2Chat(querySnapshot, user.host));
             setIsLoaded(true);
           });
       }
@@ -146,12 +64,6 @@ const ChatListScreen = props => {
       }
     };
   }, [user]);
-
-  makeYM = item => {
-    return `${new Date(item.date).getMonth() + 1}월 ${new Date(
-      item.date,
-    ).getDate() + 1}일`;
-  };
 
   shottenMsg = item => {
     return item.message.length > 15
@@ -174,13 +86,7 @@ const ChatListScreen = props => {
             shopName: item.shopName,
           })
         }>
-        <Block
-          row
-          center
-          style={{
-            marginVertical: 10,
-            paddingBottom: 5,
-          }}>
+        <Block style={styles.wrapper}>
           <Block left flex={1.2}>
             <CachedImage uri={item.avatar} style={styles.avatarChat} />
           </Block>
@@ -212,28 +118,26 @@ const ChatListScreen = props => {
 
   return (
     <Block>
+      <Block flex={false} style={style.mainHeader}>
+        <Text h1 bold>
+          메시지
+        </Text>
+      </Block>
       {isLoaded ? (
-        <Block>
-          <Block flex={false} style={styles.header}>
-            <Text h1 bold>
-              메시지
-            </Text>
-          </Block>
-          <ScrollView
-            showsVerticalScrollIndicator={false}
-            style={{
-              marginHorizontal: theme.sizes.padding,
-              paddingTop: theme.sizes.padding,
-            }}>
-            <FlatList
-              data={chatList}
-              keyExtractor={item => (user.host ? item.email : item.shopName)}
-              renderItem={item => renderList(item)}
-            />
-          </ScrollView>
-        </Block>
+        <ScrollView
+          showsVerticalScrollIndicator={false}
+          style={{
+            marginHorizontal: sizes.padding,
+            paddingTop: sizes.padding,
+          }}>
+          <FlatList
+            data={chatList}
+            keyExtractor={item => (user.host ? item.email : item.shopName)}
+            renderItem={item => renderList(item)}
+          />
+        </ScrollView>
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator size="large"></ActivityIndicator>
         </Block>
       )}
@@ -245,20 +149,16 @@ ChatListScreen.navigationOptions = {
   header: null,
 };
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  header: {
-    marginTop:
-      Platform.OS === 'ios' ? theme.sizes.base * 4.2 : theme.sizes.base * 4,
-    marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding,
-  },
   avatarChat: {
-    width: theme.sizes.base * 4,
-    height: theme.sizes.base * 4,
-    borderRadius: theme.sizes.base * 2,
+    width: sizes.base * 4,
+    height: sizes.base * 4,
+    borderRadius: sizes.base * 2,
+  },
+  wrapper: {
+    flexDirection: 'row',
+    justifyContent: 'center',
+    marginVertical: 10,
+    paddingBottom: 5,
   },
 });
 

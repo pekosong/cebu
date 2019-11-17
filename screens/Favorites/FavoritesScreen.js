@@ -4,18 +4,15 @@ import {
   StyleSheet,
   TouchableOpacity,
   ActivityIndicator,
-  Dimensions,
   Image,
 } from 'react-native';
 
-import {Block, Text, CardShop, CachedImage} from '../../components';
+import {Block, Text, CardShop} from 'app/components';
 
-import {mocks} from '../../constants';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {mocks} from 'app/constants';
+import {colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-
-const {width} = Dimensions.get('window');
 
 const cateMap = {
   All: '전체',
@@ -26,11 +23,11 @@ const cateMap = {
 };
 
 const cateSrc = {
-  All: require('../../assets/images/search/activity.jpg'),
-  Restaurant: require('../../assets/images/search/restaurant.jpg'),
-  Massage: require('../../assets/images/search/massage.jpg'),
-  Nail: require('../../assets/images/search/nail.jpg'),
-  Activity: require('../../assets/images/search/seasports.jpg'),
+  All: require('app/assets/images/search/activity.jpg'),
+  Restaurant: require('app/assets/images/search/restaurant.jpg'),
+  Massage: require('app/assets/images/search/massage.jpg'),
+  Nail: require('app/assets/images/search/nail.jpg'),
+  Activity: require('app/assets/images/search/seasports.jpg'),
 };
 function FavoritesScreen(props) {
   const {navigation} = props;
@@ -92,7 +89,7 @@ function FavoritesScreen(props) {
           size={16}
           style={{
             marginTop: 6,
-            color: isActive ? theme.colors.black : theme.colors.gray,
+            color: isActive ? colors.black : colors.gray,
           }}>
           {cateMap[tab]}
         </Text>
@@ -112,11 +109,9 @@ function FavoritesScreen(props) {
   return (
     <Block>
       <Block flex={false} style={styles.header}>
-        <Block flex={false}>
-          <Text h1 bold>
-            저장소
-          </Text>
-        </Block>
+        <Text h1 bold>
+          저장소
+        </Text>
         <Block flex={false} row style={styles.tabs}>
           {tabs.map(tab => renderTab(tab))}
         </Block>
@@ -125,13 +120,13 @@ function FavoritesScreen(props) {
         <ScrollView
           showsVerticalScrollIndicator={false}
           scrollEnabled={true}
-          style={{paddingTop: theme.sizes.base * 0.8}}>
+          style={{paddingTop: sizes.base * 0.8}}>
           {selectedFavorites.map((shop, idx) => (
             <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
           ))}
         </ScrollView>
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator size="large"></ActivityIndicator>
         </Block>
       )}
@@ -150,14 +145,10 @@ FavoritesScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   header: {
     backgroundColor: 'white',
-    paddingTop: theme.sizes.base * 4,
-    paddingHorizontal: theme.sizes.padding,
+    paddingTop: sizes.base * 4,
+    paddingHorizontal: sizes.padding,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -171,12 +162,12 @@ const styles = StyleSheet.create({
     marginTop: 20,
   },
   tab: {
-    marginRight: theme.sizes.base * 1.2,
-    paddingBottom: theme.sizes.base * 0.8,
+    marginRight: sizes.base * 1.2,
+    paddingBottom: sizes.base * 0.8,
   },
   categories: {
-    paddingHorizontal: theme.sizes.padding,
-    marginVertical: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
+    marginVertical: sizes.padding,
   },
 });
 

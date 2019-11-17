@@ -1,7 +1,7 @@
 import React from 'react';
 import {AntDesign} from '@expo/vector-icons';
 
-import {theme} from '../styles';
+import {colors} from 'app/styles';
 
 export default function TabBarIcon(props) {
   return (
@@ -9,7 +9,7 @@ export default function TabBarIcon(props) {
       name={props.name}
       size={24}
       style={{height: 35}}
-      color={props.focused ? theme.colors.black : theme.colors.gray}
+      color={props.focused ? colors.black : colors.gray}
     />
   );
 }

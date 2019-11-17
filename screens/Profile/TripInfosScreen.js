@@ -7,9 +7,9 @@ import {
   TouchableOpacity,
   Platform,
 } from 'react-native';
-import {Button, Block, Text} from '../../components';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {Button, Block, Text} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
 import {Ionicons} from '@expo/vector-icons';
 import moment from 'moment';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
@@ -54,13 +54,13 @@ const TripInfosScreen = props => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView>
-        <Block style={styles.header}>
+        <Block style={style.header}>
           <Block row center space="between">
             <Button onPress={() => navigation.goBack()}>
               <Block center row>
                 <Ionicons
                   size={30}
-                  color={theme.colors.black}
+                  color={colors.black}
                   name="ios-arrow-back"
                 />
               </Block>
@@ -110,7 +110,7 @@ const TripInfosScreen = props => {
       </ScrollView>
       <Block
         flex={false}
-        style={{marginHorizontal: theme.sizes.padding, marginBottom: 10}}>
+        style={{marginHorizontal: sizes.padding, marginBottom: 10}}>
         <Button gradient onPress={() => navigation.navigate('TripInfo')}>
           <Text bold white center>
             {Object.entries(plans).length != 0
@@ -128,18 +128,14 @@ TripInfosScreen.navigationOptions = {
 };
 TripInfosScreen.defaultProps = {};
 const styles = StyleSheet.create({
-  header: {
-    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding,
-  },
   inputs: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
     marginVertical: 10,
   },
   plan: {
     paddingVertical: 15,
     borderBottomWidth: 0.6,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
   },
 });
 

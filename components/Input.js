@@ -5,7 +5,8 @@ import {Ionicons} from '@expo/vector-icons';
 import Text from './Text';
 import Block from './Block';
 import Button from './Button';
-import {theme} from '../styles';
+
+import {colors, sizes} from 'app/styles';
 
 export default class Input extends Component {
   state = {
@@ -40,8 +41,8 @@ export default class Input extends Component {
           rightLabel
         ) : (
           <Ionicons
-            color={theme.colors.gray}
-            size={theme.sizes.font * 1.35}
+            color={colors.gray}
+            size={sizes.font * 1.35}
             name={!toggleSecure ? 'md-eye' : 'md-eye-off'}
           />
         )}
@@ -71,7 +72,7 @@ export default class Input extends Component {
 
     const inputStyles = [
       styles.input,
-      error && {borderColor: theme.colors.accent},
+      error && {borderColor: colors.accent},
       style,
     ];
 
@@ -84,7 +85,7 @@ export default class Input extends Component {
       : 'default';
 
     return (
-      <Block flex={false} margin={[theme.sizes.base, 0]}>
+      <Block flex={false} margin={[sizes.base, 0]}>
         {this.renderLabel()}
         <TextInput
           style={inputStyles}
@@ -105,19 +106,19 @@ export default class Input extends Component {
 const styles = StyleSheet.create({
   input: {
     borderWidth: StyleSheet.hairlineWidth,
-    borderColor: theme.colors.black,
-    borderRadius: theme.sizes.radius,
-    fontSize: theme.sizes.font,
+    borderColor: colors.black,
+    borderRadius: sizes.radius,
+    fontSize: sizes.font,
     fontWeight: '500',
-    color: theme.colors.black,
-    height: theme.sizes.base * 3,
+    color: colors.black,
+    height: sizes.base * 3,
   },
   toggle: {
     position: 'absolute',
     alignItems: 'flex-end',
-    width: theme.sizes.base * 2,
-    height: theme.sizes.base * 2,
-    top: theme.sizes.base,
+    width: sizes.base * 2,
+    height: sizes.base * 2,
+    top: sizes.base,
     right: 0,
   },
 });

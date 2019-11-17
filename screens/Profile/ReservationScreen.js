@@ -16,10 +16,10 @@ import {
   CachedImage,
   Divider,
   ReservationConfirmModal,
-} from '../../components';
-import {theme} from '../../styles';
+} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
-import firebase from '../../constants/store';
+import firebase from 'app/constants/store';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
 const MAP = {
@@ -149,8 +149,8 @@ const ReservationScreen = props => {
                             style={{
                               color:
                                 e.status == 'not'
-                                  ? theme.colors.primary
-                                  : theme.colors.accent,
+                                  ? colors.primary
+                                  : colors.accent,
                             }}>
                             {MAP[e.status]}
                           </Text>
@@ -161,7 +161,7 @@ const ReservationScreen = props => {
                       style={{
                         marginBottom: maxLength == eIdx ? 0 : 10,
                         borderBottomWidth: maxLength == eIdx ? 0 : 0.5,
-                        borderBottomColor: theme.colors.gray2,
+                        borderBottomColor: colors.gray2,
                         paddingBottom: maxLength == eIdx ? 0 : 10,
                       }}></Block>
                   </Fragment>
@@ -179,14 +179,10 @@ const ReservationScreen = props => {
       <Block
         style={{
           flex: 0,
-          ...styles.header,
+          ...style.header,
         }}>
         <Button onPress={() => navigation.goBack()} style={{width: 30}}>
-          <Ionicons
-            size={30}
-            color={theme.colors.black}
-            name="ios-arrow-back"
-          />
+          <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </Button>
         <Text h1 bold>
           예약 관리
@@ -216,10 +212,10 @@ const ReservationScreen = props => {
       </Modal>
     </SafeAreaView>
   ) : (
-    <Block style={styles.full}>
+    <Block style={style.full}>
       <ActivityIndicator
         size="large"
-        color={theme.colors.primary}></ActivityIndicator>
+        color={colors.primary}></ActivityIndicator>
     </Block>
   );
 };
@@ -229,44 +225,34 @@ ReservationScreen.navigationOptions = {
 };
 ReservationScreen.defaultProps = {};
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  header: {
-    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    marginBottom: theme.sizes.base * 2,
-    paddingHorizontal: theme.sizes.padding,
-  },
   inputRow: {
     marginVertical: 10,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
   inputs: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
     paddingTop: 20,
   },
 
   avatarChat: {
-    width: theme.sizes.base * 3,
-    height: theme.sizes.base * 3,
-    borderRadius: theme.sizes.base * 1.5,
+    width: sizes.base * 3,
+    height: sizes.base * 3,
+    borderRadius: sizes.base * 1.5,
   },
   tabs: {
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
-    marginVertical:
-      Platform.OS === 'ios' ? theme.sizes.base * 0.8 : theme.sizes.base,
-    marginHorizontal: theme.sizes.padding,
+    marginVertical: Platform.OS === 'ios' ? sizes.base * 0.8 : sizes.base,
+    marginHorizontal: sizes.padding,
   },
   tab: {
-    marginRight: theme.sizes.base,
-    paddingBottom: theme.sizes.base,
+    marginRight: sizes.base,
+    paddingBottom: sizes.base,
   },
   active: {
-    borderBottomColor: theme.colors.secondary,
+    borderBottomColor: colors.secondary,
     borderBottomWidth: 3,
   },
 });

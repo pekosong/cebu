@@ -4,13 +4,14 @@ import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
+import {convertComma} from 'app/utils';
 import {AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 
 export default CardShop = props => {
-  const {style, shop, navigation, isActivity} = props;
+  const {shop, navigation, isActivity} = props;
   const {
     name,
     preview,
@@ -26,17 +27,13 @@ export default CardShop = props => {
   return (
     <TouchableOpacity
       onPress={() => {
-        if (isActivity) {
-          navigation.navigate('Activity', {});
-        } else {
-          navigation.navigate('Shop', {
-            shopId: shop.id,
-          });
-        }
+        navigation.navigate('Shop', {
+          shopId: isActivity ? null : shop.id,
+        });
       }}>
       <Block style={styles.categories}>
         <CachedImage uri={preview} style={styles.image} />
-        <Block style={styles.opacity}></Block>
+        <Block style={styles.overlap}></Block>
         <Favorite shop={shop}></Favorite>
         <Block
           style={{
@@ -49,26 +46,22 @@ export default CardShop = props => {
             <Text h4>{tags.join(', ')}</Text>
           </Block>
           <Block style={styles.bottom}>
-            <AntDesign
-              size={18}
-              name="star"
-              style={{color: theme.colors.accent}}
-            />
+            <AntDesign size={18} name="star" style={{color: colors.accent}} />
             <Text h4 style={{marginLeft: 5}}>
               {review}
             </Text>
             <AntDesign
               size={18}
               name="heart"
-              style={{color: theme.colors.accent, marginLeft: 10}}
+              style={{color: colors.accent, marginLeft: 10}}
             />
             <Text h4 style={{marginLeft: 5}}>
-              {likes.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',')}
+              {convertComma(likes)}
             </Text>
             <AntDesign
               size={18}
               name="like1"
-              style={{color: theme.colors.accent, marginLeft: 10}}
+              style={{color: colors.accent, marginLeft: 10}}
             />
             <Text h4 style={{marginLeft: 5}}>
               {reviews.length}
@@ -103,16 +96,16 @@ export default CardShop = props => {
 
 export const styles = StyleSheet.create({
   categories: {
-    marginHorizontal: theme.sizes.padding,
-    marginBottom: theme.sizes.base * 1.6,
+    marginHorizontal: sizes.padding,
+    marginBottom: sizes.base * 1.6,
   },
   image: {
     height: 170,
-    width: width - theme.sizes.padding * 2,
+    width: width - sizes.padding * 2,
     borderRadius: 5,
     resizeMode: 'cover',
   },
-  opacity: {
+  overlap: {
     width: '100%',
     height: 170,
     position: 'absolute',
@@ -142,7 +135,7 @@ export const styles = StyleSheet.create({
     width: 24,
     height: 24,
     borderRadius: 12,
-    backgroundColor: theme.colors.accent,
+    backgroundColor: colors.accent,
     marginRight: 7,
   },
 });

@@ -4,7 +4,7 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import CachedImage from './CachedImage';
-import {theme} from '../styles';
+import {sizes, colors} from 'app/styles';
 import StarRating from 'react-native-star-rating';
 
 import moment from 'moment';
@@ -29,12 +29,12 @@ export default Reviews = props => {
               maxStars={5}
               rating={review.star}
               starSize={15}
-              fullStarColor={theme.colors.accent}
+              fullStarColor={colors.accent}
               containerStyle={{width: 20}}
             />
           </Block>
         </Block>
-        <Block style={{marginTop: theme.sizes.padding / 1.5}}>
+        <Block style={{marginTop: sizes.padding / 1.5}}>
           <Text h3>{review.comment}</Text>
         </Block>
       </Block>
@@ -46,11 +46,11 @@ export const styles = StyleSheet.create({
   reviewWrapper: {
     paddingVertical: 16,
     borderBottomWidth: 0.6,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
   },
   avatarChat: {
-    width: theme.sizes.base * 4,
-    height: theme.sizes.base * 4,
-    borderRadius: theme.sizes.base * 2,
+    width: sizes.base * 4,
+    height: sizes.base * 4,
+    borderRadius: sizes.base * 2,
   },
 });

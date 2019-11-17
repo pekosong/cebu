@@ -6,10 +6,10 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {Button, Block, Input, Text} from '../../components';
+import {Button, Block, Input, Text} from 'app/components';
 
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {sizes, colors} from 'app/styles';
+import firebase from 'app/constants/store';
 
 const SignupScreen = props => {
   const {navigation} = props;
@@ -53,7 +53,7 @@ const SignupScreen = props => {
 
   renderSignUp = () => {
     return (
-      <Block padding={[0, theme.sizes.padding]}>
+      <Block padding={[0, sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
             회원 가입
@@ -127,7 +127,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 0,
     borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {

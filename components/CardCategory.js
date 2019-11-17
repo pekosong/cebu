@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
 
 import Block from './Block';

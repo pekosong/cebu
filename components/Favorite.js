@@ -1,10 +1,10 @@
 import React, {useState, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {theme} from '../styles';
+import {colors} from 'app/styles';
 import {AntDesign} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite} from '../redux/action';
+import {updateFavorite} from 'app/redux/action';
 
 export default Favorite = props => {
   const {shop, style} = props;
@@ -45,16 +45,14 @@ export default Favorite = props => {
         <AntDesign
           size={25}
           color={
-            myfavorites.map(e => e.id).includes(shop.id)
-              ? 'red'
-              : theme.colors.white
+            myfavorites.map(e => e.id).includes(shop.id) ? 'red' : colors.white
           }
           name={
             myfavorites.map(e => e.id).includes(shop.id) ? 'heart' : 'hearto'
           }
           style={{
             margin: 2,
-            textShadowColor: theme.colors.red,
+            textShadowColor: colors.red,
             textShadowOffset: {width: 0.5, height: 1},
             textShadowRadius: 1,
           }}

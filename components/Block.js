@@ -1,7 +1,7 @@
 import React, {Component} from 'react';
 import {StyleSheet, View, Animated} from 'react-native';
 
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 
 export default class Block extends Component {
   handleMargins() {
@@ -170,7 +170,7 @@ export const styles = StyleSheet.create({
     flexDirection: 'column',
   },
   card: {
-    borderRadius: theme.sizes.radius,
+    borderRadius: sizes.radius,
   },
   center: {
     alignItems: 'center',
@@ -191,18 +191,18 @@ export const styles = StyleSheet.create({
     justifyContent: 'flex-end',
   },
   shadow: {
-    shadowColor: theme.colors.black,
+    shadowColor: colors.black,
     shadowOffset: {width: 1, height: 1},
     shadowOpacity: 0.1,
     shadowRadius: 13,
     elevation: 2,
   },
-  accent: {backgroundColor: theme.colors.accent},
-  primary: {backgroundColor: theme.colors.primary},
-  secondary: {backgroundColor: theme.colors.secondary},
-  tertiary: {backgroundColor: theme.colors.tertiary},
-  black: {backgroundColor: theme.colors.black},
-  white: {backgroundColor: theme.colors.white},
-  gray: {backgroundColor: theme.colors.gray},
-  gray2: {backgroundColor: theme.colors.gray2},
+  accent: {backgroundColor: colors.accent},
+  primary: {backgroundColor: colors.primary},
+  secondary: {backgroundColor: colors.secondary},
+  tertiary: {backgroundColor: colors.tertiary},
+  black: {backgroundColor: colors.black},
+  white: {backgroundColor: colors.white},
+  gray: {backgroundColor: colors.gray},
+  gray2: {backgroundColor: colors.gray2},
 });

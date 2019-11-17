@@ -6,16 +6,21 @@ import {
   ScrollView,
 } from 'react-native';
 
-import firebase from '../../constants/store';
-import {Block, Divider} from '../../components';
+import firebase from 'app/constants/store';
+import {Block, Divider} from 'app/components';
 
-import {theme} from '../../styles';
+import {mocks} from 'app/constants';
+
+import {sizes, colors} from 'app/styles';
+
 import AppBar from './components/AppBar';
 import HeaderSection from './components/HeaderSection';
 import TabBarSection from './components/TabBarSection';
 
 import ReservationSection from './components/ReservationSection';
 import MenuSection from './components/MenuSection';
+import ProgramSection from './components/ProgramSection';
+
 import ReviewSection from './components/ReviewSection';
 import ShopInfoSection from './components/ShopInfoSection';
 import BottomSection from './components/BottomSection';
@@ -42,18 +47,27 @@ export default function ShopScreen(props) {
 
   useEffect(() => {
     let shopId = navigation.getParam('shopId');
-    let unsubscribe = firebase
-      .firestore()
-      .collection('shops')
-      .doc(shopId)
-      .onSnapshot(doc => {
-        setShop(doc.data());
-        setIsLoaded(true);
-      });
+    let unsubscribe;
+    if (shopId) {
+      unsubscribe = firebase
+        .firestore()
+        .collection('shops')
+        .doc(shopId)
+        .onSnapshot(doc => {
+          setShop(doc.data());
+          setIsLoaded(true);
+        });
 
-    setTodo(navigation.getParam('todo'));
+      setTodo(navigation.getParam('todo'));
+    } else {
+      setShop(mocks.ActivityList[0]);
+      setIsLoaded(true);
+    }
+
     return () => {
-      unsubscribe();
+      if (unsubscribe) {
+        unsubscribe();
+      }
     };
   }, []);
 
@@ -129,15 +143,15 @@ export default function ShopScreen(props) {
               extrapolate: 'clamp',
               useNativeDriver: true,
             }),
-            paddingHorizontal: theme.sizes.padding,
-            backgroundColor: theme.colors.white,
+            paddingHorizontal: sizes.padding,
+            backgroundColor: colors.white,
           }}>
           <ReservationSection todo={todo} shop={shop}></ReservationSection>
           {shop.category != 'Activity' && show === 'menu' ? (
             <MenuSection shop={shop}></MenuSection>
           ) : null}
           {shop.category == 'Activity' && show === 'menu' ? (
-            <MenuSection shop={shop}></MenuSection>
+            <ProgramSection></ProgramSection>
           ) : null}
           {show === 'review' ? (
             <ReviewSection

@@ -11,13 +11,13 @@ import Block from './Block';
 import Text from './Text';
 import Button from './Button';
 
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 import {useDispatch} from 'react-redux';
-import {updateShop} from '../redux/action';
+import {updateShop} from 'app/redux/action';
 
-import firebase from '../constants/store';
+import firebase from 'app/constants/store';
 
 export default ReviewNewModal = props => {
   const {setNewReviewVisible, user, shop} = props;
@@ -55,9 +55,9 @@ export default ReviewNewModal = props => {
     });
   };
   return (
-    <Block padding={[theme.sizes.padding * 1.5, theme.sizes.padding]}>
+    <Block padding={[sizes.padding * 1.5, sizes.padding]}>
       <TouchableOpacity onPress={() => setNewReviewVisible(false)}>
-        <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+        <Ionicons size={50} color={colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
         후기 작성
@@ -69,7 +69,7 @@ export default ReviewNewModal = props => {
           fullStar={'ios-star'}
           halfStar={'ios-star-half'}
           iconSet={'Ionicons'}
-          fullStarColor={theme.colors.primary}
+          fullStarColor={colors.primary}
           rating={starCount}
           selectedStar={rating => setStarCount(rating)}></StarRating>
       </Block>
@@ -97,6 +97,6 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
 });

@@ -5,11 +5,11 @@ import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
 import {Ionicons} from '@expo/vector-icons';
-import {Button, Block, Text} from '../../components';
+import {Button, Block, Text} from 'app/components';
 
-import {mocks} from '../../constants';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {colors, style} from 'app/styles';
+import firebase from 'app/constants/store';
+import {chatApi} from 'app/api/';
 import {useSelector, shallowEqual} from 'react-redux';
 
 import 'moment/locale/ko';
@@ -50,22 +50,9 @@ export default function ChatScreen(props) {
             });
           }
           setMessages(newMsgs);
-          setTimeout(() => {
-            setisLoaded(true);
-          }, 100);
+          setisLoaded(true);
         } catch (err) {
-          firebase
-            .firestore()
-            .collection('users')
-            .doc(email)
-            .collection('messages')
-            .doc(shop)
-            .set({
-              email: email,
-              shop: shop,
-              shopName: shopName,
-              message: [],
-            });
+          chatApi.makeNewUserChat(email, shop, shopName);
         }
       });
 
@@ -86,22 +73,9 @@ export default function ChatScreen(props) {
             });
           }
           setMessages(newMsgs);
-          setTimeout(() => {
-            setisLoaded(true);
-          }, 100);
+          setisLoaded(true);
         } catch (err) {
-          firebase
-            .firestore()
-            .collection('shops')
-            .doc(shop)
-            .collection('messages')
-            .doc(email)
-            .set({
-              email: email,
-              shop: shop,
-              shopName: shopName,
-              message: [],
-            });
+          chatApi.makeNewShopChat(email, shop, shopName);
         }
       });
 
@@ -192,14 +166,10 @@ export default function ChatScreen(props) {
 
   return (
     <Block>
-      <Block flex={false} row center space="between" style={styles.header}>
+      <Block flex={false} row center space="between" style={style.mainHeader}>
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
-            <Ionicons
-              size={30}
-              color={theme.colors.black}
-              name="ios-arrow-back"
-            />
+            <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
           </Block>
         </Button>
         {user.host ? (
@@ -219,31 +189,20 @@ export default function ChatScreen(props) {
       {isLoaded ? (
         renderChat()
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.primary}></ActivityIndicator>
+            color={colors.accent}></ActivityIndicator>
         </Block>
       )}
     </Block>
   );
 }
 
-ChatScreen.defaultProps = {
-  profiles: mocks.profiles,
-};
+ChatScreen.defaultProps = {};
 
 ChatScreen.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  header: {
-    paddingTop: theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding,
-  },
-});
+const styles = StyleSheet.create({});

@@ -8,9 +8,9 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {Button, Block, Text, CachedImage} from '../../components';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {Button, Block, Text, CachedImage} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
@@ -155,13 +155,13 @@ const PersonalScreen = props => {
     <SafeAreaView>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView>
-          <Block style={styles.header}>
+          <Block style={style.header}>
             <Block row center space="between">
               <Button onPress={() => navigation.goBack()}>
                 <Block center row>
                   <Ionicons
                     size={30}
-                    color={theme.colors.black}
+                    color={colors.black}
                     name="ios-arrow-back"
                   />
                 </Block>
@@ -189,7 +189,7 @@ const PersonalScreen = props => {
                       size={30}
                       name={'camera'}
                       style={{
-                        color: theme.colors.black,
+                        color: colors.black,
                         marginRight: 10,
                       }}
                     />
@@ -199,7 +199,7 @@ const PersonalScreen = props => {
                       size={30}
                       name={'picture'}
                       style={{
-                        color: theme.colors.black,
+                        color: colors.black,
                       }}
                     />
                   </TouchableOpacity>
@@ -263,27 +263,23 @@ PersonalScreen.navigationOptions = {
 PersonalScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    paddingHorizontal: theme.sizes.padding,
-  },
   avatar: {
-    width: theme.sizes.base * 6,
-    height: theme.sizes.base * 6,
-    borderRadius: theme.sizes.base * 3,
+    width: sizes.base * 6,
+    height: sizes.base * 6,
+    borderRadius: sizes.base * 3,
   },
   textStyle: {
     fontSize: 16,
     marginBottom: 10,
   },
   inputs: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
   inputRow: {
     marginVertical: 15,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
 });
 

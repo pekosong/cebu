@@ -7,11 +7,11 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {Button, Block, Text} from '../../components';
-import {theme} from '../../styles';
+import {Button, Block, Text} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import firebase from '../../constants/store';
+import firebase from 'app/constants/store';
 
 const NoticeScreen = props => {
   const {navigation} = props;
@@ -84,13 +84,13 @@ const NoticeScreen = props => {
   return (
     <SafeAreaView>
       <ScrollView>
-        <Block style={styles.header}>
+        <Block style={style.header}>
           <Block row center space="between">
             <Button onPress={() => navigation.goBack()}>
               <Block center row>
                 <Ionicons
                   size={30}
-                  color={theme.colors.black}
+                  color={colors.black}
                   name="ios-arrow-back"
                 />
               </Block>
@@ -202,18 +202,13 @@ NoticeScreen.navigationOptions = {
 };
 NoticeScreen.defaultProps = {};
 const styles = StyleSheet.create({
-  header: {
-    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding,
-  },
   inputRow: {
     paddingVertical: 15,
     borderBottomWidth: 0.6,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
   },
   inputs: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
 });
 

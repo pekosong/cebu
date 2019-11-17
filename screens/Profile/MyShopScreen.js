@@ -12,13 +12,13 @@ import {
   SafeAreaView,
   Platform,
 } from 'react-native';
-import {Button, Block, Text, CachedImage} from '../../components';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {Button, Block, Text, CachedImage} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateShop, setImagesData} from '../../redux/action';
+import {updateShop, setImagesData} from 'app/redux/action';
 
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -278,7 +278,7 @@ const MyShopScreen = props => {
         <Block
           style={{
             ...styles.categoryContainer,
-            backgroundColor: menuSelected == idx ? theme.colors.black : 'white',
+            backgroundColor: menuSelected == idx ? colors.black : 'white',
           }}>
           <CachedImage
             style={{
@@ -291,8 +291,7 @@ const MyShopScreen = props => {
 
           <Text
             style={{
-              color:
-                menuSelected == idx ? theme.colors.white : theme.colors.black,
+              color: menuSelected == idx ? colors.white : colors.black,
               padding: 8,
             }}>
             {item.name}
@@ -306,13 +305,13 @@ const MyShopScreen = props => {
     <SafeAreaView>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView>
-          <Block style={styles.header}>
+          <Block style={style.header}>
             <Block row center space="between">
               <Button onPress={() => navigation.goBack()}>
                 <Block center row>
                   <Ionicons
                     size={30}
-                    color={theme.colors.black}
+                    color={colors.black}
                     name="ios-arrow-back"
                   />
                 </Block>
@@ -341,7 +340,7 @@ const MyShopScreen = props => {
                         size={30}
                         name={'delete'}
                         style={{
-                          color: theme.colors.primary,
+                          color: colors.primary,
                           marginRight: 10,
                         }}
                       />
@@ -353,7 +352,7 @@ const MyShopScreen = props => {
                       size={30}
                       name={'camera'}
                       style={{
-                        color: theme.colors.black,
+                        color: colors.black,
                         marginRight: 10,
                       }}
                     />
@@ -363,7 +362,7 @@ const MyShopScreen = props => {
                       size={30}
                       name={'picture'}
                       style={{
-                        color: theme.colors.black,
+                        color: colors.black,
                       }}
                     />
                   </TouchableOpacity>
@@ -380,7 +379,7 @@ const MyShopScreen = props => {
                         size={30}
                         name={'checkcircleo'}
                         style={{
-                          color: theme.colors.accent,
+                          color: colors.accent,
                           position: 'absolute',
                           top: 5,
                           right: 5,
@@ -605,10 +604,8 @@ const MyShopScreen = props => {
       </KeyboardAvoidingView>
     </SafeAreaView>
   ) : (
-    <Block style={styles.full}>
-      <ActivityIndicator
-        size="large"
-        color={theme.colors.primary}></ActivityIndicator>
+    <Block style={style.full}>
+      <ActivityIndicator size="large" color={colors.accent}></ActivityIndicator>
     </Block>
   );
 };
@@ -619,39 +616,30 @@ MyShopScreen.navigationOptions = {
 MyShopScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
-  header: {
-    marginTop: Platform.OS === 'ios' ? null : theme.sizes.base * 3,
-    marginBottom: theme.sizes.base,
-    paddingHorizontal: theme.sizes.padding,
-  },
   textStyle: {
     fontSize: 16,
     marginBottom: 10,
   },
   avatar: {
-    width: width / 2 - theme.sizes.padding * 1 - 5,
-    height: width / 2 - theme.sizes.padding * 1 - 5,
+    width: width / 2 - sizes.padding * 1 - 5,
+    height: width / 2 - sizes.padding * 1 - 5,
     marginRight: 5,
     marginBottom: 5,
   },
   inputs: {
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
   inputRow: {
     marginVertical: 10,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
   categoryContainer: {
     flex: 0,
     borderRadius: 3,
     borderWidth: 1,
-    borderColor: theme.colors.gray2,
+    borderColor: colors.gray2,
     width: 120,
     height: 120,
     marginRight: 20,

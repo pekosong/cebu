@@ -14,14 +14,14 @@ import {
   SearchBar,
   CachedImage,
   Button,
-} from '../../components';
+} from 'app/components';
 import {Ionicons} from '@expo/vector-icons';
 
-import {mocks} from '../../constants';
-import {theme} from '../../styles';
+import {mocks} from 'app/constants';
+import {colors, sizes, style} from 'app/styles';
 
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData, downloadShopData} from '../../redux/action';
+import {watchUserData, downloadShopData} from 'app/redux/action';
 
 const EMAIL = 'b@naver.com';
 const {width} = Dimensions.get('window');
@@ -54,7 +54,7 @@ const SearchScreen = props => {
           </Block>
           <Block style={{height: 140}}>
             <ScrollView
-              style={{paddingLeft: theme.sizes.padding}}
+              style={{paddingLeft: sizes.padding}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               scrollEnabled={true}>
@@ -74,13 +74,13 @@ const SearchScreen = props => {
           </Block>
           <Block
             style={{
-              paddingHorizontal: theme.sizes.padding,
+              paddingHorizontal: sizes.padding,
               margin: 2,
             }}>
             <CachedImage
               style={{
                 height: 350,
-                width: width - theme.sizes.padding * 2,
+                width: width - sizes.padding * 2,
                 borderRadius: 10,
               }}
               uri={
@@ -114,7 +114,7 @@ const SearchScreen = props => {
               </Text>
               <Ionicons
                 size={26}
-                color={theme.colors.black}
+                color={colors.black}
                 name="ios-arrow-forward"
               />
             </Block>
@@ -124,7 +124,7 @@ const SearchScreen = props => {
           </Block>
           <Block>
             <ScrollView
-              style={{paddingLeft: theme.sizes.padding}}
+              style={{paddingLeft: sizes.padding}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               scrollEnabled={true}>
@@ -159,7 +159,7 @@ const SearchScreen = props => {
               </Text>
               <Ionicons
                 size={26}
-                color={theme.colors.black}
+                color={colors.black}
                 name="ios-arrow-forward"
               />
             </Block>
@@ -169,7 +169,7 @@ const SearchScreen = props => {
           </Block>
           <Block
             style={{
-              marginHorizontal: theme.sizes.padding,
+              marginHorizontal: sizes.padding,
               flexDirection: 'row',
               flexWrap: 'wrap',
             }}>
@@ -190,7 +190,7 @@ const SearchScreen = props => {
               </Text>
               <Ionicons
                 size={26}
-                color={theme.colors.black}
+                color={colors.black}
                 name="ios-arrow-forward"
               />
             </Block>
@@ -200,7 +200,7 @@ const SearchScreen = props => {
           </Block>
           <Block style={{marginBottom: 40}}>
             <ScrollView
-              style={{paddingLeft: theme.sizes.padding}}
+              style={{paddingLeft: sizes.padding}}
               horizontal={true}
               showsHorizontalScrollIndicator={false}
               scrollEnabled={true}>
@@ -219,10 +219,10 @@ const SearchScreen = props => {
           </Block>
         </ScrollView>
       ) : (
-        <Block style={styles.full}>
+        <Block style={style.full}>
           <ActivityIndicator
             size="large"
-            color={theme.colors.accent}></ActivityIndicator>
+            color={colors.accent}></ActivityIndicator>
         </Block>
       )}
     </Block>
@@ -242,16 +242,12 @@ SearchScreen.defaultProps = {
 
 const styles = StyleSheet.create({
   title: {
-    marginHorizontal: theme.sizes.padding,
+    marginHorizontal: sizes.padding,
     marginTop: 40,
     marginBottom: 20,
   },
-  full: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   content: {
-    marginLeft: theme.sizes.padding,
+    marginLeft: sizes.padding,
     height: 220,
   },
 });

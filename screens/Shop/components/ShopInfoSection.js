@@ -2,50 +2,50 @@ import React, {Fragment} from 'react';
 import {StyleSheet} from 'react-native';
 import MapView from 'react-native-maps';
 
-import {Block, Text, Divider} from '../../../components';
-import {theme} from '../../../styles';
+import {Block, Text, Divider} from 'app/components';
+import {sizes, style} from 'app/styles';
 
 export default function ShopInfoSection(props) {
   const {shop} = props;
 
   return (
     <Fragment>
-      <Block style={styles.categories}>
-        <Text h3 bold style={styles.content}>
+      <Block style={style.shop.categories}>
+        <Text h3 bold style={style.shop.content}>
           업체정보
         </Text>
         <Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>한국어</Text>
             <Text darkgray h3>
               {shop.korean ? '가능' : '불가'}
             </Text>
           </Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>픽업여부</Text>
             <Text darkgray h3>
               {shop.pickup ? '가능' : '불가'}
             </Text>
           </Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>베이비시터</Text>
             <Text darkgray h3>
               {shop.baby ? '가능' : '불가'}
             </Text>
           </Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>영업시간</Text>
             <Text darkgray h3>
               {shop.openTime} ~ {shop.closeTime}
             </Text>
           </Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>주소</Text>
             <Text darkgray h3>
               {shop.address}
             </Text>
           </Block>
-          <Block style={styles.inputRow}>
+          <Block style={style.inputRow}>
             <Text h3>전화번호</Text>
             <Text darkgray bold h3>
               {shop.phone}
@@ -54,7 +54,7 @@ export default function ShopInfoSection(props) {
         </Block>
       </Block>
       <Divider />
-      <Block style={styles.categories}>
+      <Block style={style.shop.categories}>
         <Text h3 bold>
           위치
         </Text>
@@ -64,14 +64,14 @@ export default function ShopInfoSection(props) {
         </Block>
         <Block
           style={{
-            marginLeft: -theme.sizes.padding,
-            marginRight: -theme.sizes.padding,
+            marginLeft: -sizes.padding,
+            marginRight: -sizes.padding,
           }}>
           <MapView
             style={{
               flex: 1,
               height: 240,
-              marginTop: theme.sizes.padding / 2,
+              marginTop: sizes.padding / 2,
             }}
             initialRegion={{
               latitude: 37.78825,
@@ -95,19 +95,4 @@ ShopInfoSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  categories: {
-    marginVertical: 10,
-  },
-  content: {
-    marginBottom: 15,
-  },
-  inputRow: {
-    paddingBottom: 20,
-    marginTop: 20,
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    borderBottomWidth: 0.6,
-    borderBottomColor: theme.colors.gray2,
-  },
-});
+const styles = StyleSheet.create({});

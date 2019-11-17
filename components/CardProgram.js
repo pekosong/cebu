@@ -4,27 +4,21 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 import CachedImage from './CachedImage';
-import {theme} from '../styles';
+import {colors} from 'app/styles';
 
 export default CardProgram = props => {
-  const {style, item} = props;
+  const {item} = props;
 
   useEffect(() => {});
 
   return (
     <TouchableOpacity onPress={() => {}}>
-      <Block
-        style={{
-          marginBottom: 15,
-          paddingBottom: 15,
-          borderBottomWidth: 0.2,
-          borderBottomColor: theme.colors.gray2,
-        }}>
+      <Block style={styles.container}>
         <Block row space="between">
           <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
           <Block style={{marginLeft: 10}}>
             <Text h2>{item.name}</Text>
-            <Text h3 gray style={{marginTop: 5, lineHeight: 20}}>
+            <Text h4 gray style={{marginTop: 5, lineHeight: 20}}>
               {item.desc}
             </Text>
           </Block>
@@ -34,43 +28,28 @@ export default CardProgram = props => {
             가격 정보
           </Text>
           <Block row style={{marginTop: 5}}>
-            <Block
-              style={{
-                borderRightWidth: 1,
-                borderRightColor: theme.colors.gray2,
-                marginRight: 10,
-              }}>
+            <Block style={styles.rightBorder}>
               <Text accent h4>
                 {'120분'}
               </Text>
               <Text h3 style={{marginTop: 3}}>
-                {'1,100페소'}
+                {'1,100P'}
               </Text>
             </Block>
-            <Block
-              style={{
-                borderRightWidth: 1,
-                borderRightColor: theme.colors.gray2,
-                marginRight: 10,
-              }}>
+            <Block style={styles.rightBorder}>
               <Text accent h4>
                 {'90분'}
               </Text>
               <Text h3 style={{marginTop: 3}}>
-                {'850페소'}
+                {'850P'}
               </Text>
             </Block>
-            <Block
-              style={{
-                borderRightWidth: 1,
-                borderRightColor: theme.colors.gray2,
-                marginRight: 10,
-              }}>
+            <Block style={styles.rightBorder}>
               <Text accent h4>
                 {'60분'}
               </Text>
               <Text h3 style={{marginTop: 3}}>
-                {'600페소'}
+                {'600P'}
               </Text>
             </Block>
             <Block>
@@ -78,7 +57,7 @@ export default CardProgram = props => {
                 {'40분'}
               </Text>
               <Text h3 style={{marginTop: 3}}>
-                {'400페소'}
+                {'400P'}
               </Text>
             </Block>
           </Block>
@@ -89,6 +68,17 @@ export default CardProgram = props => {
 };
 
 export const styles = StyleSheet.create({
+  container: {
+    marginBottom: 15,
+    paddingBottom: 15,
+    borderBottomWidth: 0.2,
+    borderBottomColor: colors.gray2,
+  },
+  rightBorder: {
+    borderRightWidth: 1,
+    borderRightColor: colors.gray2,
+    marginRight: 10,
+  },
   imageStyle: {
     borderRadius: 3,
     width: 160,

@@ -1,12 +1,12 @@
 import React, {useEffect, Fragment} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
-import {Block, Text, WideText} from '../../components';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
-import {MaterialCommunityIcons, Ionicons, AntDesign} from '@expo/vector-icons';
+import {Block, Text, WideText} from 'app/components';
+import {theme, colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
+import {AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData, downloadShopData} from '../../redux/action';
+import {watchUserData, downloadShopData} from 'app/redux/action';
 
 import {Notifications} from 'expo';
 import * as Permissions from 'expo-permissions';
@@ -121,7 +121,7 @@ const ProfileScreen = props => {
   };
   return (
     <Block>
-      <Block flex={false} style={styles.header}>
+      <Block flex={false} style={style.mainHeader}>
         <Text h1 bold>
           내 정보
         </Text>
@@ -140,7 +140,7 @@ const ProfileScreen = props => {
               <AntDesign
                 size={26}
                 name={item.icon}
-                style={{color: theme.colors.black}}></AntDesign>
+                style={{color: colors.black}}></AntDesign>
             </WideText>
           ))}
           {user.host ? (
@@ -158,7 +158,7 @@ const ProfileScreen = props => {
                     size={26}
                     name={item.icon}
                     style={{
-                      color: theme.colors.black,
+                      color: colors.black,
                     }}></AntDesign>
                 </WideText>
               ))}
@@ -177,7 +177,7 @@ const ProfileScreen = props => {
               <AntDesign
                 size={26}
                 name={item.icon}
-                style={{color: theme.colors.black}}></AntDesign>
+                style={{color: colors.black}}></AntDesign>
             </WideText>
           ))}
           <TouchableOpacity onPress={() => handleNotification()}>
@@ -192,7 +192,7 @@ const ProfileScreen = props => {
               <AntDesign
                 size={26}
                 name="dingding"
-                style={{color: theme.colors.black}}></AntDesign>
+                style={{color: colors.black}}></AntDesign>
             </Block>
           </TouchableOpacity>
           <TouchableOpacity onPress={() => handleLogout()}>
@@ -209,7 +209,7 @@ const ProfileScreen = props => {
               <AntDesign
                 size={26}
                 name="logout"
-                style={{color: theme.colors.primary}}></AntDesign>
+                style={{color: colors.primary}}></AntDesign>
             </Block>
           </TouchableOpacity>
         </Block>
@@ -224,17 +224,13 @@ ProfileScreen.navigationOptions = {
 ProfileScreen.defaultProps = {};
 
 const styles = StyleSheet.create({
-  header: {
-    marginTop: theme.sizes.base * 4,
-    paddingHorizontal: theme.sizes.padding,
-  },
   avatar: {
-    width: theme.sizes.base * 2.2,
-    height: theme.sizes.base * 2.2,
+    width: sizes.base * 2.2,
+    height: sizes.base * 2.2,
   },
   inputs: {
-    marginTop: theme.sizes.base * 2,
-    paddingHorizontal: theme.sizes.padding,
+    marginTop: sizes.base * 2,
+    paddingHorizontal: sizes.padding,
   },
 });
 

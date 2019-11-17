@@ -1,16 +1,16 @@
 import React from 'react';
 
 import {StyleSheet, ScrollView} from 'react-native';
-import {Card, Block, Text} from '../../../components';
-import {mocks} from '../../../constants';
-import {theme} from '../../../styles';
+import {Card, Block, Text} from 'app/components';
+import {mocks} from 'app/constants';
+import {sizes, style} from 'app/styles';
 
 export default function RecommendSection(props) {
   const {navigation, recommendList, shop} = props;
 
   return (
-    <Block style={styles.categories}>
-      <Text h3 bold style={styles.content}>
+    <Block style={style.shop.container}>
+      <Text h3 bold style={style.shop.content}>
         이 근처의 추천 장소
       </Text>
       <Text h4 style={{marginBottom: 10}}>
@@ -18,14 +18,14 @@ export default function RecommendSection(props) {
       </Text>
       <Block
         style={{
-          marginLeft: -theme.sizes.padding,
+          marginLeft: -sizes.padding,
         }}>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}
           style={{
-            paddingLeft: theme.sizes.padding,
+            paddingLeft: sizes.padding,
           }}>
           {recommendList.map((item, idx) => (
             <Card key={idx} item={item} navigation={navigation}>
@@ -57,11 +57,4 @@ RecommendSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  categories: {
-    marginVertical: 10,
-  },
-  content: {
-    marginBottom: 15,
-  },
-});
+const styles = StyleSheet.create({});

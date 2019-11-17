@@ -2,10 +2,10 @@ import React from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
-import {Block} from '../../../components';
+import {Block} from 'app/components';
 
-import {theme} from '../../../styles';
-import {updateFavorite} from '../../../redux/action';
+import {sizes, colors, fonts} from 'app/styles';
+import {updateFavorite} from 'app/redux/action';
 import {useDispatch} from 'react-redux';
 
 const {width} = Dimensions.get('window');
@@ -98,9 +98,9 @@ export default function AppBar(props) {
         </Block>
         <Animated.Text
           style={{
-            color: theme.colors.black,
+            color: colors.black,
             fontWeight: 'bold',
-            fontSize: theme.sizes.h3,
+            fontSize: fonts.h3,
             opacity: fadeAnim,
             marginRight: 30,
           }}>
@@ -166,10 +166,10 @@ AppBar.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: theme.sizes.padding * 2,
+    paddingTop: sizes.padding * 2,
     height: 90,
     width: width,
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
     position: 'absolute',
     zIndex: 100,
   },

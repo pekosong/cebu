@@ -10,7 +10,7 @@ import {
 
 import Block from './Block';
 import Text from './Text';
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';
@@ -27,13 +27,13 @@ export default SearchBar = props => {
         animationType="slide"
         visible={showSearch}
         onRequestClose={() => setShowSearch(false)}>
-        <Block padding={[theme.sizes.padding, theme.sizes.padding]}>
+        <Block padding={[sizes.padding, sizes.padding]}>
           <TouchableOpacity
             onPress={() => {
               setSearchResult([]);
               setShowSearch(false);
             }}>
-            <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+            <Ionicons size={50} color={colors.black} name="ios-close" />
           </TouchableOpacity>
           <Text h1 bold>
             세부의 모든게 있어요
@@ -111,7 +111,7 @@ export default SearchBar = props => {
       <Block row center style={styles.search}>
         <Ionicons
           size={20}
-          color={theme.colors.black}
+          color={colors.black}
           name="md-search"
           style={{width: '10%'}}
         />
@@ -133,13 +133,13 @@ export default SearchBar = props => {
 
 export const styles = StyleSheet.create({
   header: {
-    marginTop: theme.sizes.padding * 2.5,
+    marginTop: sizes.padding * 2.5,
     marginBottom: 5,
-    paddingHorizontal: theme.sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
   search: {
     padding: 10,
-    backgroundColor: theme.colors.white,
+    backgroundColor: colors.white,
     shadowColor: '#000',
     shadowOffset: {
       width: 2,

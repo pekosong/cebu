@@ -6,8 +6,8 @@ import {
   Reviews,
   ReviewModal,
   ReviewNewModal,
-} from '../../../components';
-import {theme} from '../../../styles';
+} from 'app/components';
+import {sizes, colors, style} from 'app/styles';
 
 export default function ReviewSection(props) {
   const {navigation, shop, user} = props;
@@ -16,7 +16,6 @@ export default function ReviewSection(props) {
   const [newReviewVisible, setNewReviewVisible] = useState(false);
 
   renderReviews = () => {
-    console.log(shop.reviews);
     sortedReviews = shop.reviews.sort((a, b) => {
       return b.date.seconds - a.date.seconds;
     });
@@ -28,22 +27,22 @@ export default function ReviewSection(props) {
 
   return (
     <Fragment>
-      <Block style={styles.categories}>
-        <Block row space="between" style={styles.content}>
+      <Block style={style.shop.categories}>
+        <Block row space="between" style={style.shop.content}>
           <Text h3 bold>
             후기
           </Text>
           <TouchableOpacity onPress={() => setReviewVisible(true)}>
-            <Text h3 bold color={theme.colors.accent}>
+            <Text h3 bold color={colors.accent}>
               더보기
             </Text>
           </TouchableOpacity>
         </Block>
         {renderReviews()}
         {renderReviews()}
-        <Block style={{marginTop: theme.sizes.padding}}>
+        <Block style={{marginTop: sizes.padding}}>
           <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
-            <Text right h3 bold color={theme.colors.accent}>
+            <Text right h3 bold color={colors.accent}>
               후기 작성
             </Text>
           </TouchableOpacity>
@@ -82,11 +81,4 @@ ReviewSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  categories: {
-    marginVertical: 10,
-  },
-  content: {
-    marginBottom: 15,
-  },
-});
+const styles = StyleSheet.create({});

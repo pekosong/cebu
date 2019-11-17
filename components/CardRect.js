@@ -10,7 +10,7 @@ import {
 import Block from './Block';
 import Text from './Text';
 import Favorite from './Favorite';
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import StarRating from 'react-native-star-rating';
 
 const {width} = Dimensions.get('window');
@@ -27,14 +27,14 @@ export default CardRect = props => {
       }}>
       <Block
         style={[
-          styles.elementContainer,
+          styles.container,
           {paddingRight: idx % 2 == 0 ? 16 : 0},
           {marginBottom: idx == 1 || idx == 0 ? 30 : 0},
           {
             width:
               idx % 2 == 0
-                ? width / 2 - theme.sizes.padding + 8
-                : width / 2 - theme.sizes.padding - 8,
+                ? width / 2 - sizes.padding + 8
+                : width / 2 - sizes.padding - 8,
           },
         ]}>
         <Block flex={2}>
@@ -45,16 +45,7 @@ export default CardRect = props => {
               name: item.shop,
               preview: item.url,
             }}></Favorite>
-          <Block
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              top: 0,
-              left: 0,
-              backgroundColor: 'rgba(0,0,0,0.1)',
-              borderRadius: 3,
-            }}></Block>
+          <Block style={styles.overlap}></Block>
         </Block>
         <Block style={{marginTop: 6}}>
           <Block flex={3} middle>
@@ -77,7 +68,7 @@ export default CardRect = props => {
                 maxStars={5}
                 rating={item.star}
                 starSize={12}
-                fullStarColor={theme.colors.accent}
+                fullStarColor={colors.accent}
                 containerStyle={{width: 12}}
               />
               <Text accent bold style={{marginLeft: 50}}>
@@ -92,14 +83,23 @@ export default CardRect = props => {
 };
 
 export const styles = StyleSheet.create({
-  elementContainer: {
+  container: {
     borderRadius: 2,
-    height: width / 2 - theme.sizes.padding,
+    height: width / 2 - sizes.padding,
   },
   imageStyle: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    borderRadius: 3,
+  },
+  overlap: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    backgroundColor: 'rgba(0,0,0,0.1)',
     borderRadius: 3,
   },
 });

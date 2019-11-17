@@ -18,7 +18,6 @@ import WideText from './WideText';
 import Reviews from './Reviews';
 import FullImageSlider from './FullImageSlider';
 import CachedImage from './CachedImage';
-import Test from './Test';
 
 import Favorite from './Favorite';
 
@@ -47,7 +46,6 @@ export {
   Reviews,
   FullImageSlider,
   CachedImage,
-  Test,
   ReservationModal,
   ReservationConfirmModal,
   ReviewModal,

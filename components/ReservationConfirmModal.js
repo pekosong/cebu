@@ -12,11 +12,11 @@ import Text from './Text';
 import Button from './Button';
 import Divider from './Divider';
 
-import {theme} from '../styles';
+import {colors, sizes} from 'app/styles';
 import {Ionicons} from '@expo/vector-icons';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {makeResevation} from '../redux/action';
-import firebase from '../constants/store';
+import {makeResevation} from 'app/redux/action';
+import firebase from 'app/constants/store';
 
 const MAP = {
   wait: '예약요청',
@@ -75,7 +75,7 @@ export default ReservationConfirmModal = props => {
     <ScrollView
       showsVerticalScrollIndicator={false}
       style={{marginTop: 5, paddingTop: 20}}>
-      <Block style={{paddingHorizontal: theme.sizes.padding}}>
+      <Block style={{paddingHorizontal: sizes.padding}}>
         <Block style={{marginTop: 20, marginBottom: 10}}>
           <Text h3>고객 정보</Text>
         </Block>
@@ -100,7 +100,7 @@ export default ReservationConfirmModal = props => {
       </Block>
 
       <Divider></Divider>
-      <Block style={{paddingHorizontal: theme.sizes.padding}}>
+      <Block style={{paddingHorizontal: sizes.padding}}>
         <Block style={{marginTop: 20, marginBottom: 10}}>
           <Text h3>예약 정보</Text>
         </Block>
@@ -155,7 +155,7 @@ export default ReservationConfirmModal = props => {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={{marginBottom: 30, paddingHorizontal: theme.sizes.padding}}>
+      <Block style={{marginBottom: 30, paddingHorizontal: sizes.padding}}>
         <Button
           gradient
           onPress={() => {
@@ -182,7 +182,7 @@ export default ReservationConfirmModal = props => {
     <Block
       style={{
         paddingVertical:
-          Platform.OS === 'ios' ? theme.sizes.padding * 2 : theme.sizes.padding,
+          Platform.OS === 'ios' ? sizes.padding * 2 : sizes.padding,
       }}>
       <Block
         middle
@@ -194,10 +194,10 @@ export default ReservationConfirmModal = props => {
           height: 50,
           width: '100%',
           marginTop: 20,
-          paddingHorizontal: theme.sizes.padding,
+          paddingHorizontal: sizes.padding,
         }}>
         <TouchableOpacity onPress={() => setVisible(false)}>
-          <Ionicons size={50} color={theme.colors.black} name="ios-close" />
+          <Ionicons size={50} color={colors.black} name="ios-close" />
         </TouchableOpacity>
         <Text h1 bold>
           {MAP[reservation.status]}
@@ -212,7 +212,7 @@ export const styles = StyleSheet.create({
   input: {
     borderRadius: 0,
     borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   textStyle: {
@@ -223,6 +223,6 @@ export const styles = StyleSheet.create({
     marginVertical: 15,
     borderBottomWidth: 0.2,
     paddingBottom: 10,
-    borderBottomColor: theme.colors.gray,
+    borderBottomColor: colors.gray,
   },
 });

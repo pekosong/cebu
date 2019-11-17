@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import Block from './Block';
-import {theme} from '../styles';
+import {colors} from 'app/styles';
 
 export default WideText = props => {
   const {style, onPress, children} = props;
@@ -21,6 +21,6 @@ export const styles = StyleSheet.create({
   inputRow: {
     paddingVertical: 15,
     borderBottomWidth: 0.6,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
   },
 });

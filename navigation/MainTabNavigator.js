@@ -3,35 +3,34 @@ import {Platform} from 'react-native';
 
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 
-import SearchScreen from '../screens/Search/SearchScreen';
-import CategoryScreen from '../screens/Search/CategoryScreen';
-import TestScreen from '../screens/Search/TestScreen';
+import SearchScreen from 'app/screens/Search/SearchScreen';
+import CategoryScreen from 'app/screens/Search/CategoryScreen';
+import TestScreen from 'app/screens/Search/TestScreen';
 
-import MyTripScreen from '../screens/MyTrip/MyTripScreen';
+import MyTripScreen from 'app/screens/MyTrip/MyTripScreen';
 
-import ChatListScreen from '../screens/ChatList/ChatListScreen';
-import ChatScreen from '../screens/ChatList/ChatScreen';
+import ChatListScreen from 'app/screens/ChatList/ChatListScreen';
+import ChatScreen from 'app/screens/ChatList/ChatScreen';
 
-import FavoritesScreen from '../screens/Favorites/FavoritesScreen';
+import FavoritesScreen from 'app/screens/Favorites/FavoritesScreen';
 
-import ProfileScreen from '../screens/Profile/ProfileScreen';
-import PersonalScreen from '../screens/Profile/PersonalScreen';
-import NoticeScreen from '../screens/Profile/NoticeScreen';
-import TripInfosScreen from '../screens/Profile/TripInfosScreen';
-import TripInfoScreen from '../screens/Profile/TripInfoScreen';
-import MyShopScreen from '../screens/Profile/MyShopScreen';
-import ReservationScreen from '../screens/Profile/ReservationScreen';
+import ProfileScreen from 'app/screens/Profile/ProfileScreen';
+import PersonalScreen from 'app/screens/Profile/PersonalScreen';
+import NoticeScreen from 'app/screens/Profile/NoticeScreen';
+import TripInfosScreen from 'app/screens/Profile/TripInfosScreen';
+import TripInfoScreen from 'app/screens/Profile/TripInfoScreen';
+import MyShopScreen from 'app/screens/Profile/MyShopScreen';
+import ReservationScreen from 'app/screens/Profile/ReservationScreen';
 
-// import ShopScreen from '../screens/Search/ShopScreen';
-import ShopScreen from '../screens/Shop';
-import ActivityScreen from '../screens/Activity';
+// import ShopScreen from 'app/screens/Search/ShopScreen';
+import ShopScreen from 'app/screens/Shop';
 
-// import ActivityScreen from '../screens/Search/ActivityScreen';
-import CategoryActivityScreen from '../screens/Search/CategoryActivityScreen';
+// import ActivityScreen from 'app/screens/Search/ActivityScreen';
+import CategoryActivityScreen from 'app/screens/Search/CategoryActivityScreen';
 
-import TabBarIcon from '../components/TabBarIcon';
+import TabBarIcon from 'app/components/TabBarIcon';
 
-import {theme} from '../styles';
+import {theme} from 'app/styles';
 
 const config = Platform.select({
   web: {headerMode: 'screen'},
@@ -43,7 +42,6 @@ const SearchStack = createStackNavigator(
     Search: SearchScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
-    Activity: ActivityScreen,
     CategoryActivity: CategoryActivityScreen,
     Chat: ChatScreen,
     Test: TestScreen,
@@ -63,7 +61,6 @@ const MyTripStack = createStackNavigator(
     MyTrip: MyTripScreen,
     Shop: ShopScreen,
     Chat: ChatScreen,
-    Activity: ActivityScreen,
   },
   config,
 );
@@ -72,7 +69,6 @@ const FavoritesStack = createStackNavigator(
   {
     Favorites: FavoritesScreen,
     Shop: ShopScreen,
-    Activity: ActivityScreen,
   },
   config,
 );
@@ -97,7 +93,6 @@ const ChatStack = createStackNavigator(
     ChatLists: ChatListScreen,
     Chat: ChatScreen,
     Shop: ShopScreen,
-    Activity: ActivityScreen,
   },
   config,
 );

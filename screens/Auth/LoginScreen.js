@@ -5,12 +5,12 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {Button, Block, Input, Text} from '../../components';
+import {Button, Block, Input, Text} from 'app/components';
 
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {colors, sizes} from 'app/styles';
+import firebase from 'app/constants/store';
 import {useDispatch} from 'react-redux';
-import {watchUserData, downloadShopData} from '../../redux/action';
+import {watchUserData, downloadShopData} from 'app/redux/action';
 
 const EMAIL = '';
 const PASSWORD = '';
@@ -114,7 +114,7 @@ const LoginScreen = props => {
   };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
-      <Block padding={[0, theme.sizes.padding]}>
+      <Block padding={[0, sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
             로그인
@@ -180,7 +180,7 @@ const styles = StyleSheet.create({
   input: {
     borderRadius: 0,
     borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {

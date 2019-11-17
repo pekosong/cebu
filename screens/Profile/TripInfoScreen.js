@@ -7,9 +7,9 @@ import {
   Dimensions,
 } from 'react-native';
 
-import {Button, Block, Input, Text} from '../../components';
-import {theme} from '../../styles';
-import firebase from '../../constants/store';
+import {Button, Block, Input, Text} from 'app/components';
+import {colors, sizes, style} from 'app/styles';
+import firebase from 'app/constants/store';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
@@ -18,35 +18,6 @@ import moment from 'moment';
 const {height, width} = Dimensions.get('window');
 
 LocaleConfig.locales['kor'] = {
-  monthNames: [
-    'Janvier',
-    'Février',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juillet',
-    'Août',
-    'Septembre',
-    'Octobre',
-    'Novembre',
-    'Décembre',
-  ],
-  monthNamesShort: [
-    'Janv.',
-    'Févr.',
-    'Mars',
-    'Avril',
-    'Mai',
-    'Juin',
-    'Juil.',
-    'Août',
-    'Sept.',
-    'Oct.',
-    'Nov.',
-    'Déc.',
-  ],
-
   dayNames: [
     '일요일',
     '월요일',
@@ -89,8 +60,8 @@ const TripInfoScreen = props => {
       newDate = new Object();
       newDate[day.dateString] = {
         startingDay: true,
-        color: theme.colors.primary,
-        textColor: theme.colors.white,
+        color: colors.primary,
+        textColor: colors.white,
         endingDay: true,
       };
       setDate(newDate);
@@ -109,8 +80,8 @@ const TripInfoScreen = props => {
         } else {
           option['selected'] = true;
         }
-        option['color'] = theme.colors.primary;
-        option['textColor'] = theme.colors.white;
+        option['color'] = colors.primary;
+        option['textColor'] = colors.white;
 
         newDate[e] = option;
       });
@@ -154,7 +125,7 @@ const TripInfoScreen = props => {
     if (step == 1) {
       return (
         <Block>
-          <Block bottom padding={[0, theme.sizes.padding]}>
+          <Block bottom padding={[0, sizes.padding]}>
             <Text bold style={{fontSize: 40, paddingBottom: 40}}>
               일정
             </Text>
@@ -179,9 +150,9 @@ const TripInfoScreen = props => {
             markedDates={date}
             markingType="period"
             theme={{
-              arrowColor: theme.colors.primary,
-              todayTextColor: theme.colors.primary,
-              mondayTextColor: theme.colors.primary,
+              arrowColor: colors.primary,
+              todayTextColor: colors.primary,
+              mondayTextColor: colors.primary,
               'stylesheet.day.period': {
                 base: {
                   overflow: 'hidden',
@@ -193,7 +164,7 @@ const TripInfoScreen = props => {
             }}
           />
 
-          <Block top padding={[0, theme.sizes.padding]}>
+          <Block top padding={[0, sizes.padding]}>
             <Button
               gradient
               onPress={() => {
@@ -214,7 +185,7 @@ const TripInfoScreen = props => {
       );
     } else {
       return (
-        <Block padding={[0, theme.sizes.padding]}>
+        <Block padding={[0, sizes.padding]}>
           <Block middle>
             <Text bold style={{fontSize: 40, paddingBottom: 40}}>
               숙박
@@ -251,7 +222,7 @@ const TripInfoScreen = props => {
     }
   };
   return (
-    <KeyboardAvoidingView style={styles.login} behavior="padding">
+    <KeyboardAvoidingView style={style.full} behavior="padding">
       {renderSignUp()}
     </KeyboardAvoidingView>
   );
@@ -262,18 +233,14 @@ TripInfoScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  login: {
-    flex: 1,
-    justifyContent: 'center',
-  },
   input: {
     borderRadius: 0,
     borderWidth: 0,
-    borderBottomColor: theme.colors.gray2,
+    borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
   },
   hasErrors: {
-    borderBottomColor: theme.colors.accent,
+    borderBottomColor: colors.accent,
   },
 });
 
