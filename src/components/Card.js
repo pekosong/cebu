@@ -15,7 +15,6 @@ export default Card = props => {
       onPress={() => {
         navigation.push('Shop', {
           shopId: item.shopCode,
-          recommend: true,
         });
       }}>
       <Block style={styles.elementContainer}>
