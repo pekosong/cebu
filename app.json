@@ -26,10 +26,10 @@
     },
     "android": {
       "package": "com.os1.cebu",
-      "versionCode": 3,
+      "versionCode": 4,
       "config": {
         "googleMaps": {
-          "apiKey": "AIzaSyDyyvIklbv_-NEHHIWYp5PRu-iG0UH8rKM"
+          "apiKey": "AIzaSyBJZ_NlQuoa_YnOPdwH0iFk3B2vhzimE2Y"
         }
       }
     }
