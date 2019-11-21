@@ -19,14 +19,13 @@ const MAP = {
 };
 
 export default TabBarSection = props => {
-  const {top, setShow, goTop, category} = props;
+  const {top, setShow, category} = props;
   const [active, setActive] = useState(MAPCAT[category]);
   const [xAnim] = useState(new Animated.Value(sizes.padding));
 
   handleShopTab = tab => {
     setShow(MAP[tab]);
     setActive(tab);
-    goTop();
     if (tab == '메뉴' || tab == '프로그램') {
       Animated.timing(xAnim, {
         toValue: sizes.padding,

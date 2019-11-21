@@ -2,6 +2,7 @@ import React from 'react';
 import {Platform} from 'react-native';
 
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
+import {fromRight, fromBottom} from 'react-navigation-transitions';
 
 import SearchScreen from 'app/src/screens/Search/SearchScreen';
 import CategoryScreen from 'app/src/screens/Search/CategoryScreen';
@@ -32,11 +33,6 @@ import TabBarIcon from 'app/src/components/TabBarIcon';
 
 import {theme} from 'app/src/styles';
 
-const config = Platform.select({
-  web: {headerMode: 'screen'},
-  default: {},
-});
-
 const SearchStack = createStackNavigator(
   {
     Search: SearchScreen,
@@ -46,12 +42,30 @@ const SearchStack = createStackNavigator(
     Chat: ChatScreen,
     Test: TestScreen,
   },
-  config,
+  {
+    initialRouteName: 'Search',
+    transitionConfig: () => fromRight(500),
+  },
 );
+SearchStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === 'Shop') {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
 
-SearchStack.navigationOptions = {
-  tabBarLabel: '찾기',
-  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'search1'} />,
+  return {
+    tabBarVisible,
+    tabBarLabel: '찾기',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon focused={focused} name={'search1'} />
+    ),
+  };
 };
 
 SearchStack.path = '';
@@ -62,31 +76,65 @@ const MyTripStack = createStackNavigator(
     Shop: ShopScreen,
     Chat: ChatScreen,
   },
-  config,
+  {
+    initialRouteName: 'MyTrip',
+    transitionConfig: () => fromRight(500),
+  },
 );
+
+MyTripStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === 'Shop') {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: '내 일정',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon focused={focused} name={'enviromento'} />
+    ),
+  };
+};
+MyTripStack.path = '';
 
 const FavoritesStack = createStackNavigator(
   {
     Favorites: FavoritesScreen,
     Shop: ShopScreen,
   },
-  config,
+  {
+    initialRouteName: 'Favorites',
+    transitionConfig: () => fromRight(500),
+  },
 );
 
-FavoritesStack.navigationOptions = {
-  tabBarLabel: '저장소',
-  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'hearto'} />,
+FavoritesStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === 'Shop') {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: '저장소',
+    tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'hearto'} />,
+  };
 };
 
 FavoritesStack.path = '';
-MyTripStack.navigationOptions = {
-  tabBarLabel: '내 일정',
-  tabBarIcon: ({focused}) => (
-    <TabBarIcon focused={focused} name={'enviromento'} />
-  ),
-};
-
-MyTripStack.path = '';
 
 const ChatStack = createStackNavigator(
   {
@@ -94,12 +142,31 @@ const ChatStack = createStackNavigator(
     Chat: ChatScreen,
     Shop: ShopScreen,
   },
-  config,
+  {
+    initialRouteName: 'ChatLists',
+    transitionConfig: () => fromRight(500),
+  },
 );
 
-ChatStack.navigationOptions = {
-  tabBarLabel: '메시지',
-  tabBarIcon: ({focused}) => <TabBarIcon focused={focused} name={'message1'} />,
+ChatStack.navigationOptions = ({navigation}) => {
+  let tabBarVisible;
+  if (navigation.state.routes.length > 1) {
+    navigation.state.routes.map(route => {
+      if (route.routeName === 'Shop') {
+        tabBarVisible = false;
+      } else {
+        tabBarVisible = true;
+      }
+    });
+  }
+
+  return {
+    tabBarVisible,
+    tabBarLabel: '메시지',
+    tabBarIcon: ({focused}) => (
+      <TabBarIcon focused={focused} name={'message1'} />
+    ),
+  };
 };
 
 ChatStack.path = '';
@@ -114,7 +181,10 @@ const ProfileStack = createStackNavigator(
     MyShop: MyShopScreen,
     Reservation: ReservationScreen,
   },
-  config,
+  {
+    initialRouteName: 'Profile',
+    transitionConfig: () => fromRight(500),
+  },
 );
 
 ProfileStack.navigationOptions = {
