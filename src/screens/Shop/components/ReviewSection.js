@@ -28,16 +28,9 @@ export default function ReviewSection(props) {
   return (
     <Fragment>
       <Block style={style.shop.categories}>
-        <Block row space="between" style={style.shop.content}>
-          <Text h3 bold>
-            후기
-          </Text>
-          <TouchableOpacity onPress={() => setReviewVisible(true)}>
-            <Text h3 bold color={colors.accent}>
-              더보기
-            </Text>
-          </TouchableOpacity>
-        </Block>
+        <Text h3 bold style={{marginBottom: 10}}>
+          후기
+        </Text>
         {renderReviews()}
         {renderReviews()}
         <Block style={{marginTop: sizes.padding}}>

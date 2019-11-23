@@ -53,8 +53,7 @@ export default function ShopInfoSection(props) {
           </Block>
         </Block>
       </Block>
-      <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={[style.shop.categories, {marginTop: 30}]}>
         <Text h3 bold>
           위치
         </Text>

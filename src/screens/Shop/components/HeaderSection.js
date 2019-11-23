@@ -23,7 +23,7 @@ export default HeaderSection = props => {
         ...styles.container,
         top: top.interpolate({
           inputRange: [0, 200],
-          outputRange: [0, -150],
+          outputRange: [0, -50],
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
@@ -56,30 +56,6 @@ export default HeaderSection = props => {
         <Text white bold size={11}>
           {imageNum + ' / ' + shop.source.length}
         </Text>
-      </Block>
-      <Block style={styles.shopTitle}>
-        <Block middle center>
-          <Text h1 bold>
-            {shop.name}
-          </Text>
-          <Text>{shop.tags.join(', ')}</Text>
-          <Block left row center>
-            <AntDesign
-              size={20}
-              color={colors.primary}
-              name="heart"></AntDesign>
-            <Text h3 bold style={{marginLeft: 5}}>
-              {shop.review}
-            </Text>
-          </Block>
-          <Text>
-            {'리뷰 ' +
-              convertComma(shop.reviewCnt) +
-              ' | ' +
-              '저장 ' +
-              shop.likes}
-          </Text>
-        </Block>
       </Block>
     </Animated.View>
   );

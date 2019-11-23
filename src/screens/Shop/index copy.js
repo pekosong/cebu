@@ -5,7 +5,6 @@ import React, {
   createRef,
   Fragment,
   useContext,
-  memo,
 } from 'react';
 import {
   StyleSheet,
@@ -13,6 +12,8 @@ import {
   ActivityIndicator,
   ScrollView,
 } from 'react-native';
+
+import {TabView, SceneMap} from 'react-native-tab-view';
 
 import firebase from 'app/src/constants/store';
 import {Block, Divider} from 'app/src/components';
@@ -23,30 +24,34 @@ import {sizes, colors, style} from 'app/src/styles';
 
 import AppBar from './components/AppBar';
 import HeaderSection from './components/HeaderSection';
-import ShopTitle from './components/ShopTitle';
-import TabSection from './components/TabSection';
+import TabBarSection from './components/TabBarSection';
 
 import ReservationSection from './components/ReservationSection';
+import MenuSection from './components/MenuSection';
+import ProgramSection from './components/ProgramSection';
+
+import ReviewSection from './components/ReviewSection';
+import ShopInfoSection from './components/ShopInfoSection';
 import BottomSection from './components/BottomSection';
 import RecommendSection from './components/RecommendSection';
 
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData} from 'app/src/redux/action';
+import {useSelector, shallowEqual} from 'react-redux';
 
 import {observer} from 'mobx-react-lite';
 import {CounterStoreContext} from '../../store/test';
 
 export default ShopScreen = observer(props => {
-  const {navigation} = props;
   const counterStore = useContext(CounterStoreContext);
   counterStore.refs.song = createRef(null);
 
+  const {navigation} = props;
+
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
+  const [show, setShow] = useState('menu');
 
   const shopScroll = createRef(null);
 
-  const dispatch = useDispatch();
   const user = useSelector(state => state.user, shallowEqual);
 
   const [isLoaded, setIsLoaded] = useState(false);
@@ -58,7 +63,6 @@ export default ShopScreen = observer(props => {
   useEffect(() => {
     let shopId = navigation.getParam('shopId');
     let unsubscribe;
-
     if (shopId) {
       unsubscribe = firebase
         .firestore()
@@ -81,6 +85,22 @@ export default ShopScreen = observer(props => {
     };
   }, []);
 
+  myView = tab => {
+    if (shop.category != 'Activity' && tab === 'menu') {
+      return <MenuSection shop={shop}></MenuSection>;
+    } else if (shop.category == 'Activity' && tab === 'menu') {
+      return <ProgramSection></ProgramSection>;
+    } else if (tab === 'review') {
+      return (
+        <ReviewSection
+          user={user}
+          shop={shop}
+          navigation={navigation}></ReviewSection>
+      );
+    } else {
+      return <ShopInfoSection shop={shop}></ShopInfoSection>;
+    }
+  };
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 130) {
       Animated.timing(yAnim, {
@@ -108,7 +128,7 @@ export default ShopScreen = observer(props => {
   };
 
   return isLoaded ? (
-    <Block style={{position: 'relative'}}>
+    <Block>
       <AppBar
         navigation={navigation}
         user={user}
@@ -118,12 +138,17 @@ export default ShopScreen = observer(props => {
         top={animatedScrollYValue}
         shop={shop}
         yAnim={yAnim}></HeaderSection>
-      <Animated.ScrollView
+      <TabBarSection
+        category={shop.category}
+        top={animatedScrollYValue}
+        setShow={setShow}></TabBarSection>
+      <ScrollView
         ref={ref => {
           shopScroll.current = ref;
         }}
         showsVerticalScrollIndicator={false}
         style={{
+          flex: 1,
           marginBottom: 20,
           zIndex: 10,
         }}
@@ -136,13 +161,32 @@ export default ShopScreen = observer(props => {
           },
         )}
         scrollEventThrottle={360}>
-        <ShopTitle shop={shop}></ShopTitle>
         <Animated.View
           style={{
             marginTop: 360,
+            paddingTop: animatedScrollYValue.interpolate({
+              inputRange: [0, 210],
+              outputRange: [70, 0],
+              extrapolate: 'clamp',
+              useNativeDriver: true,
+            }),
+            paddingHorizontal: sizes.padding,
             backgroundColor: colors.white,
           }}>
-          <TabSection shop={shop} user={user}></TabSection>
+          <ReservationSection todo={todo} shop={shop}></ReservationSection>
+          {shop.category != 'Activity' && show === 'menu' ? (
+            <MenuSection shop={shop}></MenuSection>
+          ) : shop.category == 'Activity' && show === 'menu' ? (
+            <ProgramSection></ProgramSection>
+          ) : show === 'review' ? (
+            <ReviewSection
+              user={user}
+              shop={shop}
+              navigation={navigation}></ReviewSection>
+          ) : show === 'info' ? (
+            <ShopInfoSection shop={shop}></ShopInfoSection>
+          ) : null}
+
           <Fragment>
             <Divider></Divider>
             <RecommendSection
@@ -150,7 +194,7 @@ export default ShopScreen = observer(props => {
               shop={shop}></RecommendSection>
           </Fragment>
         </Animated.View>
-      </Animated.ScrollView>
+      </ScrollView>
       <BottomSection
         navigation={navigation}
         shop={shop}

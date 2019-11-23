@@ -4,8 +4,6 @@ import {Platform} from 'react-native';
 
 const style = {
   inputRow: {
-    paddingBottom: 20,
-    marginTop: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     borderBottomWidth: 0.6,
@@ -31,6 +29,8 @@ const style = {
     },
     categories: {
       marginVertical: 10,
+      marginTop: 70,
+      paddingHorizontal: sizes.padding,
     },
   },
 };
