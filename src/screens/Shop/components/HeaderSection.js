@@ -2,9 +2,7 @@ import React, {useState} from 'react';
 import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
 
 import {Block, CachedImage, Text} from 'app/src/components';
-import {AntDesign} from '@expo/vector-icons';
 import {sizes, colors} from 'app/src/styles';
-import {convertComma} from 'app/src/utils';
 
 const {width} = Dimensions.get('window');
 
@@ -66,26 +64,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: width,
     height: 260,
-    zIndex: -10,
+    zIndex: 10,
   },
-  shopTitle: {
-    top: 210,
-    position: 'absolute',
-    height: 140,
-    width: width - 60,
-    backgroundColor: 'white',
-    marginHorizontal: 30,
-    paddingVertical: sizes.padding * 0.8,
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 2,
-    elevation: 1,
-    zIndex: 100,
-  },
+
   imageNum: {
     justifyContent: 'center',
     alignItems: 'center',

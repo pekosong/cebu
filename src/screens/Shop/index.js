@@ -96,6 +96,13 @@ export default ShopScreen = observer(props => {
         }}
         showsVerticalScrollIndicator={false}
         style={{
+          marginTop: animatedScrollYValue.interpolate({
+            inputRange: [0, 240],
+            outputRange: [240, 50],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
+          }),
+          paddingTop: 100,
           marginBottom: 20,
           zIndex: 10,
         }}
@@ -111,7 +118,6 @@ export default ShopScreen = observer(props => {
         <ShopTitle shop={shop}></ShopTitle>
         <Animated.View
           style={{
-            marginTop: 340,
             backgroundColor: colors.white,
           }}>
           <TabSection shop={shop} user={user}></TabSection>
