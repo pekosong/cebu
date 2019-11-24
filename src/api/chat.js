@@ -1,33 +1,31 @@
 import firebase from 'app/src/constants/store';
 
-const makeNewUserChat = (email, shop, shopName) => {
-  firebase
+const getChat = docId => {
+  return firebase
     .firestore()
-    .collection('users')
-    .doc(email)
     .collection('messages')
-    .doc(shop)
-    .set({
+    .doc(docId);
+};
+
+const makeNewChat = async (email, shop, shopName) => {
+  let docRef = await firebase
+    .firestore()
+    .collection('messages')
+    .add({
       email: email,
       shop: shop,
       shopName: shopName,
       message: [],
     });
+  return docRef.id;
 };
 
-const makeNewShopChat = (email, shop, shopName) => {
-  firebase
+const getChatList = (email, shop) => {
+  return firebase
     .firestore()
-    .collection('shops')
-    .doc(email)
     .collection('messages')
-    .doc(shop)
-    .set({
-      email: email,
-      shop: shop,
-      shopName: shopName,
-      message: [],
-    });
+    .where('email', '==', email)
+    .where('shop', '==', shop);
 };
 
-export {makeNewUserChat, makeNewShopChat};
+export {getChat, makeNewChat, getChatList};

@@ -10,6 +10,7 @@ import {Button, Block, Text} from 'app/src/components';
 import {colors, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
+import {shopApi, userApi} from 'app/src/api';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -22,49 +23,62 @@ const ChatScreen = observer(props => {
   const [shopId, setShopId] = useState('');
   const [email, setEmail] = useState('');
   const [messages, setMessages] = useState([]);
-  const [isLoaded, setIsLoaded] = useState(false);
-
-  const [docId, setDocId] = useState('');
+  const [isLoaded, setisLoaded] = useState(false);
 
   const {user} = useContext(UserStoreContext);
   useEffect(() => {
-    const shopId = navigation.getParam('shopId');
+    const shop = navigation.getParam('shopId');
     const shopName = navigation.getParam('shopName');
     const email = navigation.getParam('email');
-    let unsubscribe1;
 
-    setShopId(shopId);
+    setShopId(shop);
     setTitle(shopName);
     setEmail(email);
 
-    unsubscribe1 = chatApi
-      .getChatList(email, shopId)
-      .onSnapshot(querySnapshot => {
-        console.log('sonbg');
-        if (querySnapshot.empty) {
-          chatApi.makeNewChat(email, shopId, shopName).then(song => {
-            setDocId(song);
-            setIsLoaded(true);
-          });
-        } else {
-          querySnapshot.forEach(function(doc) {
-            let msgList = doc.data().message;
-            let newMsgList = [];
-            if (msgList) {
-              newMsgList = msgList.map(e => {
-                e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
-                return e;
-              });
-            }
-            setMessages(newMsgList);
-            setIsLoaded(true);
-            setDocId(doc.id);
-          });
+    let unsubscribe1 = userApi
+      .streamUserMsg(email)
+      .doc(shop)
+      .onSnapshot(doc => {
+        try {
+          let msgs = doc.data().message;
+          let newMsgs = [];
+          if (msgs) {
+            newMsgs = msgs.map(e => {
+              e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
+              return e;
+            });
+          }
+          setMessages(newMsgs);
+          setisLoaded(true);
+        } catch (err) {
+          chatApi.makeNewUserChat(email, shop, shopName);
         }
       });
+
+    let unsubscribe2 = shopApi
+      .streamShopMsg(shop)
+      .doc(email)
+      .onSnapshot(doc => {
+        try {
+          let msgs = doc.data().message;
+          let newMsgs = [];
+          if (msgs) {
+            newMsgs = msgs.map(e => {
+              e.createdAt = new Date(parseInt(e.createdAt.seconds) * 1000);
+              return e;
+            });
+          }
+          setMessages(newMsgs);
+          setisLoaded(true);
+        } catch (err) {
+          chatApi.makeNewShopChat(email, shop, shopName);
+        }
+      });
+
     return () => {
       _deleteMessage();
       unsubscribe1();
+      unsubscribe2();
     };
   }, []);
 
@@ -72,8 +86,20 @@ const ChatScreen = observer(props => {
     if (messages.length == 0) {
       firebase
         .firestore()
+        .collection('users')
+        .doc(email)
         .collection('messages')
-        .doc(docId)
+        .doc(shopId)
+        .delete()
+        .then(() => console.log('Done'))
+        .catch(err => console.log(err));
+
+      firebase
+        .firestore()
+        .collection('shops')
+        .doc(shopId)
+        .collection('messages')
+        .doc(email)
         .delete()
         .then(() => console.log('Done'))
         .catch(err => console.log(err));
@@ -85,8 +111,25 @@ const ChatScreen = observer(props => {
 
     await firebase
       .firestore()
+      .collection('users')
+      .doc(email)
       .collection('messages')
-      .doc(docId)
+      .doc(shopId)
+      .update({message: GiftedChat.append(messages, msg)})
+      .then(() => {
+        setMessages(GiftedChat.append(messages, msg));
+        console.log('Document successfully written!');
+      })
+      .catch(err => {
+        console.log(err);
+      });
+
+    await firebase
+      .firestore()
+      .collection('shops')
+      .doc(shopId)
+      .collection('messages')
+      .doc(email)
       .update({message: GiftedChat.append(messages, msg)})
       .then(() => {
         setMessages(GiftedChat.append(messages, msg));
@@ -110,7 +153,7 @@ const ChatScreen = observer(props => {
           locale="ko"
           placeholder="Message"
           dateFormat="ll"
-          bottomOffset={50}
+          // bottomOffset={50}
         />
         {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={-15} /> : null}
       </Block>
@@ -119,12 +162,7 @@ const ChatScreen = observer(props => {
 
   return (
     <Block>
-      <Block
-        flex={false}
-        row
-        center
-        space="between"
-        style={[style.mainHeader, {marginTop: 36}]}>
+      <Block flex={false} row center space="between" style={style.mainHeader}>
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons size={30} color={colors.black} name="ios-arrow-back" />

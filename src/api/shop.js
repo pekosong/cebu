@@ -3,9 +3,8 @@ import firebase from 'app/src/constants/store';
 const streamShopMsg = shop => {
   return firebase
     .firestore()
-    .collection('shops')
-    .doc(shop)
-    .collection('messages');
+    .collection('messages')
+    .where('shop', '==', shop);
 };
 
 const streamShop = shopId => {
@@ -27,6 +26,17 @@ const downloadShopList = () => {
   return firebase.firestore().collection('shops');
 };
 
+const updateMessages = (shop, messages) => {
+  firebase
+    .firestore()
+    .collection('shops')
+    .doc(shop)
+    .update({messages: messages})
+    .then(() => {
+      console.log('updated favorites');
+    });
+};
+
 const updateShopReservation = (shopId, shopReservations) => {
   firebase
     .firestore()
@@ -43,5 +53,6 @@ export {
   streamShop,
   updateShop,
   downloadShopList,
+  updateMessages,
   updateShopReservation,
 };

@@ -3,9 +3,8 @@ import firebase from 'app/src/constants/store';
 const streamUserMsg = email => {
   return firebase
     .firestore()
-    .collection('users')
-    .doc(email)
-    .collection('messages');
+    .collection('messages')
+    .where('email', '==', email);
 };
 
 const streamUser = email => {
@@ -34,6 +33,17 @@ const updateFavorite = (email, myfavorites) => {
     });
 };
 
+const updateMessages = (email, messages) => {
+  firebase
+    .firestore()
+    .collection('users')
+    .doc(email)
+    .update({messages: messages})
+    .then(() => {
+      console.log('updated favorites');
+    });
+};
+
 const updateUserReservation = (email, userReservations) => {
   firebase
     .firestore()
@@ -50,5 +60,6 @@ export {
   streamUser,
   updateUser,
   updateFavorite,
+  updateMessages,
   updateUserReservation,
 };

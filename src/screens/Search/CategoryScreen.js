@@ -204,7 +204,7 @@ const styles = StyleSheet.create({
   header: {
     flex: 0,
     backgroundColor: 'white',
-    paddingTop: sizes.padding * 2.5,
+    paddingTop: sizes.padding * 2,
     marginBottom: 2,
     shadowColor: '#000',
     shadowOffset: {

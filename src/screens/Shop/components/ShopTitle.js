@@ -38,7 +38,7 @@ export default HeaderSection = props => {
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: -110,
+    top: 230,
     position: 'absolute',
     height: 140,
     width: width - 60,
@@ -53,6 +53,6 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 2,
     elevation: 1,
-    zIndex: 110,
+    zIndex: 11000,
   },
 });

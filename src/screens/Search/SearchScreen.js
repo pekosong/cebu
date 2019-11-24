@@ -24,7 +24,7 @@ import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from '../../store/user';
 import {ShopStoreContext} from '../../store/shop';
 
-const EMAIL = 'b@naver.com';
+const EMAIL = 'peko22@naver.com';
 const {width} = Dimensions.get('window');
 
 const SearchScreen = observer(props => {

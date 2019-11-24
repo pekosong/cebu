@@ -11,7 +11,7 @@ import {Block, Text, CachedImage} from 'app/src/components';
 
 import {sizes, style} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
-import {shopApi, userApi, chatApi} from 'app/src/api';
+import {shopApi, userApi} from 'app/src/api';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -25,7 +25,7 @@ const MAP = {
 
 const ChatListScreen = observer(props => {
   const {navigation} = props;
-  const [chatList, setChatlist] = useState([]);
+  const [chatList, setChatList] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const {user} = useContext(UserStoreContext);
@@ -39,7 +39,7 @@ const ChatListScreen = observer(props => {
         userUnsubscribe = shopApi
           .streamShopMsg(user.shops[0])
           .onSnapshot(querySnapshot => {
-            setChatlist(msg2Chat(querySnapshot, user.host));
+            setChatList(msg2Chat(querySnapshot, user.host));
           });
 
         shopUnsubscribe = shopApi.streamShop(user.shops[0]).onSnapshot(doc => {
@@ -50,7 +50,7 @@ const ChatListScreen = observer(props => {
         userUnsubscribe = userApi
           .streamUserMsg(user.email)
           .onSnapshot(querySnapshot => {
-            setChatlist(msg2Chat(querySnapshot, user.host));
+            setChatList(msg2Chat(querySnapshot, user.host));
             setIsLoaded(true);
           });
       }
