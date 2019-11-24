@@ -1,8 +1,7 @@
-import React, {useState, useEffect, Fragment} from 'react';
+import React, {useState, useEffect, useContext, Fragment} from 'react';
 import {
   StyleSheet,
   ScrollView,
-  Switch,
   TouchableOpacity,
   SafeAreaView,
   Platform,
@@ -19,8 +18,10 @@ import {
 } from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
-import firebase from 'app/src/constants/store';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+
+import {observer} from 'mobx-react-lite';
+import {streamShop} from 'app/src/api/shop';
+import {UserStoreContext} from 'app/src/store/user';
 
 const MAP = {
   wait: '예약요청',
@@ -39,9 +40,11 @@ const WEEKMAP = {
   7: '일',
 };
 
-const ReservationScreen = props => {
+const ReservationScreen = observer(props => {
   const {navigation} = props;
-  const user = useSelector(state => state.user, shallowEqual);
+
+  const {user} = useContext(UserStoreContext);
+
   const [dates, setDates] = useState([]);
   const [reservations, setReservations] = useState([]);
   const [reservation, setReservation] = useState({});
@@ -53,23 +56,19 @@ const ReservationScreen = props => {
   const tabs = ['전체', '예약요청', '예약확정', '예약불가', '종료'];
 
   useEffect(() => {
-    let unsubscribe = firebase
-      .firestore()
-      .collection('shops')
-      .doc(user.shops[0])
-      .onSnapshot(doc => {
-        const shop = doc.data();
-        let reservations = shop.reservations;
-        reservations.sort(function(a, b) {
-          return new Date(a.date) - new Date(b.date);
-        });
-        const days = new Set(reservations.map(e => e.date));
-        setDates(Array.from(days));
-        setReservations(reservations);
-        setSelectedReservations(reservations);
-        setIsLoaded(true);
-        setActive('전체');
+    let unsubscribe = streamShop(user.shops[0]).onSnapshot(doc => {
+      const shop = doc.data();
+      let reservations = shop.reservations;
+      reservations.sort(function(a, b) {
+        return new Date(a.date) - new Date(b.date);
       });
+      const days = new Set(reservations.map(e => e.date));
+      setDates(Array.from(days));
+      setReservations(reservations);
+      setSelectedReservations(reservations);
+      setIsLoaded(true);
+      setActive('전체');
+    });
     return () => unsubscribe();
   }, []);
 
@@ -218,7 +217,7 @@ const ReservationScreen = props => {
         color={colors.primary}></ActivityIndicator>
     </Block>
   );
-};
+});
 
 ReservationScreen.navigationOptions = {
   header: null,

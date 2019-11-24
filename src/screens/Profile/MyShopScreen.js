@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -10,25 +10,30 @@ import {
   Animated,
   TouchableWithoutFeedback,
   SafeAreaView,
-  Platform,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateShop, setImagesData} from 'app/src/redux/action';
+
+import {observer} from 'mobx-react-lite';
+import {streamShop, updateShop} from 'app/src/api/shop';
+
+import {UserStoreContext} from 'app/src/store/user';
 
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
 import * as Permissions from 'expo-permissions';
 import uuidv1 from 'uuid/v1';
 
-const {height, width} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const MyShopScreen = props => {
+const MyShopScreen = observer(props => {
   const {navigation} = props;
+
+  const {user} = useContext(UserStoreContext);
+
   const [name, setName] = useState('');
   const [engName, setEngName] = useState('');
   const [address, setAddress] = useState('');
@@ -54,18 +59,12 @@ const MyShopScreen = props => {
   const [saved, setSaved] = useState(false);
   const [changed, setChanged] = useState(false);
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector(state => state.user, shallowEqual);
-  const shopImages = useSelector(state => state.shopImages, shallowEqual);
+  const [shopImages, setShopImages] = useState([]);
 
   const [hideAnim] = useState(new Animated.Value(0));
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
-    firebase
-      .firestore()
-      .collection('shops')
-      .doc(user.shops[0])
+    streamShop(user.shops[0])
       .get()
       .then(doc => {
         const shop = doc.data();
@@ -207,7 +206,7 @@ const MyShopScreen = props => {
       korean: korean,
     };
 
-    dispatch(updateShop(newShop)).then(() => {
+    updateShop(newShop).then(() => {
       setMyShop(newShop);
       setChanged(!changed);
       setSaved(false);
@@ -232,7 +231,6 @@ const MyShopScreen = props => {
     } else {
       lists.push(imageId);
     }
-    dispatch(setImagesData(lists));
     setChanged(!changed);
   };
 
@@ -243,8 +241,7 @@ const MyShopScreen = props => {
       ...myShop,
       source: result,
     };
-    dispatch(updateShop(newShop)).then(() => {
-      dispatch(setImagesData([]));
+    updateShop(newShop).then(() => {
       setMyShop(newShop);
       setChanged(!changed);
     });
@@ -608,7 +605,7 @@ const MyShopScreen = props => {
       <ActivityIndicator size="large" color={colors.accent}></ActivityIndicator>
     </Block>
   );
-};
+});
 
 MyShopScreen.navigationOptions = {
   header: null,

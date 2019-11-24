@@ -8,11 +8,40 @@ const streamShopMsg = shop => {
     .collection('messages');
 };
 
-const streamShop = shop => {
+const streamShop = shopId => {
   return firebase
     .firestore()
     .collection('shops')
-    .doc(shop);
+    .doc(shopId);
 };
 
-export {streamShopMsg, streamShop};
+const updateShop = shop => {
+  return firebase
+    .firestore()
+    .collection('shops')
+    .doc(shop.id)
+    .update(shop);
+};
+
+const downloadShopList = () => {
+  return firebase.firestore().collection('shops');
+};
+
+const updateShopReservation = (shopId, shopReservations) => {
+  firebase
+    .firestore()
+    .collection('shops')
+    .doc(shopId)
+    .update({reservations: shopReservations})
+    .then(() => {
+      console.log('made reservation');
+    });
+};
+
+export {
+  streamShopMsg,
+  streamShop,
+  updateShop,
+  downloadShopList,
+  updateShopReservation,
+};

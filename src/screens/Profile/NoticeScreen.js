@@ -1,19 +1,20 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
   Switch,
   TouchableOpacity,
   SafeAreaView,
-  Platform,
 } from 'react-native';
 import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import firebase from 'app/src/constants/store';
 
-const NoticeScreen = props => {
+import {observer} from 'mobx-react-lite';
+import {updateUser} from 'app/src/api/user';
+import {UserStoreContext} from 'app/src/store/user';
+
+const NoticeScreen = observer(props => {
   const {navigation} = props;
 
   const [messageEmail, setMessageEmail] = useState(false);
@@ -28,8 +29,7 @@ const NoticeScreen = props => {
   const [promotionPush, setPromotionPush] = useState(false);
   const [promotionSms, setPromotionSms] = useState(false);
 
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     const {notice} = user;
@@ -47,7 +47,7 @@ const NoticeScreen = props => {
     setPromotionSms(notice.promotion.sms);
   }, []);
 
-  saveNotice = async () => {
+  saveNotice = () => {
     let newUser = {
       ...user,
       notice: {
@@ -68,13 +68,10 @@ const NoticeScreen = props => {
         },
       },
     };
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(user.email)
-      .update(newUser)
+
+    updateUser(user.email, newUser)
       .then(() => {
-        dispatch({type: 'UPDATE', payload: newUser});
+        console.log('done');
       })
       .catch(err => {
         console.log(err);
@@ -195,7 +192,7 @@ const NoticeScreen = props => {
       </ScrollView>
     </SafeAreaView>
   );
-};
+});
 
 NoticeScreen.navigationOptions = {
   header: null,

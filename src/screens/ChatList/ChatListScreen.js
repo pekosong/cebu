@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -11,9 +11,10 @@ import {Block, Text, CachedImage} from 'app/src/components';
 
 import {sizes, style} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
-import {shopApi, userApi} from 'app/src/api';
+import {shopApi, userApi, chatApi} from 'app/src/api';
 
-import {useSelector, shallowEqual} from 'react-redux';
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
 
 const MAP = {
   wait: '예약요청',
@@ -22,12 +23,12 @@ const MAP = {
   not: '예약불가',
 };
 
-const ChatListScreen = props => {
+const ChatListScreen = observer(props => {
   const {navigation} = props;
   const [chatList, setChatlist] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector(state => state.user, shallowEqual);
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     let userUnsubscribe;
@@ -143,7 +144,7 @@ const ChatListScreen = props => {
       )}
     </Block>
   );
-};
+});
 
 ChatListScreen.navigationOptions = {
   header: null,

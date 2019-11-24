@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   Dimensions,
   StyleSheet,
@@ -13,8 +13,10 @@ import {Block, Text, CardShop} from 'app/src/components';
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
-import {useSelector, shallowEqual} from 'react-redux';
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
+
+import {observer} from 'mobx-react-lite';
+import {ShopStoreContext} from 'app/src/store/shop';
 
 const {width} = Dimensions.get('window');
 
@@ -55,7 +57,7 @@ const cateSrc = {
   샌딩: require('app/src/assets/images/search/sanding.jpg'),
 };
 
-const CategoryScreen = props => {
+const CategoryScreen = observer(props => {
   const {navigation} = props;
   const [active, setActive] = useState('추천');
   const [catActive, setCatActive] = useState('전체');
@@ -63,14 +65,14 @@ const CategoryScreen = props => {
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const tabs = ['추천', '리뷰수', '거리'];
-  const shops = useSelector(state => state.shops, shallowEqual);
+
+  const shops = useContext(ShopStoreContext).shopList;
 
   useEffect(() => {
     if (Object.entries(shops).length != 0) {
       filteredShops = shops.filter(
         e => e.category == navigation.getParam('category'),
       );
-
       filteredShops = filteredShops.sort((a, b) => {
         return b.review - a.review;
       });
@@ -185,7 +187,7 @@ const CategoryScreen = props => {
       )}
     </Block>
   );
-};
+});
 
 CategoryScreen.navigationOptions = {
   header: null,

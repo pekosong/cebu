@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -13,7 +13,10 @@ import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
+
+import {observer} from 'mobx-react-lite';
+import {updateUser} from 'app/src/api/user';
+import {UserStoreContext} from 'app/src/store/user';
 
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -21,7 +24,7 @@ import * as Permissions from 'expo-permissions';
 
 import uuidv1 from 'uuid/v1';
 
-const PersonalScreen = props => {
+const PersonalScreen = observer(props => {
   const {navigation} = props;
   const [name, setName] = useState('');
   const [sex, setSex] = useState('');
@@ -34,8 +37,7 @@ const PersonalScreen = props => {
   const [profile, setProfile] = useState({});
   const [progress, setProgress] = useState(null);
 
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     setProfile(user);
@@ -127,7 +129,7 @@ const PersonalScreen = props => {
     }
   };
 
-  savePerson = async () => {
+  savePerson = () => {
     let newProfile = {
       ...profile,
       name: name,
@@ -136,13 +138,8 @@ const PersonalScreen = props => {
       image: image,
       phone: phone,
     };
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
-      .update(newProfile)
+    updateUser(email, newProfile)
       .then(() => {
-        dispatch({type: 'UPDATE', payload: newProfile});
         setProfile(newProfile);
         setSaved(true);
       })
@@ -255,7 +252,7 @@ const PersonalScreen = props => {
       </KeyboardAvoidingView>
     </SafeAreaView>
   );
-};
+});
 
 PersonalScreen.navigationOptions = {
   header: null,

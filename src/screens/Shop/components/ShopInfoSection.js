@@ -10,7 +10,7 @@ export default function ShopInfoSection(props) {
 
   return (
     <Fragment>
-      <Block style={style.shop.categories}>
+      <Block style={[style.shop.categories, {maxHeight: 400}]}>
         <Text h3 bold style={style.shop.content}>
           업체정보
         </Text>
@@ -53,7 +53,7 @@ export default function ShopInfoSection(props) {
           </Block>
         </Block>
       </Block>
-      <Block style={[style.shop.categories, {marginTop: 30}]}>
+      <Block style={[style.shop.categories, {maxHeight: 450}]}>
         <Text h3 bold>
           위치
         </Text>
@@ -61,28 +61,26 @@ export default function ShopInfoSection(props) {
           <Text h3>{shop.address}</Text>
           <Text h3>{shop.engAddress}</Text>
         </Block>
-        <Block
+        <MapView
           style={{
+            position: 'absolute',
+            top: 50,
+            width: 600,
+            height: 600,
+            marginTop: sizes.padding / 2,
             marginLeft: -sizes.padding,
             marginRight: -sizes.padding,
+          }}
+          initialRegion={{
+            latitude: 37.78825,
+            longitude: -122.4324,
+            latitudeDelta: 0.0922,
+            longitudeDelta: 0.0421,
           }}>
-          <MapView
-            style={{
-              flex: 1,
-              height: 240,
-              marginTop: sizes.padding / 2,
-            }}
-            initialRegion={{
-              latitude: 37.78825,
-              longitude: -122.4324,
-              latitudeDelta: 0.0922,
-              longitudeDelta: 0.0421,
-            }}>
-            <MapView.Marker
-              coordinate={{latitude: 37.78825, longitude: -122.4324}}
-            />
-          </MapView>
-        </Block>
+          <MapView.Marker
+            coordinate={{latitude: 37.78825, longitude: -122.4324}}
+          />
+        </MapView>
       </Block>
     </Fragment>
   );

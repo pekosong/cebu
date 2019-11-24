@@ -1,24 +1,24 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
   SafeAreaView,
   TextInput,
   TouchableOpacity,
-  Platform,
 } from 'react-native';
 import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
 import {Ionicons} from '@expo/vector-icons';
 import moment from 'moment';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
-const TripInfosScreen = props => {
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
+
+const TripInfosScreen = observer(props => {
   const {navigation} = props;
   const [editing, setEditing] = useState(null);
   const [plans, setPlans] = useState({});
-  const user = useSelector(state => state.user, shallowEqual);
+  const {user} = useContext(UserStoreContext);
 
   const NUMTOWEEK = {
     0: '일',
@@ -121,7 +121,7 @@ const TripInfosScreen = props => {
       </Block>
     </SafeAreaView>
   );
-};
+});
 
 TripInfosScreen.navigationOptions = {
   header: null,

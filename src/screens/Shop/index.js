@@ -7,17 +7,9 @@ import React, {
   useContext,
   memo,
 } from 'react';
-import {
-  StyleSheet,
-  Animated,
-  ActivityIndicator,
-  ScrollView,
-} from 'react-native';
+import {StyleSheet, Animated, ActivityIndicator} from 'react-native';
 
-import firebase from 'app/src/constants/store';
 import {Block, Divider} from 'app/src/components';
-
-import {mocks} from 'app/src/constants';
 
 import {sizes, colors, style} from 'app/src/styles';
 
@@ -30,24 +22,18 @@ import ReservationSection from './components/ReservationSection';
 import BottomSection from './components/BottomSection';
 import RecommendSection from './components/RecommendSection';
 
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData} from 'app/src/redux/action';
-
 import {observer} from 'mobx-react-lite';
-import {CounterStoreContext} from '../../store/test';
+import {UserStoreContext} from 'app/src/store/user';
+import {streamShop} from 'app/src/api/shop';
 
 export default ShopScreen = observer(props => {
   const {navigation} = props;
-  const counterStore = useContext(CounterStoreContext);
-  counterStore.refs.song = createRef(null);
+  const {user} = useContext(UserStoreContext);
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
 
   const shopScroll = createRef(null);
-
-  const dispatch = useDispatch();
-  const user = useSelector(state => state.user, shallowEqual);
 
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -58,28 +44,18 @@ export default ShopScreen = observer(props => {
   useEffect(() => {
     let shopId = navigation.getParam('shopId');
     let unsubscribe;
-
-    if (shopId) {
-      unsubscribe = firebase
-        .firestore()
-        .collection('shops')
-        .doc(shopId)
-        .onSnapshot(doc => {
-          setShop(doc.data());
-          setIsLoaded(true);
-        });
-      setTodo(navigation.getParam('todo'));
-    } else {
-      setShop(mocks.ActivityList[0]);
+    unsubscribe = streamShop(shopId).onSnapshot(doc => {
+      setShop(doc.data());
       setIsLoaded(true);
-    }
+    });
+    setTodo(navigation.getParam('todo'));
 
     return () => {
       if (unsubscribe) {
         unsubscribe();
       }
     };
-  }, []);
+  }, [user]);
 
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 130) {
@@ -108,12 +84,8 @@ export default ShopScreen = observer(props => {
   };
 
   return isLoaded ? (
-    <Block style={{position: 'relative'}}>
-      <AppBar
-        navigation={navigation}
-        user={user}
-        shop={shop}
-        fadeAnim={fadeAnim}></AppBar>
+    <Block>
+      <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
       <HeaderSection
         top={animatedScrollYValue}
         shop={shop}
@@ -139,7 +111,7 @@ export default ShopScreen = observer(props => {
         <ShopTitle shop={shop}></ShopTitle>
         <Animated.View
           style={{
-            marginTop: 360,
+            marginTop: 340,
             backgroundColor: colors.white,
           }}>
           <TabSection shop={shop} user={user}></TabSection>

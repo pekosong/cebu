@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -9,13 +9,15 @@ import {
 
 import {Button, Block, Input, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
 
 import moment from 'moment';
 
-const {height, width} = Dimensions.get('window');
+import {observer} from 'mobx-react-lite';
+import {updateUser} from 'app/src/api/user';
+import {UserStoreContext} from 'app/src/store/user';
+
+const {width} = Dimensions.get('window');
 
 LocaleConfig.locales['kor'] = {
   dayNames: [
@@ -31,14 +33,14 @@ LocaleConfig.locales['kor'] = {
 };
 LocaleConfig.defaultLocale = 'kor';
 
-const TripInfoScreen = props => {
+const TripInfoScreen = observer(props => {
   const {navigation} = props;
   const [date, setDate] = useState({});
   const [dates, setDates] = useState([]);
   const [hotel, setHotel] = useState('');
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
-  const user = useSelector(state => state.user, shallowEqual);
+  const {user} = useContext(UserStoreContext);
 
   _getDates = (start, stop) => {
     let startDate = new Date(start.year, start.month - 1, start.day);
@@ -90,7 +92,7 @@ const TripInfoScreen = props => {
     }
   };
 
-  handleSignUp = async () => {
+  handleSignUp = () => {
     setLoading(true);
     Keyboard.dismiss();
 
@@ -105,11 +107,7 @@ const TripInfoScreen = props => {
       plans: myPlans,
     };
 
-    await firebase
-      .firestore()
-      .collection('users')
-      .doc(user.email)
-      .update(newCus)
+    updateUser(user.email, newCus)
       .then(() => {
         console.log('Document successfully written!');
         setLoading(false);
@@ -226,7 +224,7 @@ const TripInfoScreen = props => {
       {renderSignUp()}
     </KeyboardAvoidingView>
   );
-};
+});
 
 TripInfoScreen.navigationOptions = {
   header: null,

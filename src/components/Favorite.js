@@ -1,17 +1,18 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {colors} from 'app/src/styles';
 import {AntDesign} from '@expo/vector-icons';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateFavorite} from 'app/src/redux/action';
 
-export default Favorite = props => {
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
+import {updateFavorite} from 'app/src/api/user';
+
+export default Favorite = observer(props => {
   const {shop, style} = props;
   const [myfavorites, setMyfavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     if (user.myfavorites) {
@@ -34,7 +35,7 @@ export default Favorite = props => {
     } else {
       newfavorites.push(newShop);
     }
-    dispatch(updateFavorite(newfavorites));
+    updateFavorite(user.email, newfavorites);
   };
 
   return (
@@ -60,6 +61,6 @@ export default Favorite = props => {
       ) : null}
     </TouchableOpacity>
   );
-};
+});
 
 export const styles = StyleSheet.create({});

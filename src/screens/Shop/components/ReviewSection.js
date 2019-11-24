@@ -1,4 +1,4 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState, useContext, Fragment} from 'react';
 import {StyleSheet, TouchableOpacity, Modal} from 'react-native';
 import {
   Block,
@@ -7,10 +7,16 @@ import {
   ReviewModal,
   ReviewNewModal,
 } from 'app/src/components';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
+
 import {sizes, colors, style} from 'app/src/styles';
 
-export default function ReviewSection(props) {
-  const {navigation, shop, user} = props;
+const ReviewSection = observer(props => {
+  const {navigation, shop} = props;
+
+  const {user} = useContext(UserStoreContext);
 
   const [reviewVisible, setReviewVisible] = useState(false);
   const [newReviewVisible, setNewReviewVisible] = useState(false);
@@ -66,7 +72,7 @@ export default function ReviewSection(props) {
       </Modal>
     </Fragment>
   );
-}
+});
 
 ReviewSection.defaultProps = {};
 
@@ -75,3 +81,5 @@ ReviewSection.navigationOptions = {
 };
 
 const styles = StyleSheet.create({});
+
+export default ReviewSection;

@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -20,23 +20,27 @@ import {Ionicons} from '@expo/vector-icons';
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData, downloadShopData} from 'app/src/redux/action';
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from '../../store/user';
+import {ShopStoreContext} from '../../store/shop';
 
 const EMAIL = 'b@naver.com';
 const {width} = Dimensions.get('window');
 
-const SearchScreen = props => {
+const SearchScreen = observer(props => {
   const {navigation, categories, recommendList, eventList, loveList} = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const userStore = useContext(UserStoreContext);
+  const {user, getUser} = useContext(UserStoreContext);
+  const shopStore = useContext(ShopStoreContext);
 
   useEffect(() => {
-    const unsubscribe = dispatch(watchUserData(EMAIL));
-    dispatch(downloadShopData());
-    setIsLoaded(true);
+    userStore.email = EMAIL;
+    let unsubscribe = getUser();
+    shopStore.getShopList().then(() => {
+      setIsLoaded(true);
+    });
     return () => {
       unsubscribe();
     };
@@ -227,7 +231,7 @@ const SearchScreen = props => {
       )}
     </Block>
   );
-};
+});
 
 SearchScreen.navigationOptions = {
   header: null,

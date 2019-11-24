@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,8 +11,10 @@ import {Block, Text, CardShop} from 'app/src/components';
 
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
-import {useSelector, shallowEqual} from 'react-redux';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
+import {ShopStoreContext} from 'app/src/store/shop';
 
 const cateMap = {
   All: '전체',
@@ -29,7 +31,7 @@ const cateSrc = {
   Nail: require('app/src/assets/images/search/nail.jpg'),
   Activity: require('app/src/assets/images/search/seasports.jpg'),
 };
-function FavoritesScreen(props) {
+const FavoritesScreen = observer(props => {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
@@ -39,30 +41,21 @@ function FavoritesScreen(props) {
   const [selectedFavorites, setSelectedFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const user = useSelector(state => state.user, shallowEqual);
+  const {user} = useContext(UserStoreContext);
+  const {shopList} = useContext(ShopStoreContext);
 
   useEffect(() => {
-    if (Object.entries(user).length !== 0) {
-      firebase
-        .firestore()
-        .collection('shops')
-        .get()
-        .then(querySnapshot => {
-          const shopList = [];
-          const category = new Set(['All']);
-          querySnapshot.forEach(doc => {
-            if (user.myfavorites.map(e => e.id).indexOf(doc.data().id) != -1) {
-              shopList.push(doc.data());
-              category.add(doc.data().category);
-            }
-          });
-          setFavorites(shopList);
-          setSelectedFavorites(shopList);
-          setActive('All');
-          setTabs(Array.from(category));
-          setIsLoaded(true);
-        });
-    }
+    const favorites = user.myfavorites.map(e => e.id);
+    const favoritesList = shopList.filter(e => favorites.indexOf(e.id) != -1);
+    const category = new Set(
+      ['All'].concat(favoritesList.map(e => e.category)),
+    );
+    setFavorites(favoritesList);
+    setSelectedFavorites(favoritesList);
+    setActive('All');
+    setTabs(Array.from(category));
+    setIsLoaded(true);
+
     return () => {};
   }, [user]);
 
@@ -132,7 +125,7 @@ function FavoritesScreen(props) {
       )}
     </Block>
   );
-}
+});
 
 FavoritesScreen.navigationOptions = {
   header: null,

@@ -38,7 +38,7 @@ import RecommendSection from './components/RecommendSection';
 import {useSelector, shallowEqual} from 'react-redux';
 
 import {observer} from 'mobx-react-lite';
-import {CounterStoreContext} from '../../store/test';
+import {CounterStoreContext} from '../../store/user';
 
 export default ShopScreen = observer(props => {
   const counterStore = useContext(CounterStoreContext);

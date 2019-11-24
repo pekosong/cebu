@@ -1,12 +1,13 @@
-import React, {useEffect, Fragment} from 'react';
+import React, {useEffect, useContext, Fragment} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import {Block, Text, WideText} from 'app/src/components';
 import {theme, colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {watchUserData, downloadShopData} from 'app/src/redux/action';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
 
 import {Notifications} from 'expo';
 import * as Permissions from 'expo-permissions';
@@ -45,10 +46,9 @@ const helpList = [
   },
   ,
 ];
-const ProfileScreen = props => {
+const ProfileScreen = observer(props => {
   const {navigation} = props;
-  const user = useSelector(state => state.user, shallowEqual);
-  const dispatch = useDispatch();
+  const {user} = useContext(UserStoreContext);
 
   registerForPushNotificationsAsync = async () => {
     const {status: existingStatus} = await Permissions.getAsync(
@@ -216,7 +216,7 @@ const ProfileScreen = props => {
       </ScrollView>
     </Block>
   );
-};
+});
 
 ProfileScreen.navigationOptions = {
   header: null,

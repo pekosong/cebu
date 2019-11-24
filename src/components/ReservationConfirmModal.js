@@ -1,4 +1,4 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -14,9 +14,10 @@ import Divider from './Divider';
 
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {makeResevation} from 'app/src/redux/action';
-import firebase from 'app/src/constants/store';
+
+import {observer} from 'mobx-react-lite';
+import {streamUser, updateUserReservation} from 'app/src/api/user';
+import {streamShop, updateShopReservation} from 'app/src/api/shop';
 
 const MAP = {
   wait: '예약요청',
@@ -25,27 +26,19 @@ const MAP = {
   not: '예약불가',
 };
 
-export default ReservationConfirmModal = props => {
+const ReservationConfirmModal = observer(props => {
   const {setVisible, reservation} = props;
 
   const [userReservations, setUserReservations] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [pickupCar, setPickupCar] = useState('');
 
-  const dispatch = useDispatch();
-
   useEffect(() => {
     const {email, shop} = reservation;
-    firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
+    streamUser(email)
       .get()
       .then(doc => setUserReservations(doc.data().reservations));
-    firebase
-      .firestore()
-      .collection('shops')
-      .doc(shop.id)
+    streamShop(shop.id)
       .get()
       .then(doc => setShopReservations(doc.data().reservations));
   }, []);
@@ -67,7 +60,9 @@ export default ReservationConfirmModal = props => {
     userReservation.push(NewReservation);
     shopReservation.push(NewReservation);
 
-    dispatch(makeResevation(userReservation, shopReservation, email, shop.id));
+    updateUserReservation(email, userReservation);
+    updateShopReservation(shop.id, shopReservation);
+
     setVisible(false);
   };
 
@@ -206,7 +201,7 @@ export default ReservationConfirmModal = props => {
       {renderConfirmPage()}
     </Block>
   );
-};
+});
 
 export const styles = StyleSheet.create({
   input: {
@@ -226,3 +221,5 @@ export const styles = StyleSheet.create({
     borderBottomColor: colors.gray,
   },
 });
+
+export default ReservationConfirmModal;

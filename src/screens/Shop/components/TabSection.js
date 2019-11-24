@@ -20,8 +20,8 @@ const FirstRoute = props => {
 };
 
 const SecondRoute = props => {
-  const {shop, user} = props;
-  return <ReviewSection user={user} shop={shop}></ReviewSection>;
+  const {shop} = props;
+  return <ReviewSection shop={shop}></ReviewSection>;
 };
 
 const ThirdRoute = props => {
@@ -30,7 +30,7 @@ const ThirdRoute = props => {
 };
 
 export default function TabSection(props) {
-  const {shop, user} = props;
+  const {shop} = props;
   const [tab, setTab] = useState({
     index: 0,
     routes: [
@@ -45,7 +45,7 @@ export default function TabSection(props) {
       case 'first':
         return <FirstRoute shop={shop} />;
       case 'second':
-        return <SecondRoute shop={shop} user={user} />;
+        return <SecondRoute shop={shop} />;
       case 'third':
         return <ThirdRoute shop={shop} />;
 
@@ -69,31 +69,19 @@ export default function TabSection(props) {
       )}
       indicatorStyle={{backgroundColor: 'black'}}
       style={{
-        top: 10,
-        width: width,
-        position: 'absolute',
         backgroundColor: 'white',
         marginBottom: 20,
         zIndex: 10000,
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 1,
-          height: 1,
-        },
-        shadowOpacity: 0.25,
-        shadowRadius: 3.84,
-        elevation: 1,
       }}
     />
   );
   return (
     <TabView
-      lazy={true}
       navigationState={tab}
       renderTabBar={_renderTabBar}
       renderScene={_renderScene}
       onIndexChange={index => setTab({...tab, index})}
-      initialLayout={{width: width, height: 300}}
+      initialLayout={{width: width}}
       style={{
         paddingTop: 30,
       }}></TabView>

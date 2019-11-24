@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -11,7 +11,9 @@ import {Block, Text, Button, Divider, CachedImage} from 'app/src/components';
 
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
-import {useSelector, shallowEqual} from 'react-redux';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
 
 const MAP = {
   wait: '예약확인중',
@@ -20,7 +22,7 @@ const MAP = {
   not: '예약불가',
 };
 
-function MyTripScreen(props) {
+const MyTripScreen = observer(props => {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
@@ -31,7 +33,7 @@ function MyTripScreen(props) {
   const [selectedDates, setSelectedDates] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const user = useSelector(state => state.user, shallowEqual);
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     if (Object.entries(user).length !== 0) {
@@ -195,7 +197,7 @@ function MyTripScreen(props) {
       )}
     </Block>
   );
-}
+});
 
 MyTripScreen.navigationOptions = {
   header: null,

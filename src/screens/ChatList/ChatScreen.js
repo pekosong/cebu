@@ -1,4 +1,4 @@
-import React, {useState, useEffect} from 'react';
+import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
@@ -10,11 +10,14 @@ import {Button, Block, Text} from 'app/src/components';
 import {colors, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
-import {useSelector, shallowEqual} from 'react-redux';
+import {shopApi, userApi} from 'app/src/api';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
 
 import 'moment/locale/ko';
 
-export default function ChatScreen(props) {
+const ChatScreen = observer(props => {
   const {navigation} = props;
   const [title, setTitle] = useState('');
   const [shopId, setShopId] = useState('');
@@ -22,8 +25,7 @@ export default function ChatScreen(props) {
   const [messages, setMessages] = useState([]);
   const [isLoaded, setisLoaded] = useState(false);
 
-  const user = useSelector(state => state.user, shallowEqual);
-
+  const {user} = useContext(UserStoreContext);
   useEffect(() => {
     const shop = navigation.getParam('shopId');
     const shopName = navigation.getParam('shopName');
@@ -33,11 +35,8 @@ export default function ChatScreen(props) {
     setTitle(shopName);
     setEmail(email);
 
-    let unsubscribe1 = firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
-      .collection('messages')
+    let unsubscribe1 = userApi
+      .streamUserMsg(email)
       .doc(shop)
       .onSnapshot(doc => {
         try {
@@ -56,11 +55,8 @@ export default function ChatScreen(props) {
         }
       });
 
-    let unsubscribe2 = firebase
-      .firestore()
-      .collection('shops')
-      .doc(shop)
-      .collection('messages')
+    let unsubscribe2 = shopApi
+      .streamShopMsg(shop)
       .doc(email)
       .onSnapshot(doc => {
         try {
@@ -197,7 +193,7 @@ export default function ChatScreen(props) {
       )}
     </Block>
   );
-}
+});
 
 ChatScreen.defaultProps = {};
 
@@ -206,3 +202,5 @@ ChatScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({});
+
+export default ChatScreen;

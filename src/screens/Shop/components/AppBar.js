@@ -1,19 +1,19 @@
-import React from 'react';
+import React, {useContext} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 import {Block} from 'app/src/components';
 
 import {sizes, colors, fonts} from 'app/src/styles';
-import {updateFavorite} from 'app/src/redux/action';
-import {useDispatch} from 'react-redux';
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from 'app/src/store/user';
+import {updateFavorite} from 'app/src/api/user';
 
 const {width} = Dimensions.get('window');
 
-export default function AppBar(props) {
-  const {navigation, user, shop, fadeAnim} = props;
-
-  const dispatch = useDispatch();
+const AppBar = observer(props => {
+  const {navigation, shop, fadeAnim} = props;
+  const {user} = useContext(UserStoreContext);
 
   handleAddHeart = async shop => {
     oldfavorites = user.myfavorites.map(e => e.id);
@@ -29,7 +29,7 @@ export default function AppBar(props) {
     } else {
       newfavorites.push(newShop);
     }
-    dispatch(updateFavorite(newfavorites));
+    updateFavorite(user.email, newfavorites);
   };
 
   return (
@@ -156,7 +156,7 @@ export default function AppBar(props) {
       </Block>
     </Animated.View>
   );
-}
+});
 
 AppBar.defaultProps = {};
 
@@ -174,3 +174,5 @@ const styles = StyleSheet.create({
     zIndex: 100,
   },
 });
+
+export default AppBar;
