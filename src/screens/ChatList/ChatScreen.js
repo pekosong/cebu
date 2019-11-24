@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Keyboard,
+  ActivityIndicator,
+  Platform,
+  KeyboardAvoidingView,
+} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -40,7 +46,6 @@ const ChatScreen = observer(props => {
     unsubscribe1 = chatApi
       .getChatList(email, shopId)
       .onSnapshot(querySnapshot => {
-        console.log('sonbg');
         if (querySnapshot.empty) {
           chatApi.makeNewChat(email, shopId, shopName).then(song => {
             setDocId(song);
@@ -100,8 +105,9 @@ const ChatScreen = observer(props => {
   renderChat = () => {
     Keyboard.dismiss();
     return (
-      <Block style={{flex: 1}}>
+      <Block>
         <GiftedChat
+          showUserAvatar={true}
           messages={messages}
           onSend={msg => onSend(msg)}
           user={{
@@ -112,7 +118,7 @@ const ChatScreen = observer(props => {
           dateFormat="ll"
           bottomOffset={50}
         />
-        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={-15} /> : null}
+        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={50} /> : null}
       </Block>
     );
   };
@@ -124,7 +130,7 @@ const ChatScreen = observer(props => {
         row
         center
         space="between"
-        style={[style.mainHeader, {marginTop: 36}]}>
+        style={[style.mainHeader, {marginTop: 35}]}>
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
