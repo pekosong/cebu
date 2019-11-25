@@ -118,7 +118,7 @@ const ChatScreen = observer(props => {
           dateFormat="ll"
           bottomOffset={50}
         />
-        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={50} /> : null}
+        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={40} /> : null}
       </Block>
     );
   };

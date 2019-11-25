@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
 
 import Block from './Block';
 import Text from './Text';
@@ -22,8 +22,28 @@ export default CardShop = props => {
     pickup,
     baby,
     tags,
+    reviewCnt,
   } = shop;
 
+  renderTag = text => {
+    return (
+      <View
+        style={{
+          height: 20,
+          width: 43,
+          backgroundColor: colors.black,
+          borderRadius: 10,
+          marginTop: 2,
+          marginRight: 3,
+          alignItems: 'center',
+          justifyContent: 'center',
+        }}>
+        <Text center white style={{fontSize: 9}}>
+          {text}
+        </Text>
+      </View>
+    );
+  };
   return (
     <TouchableOpacity
       onPress={() => {
@@ -37,57 +57,44 @@ export default CardShop = props => {
         <Favorite shop={shop}></Favorite>
         <Block
           style={{
-            height: 55,
+            height: 80,
           }}>
           <Block style={styles.top}>
             <Text h3 bold>
               {name}
             </Text>
-            <Text h4>{tags.join(', ')}</Text>
+            <Text h5 style={{marginLeft: 10}}>
+              {tags.join(', ')}
+            </Text>
           </Block>
           <Block style={styles.bottom}>
-            <AntDesign size={18} name="star" style={{color: colors.accent}} />
-            <Text h4 style={{marginLeft: 5}}>
-              {review}
+            <AntDesign size={13} name="star" style={{color: colors.primary}} />
+            <Text style={{marginLeft: 5}}>
+              {`${review} · 리뷰 ${convertComma(reviewCnt)}`}
             </Text>
-            <AntDesign
-              size={18}
-              name="heart"
-              style={{color: colors.accent, marginLeft: 10}}
-            />
-            <Text h4 style={{marginLeft: 5}}>
-              {convertComma(likes)}
-            </Text>
-            <AntDesign
-              size={18}
-              name="like1"
-              style={{color: colors.accent, marginLeft: 10}}
-            />
-            <Text h4 style={{marginLeft: 5}}>
-              {reviews.length}
+            <Text style={{marginLeft: 5}}>
+              {'· 저장 ' + convertComma(likes)}
             </Text>
           </Block>
-          <Block style={styles.corner}>
-            {korean ? (
-              <Block style={styles.icon}>
-                <AntDesign
-                  size={18}
-                  name="customerservice"
-                  style={{color: 'white'}}
-                />
-              </Block>
-            ) : null}
-            {pickup ? (
-              <Block style={styles.icon}>
-                <AntDesign size={18} name="car" style={{color: 'white'}} />
-              </Block>
-            ) : null}
-            {baby ? (
-              <Block style={{...styles.icon, marginRight: 0}}>
-                <AntDesign size={18} name="smileo" style={{color: 'white'}} />
-              </Block>
-            ) : null}
+          <Block row>
+            {korean ? renderTag('한국어') : null}
+            {pickup ? renderTag('픽업') : null}
+            {baby ? renderTag('애기') : null}
           </Block>
+          <Block style={styles.corner}></Block>
+        </Block>
+        <Block
+          style={{
+            position: 'absolute',
+            right: 10,
+            bottom: 10,
+            justifyContent: 'center',
+            alignItems: 'center',
+          }}>
+          <AntDesign size={24} name="dashboard"></AntDesign>
+          <Text h4 accent bold style={{marginTop: 3}}>
+            ~5km
+          </Text>
         </Block>
       </Block>
     </TouchableOpacity>
@@ -100,27 +107,27 @@ export const styles = StyleSheet.create({
     marginBottom: sizes.base * 1.6,
   },
   image: {
-    height: 170,
+    height: 165,
     width: width - sizes.padding * 2,
     borderRadius: 5,
     resizeMode: 'cover',
   },
   overlap: {
     width: '100%',
-    height: 170,
+    height: 165,
     position: 'absolute',
     borderRadius: 5,
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
   top: {
     flexDirection: 'row',
-    justifyContent: 'space-between',
-    marginTop: 8,
-    marginBottom: 5,
+    alignItems: 'flex-end',
+    marginTop: 6,
   },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',
+    marginVertical: 3,
   },
   corner: {
     flexDirection: 'row',

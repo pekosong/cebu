@@ -19,7 +19,7 @@ export default HeaderSection = props => {
         </Text>
         <Text>{shop.tags.join(', ')}</Text>
         <Block left row center>
-          <AntDesign size={20} color={colors.primary} name="heart"></AntDesign>
+          <AntDesign size={20} color={colors.primary} name="star"></AntDesign>
           <Text h3 bold style={{marginLeft: 5}}>
             {shop.review}
           </Text>

@@ -1,20 +1,13 @@
-import React, {useState} from 'react';
+import React from 'react';
 import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
 
-import {Block, CachedImage, Text} from 'app/src/components';
-import {sizes, colors} from 'app/src/styles';
+import {CachedImage} from 'app/src/components';
 
 const {width} = Dimensions.get('window');
 
 export default HeaderSection = props => {
   const {shop, top} = props;
-  const [imageNum, setImageNum] = useState(1);
 
-  handleScrollByX = e => {
-    if (e.nativeEvent.contentOffset.x % 360 == 0) {
-      setImageNum(parseInt(e.nativeEvent.contentOffset.x / 360) + 1);
-    }
-  };
   return (
     <Animated.View
       style={{
@@ -36,8 +29,7 @@ export default HeaderSection = props => {
         horizontal={true}
         showsHorizontalScrollIndicator={false}
         scrollEventThrottle={360}
-        pagingEnabled
-        onScroll={handleScrollByX}>
+        pagingEnabled>
         {shop.source.map(e => (
           <CachedImage
             key={e}
@@ -50,11 +42,6 @@ export default HeaderSection = props => {
           />
         ))}
       </ScrollView>
-      <Block style={styles.imageNum}>
-        <Text white bold size={11}>
-          {imageNum + ' / ' + shop.source.length}
-        </Text>
-      </Block>
     </Animated.View>
   );
 };

@@ -161,7 +161,7 @@ const CategoryScreen = observer(props => {
       {isLoaded ? (
         <ScrollView
           showsVerticalScrollIndicator={false}
-          style={{paddingTop: sizes.base * 0.8}}>
+          style={{paddingTop: sizes.base, marginBottom: 30, paddingBottom: 50}}>
           {selectedLists.length != 0
             ? selectedLists.map((shop, idx) => (
                 <CardShop
@@ -199,6 +199,7 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'space-between',
     paddingHorizontal: sizes.padding,
+    marginTop: 5,
     marginBottom: 10,
   },
   header: {

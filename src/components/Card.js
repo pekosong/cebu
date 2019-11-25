@@ -8,7 +8,7 @@ import Favorite from './Favorite';
 import {colors} from '../styles';
 
 export default Card = props => {
-  const {style, children, item, navigation} = props;
+  const {style, children, item, navigation, last} = props;
 
   return (
     <TouchableOpacity
@@ -17,7 +17,7 @@ export default Card = props => {
           shopId: item.shopCode,
         });
       }}>
-      <Block style={styles.elementContainer}>
+      <Block style={[styles.elementContainer, {marginRight: last ? 40 : 20}]}>
         <Block flex={2}>
           <Image
             style={[styles.imageStyle, styles.shodow]}
@@ -79,7 +79,6 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     width: 250,
     height: 250,
-    marginRight: 20,
   },
   imageStyle: {
     width: '100%',

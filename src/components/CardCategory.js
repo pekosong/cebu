@@ -12,7 +12,7 @@ const MAP = {
 };
 
 export default CardCategory = props => {
-  const {item, navigation} = props;
+  const {item, navigation, last} = props;
 
   return (
     <TouchableWithoutFeedback
@@ -22,7 +22,12 @@ export default CardCategory = props => {
           category: item.id,
         })
       }>
-      <Block style={[styles.categoryContainer, styles.shadow]}>
+      <Block
+        style={[
+          styles.categoryContainer,
+          styles.shadow,
+          {marginRight: last ? 45 : 5},
+        ]}>
         <Block
           style={{
             borderTopLeftRadius: 10,
@@ -53,7 +58,6 @@ export const styles = StyleSheet.create({
     width: 130,
     height: 130,
     marginLeft: 5,
-    marginRight: 5,
     backgroundColor: 'white',
   },
   shadow: {

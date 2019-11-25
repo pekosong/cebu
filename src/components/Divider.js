@@ -1,7 +1,6 @@
 import React, {Component} from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import Block from './Block';
 import {colors, sizes} from 'app/src/styles';
 
 export default class Divider extends Component {
@@ -10,7 +9,7 @@ export default class Divider extends Component {
     const dividerStyles = [styles.divider, style];
 
     return (
-      <Block color={color || colors.gray2} style={dividerStyles} {...props} />
+      <View color={color || colors.gray2} style={dividerStyles} {...props} />
     );
   }
 }

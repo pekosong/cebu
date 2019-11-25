@@ -65,6 +65,7 @@ const SearchScreen = observer(props => {
               {categories.map((item, idx) => (
                 <CardCategory
                   key={idx}
+                  last={categories.length - 1 == idx}
                   item={item}
                   navigation={navigation}></CardCategory>
               ))}
@@ -136,6 +137,7 @@ const SearchScreen = observer(props => {
                 <Card
                   key={idx}
                   item={item}
+                  last={recommendList.length - 1 == idx}
                   navigation={navigation}
                   favorite={user.myfavorites}>
                   <Text
@@ -212,6 +214,7 @@ const SearchScreen = observer(props => {
                 <Card
                   key={idx}
                   item={item}
+                  last={eventList.length - 1 == idx}
                   navigation={navigation}
                   favorite={user.myfavorites}>
                   <Text right h4 bold style={{marginTop: 5}}>

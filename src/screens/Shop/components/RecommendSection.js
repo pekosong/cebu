@@ -9,7 +9,11 @@ export default function RecommendSection(props) {
   const {navigation, recommendList, shop} = props;
 
   return (
-    <Block style={{...style.shop.container, paddingLeft: sizes.padding}}>
+    <Block
+      style={{
+        ...style.shop.container,
+        paddingLeft: sizes.padding,
+      }}>
       <Text h3 bold style={style.shop.content}>
         이 근처의 추천 장소
       </Text>
@@ -31,6 +35,7 @@ export default function RecommendSection(props) {
             <Card
               key={idx}
               item={item}
+              last={recommendList.length - 1 == idx}
               navigation={navigation}
               shopId={shop.id}>
               <Text
