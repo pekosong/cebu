@@ -1,10 +1,18 @@
-import React, {useState, useEffect, Fragment, useRef} from 'react';
+import React, {
+  useState,
+  useEffect,
+  Fragment,
+  useRef,
+  useContext,
+  useReducer,
+} from 'react';
 import {
   Platform,
   StyleSheet,
   TouchableOpacity,
   ScrollView,
   TextInput,
+  ActivityIndicator,
 } from 'react-native';
 
 import Block from './Block';
@@ -12,12 +20,14 @@ import Text from './Text';
 import Button from './Button';
 import CachedImage from './CachedImage';
 
-import uuidv1 from 'uuid/v1';
-
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
-import {useSelector, useDispatch, shallowEqual} from 'react-redux';
-import {updateShop, makeResevation} from 'app/src/redux/action';
+
+import {observer} from 'mobx-react-lite';
+import {UserStoreContext} from '../store/user';
+import {updateUserReservation} from '../api/user';
+import {updateShopReservation} from '../api/shop';
+
 import StarRating from 'react-native-star-rating';
 
 const TIMES = [
@@ -35,34 +45,64 @@ const TIMES = [
   '21:00',
 ];
 
-export default ReservationModal = props => {
+const initialReservationState = {
+  date: '',
+  time: '',
+  people: 1,
+  text: '',
+  pickupTime: '',
+  pickupLocation: '',
+};
+
+const reservationReducer = (state, action) => {
+  switch (action.type) {
+    case 'reset': {
+      return initialReservationState;
+    }
+    case 'update': {
+      return {...state, [action.name]: action.value};
+    }
+    case 'decrementPeople': {
+      const people = state.people;
+      return {...state, people: people == 1 ? people : people - 1};
+    }
+    case 'incrementPeople': {
+      return {...state, people: state.people + 1};
+    }
+    default: {
+      throw new Error(`unexpected action.type: ${action.type}`);
+    }
+  }
+};
+
+export default ReservationModal = observer(props => {
   const {shop, navigation, setVisible} = props;
-  const [todo, setTodo] = useState({});
   const [myReservations, setMyReservations] = useState([]);
 
-  const [date, setDate] = useState({});
+  const [days, setDays] = useState({});
+
+  const [reservation, dispatchReservation] = useReducer(
+    reservationReducer,
+    initialReservationState,
+  );
+
+  const {date, time, people, text, pickupTime, pickupLocation} = reservation;
+
   const [reservationDate, setReservationDate] = useState('');
   const [reservationTime, setReservationTime] = useState('');
   const [timeCan, setTimeCan] = useState([]);
 
-  const [selectedDate, setSelectedDate] = useState('');
   const [reservationId, setReservationId] = useState('');
-  const [time, setTime] = useState('');
-  const [people, setPeople] = useState(1);
-  const [text, setText] = useState('');
-  const [pickuptime, setPickupTime] = useState('');
-  const [pickupLocation, setPickupLocation] = useState('');
-  const [pickupCar, setPickpCar] = useState('');
 
   const [errMsg, setErrMsg] = useState('');
-  const [isChange, setIsChange] = useState(false);
+  const [isEdit, setIsEdit] = useState(false);
   const [edit, setEdit] = useState(true);
+
+  const [loading, setLoading] = useState(false);
 
   const editPage = useRef(null);
 
-  const user = useSelector(state => state.user, shallowEqual);
-
-  const dispatch = useDispatch();
+  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
     let reservation = navigation.getParam('todo');
@@ -75,33 +115,57 @@ export default ReservationModal = props => {
     setMyReservations(user.reservations);
 
     if (reservation) {
-      const {date, time, people, text, reservationId} = reservation;
+      const {
+        date,
+        time,
+        people,
+        text,
+        reservationId,
+        pickupTime,
+        pickupLocation,
+      } = reservation;
 
-      setDate(days);
-      setSelectedDate(date);
-      setReservationDate(date);
-      setReservationId(reservationId);
-      setTime(time);
-      setReservationTime(time);
-      setPeople(people);
-      setText(text);
+      setDays(days);
       setTimeCan(
         user.reservations.filter(e => e.date == date).map(e => e.time),
       );
-      setIsChange(true);
+
+      setReservationDate(date);
+      setReservationId(reservationId);
+      setReservationTime(time);
+
+      dispatchReservation({type: 'update', value: date, name: 'date'});
+      dispatchReservation({type: 'update', value: time, name: 'time'});
+      dispatchReservation({
+        type: 'update',
+        value: people,
+        name: 'people',
+      });
+      dispatchReservation({type: 'update', value: text, name: 'text'});
+      dispatchReservation({
+        type: 'update',
+        value: pickupTime,
+        name: 'pickupTime',
+      });
+      dispatchReservation({
+        type: 'update',
+        value: pickupLocation,
+        name: 'pickupLocation',
+      });
+      setIsEdit(true);
     } else {
       const firstDay = Object.keys(days)[0];
-
-      setDate(days);
+      setDays(days);
       setTimeCan(
         user.reservations.filter(e => e.date == firstDay).map(e => e.time),
       );
-      setSelectedDate(firstDay);
-      setIsChange(false);
+      dispatchReservation({type: 'update', value: firstDay, name: 'date'});
+      setIsEdit(false);
     }
-  }, [user]);
+  }, []);
 
   handleMakeReservation = () => {
+    setLoading(true);
     const {email, name, phone, sex, image} = user;
     let reservation = {};
     reservation['reservationId'] = new Date().getUTCMilliseconds();
@@ -112,13 +176,13 @@ export default ReservationModal = props => {
     reservation['phone'] = phone;
     reservation['sex'] = sex;
     reservation['image'] = image;
+
+    reservation['date'] = date;
     reservation['time'] = time;
     reservation['people'] = people;
-    reservation['date'] = selectedDate;
     reservation['text'] = text;
     reservation['pickupLocation'] = pickupLocation;
-    reservation['pickupTime'] = pickuptime;
-    reservation['pickupCar'] = '';
+    reservation['pickupTime'] = pickupTime;
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
@@ -130,15 +194,15 @@ export default ReservationModal = props => {
     let shopReservations = shop.reservations;
     userReservations.push(reservation);
     shopReservations.push(reservation);
-    dispatch(
-      makeResevation(userReservations, shopReservations, user.email, shop.id),
-    );
-    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
-      setVisible(false),
-    );
+
+    updateUserReservation(user.email, userReservations);
+    updateShopReservation(shop.id, shopReservations).then(() => {
+      setVisible(false);
+    });
   };
 
-  handleChangeReservation = () => {
+  handleUpdateReservation = () => {
+    setLoading(true);
     const {email, name, phone, sex, image} = user;
 
     let reservation = {};
@@ -150,13 +214,13 @@ export default ReservationModal = props => {
     reservation['phone'] = phone;
     reservation['sex'] = sex;
     reservation['image'] = image;
+
+    reservation['date'] = date;
     reservation['time'] = time;
     reservation['people'] = people;
-    reservation['date'] = selectedDate;
     reservation['text'] = text;
     reservation['pickupLocation'] = pickupLocation;
-    reservation['pickupTime'] = pickuptime;
-    reservation['pickupCar'] = '';
+    reservation['pickupTime'] = pickupTime;
     reservation['shop'] = {
       id: shop.id,
       name: shop.name,
@@ -164,51 +228,42 @@ export default ReservationModal = props => {
       src: shop.preview,
     };
 
-    let userReservations = user.reservations;
-    let shopReservations = shop.reservations;
-
-    userReservations = userReservations.filter(
+    const userReservations = user.reservations.filter(
       e => e.reservationId != reservationId,
     );
-    shopReservations = shopReservations.filter(
+    const shopReservations = shop.reservations.filter(
       e => e.reservationId != reservationId,
     );
 
     userReservations.push(reservation);
     shopReservations.push(reservation);
-    dispatch(
-      makeResevation(userReservations, shopReservations, user.email, shop.id),
-    );
-    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
-      navigation.goBack(),
-    );
+    updateUserReservation(user.email, userReservations);
+    updateShopReservation(shop.id, shopReservations).then(() => {
+      navigation.goBack();
+    });
   };
 
   handleDeleteReservation = () => {
-    let userReservations = user.reservations;
-    let shopReservations = shop.reservations;
+    setLoading(true);
 
-    userReservations = userReservations.filter(
+    const userReservations = user.reservations.filter(
       e => e.reservationId != reservationId,
     );
-    shopReservations = shopReservations.filter(
+    const shopReservations = shop.reservations.filter(
       e => e.reservationId != reservationId,
     );
-
-    dispatch(
-      makeResevation(userReservations, shopReservations, user.email, shop.id),
-    );
-    dispatch(updateShop({...shop, reservations: shopReservations})).then(() =>
-      navigation.goBack(),
-    );
+    updateUserReservation(user.email, userReservations);
+    updateShopReservation(shop.id, shopReservations).then(() => {
+      navigation.goBack();
+    });
   };
 
   selectedDateColor = t => {
-    return t == selectedDate ? colors.white : colors.black;
+    return t == date ? colors.white : colors.black;
   };
 
   seletedTimeStyle = t => {
-    return reservationDate == selectedDate && reservationTime == t
+    return reservationDate == date && reservationTime == t
       ? styles.reserTime
       : timeCan.indexOf(t) != -1
       ? styles.noTime
@@ -218,7 +273,7 @@ export default ReservationModal = props => {
   };
 
   seletedTimeColor = t => {
-    return reservationDate == selectedDate && t == reservationTime
+    return reservationDate == date && t == reservationTime
       ? colors.accent
       : timeCan.indexOf(t) != -1
       ? colors.primary
@@ -228,9 +283,9 @@ export default ReservationModal = props => {
   };
 
   renderName = t => {
-    return myReservations.filter(e => e.date == selectedDate && e.time == t)[0][
-      'shop'
-    ]['name'];
+    return myReservations.filter(e => e.date == date && e.time == t)[0]['shop'][
+      'name'
+    ];
   };
 
   renderEditPage = () => (
@@ -239,15 +294,19 @@ export default ReservationModal = props => {
         <Text style={{...styles.textStyle}}>예약일</Text>
         <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
           <Block row>
-            {Object.keys(date).map(t => (
+            {Object.keys(days).map(t => (
               <Button
                 key={t}
-                style={t == selectedDate ? styles.onDate : styles.date}
+                style={t == date ? styles.onDate : styles.date}
                 onPress={() => {
                   setTimeCan(
                     myReservations.filter(e => e.date == t).map(e => e.time),
                   );
-                  setSelectedDate(t);
+                  dispatchReservation({
+                    type: 'update',
+                    value: t,
+                    name: 'date',
+                  });
                 }}>
                 <Block middle center>
                   <Text
@@ -255,7 +314,7 @@ export default ReservationModal = props => {
                       color: selectedDateColor(t),
                       marginBottom: 2,
                     }}>
-                    {date[t]}
+                    {days[t]}
                   </Text>
                   <Text
                     style={{
@@ -276,19 +335,25 @@ export default ReservationModal = props => {
               <Button
                 key={t}
                 style={[styles.timeStyle, seletedTimeStyle(t)]}
-                onPress={() => setTime(t)}>
+                onPress={() =>
+                  dispatchReservation({
+                    type: 'update',
+                    value: t,
+                    name: 'time',
+                  })
+                }>
                 <Block center middle>
                   <Text
                     style={{
                       color: seletedTimeColor(t),
                     }}>
-                    {reservationDate == selectedDate && reservationTime == t
+                    {reservationDate == date && reservationTime == t
                       ? '현예약'
                       : timeCan.indexOf(t) != -1
                       ? `예약중`
                       : t}
                   </Text>
-                  {reservationDate == selectedDate &&
+                  {reservationDate == date &&
                   reservationTime == t ? null : timeCan.indexOf(t) != -1 ? (
                     <Text
                       style={{
@@ -322,9 +387,7 @@ export default ReservationModal = props => {
               position: 'absolute',
               left: 20,
             }}
-            onPress={() => {
-              setPeople(people == 1 ? people : people - 1);
-            }}>
+            onPress={() => dispatchReservation({type: 'decrementPeople'})}>
             <Text h1 bold black>
               -
             </Text>
@@ -337,20 +400,26 @@ export default ReservationModal = props => {
               position: 'absolute',
               right: 20,
             }}
-            onPress={() => setPeople(people + 1)}>
+            onPress={() => dispatchReservation({type: 'incrementPeople'})}>
             <Text h1 black>
               +
             </Text>
           </TouchableOpacity>
         </Block>
-        {shop.pickup ? (
+        {shop.pickup && (
           <Fragment>
             <Block style={styles.inputRow}>
               <Text style={styles.textStyle}>픽업 시간</Text>
               <TextInput
-                defaultValue={pickuptime}
+                defaultValue={pickupTime}
                 placeholder="10시 30분"
-                onChangeText={e => setPickupTime(e)}
+                onChangeText={e =>
+                  dispatchReservation({
+                    type: 'update',
+                    value: e,
+                    name: 'pickupTime',
+                  })
+                }
                 style={{fontSize: 20}}
               />
             </Block>
@@ -359,49 +428,63 @@ export default ReservationModal = props => {
               <TextInput
                 defaultValue={pickupLocation}
                 placeholder="호텔 정문"
-                onChangeText={e => setPickupLocation(e)}
+                onChangeText={e =>
+                  dispatchReservation({
+                    type: 'update',
+                    value: e,
+                    name: 'pickupLocation',
+                  })
+                }
                 style={{fontSize: 20}}
               />
             </Block>
           </Fragment>
-        ) : null}
+        )}
 
         <Block style={styles.inputRow}>
           <Text style={styles.textStyle}>추가 요청 사항</Text>
           <TextInput
             defaultValue={text}
             placeholder=""
-            onChangeText={e => setText(e)}
+            onChangeText={e =>
+              dispatchReservation({type: 'update', value: e, name: 'text'})
+            }
             style={{fontSize: 20}}
           />
         </Block>
       </Block>
-
-      {errMsg ? (
+      {errMsg != '' && (
         <Text h4 primary style={{marginVertical: 20}}>
           {errMsg}
         </Text>
-      ) : null}
-
-      {isChange ? (
+      )}
+      {isEdit ? (
         <Block>
           <Button
             border
             onPress={() => {
-              handleChangeReservation();
+              handleUpdateReservation();
             }}>
-            <Text bold accent center>
-              예약 변경 요청
-            </Text>
+            {loading ? (
+              <ActivityIndicator></ActivityIndicator>
+            ) : (
+              <Text bold accent center>
+                예약 요청
+              </Text>
+            )}
           </Button>
           <Button
             shadow
             onPress={() => {
               handleDeleteReservation();
             }}>
-            <Text center bold accent>
-              취소 요청
-            </Text>
+            {loading ? (
+              <ActivityIndicator></ActivityIndicator>
+            ) : (
+              <Text bold accent center>
+                취소 요청
+              </Text>
+            )}
           </Button>
         </Block>
       ) : (
@@ -409,8 +492,8 @@ export default ReservationModal = props => {
           <Button
             border
             onPress={() => {
-              if (selectedDate == '' || time == '' || people == '') {
-                setErrMsg('예약 일시 / 시간 / 인원 입력을 필수 입니다');
+              if (date == '' || time == '' || people == '') {
+                setErrMsg('예약 일시 / 시간 / 인원 입력은 필수 입니다');
               } else {
                 editPage.current.scrollTo({x: 0, y: 0, animated: true});
                 setErrMsg('');
@@ -461,7 +544,7 @@ export default ReservationModal = props => {
       <Block row space="between" style={styles.inputRow}>
         <Text h2>예약 일시</Text>
         <Text h2 bold accent>
-          {selectedDate}
+          {date}
         </Text>
       </Block>
 
@@ -478,13 +561,12 @@ export default ReservationModal = props => {
           {people}명
         </Text>
       </Block>
-
-      {shop.pickup ? (
+      {shop.pickup && (
         <Fragment>
           <Block row space="between" style={styles.inputRow}>
             <Text h2>픽업 시간</Text>
             <Text h2 bold accent>
-              {pickuptime}
+              {pickupTime}
             </Text>
           </Block>
           <Block row space="between" style={styles.inputRow}>
@@ -494,8 +576,7 @@ export default ReservationModal = props => {
             </Text>
           </Block>
         </Fragment>
-      ) : null}
-
+      )}
       <Block style={styles.inputRow}>
         <Text h2>추가 요청 사항</Text>
         <Text h3 style={{marginTop: 10}}>
@@ -508,9 +589,13 @@ export default ReservationModal = props => {
           onPress={() => {
             handleMakeReservation();
           }}>
-          <Text bold accent center>
-            예약 신청
-          </Text>
+          {loading ? (
+            <ActivityIndicator></ActivityIndicator>
+          ) : (
+            <Text bold accent center>
+              예약 신청
+            </Text>
+          )}
         </Button>
         <Button
           onPress={() => {
@@ -534,12 +619,12 @@ export default ReservationModal = props => {
         <Ionicons size={50} color={colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
-        {edit != true ? '예약 내역' : isChange ? '예약 변경' : '예약 신청'}
+        {edit != true ? '예약 내역' : isEdit ? '예약 변경' : '예약 신청'}
       </Text>
       {edit ? renderEditPage() : renderConfirmPage()}
     </Block>
   );
-};
+});
 
 export const styles = StyleSheet.create({
   timeStyle: {

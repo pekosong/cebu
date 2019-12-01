@@ -166,7 +166,7 @@ AppBar.navigationOptions = {
 
 const styles = StyleSheet.create({
   header: {
-    paddingTop: sizes.padding * 1.5,
+    paddingTop: sizes.padding * 1.8,
     height: 90,
     width: width,
     paddingHorizontal: sizes.padding,

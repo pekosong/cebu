@@ -130,7 +130,7 @@ const ChatScreen = observer(props => {
         row
         center
         space="between"
-        style={[style.mainHeader, {marginTop: 35}]}>
+        style={[style.mainHeader, {marginTop: 38}]}>
         <Button onPress={() => navigation.goBack()}>
           <Block center row>
             <Ionicons size={30} color={colors.black} name="ios-arrow-back" />

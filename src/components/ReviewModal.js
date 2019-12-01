@@ -11,9 +11,7 @@ import StarRating from 'react-native-star-rating';
 export default ReviewModal = props => {
   const {setReviewVisible, reviews, review, reviewCnt} = props;
 
-  useEffect(() => {
-    console.log(reviews);
-  }, []);
+  useEffect(() => {}, []);
 
   return (
     <Block
@@ -30,9 +28,8 @@ export default ReviewModal = props => {
         </Text>
         <Block>
           <Text h4 right>
-            {reviewCnt
-              ? reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' '
-              : null}
+            {reviewCnt &&
+              reviewCnt.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',') + ' '}
             Reviews
           </Text>
           <Block style={{position: 'absolute', right: 62, top: 25}}>
@@ -48,12 +45,10 @@ export default ReviewModal = props => {
         </Block>
       </Block>
       <ScrollView showsVerticalScrollIndicator={false} style={{marginTop: 10}}>
-        {reviews
-          ? reviews.map((review, idx) => <Reviews key={idx} review={review} />)
-          : null}
-        {reviews
-          ? reviews.map((review, idx) => <Reviews key={idx} review={review} />)
-          : null}
+        {reviews &&
+          reviews.map((review, idx) => <Reviews key={idx} review={review} />)}
+        {reviews &&
+          reviews.map((review, idx) => <Reviews key={idx} review={review} />)}
       </ScrollView>
     </Block>
   );

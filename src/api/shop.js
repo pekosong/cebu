@@ -38,14 +38,11 @@ const updateMessages = (shop, messages) => {
 };
 
 const updateShopReservation = (shopId, shopReservations) => {
-  firebase
+  return firebase
     .firestore()
     .collection('shops')
     .doc(shopId)
-    .update({reservations: shopReservations})
-    .then(() => {
-      console.log('made reservation');
-    });
+    .update({reservations: shopReservations});
 };
 
 export {

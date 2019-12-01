@@ -77,9 +77,9 @@ export default CardShop = props => {
             </Text>
           </Block>
           <Block row>
-            {korean ? renderTag('한국어') : null}
-            {pickup ? renderTag('픽업') : null}
-            {baby ? renderTag('애기') : null}
+            {korean && renderTag('한국어')}
+            {pickup && renderTag('픽업')}
+            {baby && renderTag('애기')}
           </Block>
           <Block style={styles.corner}></Block>
         </Block>
@@ -87,13 +87,10 @@ export default CardShop = props => {
           style={{
             position: 'absolute',
             right: 10,
-            bottom: 10,
-            justifyContent: 'center',
-            alignItems: 'center',
+            bottom: 20,
           }}>
-          <AntDesign size={24} name="dashboard"></AntDesign>
-          <Text h4 accent bold style={{marginTop: 3}}>
-            ~5km
+          <Text h4 bold>
+            0km ~ 5km
           </Text>
         </Block>
       </Block>
