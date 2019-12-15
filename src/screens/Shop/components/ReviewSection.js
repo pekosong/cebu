@@ -1,4 +1,4 @@
-import React, {useState, useContext, Fragment} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, TouchableOpacity, Modal} from 'react-native';
 import {
   Block,
@@ -21,31 +21,26 @@ const ReviewSection = observer(props => {
   const [reviewVisible, setReviewVisible] = useState(false);
   const [newReviewVisible, setNewReviewVisible] = useState(false);
 
-  renderReviews = () => {
-    sortedReviews = shop.reviews.sort((a, b) => {
-      return b.date.seconds - a.date.seconds;
-    });
-
-    return sortedReviews
-      .slice(0, 3)
-      .map((review, idx) => <Reviews key={idx} review={review} />);
-  };
-
   return (
-    <Fragment>
-      <Block style={style.shop.categories}>
-        <Text h3 bold style={{marginBottom: 10}}>
-          후기
-        </Text>
-        {renderReviews()}
-        {renderReviews()}
-        <Block style={{marginTop: sizes.padding}}>
+    <>
+      <Block style={[style.shop.categories]}>
+        <Block row space="between" style={{marginBottom: 20}}>
+          <Text h2 bold>
+            이용 후기
+          </Text>
           <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
-            <Text right h3 bold color={colors.accent}>
+            <Text h2 bold accent>
               후기 작성
             </Text>
           </TouchableOpacity>
         </Block>
+        {shop.reviews
+          .sort((a, b) => {
+            return b.date.seconds - a.date.seconds;
+          })
+          .map((review, idx) => (
+            <Reviews key={idx} review={review} />
+          ))}
       </Block>
       <Modal
         animationType="slide"
@@ -70,7 +65,7 @@ const ReviewSection = observer(props => {
           setNewReviewVisible={setNewReviewVisible}
         />
       </Modal>
-    </Fragment>
+    </>
   );
 });
 

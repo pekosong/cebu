@@ -15,7 +15,9 @@ export default CardMenu = props => {
     <TouchableOpacity onPress={() => {}}>
       <Block style={styles.container}>
         <Block style={{marginRight: 10}}>
-          <Text h4>{item.name}</Text>
+          <Text h4 style={{fontWeight: 800}}>
+            {item.name}
+          </Text>
           <Text h3 style={{marginVertical: 6}}>
             {item.price}
           </Text>
@@ -33,14 +35,15 @@ export const styles = StyleSheet.create({
   container: {
     justifyContent: 'space-between',
     flexDirection: 'row',
-    marginVertical: 5,
-    paddingBottom: 10,
+    paddingBottom: 20,
+    marginBottom: 20,
     borderBottomWidth: 0.2,
     borderBottomColor: colors.gray2,
   },
   imageStyle: {
+    borderRadius: 5,
     width: 110,
-    height: 80,
+    height: 110,
     resizeMode: 'cover',
   },
 });

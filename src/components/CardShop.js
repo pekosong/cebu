@@ -31,14 +31,15 @@ export default CardShop = props => {
         style={{
           height: 20,
           width: 43,
-          backgroundColor: colors.black,
+          borderWidth: 1,
+          borderColor: colors.accent,
           borderRadius: 10,
           marginTop: 2,
           marginRight: 3,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text center white style={{fontSize: 9}}>
+        <Text center accent style={{fontSize: 9}}>
           {text}
         </Text>
       </View>
@@ -82,16 +83,6 @@ export default CardShop = props => {
             {baby && renderTag('애기')}
           </Block>
           <Block style={styles.corner}></Block>
-        </Block>
-        <Block
-          style={{
-            position: 'absolute',
-            right: 10,
-            bottom: 20,
-          }}>
-          <Text h4 bold>
-            0km ~ 5km
-          </Text>
         </Block>
       </Block>
     </TouchableOpacity>

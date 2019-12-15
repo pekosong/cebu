@@ -72,7 +72,7 @@ const SearchScreen = observer(props => {
             </ScrollView>
           </Block>
 
-          <Block style={styles.title}>
+          {/* <Block style={styles.title}>
             <Text h1 bold>
               이런 활동은 어떠세요
             </Text>
@@ -110,7 +110,7 @@ const SearchScreen = observer(props => {
                 </Text>
               </Button>
             </Block>
-          </Block>
+          </Block> */}
           {/* 할인 정보 */}
           <Block style={styles.title}>
             <Block row space="between">

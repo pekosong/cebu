@@ -24,40 +24,44 @@ export default CardProgram = props => {
           </Block>
         </Block>
         <Block style={{marginTop: 10}}>
-          <Text h4 bold>
+          <Text h3 bold style={{marginVertical: 10}}>
             가격 정보
           </Text>
-          <Block row style={{marginTop: 5}}>
-            <Block style={styles.rightBorder}>
-              <Text accent h4>
-                {'120분'}
-              </Text>
-              <Text h3 style={{marginTop: 3}}>
+          <Block style={{marginTop: 5}}>
+            <Block
+              row
+              space="between"
+              style={{
+                marginBottom: 6,
+                paddingBottom: 6,
+              }}>
+              <Text h3>{'120분'}</Text>
+              <Text h3 bold>
                 {'1,100P'}
               </Text>
             </Block>
-            <Block style={styles.rightBorder}>
-              <Text accent h4>
-                {'90분'}
-              </Text>
-              <Text h3 style={{marginTop: 3}}>
+            <Block
+              row
+              space="between"
+              style={{
+                marginBottom: 6,
+                paddingBottom: 6,
+              }}>
+              <Text h3>{'90분'}</Text>
+              <Text h3 bold>
                 {'850P'}
               </Text>
             </Block>
-            <Block style={styles.rightBorder}>
-              <Text accent h4>
-                {'60분'}
-              </Text>
-              <Text h3 style={{marginTop: 3}}>
+            <Block
+              row
+              space="between"
+              style={{
+                marginBottom: 6,
+                paddingBottom: 6,
+              }}>
+              <Text h3>{'60분'}</Text>
+              <Text h3 bold>
                 {'600P'}
-              </Text>
-            </Block>
-            <Block>
-              <Text accent h4>
-                {'40분'}
-              </Text>
-              <Text h3 style={{marginTop: 3}}>
-                {'400P'}
               </Text>
             </Block>
           </Block>
@@ -69,8 +73,8 @@ export default CardProgram = props => {
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: 15,
-    paddingBottom: 15,
+    marginBottom: 30,
+    paddingBottom: 30,
     borderBottomWidth: 0.2,
     borderBottomColor: colors.gray2,
   },

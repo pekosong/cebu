@@ -11,7 +11,7 @@ export default function ShopInfoSection(props) {
   const [imageNum, setImageNum] = useState(1);
 
   handleScrollByX = e => {
-    const xPosition = Platform.OS === 'android' ? 360 : 414;
+    const xPosition = Platform.OS === 'android' ? 316 : 370;
     if (e.nativeEvent.contentOffset.x % xPosition == 0) {
       setImageNum(parseInt(e.nativeEvent.contentOffset.x / xPosition) + 1);
     }
@@ -19,12 +19,9 @@ export default function ShopInfoSection(props) {
 
   return (
     <Fragment>
-      <Block style={{maxHeight: 300}}>
-        <Text
-          h3
-          bold
-          style={[style.shop.content, {paddingHorizontal: sizes.padding}]}>
-          사진정보
+      <Block style={[style.shop.categories]}>
+        <Text h2 bold style={{marginBottom: 20}}>
+          사진 정보
         </Text>
         <ScrollView
           horizontal={true}
@@ -38,7 +35,8 @@ export default function ShopInfoSection(props) {
               uri={e}
               style={{
                 height: 260,
-                width: width,
+                width: width - sizes.padding * 2,
+                borderRadius: 5,
                 resizeMode: 'contain',
               }}
             />
@@ -51,13 +49,9 @@ export default function ShopInfoSection(props) {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block
-        style={[
-          style.shop.categories,
-          {flex: 0, width: width, marginTop: 0, height: 360},
-        ]}>
-        <Text h3 bold style={style.shop.content}>
-          업체정보
+      <Block style={[style.shop.categories]}>
+        <Text h2 bold style={[style.shop.content, {marginBottom: 20}]}>
+          업체 정보
         </Text>
         <Block>
           <Block style={style.inputRow}>
@@ -100,23 +94,19 @@ export default function ShopInfoSection(props) {
       </Block>
       <Divider></Divider>
 
-      <Block style={[style.shop.categories, {maxHeight: 450}]}>
-        <Text h3 bold>
+      <Block style={[style.shop.categories]}>
+        <Text h3 bold style={{marginBottom: 20}}>
           위치
         </Text>
-        <Block row space="between" style={{marginTop: 10}}>
+        <Block row space="between">
           <Text h3>{shop.address}</Text>
           <Text h3>{shop.engAddress}</Text>
         </Block>
         <MapView
           style={{
-            position: 'absolute',
-            top: 50,
-            width: width,
-            height: 300,
+            width: width - sizes.padding * 2,
+            height: 250,
             marginTop: sizes.padding / 2,
-            marginLeft: -sizes.padding,
-            marginRight: -sizes.padding,
           }}
           initialRegion={{
             latitude: 37.78825,

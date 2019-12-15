@@ -27,7 +27,7 @@ export default HeaderSection = props => {
         <Text>
           {'리뷰 ' +
             convertComma(shop.reviewCnt) +
-            ' | ' +
+            ' · ' +
             '저장 ' +
             shop.likes}
         </Text>
@@ -38,7 +38,7 @@ export default HeaderSection = props => {
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: 230,
+    top: 190,
     position: 'absolute',
     height: 140,
     width: width - 60,

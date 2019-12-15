@@ -4,13 +4,6 @@ import {StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
 import Block from './Block';
 import Text from './Text';
 
-const MAP = {
-  Restaurant: '식당',
-  Massage: '마사지',
-  Nail: '네일',
-  Activity: '액티비티',
-};
-
 export default CardCategory = props => {
   const {item, navigation, last} = props;
 
@@ -43,7 +36,7 @@ export default CardCategory = props => {
             source={item.src}></Image>
 
           <Text black style={{padding: 12}}>
-            {MAP[item.id]}
+            {item.name}
           </Text>
         </Block>
       </Block>

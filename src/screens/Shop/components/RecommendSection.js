@@ -1,59 +1,88 @@
 import React from 'react';
 
-import {StyleSheet, ScrollView} from 'react-native';
-import {Card, Block, Text} from 'app/src/components';
+import {StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+import {Block, Text} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {sizes, style} from 'app/src/styles';
+import {sizes, style, colors} from 'app/src/styles';
+import {convertComma} from 'app/src/utils';
+import {AntDesign} from '@expo/vector-icons';
 
 export default function RecommendSection(props) {
   const {navigation, recommendList, shop} = props;
 
   return (
-    <Block
-      style={{
-        ...style.shop.container,
-        paddingLeft: sizes.padding,
-      }}>
-      <Text h3 bold style={style.shop.content}>
-        이 근처의 추천 장소
+    <Block style={[style.shop.categories]}>
+      <Text h2 bold style={{marginBottom: 20}}>
+        근처 추천 장소
       </Text>
-      <Text h4 style={{marginBottom: 10}}>
-        {shop.name} 근처의 이런 곳은 어때요?
-      </Text>
-      <Block
-        style={{
-          marginLeft: -sizes.padding,
-        }}>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={true}
-          style={{
-            paddingLeft: sizes.padding,
-          }}>
-          {recommendList.map((item, idx) => (
-            <Card
-              key={idx}
-              item={item}
-              last={recommendList.length - 1 == idx}
-              navigation={navigation}
-              shopId={shop.id}>
-              <Text
-                gray
-                caption
+      <ScrollView
+        horizontal={false}
+        showsHorizontalScrollIndicator={false}
+        scrollEnabled={true}>
+        {recommendList.map((item, idx) => (
+          <TouchableOpacity
+            key={idx}
+            onPress={() => {
+              navigation.push('Shop', {
+                shopId: item.shopCode,
+              });
+            }}>
+            <Block style={styles.elementContainer}>
+              <Block
                 style={{
-                  textDecorationLine: 'line-through',
-                  textDecorationStyle: 'solid',
+                  flex: 0,
+                  width: 110,
+                  height: 120,
+                  marginRight: 10,
                 }}>
-                {item.beforePrice}원
-              </Text>
-              <Text h4 bold style={{marginTop: 5}}>
-                {item.afterPrice}원
-              </Text>
-            </Card>
-          ))}
-        </ScrollView>
-      </Block>
+                <Image
+                  style={[styles.imageStyle, styles.shodow]}
+                  source={item.src}></Image>
+                <Favorite
+                  shop={{
+                    id: item.shopCode,
+                    name: item.shop,
+                    preview: item.url,
+                  }}></Favorite>
+                <Block
+                  style={{
+                    position: 'absolute',
+                    width: '100%',
+                    height: '100%',
+                    top: 0,
+                    left: 0,
+                    backgroundColor: 'rgba(0,0,0,0.1)',
+                    borderRadius: 5,
+                  }}></Block>
+              </Block>
+              <Block>
+                <Text style={{fontWeight: 'bold', color: colors.accent}}>
+                  {item.tag}
+                </Text>
+                <Text h3 bold style={{marginVertical: 5}}>
+                  {item.shop}
+                </Text>
+                <Text gray>
+                  필리핀 인기 만점의 전신 아로마 마사지 제공하며, 필리핀 전통
+                </Text>
+                <Block row style={{marginVertical: 5}}>
+                  <AntDesign
+                    size={13}
+                    name="star"
+                    style={{color: colors.primary}}
+                  />
+                  <Text style={{marginLeft: 5}}>
+                    {`3 · 리뷰 ${convertComma(shop.reviewCnt)}`}
+                  </Text>
+                  <Text style={{marginLeft: 5}}>
+                    {'· 저장 ' + convertComma(shop.likes)}
+                  </Text>
+                </Block>
+              </Block>
+            </Block>
+          </TouchableOpacity>
+        ))}
+      </ScrollView>
     </Block>
   );
 }
@@ -66,4 +95,33 @@ RecommendSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  elementContainer: {
+    borderRadius: 3,
+    height: 140,
+    display: 'flex',
+    flexDirection: 'row',
+    justifyContent: 'flex-start',
+    alignItems: 'center',
+    paddingBottom: 20,
+    marginBottom: 30,
+    borderBottomWidth: 0.2,
+    borderBottomColor: 'grey',
+  },
+  imageStyle: {
+    width: '100%',
+    height: '100%',
+    resizeMode: 'cover',
+    borderRadius: 3,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 1,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 3,
+  },
+});

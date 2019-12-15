@@ -35,7 +35,7 @@ export default HeaderSection = props => {
             key={e}
             uri={e}
             style={{
-              height: 250,
+              height: 260,
               width: width,
               resizeMode: 'cover',
             }}

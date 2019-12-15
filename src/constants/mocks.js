@@ -183,14 +183,6 @@ const categories = [
     src: require('../assets/images/search/restaurant.jpg'),
   },
   {
-    id: 'Massage',
-    name: '마사지',
-    tags: ['all', 'aesthetic'],
-    count: 16,
-    icon: 'ios-hand',
-    src: require('../assets/images/search/massage.jpg'),
-  },
-  {
     id: 'Activity',
     name: '액티비티',
     tags: ['all', 'activity'],
@@ -199,8 +191,16 @@ const categories = [
     src: require('../assets/images/search/seasports.jpg'),
   },
   {
+    id: 'Massage',
+    name: '마사지',
+    tags: ['all', 'aesthetic'],
+    count: 16,
+    icon: 'ios-hand',
+    src: require('../assets/images/search/massage.jpg'),
+  },
+  {
     id: 'Nail',
-    name: '네일',
+    name: '19금',
     tags: ['all', 'aesthetic'],
     count: 16,
     icon: 'ios-hand',
