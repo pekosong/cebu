@@ -16,13 +16,13 @@ const style = {
     justifyContent: 'center',
   },
   header: {
-    marginTop: Platform.OS === 'ios' ? null : sizes.base * 3,
+    paddingTop: Platform.OS === 'ios' ? null : sizes.base * 3,
     marginBottom: sizes.base,
     paddingHorizontal: sizes.padding,
   },
   mainHeader: {
-    marginTop: Platform.OS === 'ios' ? sizes.base * 4.2 : sizes.base * 4,
-    marginBottom: sizes.base,
+    flex: 0,
+    paddingTop: Platform.OS === 'ios' ? sizes.base * 4.2 : sizes.base * 4,
     paddingHorizontal: sizes.padding,
   },
   shop: {

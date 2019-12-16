@@ -9,12 +9,12 @@ import CategoryScreen from 'app/src/screens/Category';
 
 import TestScreen from 'app/src/screens/Search/TestScreen';
 
-import MyTripScreen from 'app/src/screens/MyTrip/MyTripScreen';
+import MyTripScreen from 'app/src/screens/MyTrip';
 
-import ChatListScreen from 'app/src/screens/ChatList/ChatListScreen';
-import ChatScreen from 'app/src/screens/ChatList/ChatScreen';
+import ChatListScreen from 'app/src/screens/ChatList';
+import ChatScreen from 'app/src/screens/Chat';
 
-import FavoritesScreen from 'app/src/screens/Favorites/FavoritesScreen';
+import FavoritesScreen from 'app/src/screens/Favorites';
 
 import ProfileScreen from 'app/src/screens/Profile/ProfileScreen';
 import PersonalScreen from 'app/src/screens/Profile/PersonalScreen';

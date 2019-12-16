@@ -1,7 +1,7 @@
-import React, {useEffect, useContext, Fragment} from 'react';
+import React, {useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView} from 'react-native';
 import {Block, Text, WideText} from 'app/src/components';
-import {theme, colors, sizes, style} from 'app/src/styles';
+import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
@@ -121,8 +121,8 @@ const ProfileScreen = observer(props => {
   };
 
   return (
-    <Block>
-      <Block flex={false} style={style.mainHeader}>
+    <>
+      <Block style={style.mainHeader}>
         <Text h1 bold>
           내 정보
         </Text>
@@ -130,7 +130,9 @@ const ProfileScreen = observer(props => {
       <ScrollView showsHorizontalScrollIndicator={false}>
         <Block style={styles.inputs}>
           <Block margin={[10, 0]}>
-            <Text h3>계정 관리</Text>
+            <Text h2 bold>
+              계정 관리
+            </Text>
           </Block>
           {profileList.map((item, idx) => (
             <WideText
@@ -145,9 +147,11 @@ const ProfileScreen = observer(props => {
             </WideText>
           ))}
           {user.host && (
-            <Fragment>
-              <Block style={{marginTop: 20, marginBottom: 10}}>
-                <Text h3>호스팅</Text>
+            <>
+              <Block style={{marginTop: 30, marginBottom: 10}}>
+                <Text h2 bold>
+                  호스팅
+                </Text>
               </Block>
               {hostList.map((item, idx) => (
                 <WideText
@@ -163,11 +167,13 @@ const ProfileScreen = observer(props => {
                     }}></AntDesign>
                 </WideText>
               ))}
-            </Fragment>
+            </>
           )}
 
-          <Block style={{marginTop: 20, marginBottom: 10}}>
-            <Text h3>지원</Text>
+          <Block style={{marginTop: 30, marginBottom: 10}}>
+            <Text h2 bold>
+              지원
+            </Text>
           </Block>
           {helpList.map((item, idx) => (
             <WideText
@@ -181,27 +187,18 @@ const ProfileScreen = observer(props => {
                 style={{color: colors.black}}></AntDesign>
             </WideText>
           ))}
-          <TouchableOpacity onPress={() => handleNotification()}>
-            <Block
-              row
-              space="between"
-              style={{
-                ...styles.inputRow,
-                marginTop: 10,
-              }}>
-              <Text h3>알림 테스트</Text>
-              <AntDesign
-                size={26}
-                name="dingding"
-                style={{color: colors.black}}></AntDesign>
-            </Block>
-          </TouchableOpacity>
+          <WideText onPress={() => handleNotification}>
+            <Text h3>알림 테스트</Text>
+            <AntDesign
+              size={26}
+              name="dingding"
+              style={{color: colors.black}}></AntDesign>
+          </WideText>
           <TouchableOpacity onPress={() => handleLogout()}>
             <Block
               row
               space="between"
               style={{
-                ...styles.inputRow,
                 marginVertical: 30,
               }}>
               <Text h3 primary>
@@ -215,7 +212,7 @@ const ProfileScreen = observer(props => {
           </TouchableOpacity>
         </Block>
       </ScrollView>
-    </Block>
+    </>
   );
 });
 

@@ -3,15 +3,11 @@ import {
   Dimensions,
   StyleSheet,
   ScrollView,
-  TouchableOpacity,
   ActivityIndicator,
-  Image,
 } from 'react-native';
 
-import CategoryTab from './components/CategoryTab';
-
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {CardShop, Block, Text} from 'app/src/components';
+import {CardShop, CategoryTab, Block, Text} from 'app/src/components';
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
@@ -20,7 +16,15 @@ import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 
-const {width} = Dimensions.get('window');
+const cateSrc = {
+  전체: require('app/src/assets/images/search/activity.jpg'),
+  호핑: require('app/src/assets/images/search/hoping.jpg'),
+  고래투어: require('app/src/assets/images/search/gorae.jpg'),
+  시티투어: require('app/src/assets/images/search/city.jpg'),
+  다이빙: require('app/src/assets/images/search/diving.jpg'),
+  경비행기: require('app/src/assets/images/search/plane.jpg'),
+  샌딩: require('app/src/assets/images/search/sanding.jpg'),
+};
 
 const cateMap = {
   Restaurant: '식당',
@@ -85,7 +89,8 @@ export default CategoryScreen = observer(props => {
         key={idx}
         shop={shop}
         isActivity={false}
-        navigation={navigation}></CardShop>
+        navigation={navigation}
+        isLast={list.length - 1 === idx}></CardShop>
     ));
   };
 
@@ -126,8 +131,10 @@ export default CategoryScreen = observer(props => {
                 <CategoryTab
                   key={idx}
                   tab={tab}
+                  image={cateSrc[tab]}
+                  tabName={tab}
                   isActive={catActive == tab}
-                  handleSongTab={handleSongTab}></CategoryTab>
+                  handleTab={handleSongTab}></CategoryTab>
               ))}
             </Block>
           </ScrollView>
@@ -136,8 +143,8 @@ export default CategoryScreen = observer(props => {
       <ScrollView
         showsVerticalScrollIndicator={false}
         style={{
-          paddingTop: sizes.padding,
-          marginBottom: 30,
+          paddingTop: sizes.base * 2,
+          marginBottom: 20,
           paddingBottom: 50,
         }}>
         {renderShopList()}

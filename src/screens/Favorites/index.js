@@ -1,28 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  ActivityIndicator,
-  Image,
-} from 'react-native';
+import {ScrollView, StyleSheet, ActivityIndicator} from 'react-native';
 
-import {Block, Text, CardShop} from 'app/src/components';
-
+import {Block, Text, CardShop, CategoryTab} from 'app/src/components';
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {ShopStoreContext} from 'app/src/store/shop';
-
-const cateMap = {
-  All: '전체',
-  Restaurant: '식당',
-  Massage: '마사지',
-  Nail: '네일',
-  Activity: '액티비티',
-};
 
 const cateSrc = {
   All: require('app/src/assets/images/search/activity.jpg'),
@@ -31,6 +16,16 @@ const cateSrc = {
   Nail: require('app/src/assets/images/search/nail.jpg'),
   Activity: require('app/src/assets/images/search/seasports.jpg'),
 };
+
+const cateMap = {
+  All: '전체',
+  Restaurant: '식당',
+  Massage: '마사지',
+  Cafe: '카페',
+  Bar: '술집',
+  Nail: '네일',
+};
+
 const FavoritesScreen = observer(props => {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
@@ -59,37 +54,6 @@ const FavoritesScreen = observer(props => {
     return () => {};
   }, [user]);
 
-  renderTab = tab => {
-    const isActive = active == tab;
-
-    return (
-      <TouchableOpacity
-        key={`tab-${tab}`}
-        onPress={() => handleTab(tab)}
-        style={styles.tab}>
-        <Block style={{flex: 0, width: 60, height: 60}}>
-          <Image
-            style={{
-              height: '100%',
-              width: '100%',
-              resizeMode: 'cover',
-              borderRadius: 30,
-            }}
-            source={cateSrc[tab]}></Image>
-        </Block>
-        <Text
-          center
-          size={16}
-          style={{
-            marginTop: 6,
-            color: isActive ? colors.black : colors.gray,
-          }}>
-          {cateMap[tab]}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
   handleTab = tab => {
     if (tab == 'All') {
       setSelectedFavorites(favorites);
@@ -110,24 +74,38 @@ const FavoritesScreen = observer(props => {
   }
 
   return (
-    <Block>
-      <Block flex={false} style={styles.header}>
+    <>
+      <Block style={[style.mainHeader, styles.shadow]}>
         <Text h1 bold>
           저장소
         </Text>
         <Block flex={false} row style={styles.tabs}>
-          {tabs.map(tab => renderTab(tab))}
+          {tabs.map((tab, idx) => (
+            <CategoryTab
+              key={idx}
+              tab={tab}
+              tabName={cateMap[tab]}
+              image={cateSrc[tab]}
+              isActive={active == tab}
+              handleTab={handleTab}></CategoryTab>
+          ))}
         </Block>
       </Block>
       <ScrollView
         showsVerticalScrollIndicator={false}
         scrollEnabled={true}
-        style={{paddingTop: sizes.base * 0.8}}>
+        style={{
+          paddingTop: sizes.base * 2,
+        }}>
         {selectedFavorites.map((shop, idx) => (
-          <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
+          <CardShop
+            key={idx}
+            shop={shop}
+            navigation={navigation}
+            isLast={selectedFavorites.length - 1 === idx}></CardShop>
         ))}
       </ScrollView>
-    </Block>
+    </>
   );
 });
 
@@ -142,10 +120,8 @@ FavoritesScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  header: {
+  shadow: {
     backgroundColor: 'white',
-    paddingTop: sizes.base * 4,
-    paddingHorizontal: sizes.padding,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
@@ -157,14 +133,6 @@ const styles = StyleSheet.create({
   },
   tabs: {
     marginTop: 20,
-  },
-  tab: {
-    marginRight: sizes.base * 1.2,
-    paddingBottom: sizes.base * 0.8,
-  },
-  categories: {
-    paddingHorizontal: sizes.padding,
-    marginVertical: sizes.padding,
   },
 });
 

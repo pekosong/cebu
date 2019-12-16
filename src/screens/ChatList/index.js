@@ -128,8 +128,8 @@ const ChatListScreen = observer(props => {
   }
 
   return (
-    <Block>
-      <Block flex={false} style={style.mainHeader}>
+    <>
+      <Block style={style.mainHeader}>
         <Text h1 bold>
           메시지
         </Text>
@@ -146,7 +146,7 @@ const ChatListScreen = observer(props => {
           renderItem={item => renderList(item)}
         />
       </ScrollView>
-    </Block>
+    </>
   );
 });
 

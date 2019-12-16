@@ -113,21 +113,21 @@ const NoticeScreen = observer(props => {
           <Text style={{marginBottom: 10}}>
             예약 요청을 포함한 호스트와 게스트 간 메시지 수신
           </Text>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
               value={messageEmail}
               onValueChange={value => setMessageEmail(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>푸쉬알림</Text>
             <Switch
               value={messagePush}
               onValueChange={value => setMessagePush(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>문자메시지</Text>
             <Switch
               value={messageSms}
@@ -140,21 +140,21 @@ const NoticeScreen = observer(props => {
           <Text style={{marginBottom: 10}}>
             예약 알림, 후기 작성 요청, 요금 설정 관련 기타 알림
           </Text>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
               value={noticeEmail}
               onValueChange={value => setNoticeEmail(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>푸시 알림</Text>
             <Switch
               value={noticePush}
               onValueChange={value => setNoticePush(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>문자 메시지</Text>
             <Switch
               value={noticeSms}
@@ -167,21 +167,21 @@ const NoticeScreen = observer(props => {
           <Text style={{marginBottom: 10}}>
             새로운 이벤트, 할인 정보 등 기타 추천을 수신합니다
           </Text>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>이메일</Text>
             <Switch
               value={promotionEmail}
               onValueChange={value => setPromotionEmail(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>푸시 알림</Text>
             <Switch
               value={promotionPush}
               onValueChange={value => setPromotionPush(value)}
             />
           </Block>
-          <Block center middle row space="between" style={styles.inputRow}>
+          <Block style={styles.inputRow}>
             <Text h3>문자 메시지</Text>
             <Switch
               value={promotionSms}
@@ -200,6 +200,9 @@ NoticeScreen.navigationOptions = {
 NoticeScreen.defaultProps = {};
 const styles = StyleSheet.create({
   inputRow: {
+    flexDirection: 'row',
+    justifyContent: 'space-between',
+    alignItems: 'center',
     paddingVertical: 15,
     borderBottomWidth: 0.6,
     borderBottomColor: colors.gray2,

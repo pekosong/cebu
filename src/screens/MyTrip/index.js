@@ -54,6 +54,29 @@ const MyTripScreen = observer(props => {
     }
   }, [user]);
 
+  makeMonDay = day => {
+    let _month = day.slice(5, 7);
+    let _day = day.slice(8, 10);
+
+    if (_month.slice(0, 1) == '0') {
+      _month = _month.slice(1, 2);
+    }
+    if (_day.slice(0, 1) == '0') {
+      _day = _day.slice(1, 2);
+    }
+
+    return `${_month}월 ${_day}일`;
+  };
+
+  handleTripTab = tab => {
+    if (tab == '전체') {
+      setSelectedDates(dates);
+    } else {
+      setSelectedDates({tab: dates[tab]});
+    }
+    setActive(tab);
+  };
+
   renderTripTab = tab => {
     const isActive = active == tab;
 
@@ -69,29 +92,6 @@ const MyTripScreen = observer(props => {
     );
   };
 
-  handleTripTab = tab => {
-    if (tab == '전체') {
-      setSelectedDates(dates);
-    } else {
-      setSelectedDates({tab: dates[tab]});
-    }
-    setActive(tab);
-  };
-
-  makeMonDay = day => {
-    let _month = day.slice(5, 7);
-    let _day = day.slice(8, 10);
-
-    if (_month.slice(0, 1) == '0') {
-      _month = _month.slice(1, 2);
-    }
-    if (_day.slice(0, 1) == '0') {
-      _day = _day.slice(1, 2);
-    }
-
-    return `${_month}월 ${_day}일`;
-  };
-
   renderList = (day, lastItem) => {
     let items = reservations.filter(e => e.date == day);
 
@@ -102,10 +102,7 @@ const MyTripScreen = observer(props => {
       <Block key={day} style={styles.categories}>
         <Block center row space="between" style={{marginBottom: 10}}>
           <Text h3 bold>
-            {korDay}
-            <Text>{'   '}</Text>
-            <Text>{`Day ${item.nDay + 1}`}</Text>
-            <Text>{'  '}</Text>
+            {`${korDay}   Day ${item.nDay + 1}  `}
           </Text>
           <Text h4 bold color={colors.accent}>
             {'in ' + item.hotel}
@@ -165,7 +162,7 @@ const MyTripScreen = observer(props => {
             </Text>
           </Button>
         )}
-        {lastItem ? null : <Divider style={{marginHorizontal: 0}}></Divider>}
+        {!lastItem && <Divider style={{marginHorizontal: 0}}></Divider>}
       </Block>
     );
   };
@@ -181,15 +178,13 @@ const MyTripScreen = observer(props => {
   }
 
   return (
-    <Block>
-      <Block flex={false} style={style.mainHeader}>
+    <>
+      <Block style={style.mainHeader}>
         <Text h1 bold>
           내 일정
         </Text>
       </Block>
-      <Block flex={false} row style={styles.tabs}>
-        {tabs.map(tab => renderTripTab(tab))}
-      </Block>
+      <Block style={styles.tabs}>{tabs.map(tab => renderTripTab(tab))}</Block>
       <ScrollView showsVerticalScrollIndicator={false}>
         <Block style={{marginTop: 20, marginBottom: 40}}>
           {Object.values(selectedDates).map((day, idx) => {
@@ -199,7 +194,7 @@ const MyTripScreen = observer(props => {
           })}
         </Block>
       </ScrollView>
-    </Block>
+    </>
   );
 });
 
@@ -220,8 +215,11 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   tabs: {
+    flex: 0,
+    flexDirection: 'row',
     borderBottomColor: colors.gray2,
     borderBottomWidth: StyleSheet.hairlineWidth,
+    paddingTop: 20,
     marginVertical: Platform.OS === 'ios' ? sizes.base * 0.8 : sizes.base,
     marginHorizontal: sizes.padding,
   },
