@@ -298,7 +298,17 @@ const MyShopScreen = observer(props => {
     );
   };
 
-  return isLoaded ? (
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
+
+  return (
     <SafeAreaView>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView>
@@ -331,7 +341,7 @@ const MyShopScreen = observer(props => {
                   <Text style={styles.textStyle}>사진 등록</Text>
                 </Block>
                 <Block right row flex={2}>
-                  {shopImages.length != 0 ? (
+                  {shopImages.length != 0 && (
                     <TouchableOpacity onPress={() => handleDeleteImage()}>
                       <AntDesign
                         size={30}
@@ -342,7 +352,7 @@ const MyShopScreen = observer(props => {
                         }}
                       />
                     </TouchableOpacity>
-                  ) : null}
+                  )}
 
                   <TouchableOpacity onPress={_cameraImage}>
                     <AntDesign
@@ -371,7 +381,7 @@ const MyShopScreen = observer(props => {
                     <TouchableOpacity onPress={() => handleSelectImage(source)}>
                       <CachedImage uri={source} style={styles.avatar} />
                     </TouchableOpacity>
-                    {shopImages.includes(source) ? (
+                    {shopImages.includes(source) && (
                       <AntDesign
                         size={30}
                         name={'checkcircleo'}
@@ -382,7 +392,7 @@ const MyShopScreen = observer(props => {
                           right: 5,
                         }}
                       />
-                    ) : null}
+                    )}
                   </Block>
                 ))}
               </Block>
@@ -600,10 +610,6 @@ const MyShopScreen = observer(props => {
         </ScrollView>
       </KeyboardAvoidingView>
     </SafeAreaView>
-  ) : (
-    <Block style={style.full}>
-      <ActivityIndicator size="large" color={colors.accent}></ActivityIndicator>
-    </Block>
   );
 });
 

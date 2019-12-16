@@ -1,13 +1,14 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Dimensions, ScrollView, Platform} from 'react-native';
-import MapView from 'react-native-maps';
 
 import {Block, Text, CachedImage, Divider} from 'app/src/components';
 import {sizes, style} from 'app/src/styles';
+
+import MapView from 'react-native-maps';
+
 const {width} = Dimensions.get('window');
 
-export default function ShopInfoSection(props) {
-  const {shop} = props;
+export default ShopInfoSection = ({shop}) => {
   const [imageNum, setImageNum] = useState(1);
 
   handleScrollByX = e => {
@@ -18,9 +19,9 @@ export default function ShopInfoSection(props) {
   };
 
   return (
-    <Fragment>
-      <Block style={[style.shop.categories]}>
-        <Text h2 bold style={{marginBottom: 20}}>
+    <>
+      <Block style={style.shop.categories}>
+        <Text h2 bold style={{marginBottom: 30}}>
           사진 정보
         </Text>
         <ScrollView
@@ -49,7 +50,7 @@ export default function ShopInfoSection(props) {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={[style.shop.categories]}>
+      <Block style={style.shop.categories}>
         <Text h2 bold style={[style.shop.content, {marginBottom: 20}]}>
           업체 정보
         </Text>
@@ -93,8 +94,7 @@ export default function ShopInfoSection(props) {
         </Block>
       </Block>
       <Divider></Divider>
-
-      <Block style={[style.shop.categories]}>
+      <Block style={style.shop.categories}>
         <Text h3 bold style={{marginBottom: 20}}>
           위치
         </Text>
@@ -119,9 +119,9 @@ export default function ShopInfoSection(props) {
           />
         </MapView>
       </Block>
-    </Fragment>
+    </>
   );
-}
+};
 
 ShopInfoSection.defaultProps = {};
 

@@ -7,17 +7,15 @@ import {
   Dimensions,
 } from 'react-native';
 
-import Block from './Block';
-import Text from './Text';
-import Favorite from './Favorite';
-import {colors, sizes} from 'app/src/styles';
+import {Favorite, Block, Text} from 'app/src/components';
+
+import {sizes, colors} from 'app/src/styles';
 import StarRating from 'react-native-star-rating';
 
 const {width} = Dimensions.get('window');
 
 export default CardRect = props => {
-  const {style, item, navigation, idx} = props;
-
+  const {item, navigation, idx} = props;
   return (
     <TouchableOpacity
       onPress={() => {

@@ -1,16 +1,14 @@
-import React, {Fragment} from 'react';
+import React from 'react';
 import {StyleSheet} from 'react-native';
 
 import {Block, Text, Divider} from 'app/src/components';
-import {colors, style} from 'app/src/styles';
+import {style} from 'app/src/styles';
 
-export default function ReservationSection(props) {
-  const {todo, shop} = props;
-
-  return todo && Object.entries(todo).length !== 0 ? (
-    <Fragment>
+export default ReservationSection = ({todo, shop}) => {
+  return (
+    <>
       <Block style={style.shop.categories}>
-        <Text h3 bold style={style.shop.content}>
+        <Text h2 bold style={{marginBottom: 30}}>
           예약정보
         </Text>
         <Block>
@@ -41,39 +39,36 @@ export default function ReservationSection(props) {
         </Block>
       </Block>
       <Divider />
-      {todo.pickupTime ? (
-        <Fragment>
-          <Block style={style.shop.categories}>
-            <Text h3 bold style={style.shop.content}>
-              픽업정보
-            </Text>
-            <Block>
-              <Block style={style.inputRow}>
-                <Text h3>픽업장소</Text>
-                <Text darkgray h3>
-                  {todo.pickupLocation}
-                </Text>
-              </Block>
-              <Block style={style.inputRow}>
-                <Text h3>픽업시간</Text>
-                <Text darkgray h3>
-                  {todo.pickupTime}
-                </Text>
-              </Block>
-              <Block style={style.inputRow}>
-                <Text h3>픽업차량</Text>
-                <Text darkgray h3>
-                  {todo.pickupCar ? todo.pickupCar : '확인중'}
-                </Text>
-              </Block>
+      {todo.pickupTime != '' && (
+        <Block style={style.shop.categories}>
+          <Text h3 bold style={{marginBottom: 30}}>
+            픽업정보
+          </Text>
+          <Block>
+            <Block style={style.inputRow}>
+              <Text h3>픽업장소</Text>
+              <Text darkgray h3>
+                {todo.pickupLocation}
+              </Text>
+            </Block>
+            <Block style={style.inputRow}>
+              <Text h3>픽업시간</Text>
+              <Text darkgray h3>
+                {todo.pickupTime}
+              </Text>
+            </Block>
+            <Block style={style.inputRow}>
+              <Text h3>픽업차량</Text>
+              <Text darkgray h3>
+                {todo.pickupCar ? todo.pickupCar : '확인중'}
+              </Text>
             </Block>
           </Block>
-          <Divider />
-        </Fragment>
-      ) : null}
-    </Fragment>
-  ) : null;
-}
+        </Block>
+      )}
+    </>
+  );
+};
 
 ReservationSection.defaultProps = {};
 

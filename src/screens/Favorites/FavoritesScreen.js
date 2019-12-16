@@ -99,6 +99,16 @@ const FavoritesScreen = observer(props => {
     setActive(tab);
   };
 
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
+
   return (
     <Block>
       <Block flex={false} style={styles.header}>
@@ -109,20 +119,14 @@ const FavoritesScreen = observer(props => {
           {tabs.map(tab => renderTab(tab))}
         </Block>
       </Block>
-      {isLoaded ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          scrollEnabled={true}
-          style={{paddingTop: sizes.base * 0.8}}>
-          {selectedFavorites.map((shop, idx) => (
-            <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
-          ))}
-        </ScrollView>
-      ) : (
-        <Block style={style.full}>
-          <ActivityIndicator size="large"></ActivityIndicator>
-        </Block>
-      )}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        scrollEnabled={true}
+        style={{paddingTop: sizes.base * 0.8}}>
+        {selectedFavorites.map((shop, idx) => (
+          <CardShop key={idx} shop={shop} navigation={navigation}></CardShop>
+        ))}
+      </ScrollView>
     </Block>
   );
 });

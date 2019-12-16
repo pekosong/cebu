@@ -1,18 +1,17 @@
 import React from 'react';
-
 import {StyleSheet, ScrollView, TouchableOpacity, Image} from 'react-native';
+
 import {Block, Text} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {sizes, style, colors} from 'app/src/styles';
+import {style, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
+
 import {AntDesign} from '@expo/vector-icons';
 
-export default function RecommendSection(props) {
-  const {navigation, recommendList, shop} = props;
-
+export default RecommendSection = ({navigation, recommendList, shop}) => {
   return (
     <Block style={[style.shop.categories]}>
-      <Text h2 bold style={{marginBottom: 20}}>
+      <Text h2 bold style={{marginBottom: 30}}>
         근처 추천 장소
       </Text>
       <ScrollView
@@ -35,28 +34,17 @@ export default function RecommendSection(props) {
                   height: 120,
                   marginRight: 10,
                 }}>
-                <Image
-                  style={[styles.imageStyle, styles.shodow]}
-                  source={item.src}></Image>
+                <Image style={styles.imageStyle} source={item.src}></Image>
                 <Favorite
                   shop={{
                     id: item.shopCode,
                     name: item.shop,
                     preview: item.url,
                   }}></Favorite>
-                <Block
-                  style={{
-                    position: 'absolute',
-                    width: '100%',
-                    height: '100%',
-                    top: 0,
-                    left: 0,
-                    backgroundColor: 'rgba(0,0,0,0.1)',
-                    borderRadius: 5,
-                  }}></Block>
+                <Block style={styles.overlap}></Block>
               </Block>
               <Block>
-                <Text style={{fontWeight: 'bold', color: colors.accent}}>
+                <Text bold accent>
                   {item.tag}
                 </Text>
                 <Text h3 bold style={{marginVertical: 5}}>
@@ -85,7 +73,7 @@ export default function RecommendSection(props) {
       </ScrollView>
     </Block>
   );
-}
+};
 
 RecommendSection.defaultProps = {
   recommendList: mocks.recommendList,
@@ -114,14 +102,13 @@ const styles = StyleSheet.create({
     resizeMode: 'cover',
     borderRadius: 3,
   },
-  shadow: {
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 1,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 3,
+  overlap: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    top: 0,
+    left: 0,
+    backgroundColor: 'rgba(0,0,0,0.1)',
+    borderRadius: 5,
   },
 });

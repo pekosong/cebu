@@ -1,15 +1,16 @@
-import React, {useEffect} from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import React from 'react';
+import {StyleSheet} from 'react-native';
 
-import {Block, Text, CardProgram, CachedImage} from 'app/src/components';
-import {colors, style, sizes} from 'app/src/styles';
+import {Block, Text} from 'app/src/components';
+import CardProgram from './CardProgram';
+import CardMenu from './CardMenu';
 
-export default function MenuSection(props) {
-  const {shop} = props;
+import {colors, style} from 'app/src/styles';
 
+export default MenuSection = ({shop}) => {
   return (
     <Block style={[style.shop.categories]}>
-      <Block row space="between" style={{marginBottom: 20}}>
+      <Block row space="between" style={{marginBottom: 30}}>
         <Text h2 bold>
           {shop.category == 'Massage' ? '프로그램' : '대표메뉴'}
         </Text>
@@ -18,7 +19,7 @@ export default function MenuSection(props) {
         shop.category == 'Massage' ? (
           <CardProgram key={idx} item={item}></CardProgram>
         ) : (
-          <CardMenu key={idx} item={item} />
+          <CardMenu key={idx} item={item}></CardMenu>
         ),
       )}
       {shop.menus.map((item, idx) =>
@@ -26,35 +27,12 @@ export default function MenuSection(props) {
       )}
     </Block>
   );
-}
+};
 
 MenuSection.defaultProps = {};
 
 MenuSection.navigationOptions = {
   header: null,
-};
-
-const CardMenu = props => {
-  const {item} = props;
-
-  useEffect(() => {});
-
-  return (
-    <TouchableOpacity onPress={() => {}}>
-      <Block style={styles.container}>
-        <Block style={{marginRight: 10}}>
-          <Text h3 bold>
-            {item.name}
-          </Text>
-          <Text gray style={{marginVertical: 10, lineHeight: 20}}>
-            {item.desc}
-          </Text>
-          <Text h3>{item.price}</Text>
-        </Block>
-        <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
-      </Block>
-    </TouchableOpacity>
-  );
 };
 
 const styles = StyleSheet.create({

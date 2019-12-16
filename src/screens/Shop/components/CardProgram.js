@@ -1,16 +1,10 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import Block from './Block';
-import Text from './Text';
-import CachedImage from './CachedImage';
+import {Block, Text, CachedImage} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
-export default CardProgram = props => {
-  const {item} = props;
-
-  useEffect(() => {});
-
+export default CardProgram = ({item}) => {
   return (
     <TouchableOpacity onPress={() => {}}>
       <Block style={styles.container}>

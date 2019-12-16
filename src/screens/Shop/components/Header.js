@@ -5,9 +5,7 @@ import {CachedImage} from 'app/src/components';
 
 const {width} = Dimensions.get('window');
 
-export default HeaderSection = props => {
-  const {shop, top} = props;
-
+export default HeaderSection = ({shop, top}) => {
   return (
     <Animated.View
       style={{

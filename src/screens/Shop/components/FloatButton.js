@@ -1,15 +1,15 @@
-import React, {useState, Fragment} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Modal, TouchableOpacity} from 'react-native';
 
-import {AntDesign} from '@expo/vector-icons';
 import {Block, Text, ReservationModal} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
-export default function BottomSection(props) {
-  const {navigation, shop, user} = props;
+import {AntDesign} from '@expo/vector-icons';
+
+export default BottomSection = ({navigation, shop, user}) => {
   const [visible, setVisible] = useState(false);
   return (
-    <Fragment>
+    <>
       <Block center middle style={styles.container}>
         {Object.keys(user.plans).length > 0 ? (
           <TouchableOpacity
@@ -39,9 +39,9 @@ export default function BottomSection(props) {
           setVisible={setVisible}
         />
       </Modal>
-    </Fragment>
+    </>
   );
-}
+};
 
 BottomSection.defaultProps = {};
 

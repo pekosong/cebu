@@ -119,6 +119,7 @@ const ProfileScreen = observer(props => {
     });
     console.log(response);
   };
+
   return (
     <Block>
       <Block flex={false} style={style.mainHeader}>
@@ -143,7 +144,7 @@ const ProfileScreen = observer(props => {
                 style={{color: colors.black}}></AntDesign>
             </WideText>
           ))}
-          {user.host ? (
+          {user.host && (
             <Fragment>
               <Block style={{marginTop: 20, marginBottom: 10}}>
                 <Text h3>호스팅</Text>
@@ -163,7 +164,7 @@ const ProfileScreen = observer(props => {
                 </WideText>
               ))}
             </Fragment>
-          ) : null}
+          )}
 
           <Block style={{marginTop: 20, marginBottom: 10}}>
             <Text h3>지원</Text>

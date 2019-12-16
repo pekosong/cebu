@@ -9,7 +9,7 @@ import {
 
 import {Block, Text, CachedImage} from 'app/src/components';
 
-import {sizes, style} from 'app/src/styles';
+import {colors, sizes, style} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
 import {shopApi, userApi} from 'app/src/api';
 
@@ -117,6 +117,16 @@ const ChatListScreen = observer(props => {
     );
   };
 
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
+
   return (
     <Block>
       <Block flex={false} style={style.mainHeader}>
@@ -124,24 +134,18 @@ const ChatListScreen = observer(props => {
           메시지
         </Text>
       </Block>
-      {isLoaded ? (
-        <ScrollView
-          showsVerticalScrollIndicator={false}
-          style={{
-            marginHorizontal: sizes.padding,
-            paddingTop: sizes.padding,
-          }}>
-          <FlatList
-            data={chatList}
-            keyExtractor={item => (user.host ? item.email : item.shopName)}
-            renderItem={item => renderList(item)}
-          />
-        </ScrollView>
-      ) : (
-        <Block style={style.full}>
-          <ActivityIndicator size="large"></ActivityIndicator>
-        </Block>
-      )}
+      <ScrollView
+        showsVerticalScrollIndicator={false}
+        style={{
+          marginHorizontal: sizes.padding,
+          paddingTop: sizes.padding,
+        }}>
+        <FlatList
+          data={chatList}
+          keyExtractor={item => (user.host ? item.email : item.shopName)}
+          renderItem={item => renderList(item)}
+        />
+      </ScrollView>
     </Block>
   );
 });

@@ -1,13 +1,14 @@
 import React, {useContext} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
-import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 import {Block} from 'app/src/components';
-
 import {sizes, colors, fonts} from 'app/src/styles';
+
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {updateFavorite} from 'app/src/api/user';
+
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 

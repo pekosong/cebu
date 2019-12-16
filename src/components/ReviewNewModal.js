@@ -1,11 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  ScrollView,
-  TextInput,
-} from 'react-native';
+import React, {useState} from 'react';
+import {StyleSheet, TouchableOpacity, TextInput} from 'react-native';
 
 import Block from './Block';
 import Text from './Text';
@@ -19,13 +13,11 @@ import {updateShop} from 'app/src/redux/action';
 
 import firebase from 'app/src/constants/store';
 
-export default ReviewNewModal = props => {
-  const {setNewReviewVisible, user, shop} = props;
+export default ReviewNewModal = ({setNewReviewVisible, user, shop}) => {
   const [text, setText] = useState('');
   const [starCount, setStarCount] = useState(3);
-  const dispatch = useDispatch();
 
-  useEffect(() => {}, []);
+  const dispatch = useDispatch();
 
   handleWriteReview = () => {
     const {email, name, image} = user;
@@ -69,7 +61,7 @@ export default ReviewNewModal = props => {
           fullStar={'ios-star'}
           halfStar={'ios-star-half'}
           iconSet={'Ionicons'}
-          fullStarColor={colors.primary}
+          fullStarColor={colors.accent}
           rating={starCount}
           selectedStar={rating => setStarCount(rating)}></StarRating>
       </Block>

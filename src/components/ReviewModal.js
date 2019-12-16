@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
 import Block from './Block';
@@ -8,11 +8,12 @@ import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
 
-export default ReviewModal = props => {
-  const {setReviewVisible, reviews, review, reviewCnt} = props;
-
-  useEffect(() => {}, []);
-
+export default ReviewModal = ({
+  setReviewVisible,
+  reviews,
+  review,
+  reviewCnt,
+}) => {
   return (
     <Block
       padding={[

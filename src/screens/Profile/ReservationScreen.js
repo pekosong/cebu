@@ -173,7 +173,17 @@ const ReservationScreen = observer(props => {
       ) : null;
     });
 
-  return isLoaded ? (
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
+
+  return (
     <SafeAreaView>
       <Block
         style={{
@@ -210,12 +220,6 @@ const ReservationScreen = observer(props => {
         />
       </Modal>
     </SafeAreaView>
-  ) : (
-    <Block style={style.full}>
-      <ActivityIndicator
-        size="large"
-        color={colors.primary}></ActivityIndicator>
-    </Block>
   );
 });
 

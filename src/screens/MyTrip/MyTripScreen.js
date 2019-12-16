@@ -170,6 +170,16 @@ const MyTripScreen = observer(props => {
     );
   };
 
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
+
   return (
     <Block>
       <Block flex={false} style={style.mainHeader}>
@@ -180,21 +190,15 @@ const MyTripScreen = observer(props => {
       <Block flex={false} row style={styles.tabs}>
         {tabs.map(tab => renderTripTab(tab))}
       </Block>
-      {isLoaded ? (
-        <ScrollView showsVerticalScrollIndicator={false}>
-          <Block style={{marginTop: 20, marginBottom: 40}}>
-            {Object.values(selectedDates).map((day, idx) => {
-              lastItem =
-                Object.values(selectedDates).length == idx + 1 ? true : false;
-              return renderList(day, lastItem);
-            })}
-          </Block>
-        </ScrollView>
-      ) : (
-        <Block style={style.full}>
-          <ActivityIndicator size="large"></ActivityIndicator>
+      <ScrollView showsVerticalScrollIndicator={false}>
+        <Block style={{marginTop: 20, marginBottom: 40}}>
+          {Object.values(selectedDates).map((day, idx) => {
+            lastItem =
+              Object.values(selectedDates).length == idx + 1 ? true : false;
+            return renderList(day, lastItem);
+          })}
         </Block>
-      )}
+      </ScrollView>
     </Block>
   );
 });

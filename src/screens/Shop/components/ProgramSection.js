@@ -2,15 +2,13 @@ import React from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 
 import {Block, Text, Divider} from 'app/src/components';
-
 import {sizes, colors, style} from 'app/src/styles';
 
 import {Ionicons} from '@expo/vector-icons';
+
 const {width} = Dimensions.get('window');
 
-export default function ProgramSection(props) {
-  const {} = props;
-
+export default ProgramSection = ({}) => {
   return (
     <Block style={style.shop.categories}>
       <Block style={[style.shop.categories, {marginTop: 20}]}>
@@ -192,7 +190,7 @@ export default function ProgramSection(props) {
       </Block>
     </Block>
   );
-}
+};
 
 ProgramSection.defaultProps = {};
 

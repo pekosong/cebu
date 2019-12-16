@@ -3,7 +3,6 @@ import React, {
   useEffect,
   useRef,
   createRef,
-  Fragment,
   useContext,
   memo,
 } from 'react';
@@ -15,27 +14,26 @@ import {
   Dimensions,
 } from 'react-native';
 
-import {Block, Divider, Text} from 'app/src/components';
+import {Block, Text} from 'app/src/components';
 
 import {sizes, colors, style} from 'app/src/styles';
 
 import AppBar from './components/AppBar';
-import HeaderSection from './components/HeaderSection';
+import Header from './components/Header';
 import ShopTitle from './components/ShopTitle';
+import FloatButton from './components/FloatButton';
 
 import ReservationSection from './components/ReservationSection';
-import BottomSection from './components/BottomSection';
+
+import MenuSection from './components/MenuSection';
+import ProgramSection from './components/ProgramSection';
+import ReviewSection from './components/ReviewSection';
+import ShopInfoSection from './components/ShopInfoSection';
 import RecommendSection from './components/RecommendSection';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {streamShop} from 'app/src/api/shop';
-
-import MenuSection from './components/MenuSection';
-import ProgramSection from './components/ProgramSection';
-
-import ReviewSection from './components/ReviewSection';
-import ShopInfoSection from './components/ShopInfoSection';
 
 const MAPCAT = {
   Massage: '프로그램',
@@ -49,10 +47,10 @@ const MAP = {
   기본정보: 'info',
   주변: 'nearby',
 };
+
 const {width} = Dimensions.get('window');
 
-export default ShopScreen = observer(props => {
-  const {navigation} = props;
+export default ShopScreen = observer(({navigation}) => {
   const {user} = useContext(UserStoreContext);
 
   const [shop, setShop] = useState({});
@@ -162,91 +160,87 @@ export default ShopScreen = observer(props => {
     }
   };
 
-  if (isLoaded) {
-    return (
-      <Block key={shop.id}>
-        <AppBar
-          navigation={navigation}
-          shop={shop}
-          fadeAnim={fadeAnim}></AppBar>
-        <HeaderSection
-          top={animatedScrollYValue}
-          shop={shop}
-          yAnim={yAnim}></HeaderSection>
-        <Animated.View
-          style={{
-            ...styles.tabs,
-            top: animatedScrollYValue.interpolate({
-              inputRange: [0, 260],
-              outputRange: [350, 90],
-              extrapolate: 'clamp',
-              useNativeDriver: true,
-            }),
-          }}>
-          <Block flex={false} row>
-            {[MAPCAT[shop.category], '후기', '기본정보', '주변'].map(tab =>
-              renderShopTab(tab),
-            )}
-          </Block>
-          <Animated.View
-            style={{
-              ...styles.bottomBar,
-              left: xAnim,
-            }}></Animated.View>
-        </Animated.View>
-        <Animated.ScrollView
-          ref={ref => {
-            shopScroll.current = ref;
-          }}
-          showsVerticalScrollIndicator={false}
-          style={{
-            paddingTop: 0,
-            marginBottom: 20,
-            zIndex: 10,
-          }}
-          onScroll={Animated.event(
-            [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
-            {
-              listener: event => {
-                handleScrollByY(event);
-              },
-            },
-          )}
-          scrollEventThrottle={360}>
-          <ShopTitle shop={shop}></ShopTitle>
-          <Animated.View
-            style={{
-              marginTop: 350,
-              paddingTop: 70,
-              backgroundColor: colors.white,
-            }}>
-            {show === 'menu' && <MenuSection shop={shop}></MenuSection>}
-            {show === 'review' && (
-              <ReviewSection
-                shop={shop}
-                navigation={navigation}></ReviewSection>
-            )}
-            {show === 'info' && <ShopInfoSection shop={shop}></ShopInfoSection>}
-            {show === 'nearby' && (
-              <RecommendSection
-                navigation={navigation}
-                shop={shop}></RecommendSection>
-            )}
-          </Animated.View>
-        </Animated.ScrollView>
-        <BottomSection
-          navigation={navigation}
-          shop={shop}
-          user={user}></BottomSection>
-      </Block>
-    );
-  } else {
+  if (!isLoaded) {
     return (
       <Block style={style.full}>
-        <ActivityIndicator size="large"></ActivityIndicator>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
       </Block>
     );
   }
+  return (
+    <Block key={shop.id}>
+      <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
+      <Header top={animatedScrollYValue} shop={shop} yAnim={yAnim}></Header>
+      <Animated.View
+        style={{
+          ...styles.tabs,
+          top: animatedScrollYValue.interpolate({
+            inputRange: [0, 260],
+            outputRange: [350, 90],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
+          }),
+        }}>
+        <Block flex={false} row>
+          {[MAPCAT[shop.category], '후기', '기본정보', '주변'].map(tab =>
+            renderShopTab(tab),
+          )}
+        </Block>
+        <Animated.View
+          style={{
+            ...styles.bottomBar,
+            left: xAnim,
+          }}></Animated.View>
+      </Animated.View>
+      <Animated.ScrollView
+        ref={ref => {
+          shopScroll.current = ref;
+        }}
+        showsVerticalScrollIndicator={false}
+        style={{
+          paddingTop: 0,
+          marginBottom: 20,
+          zIndex: 10,
+        }}
+        onScroll={Animated.event(
+          [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
+          {
+            listener: event => {
+              handleScrollByY(event);
+            },
+          },
+        )}
+        scrollEventThrottle={360}>
+        <ShopTitle shop={shop}></ShopTitle>
+        <Animated.View
+          style={{
+            marginTop: 350,
+            paddingTop: 70,
+            backgroundColor: colors.white,
+          }}>
+          {todo && (
+            <ReservationSection shop={shop} todo={todo}></ReservationSection>
+          )}
+          {show === 'menu' && <MenuSection shop={shop}></MenuSection>}
+          {show === 'review' && (
+            <ReviewSection shop={shop} navigation={navigation}></ReviewSection>
+          )}
+          {show === 'info' && <ShopInfoSection shop={shop}></ShopInfoSection>}
+          {show === 'nearby' && (
+            <RecommendSection
+              navigation={navigation}
+              shop={shop}></RecommendSection>
+          )}
+        </Animated.View>
+      </Animated.ScrollView>
+      <FloatButton
+        navigation={navigation}
+        shop={shop}
+        user={user}></FloatButton>
+    </Block>
+  );
 });
 
 ShopScreen.defaultProps = {};

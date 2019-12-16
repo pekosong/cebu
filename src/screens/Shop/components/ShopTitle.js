@@ -2,15 +2,14 @@ import React from 'react';
 import {Dimensions, StyleSheet} from 'react-native';
 
 import {Block, Text} from 'app/src/components';
-import {AntDesign} from '@expo/vector-icons';
 import {sizes, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
+import {AntDesign} from '@expo/vector-icons';
+
 const {width} = Dimensions.get('window');
 
-export default HeaderSection = props => {
-  const {shop} = props;
-
+export default HeaderSection = ({shop}) => {
   return (
     <Block style={styles.shopTitle}>
       <Block middle center>

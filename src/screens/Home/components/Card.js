@@ -1,14 +1,12 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image} from 'react-native';
 
-import Block from './Block';
-import Text from './Text';
-import Favorite from './Favorite';
+import {Favorite, Block, Text} from 'app/src/components';
 
-import {colors} from '../styles';
+import {colors} from 'app/src/styles';
 
 export default Card = props => {
-  const {style, children, item, navigation, last} = props;
+  const {children, item, navigation, last} = props;
 
   return (
     <TouchableOpacity

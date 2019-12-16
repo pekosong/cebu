@@ -1,11 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  Keyboard,
-  ActivityIndicator,
-  Platform,
-  KeyboardAvoidingView,
-} from 'react-native';
+import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -24,6 +18,7 @@ import 'moment/locale/ko';
 
 const ChatScreen = observer(props => {
   const {navigation} = props;
+
   const [title, setTitle] = useState('');
   const [shopId, setShopId] = useState('');
   const [email, setEmail] = useState('');
@@ -105,9 +100,8 @@ const ChatScreen = observer(props => {
   renderChat = () => {
     Keyboard.dismiss();
     return (
-      <Block>
+      <>
         <GiftedChat
-          showUserAvatar={true}
           messages={messages}
           onSend={msg => onSend(msg)}
           user={{
@@ -118,10 +112,20 @@ const ChatScreen = observer(props => {
           dateFormat="ll"
           bottomOffset={50}
         />
-        {Platform.OS === 'android' ? <KeyboardSpacer topSpacing={40} /> : null}
-      </Block>
+        {Platform.OS === 'android' && <KeyboardSpacer topSpacing={40} />}
+      </>
     );
   };
+
+  if (!isLoaded) {
+    return (
+      <Block style={style.full}>
+        <ActivityIndicator
+          size="large"
+          color={colors.accent}></ActivityIndicator>
+      </Block>
+    );
+  }
 
   return (
     <Block>
@@ -150,15 +154,7 @@ const ChatScreen = observer(props => {
           </Button>
         )}
       </Block>
-      {isLoaded ? (
-        renderChat()
-      ) : (
-        <Block style={style.full}>
-          <ActivityIndicator
-            size="large"
-            color={colors.accent}></ActivityIndicator>
-        </Block>
-      )}
+      {renderChat()}
     </Block>
   );
 });

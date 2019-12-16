@@ -1,9 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
 
-import Favorite from './Favorite';
-import Block from './Block';
-import Text from './Text';
+import {Favorite, Block, Text} from 'app/src/components';
 
 import {colors, sizes} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';

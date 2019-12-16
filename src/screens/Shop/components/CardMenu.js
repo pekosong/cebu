@@ -1,29 +1,21 @@
-import React, {useEffect} from 'react';
+import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import Block from './Block';
-import Text from './Text';
-import CachedImage from './CachedImage';
+import {Block, Text, CachedImage} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
-export default CardMenu = props => {
-  const {item} = props;
-
-  useEffect(() => {});
-
+export default CardMenu = ({item}) => {
   return (
     <TouchableOpacity onPress={() => {}}>
       <Block style={styles.container}>
         <Block style={{marginRight: 10}}>
-          <Text h4 style={{fontWeight: 800}}>
+          <Text h3 bold>
             {item.name}
           </Text>
-          <Text h3 style={{marginVertical: 6}}>
-            {item.price}
-          </Text>
-          <Text gray caption style={{lineHeight: 20}}>
+          <Text gray style={{marginVertical: 10, lineHeight: 20}}>
             {item.desc}
           </Text>
+          <Text h3>{item.price}</Text>
         </Block>
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
       </Block>
@@ -43,7 +35,7 @@ export const styles = StyleSheet.create({
   imageStyle: {
     borderRadius: 5,
     width: 110,
-    height: 110,
+    height: 90,
     resizeMode: 'cover',
   },
 });

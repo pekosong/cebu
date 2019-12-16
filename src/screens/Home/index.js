@@ -1,14 +1,12 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
 
-import {
-  SearchBar,
-  Block,
-  Text,
-  Card,
-  CardCategory,
-  CardRect,
-} from 'app/src/components';
+import {SearchBar, Block, Text} from 'app/src/components';
+
+import Card from './components/Card';
+import CardCategory from './components/CardCategory';
+import CardRect from './components/CardRect';
+
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
@@ -20,7 +18,7 @@ import {Ionicons} from '@expo/vector-icons';
 
 const EMAIL = 'peko22@naver.com';
 
-const SearchScreen = observer(props => {
+const HomeScreen = observer(props => {
   const {navigation, categories, recommendList, eventList, loveList} = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -49,7 +47,7 @@ const SearchScreen = observer(props => {
     );
   }
   return (
-    <Block>
+    <>
       <SearchBar />
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
         <Block style={styles.title}>
@@ -177,7 +175,6 @@ const SearchScreen = observer(props => {
               idx={idx}></CardRect>
           ))}
         </Block>
-
         <Block style={styles.title}>
           <Block row space="between">
             <Text h1 bold>
@@ -210,14 +207,14 @@ const SearchScreen = observer(props => {
           </ScrollView>
         </Block>
       </ScrollView>
-    </Block>
+    </>
   );
 });
 
-SearchScreen.navigationOptions = {
+HomeScreen.navigationOptions = {
   header: null,
 };
-SearchScreen.defaultProps = {
+HomeScreen.defaultProps = {
   profiles: mocks.profiles,
   categories: mocks.categories,
   recommendList: mocks.recommendList,
@@ -237,4 +234,4 @@ const styles = StyleSheet.create({
   },
 });
 
-export default SearchScreen;
+export default HomeScreen;

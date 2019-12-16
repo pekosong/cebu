@@ -4,8 +4,9 @@ import {Platform} from 'react-native';
 import {createStackNavigator, createBottomTabNavigator} from 'react-navigation';
 import {fromRight, fromBottom} from 'react-navigation-transitions';
 
-import SearchScreen from 'app/src/screens/Search/SearchScreen';
-import CategoryScreen from 'app/src/screens/Search/CategoryScreen';
+import HomeScreen from 'app/src/screens/Home';
+import CategoryScreen from 'app/src/screens/Category';
+
 import TestScreen from 'app/src/screens/Search/TestScreen';
 
 import MyTripScreen from 'app/src/screens/MyTrip/MyTripScreen';
@@ -35,7 +36,7 @@ import {theme} from 'app/src/styles';
 
 const SearchStack = createStackNavigator(
   {
-    Search: SearchScreen,
+    Home: HomeScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
     CategoryActivity: CategoryActivityScreen,
@@ -43,7 +44,7 @@ const SearchStack = createStackNavigator(
     Test: TestScreen,
   },
   {
-    initialRouteName: 'Search',
+    initialRouteName: 'Home',
     transitionConfig: () => fromRight(500),
   },
 );

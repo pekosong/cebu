@@ -8,8 +8,10 @@ import {
   Image,
 } from 'react-native';
 
+import CategoryTab from './components/CategoryTab';
+
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {Block, Text, CardShop} from 'app/src/components';
+import {CardShop, Block, Text} from 'app/src/components';
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
@@ -47,17 +49,7 @@ const activityCategory = [
   '샌딩',
 ];
 
-const cateSrc = {
-  전체: require('app/src/assets/images/search/activity.jpg'),
-  호핑: require('app/src/assets/images/search/hoping.jpg'),
-  고래투어: require('app/src/assets/images/search/gorae.jpg'),
-  시티투어: require('app/src/assets/images/search/city.jpg'),
-  다이빙: require('app/src/assets/images/search/diving.jpg'),
-  경비행기: require('app/src/assets/images/search/plane.jpg'),
-  샌딩: require('app/src/assets/images/search/sanding.jpg'),
-};
-
-const CategoryScreen = observer(props => {
+export default CategoryScreen = observer(props => {
   const {navigation} = props;
   const [active, setActive] = useState('추천');
   const [catActive, setCatActive] = useState('전체');
@@ -82,43 +74,7 @@ const CategoryScreen = observer(props => {
     }
   }, [shops]);
 
-  renderCategoryTab = tab => {
-    const isActive = catActive == tab;
-
-    return (
-      <TouchableOpacity
-        key={`tab-${tab}`}
-        onPress={() => handleSongTab(tab)}
-        style={styles.tab}>
-        <Block style={{flex: 0, width: 60, height: 60}}>
-          <Image
-            style={{
-              height: '100%',
-              width: '100%',
-              resizeMode: 'cover',
-              borderRadius: 30,
-            }}
-            source={cateSrc[tab]}></Image>
-        </Block>
-        <Text
-          center
-          size={16}
-          style={{
-            marginTop: 6,
-            color: isActive ? colors.black : colors.gray,
-          }}>
-          {tab}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
   handleSongTab = tab => {
-    // if (tab == 'All') {
-    //   setSelectedFavorites(favorites);
-    // } else {
-    //   setSelectedFavorites(favorites.filter(shop => shop.category == tab));
-    // }
     setCatActive(tab);
   };
 
@@ -166,7 +122,13 @@ const CategoryScreen = observer(props => {
         {navigation.getParam('category') === 'Activity' && (
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Block style={styles.tabs}>
-              {activityCategory.map(tab => renderCategoryTab(tab))}
+              {activityCategory.map((tab, idx) => (
+                <CategoryTab
+                  key={idx}
+                  tab={tab}
+                  isActive={catActive == tab}
+                  handleSongTab={handleSongTab}></CategoryTab>
+              ))}
             </Block>
           </ScrollView>
         )}
@@ -188,6 +150,7 @@ CategoryScreen.navigationOptions = {
   header: null,
 };
 CategoryScreen.defaultProps = {};
+
 const styles = StyleSheet.create({
   appBar: {
     flex: 0,
@@ -217,19 +180,4 @@ const styles = StyleSheet.create({
     paddingLeft: sizes.padding,
     marginTop: 5,
   },
-  tab: {
-    marginRight: sizes.base * 1.2,
-    paddingBottom: sizes.base * 0.8,
-  },
-  active: {
-    borderBottomColor: colors.secondary,
-    borderBottomWidth: 3,
-  },
-  category: {
-    flexDirection: 'row',
-    paddingVertical: sizes.base / 2,
-    width: width - sizes.base * 3,
-  },
 });
-
-export default CategoryScreen;

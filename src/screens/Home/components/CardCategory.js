@@ -1,8 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
 
-import Block from './Block';
-import Text from './Text';
+import {Block, Text} from 'app/src/components';
 
 export default CardCategory = props => {
   const {item, navigation, last} = props;
