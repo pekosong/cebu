@@ -7,6 +7,8 @@ import CategoryTab from './CategoryTab';
 import Input from './Input';
 import Text from './Text';
 import Divider from './Divider';
+import Loader from './Loader';
+
 import Switch from './Switch';
 import SearchBar from './SearchBar';
 import WideText from './WideText';
@@ -29,6 +31,7 @@ export {
   Input,
   Text,
   Divider,
+  Loader,
   Switch,
   SearchBar,
   WideText,

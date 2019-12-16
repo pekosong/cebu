@@ -4,9 +4,7 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  ActivityIndicator,
   SafeAreaView,
-  Platform,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';

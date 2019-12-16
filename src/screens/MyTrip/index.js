@@ -7,7 +7,14 @@ import {
   ActivityIndicator,
 } from 'react-native';
 
-import {Block, Text, Button, Divider, CachedImage} from 'app/src/components';
+import {
+  Block,
+  Text,
+  Button,
+  Divider,
+  CachedImage,
+  Loader,
+} from 'app/src/components';
 
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
@@ -168,13 +175,7 @@ const MyTripScreen = observer(props => {
   };
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
 
   return (

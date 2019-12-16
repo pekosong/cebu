@@ -1,22 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  ActivityIndicator,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, ScrollView, TouchableOpacity, FlatList} from 'react-native';
 
-import {Block, Text, CachedImage} from 'app/src/components';
+import {Block, Text, CachedImage, Loader} from 'app/src/components';
 
-import {colors, sizes, style} from 'app/src/styles';
+import {sizes, style} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
 import {shopApi, userApi} from 'app/src/api';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
-import {Ionicons} from '@expo/vector-icons';
 
 const MAP = {
   wait: '예약요청',
@@ -120,13 +112,7 @@ const ChatListScreen = observer(props => {
   };
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
 
   return (

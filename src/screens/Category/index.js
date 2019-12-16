@@ -1,15 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  Dimensions,
-  StyleSheet,
-  ScrollView,
-  ActivityIndicator,
-} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {CardShop, CategoryTab, Block, Text} from 'app/src/components';
+import {CardShop, CategoryTab, Block, Text, Loader} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {colors, sizes, style} from 'app/src/styles';
+import {sizes} from 'app/src/styles';
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
 
@@ -95,14 +90,9 @@ export default CategoryScreen = observer(props => {
   };
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
+
   return (
     <>
       <Block style={styles.header}>

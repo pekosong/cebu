@@ -1,14 +1,14 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, ActivityIndicator} from 'react-native';
+import {StyleSheet, ScrollView, Dimensions} from 'react-native';
 
-import {SearchBar, Block, Text} from 'app/src/components';
+import {SearchBar, Block, Text, Loader, Button} from 'app/src/components';
 
 import Card from './components/Card';
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
 
 import {mocks} from 'app/src/constants';
-import {colors, sizes, style} from 'app/src/styles';
+import {colors, sizes} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
@@ -17,6 +17,8 @@ import {UserStoreContext} from 'app/src/store/user';
 import {Ionicons} from '@expo/vector-icons';
 
 const EMAIL = 'peko22@naver.com';
+
+const {width} = Dimensions.get('window');
 
 const HomeScreen = observer(props => {
   const {navigation, categories, recommendList, eventList, loveList} = props;
@@ -38,13 +40,7 @@ const HomeScreen = observer(props => {
   }, []);
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
   return (
     <>
@@ -70,45 +66,45 @@ const HomeScreen = observer(props => {
             ))}
           </ScrollView>
         </Block>
-        {/* <Block style={styles.title}>
-            <Text h1 bold>
-              이런 활동은 어떠세요
-            </Text>
-          </Block>
-          <Block
+        <Block style={styles.title}>
+          <Text h1 bold>
+            이런 활동은 어떠세요
+          </Text>
+        </Block>
+        <Block
+          style={{
+            paddingHorizontal: sizes.padding,
+            margin: 2,
+          }}>
+          <CachedImage
             style={{
-              paddingHorizontal: sizes.padding,
-              margin: 2,
-            }}>
-            <CachedImage
+              height: 350,
+              width: width - sizes.padding * 2,
+              borderRadius: 10,
+            }}
+            uri={
+              'https://cebu365.com/wp-content/uploads/2016/12/hopping-tour-1.jpg'
+            }></CachedImage>
+          <Block
+            center
+            style={{width: width, position: 'absolute', top: 30, zindex: 10}}>
+            <Text white>헬로우 세부와 함께하는</Text>
+            <Text white bold h3 style={{paddingVertical: 15}}>
+              다양한 Activity
+            </Text>
+            <Button
               style={{
-                height: 350,
-                width: width - sizes.padding * 2,
-                borderRadius: 10,
+                width: 120,
               }}
-              uri={
-                'https://cebu365.com/wp-content/uploads/2016/12/hopping-tour-1.jpg'
-              }></CachedImage>
-            <Block
-              center
-              style={{width: width, position: 'absolute', top: 30, zindex: 10}}>
-              <Text white>헬로우 세부와 함께하는</Text>
-              <Text white bold h3 style={{paddingVertical: 15}}>
-                다양한 Activity
+              onPress={() => {
+                navigation.navigate('CategoryActivity');
+              }}>
+              <Text center black>
+                자세히 알아보기
               </Text>
-              <Button
-                style={{
-                  width: 120,
-                }}
-                onPress={() => {
-                  navigation.navigate('CategoryActivity');
-                }}>
-                <Text center black>
-                  자세히 알아보기
-                </Text>
-              </Button>
-            </Block>
-          </Block> */}
+            </Button>
+          </Block>
+        </Block>
         {/* 할인 정보 */}
         <Block style={styles.title}>
           <Block row space="between">

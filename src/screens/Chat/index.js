@@ -1,11 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
+import {StyleSheet, Keyboard, Platform} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import {Button, Block, Text} from 'app/src/components';
-import {colors, style, sizes} from 'app/src/styles';
+import {Button, Block, Text, Loader} from 'app/src/components';
+import {colors, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
 
@@ -119,13 +119,7 @@ const ChatScreen = observer(props => {
   };
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
 
   return (

@@ -15,6 +15,9 @@ const style = {
     flex: 1,
     justifyContent: 'center',
   },
+  header: {
+    paddingHorizontal: sizes.padding,
+  },
   appBar: {
     flex: 0,
     height: 100,

@@ -1,9 +1,9 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {ScrollView, StyleSheet, ActivityIndicator} from 'react-native';
+import {ScrollView, StyleSheet} from 'react-native';
 
-import {Block, Text, CardShop, CategoryTab} from 'app/src/components';
+import {Block, Text, CardShop, CategoryTab, Loader} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {colors, sizes, style} from 'app/src/styles';
+import {sizes, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -64,13 +64,7 @@ const FavoritesScreen = observer(props => {
   };
 
   if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
+    return <Loader></Loader>;
   }
 
   return (
