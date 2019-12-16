@@ -16,6 +16,7 @@ const style = {
     justifyContent: 'center',
   },
   header: {
+    paddingTop: Platform.OS === 'ios' ? sizes.base * 3 : sizes.base * 2.8,
     paddingHorizontal: sizes.padding,
   },
   appBar: {

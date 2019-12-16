@@ -95,7 +95,7 @@ export default ShopScreen = observer(({navigation}) => {
         onPress={() => {
           if (shopScroll.current) {
             shopScroll.current.getNode().scrollTo({
-              y: 300,
+              y: 260,
               animated: true,
             });
           }
@@ -171,7 +171,7 @@ export default ShopScreen = observer(({navigation}) => {
     );
   }
   return (
-    <SafeAreaView>
+    <>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
       <Header top={animatedScrollYValue} shop={shop} yAnim={yAnim}></Header>
       <Animated.View
@@ -179,7 +179,7 @@ export default ShopScreen = observer(({navigation}) => {
           ...styles.tabs,
           top: animatedScrollYValue.interpolate({
             inputRange: [0, 260],
-            outputRange: [400, 90],
+            outputRange: [340, 90],
             extrapolate: 'clamp',
             useNativeDriver: true,
           }),
@@ -237,7 +237,7 @@ export default ShopScreen = observer(({navigation}) => {
         </Animated.View>
       </Animated.ScrollView>
       <FloatButton navigation={navigation} shop={shop} user={user} />
-    </SafeAreaView>
+    </>
   );
 });
 
