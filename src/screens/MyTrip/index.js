@@ -179,7 +179,7 @@ const MyTripScreen = observer(props => {
 
   return (
     <>
-      <Block style={style.mainHeader}>
+      <Block style={style.appBar}>
         <Text h1 bold>
           내 일정
         </Text>

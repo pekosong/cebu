@@ -5,6 +5,7 @@ import {
   TouchableOpacity,
   FlatList,
   ActivityIndicator,
+  SafeAreaView,
 } from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
@@ -15,6 +16,7 @@ import {shopApi, userApi} from 'app/src/api';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
+import {Ionicons} from '@expo/vector-icons';
 
 const MAP = {
   wait: '예약요청',
@@ -129,7 +131,7 @@ const ChatListScreen = observer(props => {
 
   return (
     <>
-      <Block style={style.mainHeader}>
+      <Block style={style.appBar}>
         <Text h1 bold>
           메시지
         </Text>

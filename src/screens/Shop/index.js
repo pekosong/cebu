@@ -12,6 +12,7 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 
 import {Block, Text} from 'app/src/components';
@@ -94,7 +95,7 @@ export default ShopScreen = observer(({navigation}) => {
         onPress={() => {
           if (shopScroll.current) {
             shopScroll.current.getNode().scrollTo({
-              y: 260,
+              y: 300,
               animated: true,
             });
           }
@@ -170,7 +171,7 @@ export default ShopScreen = observer(({navigation}) => {
     );
   }
   return (
-    <Block key={shop.id}>
+    <SafeAreaView>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
       <Header top={animatedScrollYValue} shop={shop} yAnim={yAnim}></Header>
       <Animated.View
@@ -178,7 +179,7 @@ export default ShopScreen = observer(({navigation}) => {
           ...styles.tabs,
           top: animatedScrollYValue.interpolate({
             inputRange: [0, 260],
-            outputRange: [350, 90],
+            outputRange: [400, 90],
             extrapolate: 'clamp',
             useNativeDriver: true,
           }),
@@ -235,11 +236,8 @@ export default ShopScreen = observer(({navigation}) => {
           )}
         </Animated.View>
       </Animated.ScrollView>
-      <FloatButton
-        navigation={navigation}
-        shop={shop}
-        user={user}></FloatButton>
-    </Block>
+      <FloatButton navigation={navigation} shop={shop} user={user} />
+    </SafeAreaView>
   );
 });
 

@@ -15,14 +15,11 @@ const style = {
     flex: 1,
     justifyContent: 'center',
   },
-  header: {
-    paddingTop: Platform.OS === 'ios' ? null : sizes.base * 3,
-    marginBottom: sizes.base,
-    paddingHorizontal: sizes.padding,
-  },
-  mainHeader: {
+  appBar: {
     flex: 0,
-    paddingTop: Platform.OS === 'ios' ? sizes.base * 4.2 : sizes.base * 4,
+    height: 100,
+    justifyContent: 'center',
+    paddingTop: Platform.OS === 'ios' ? sizes.base * 3 : sizes.base * 2.8,
     paddingHorizontal: sizes.padding,
   },
   shop: {

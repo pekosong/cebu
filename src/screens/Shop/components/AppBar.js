@@ -173,6 +173,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
     position: 'absolute',
     zIndex: 100,
+    backgroundColor: 'yellow',
   },
 });
 

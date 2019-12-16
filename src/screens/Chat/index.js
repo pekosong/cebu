@@ -4,12 +4,12 @@ import {StyleSheet, Keyboard, ActivityIndicator, Platform} from 'react-native';
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import {Ionicons} from '@expo/vector-icons';
 import {Button, Block, Text} from 'app/src/components';
-
-import {colors, style} from 'app/src/styles';
+import {colors, style, sizes} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
+
+import {Ionicons} from '@expo/vector-icons';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -28,17 +28,18 @@ const ChatScreen = observer(props => {
   const [docId, setDocId] = useState('');
 
   const {user} = useContext(UserStoreContext);
+
   useEffect(() => {
     const shopId = navigation.getParam('shopId');
     const shopName = navigation.getParam('shopName');
     const email = navigation.getParam('email');
-    let unsubscribe1;
+    let unsubscribe;
 
     setShopId(shopId);
     setTitle(shopName);
     setEmail(email);
 
-    unsubscribe1 = chatApi
+    unsubscribe = chatApi
       .getChatList(email, shopId)
       .onSnapshot(querySnapshot => {
         if (querySnapshot.empty) {
@@ -64,7 +65,7 @@ const ChatScreen = observer(props => {
       });
     return () => {
       _deleteMessage();
-      unsubscribe1();
+      unsubscribe();
     };
   }, []);
 
@@ -128,17 +129,19 @@ const ChatScreen = observer(props => {
   }
 
   return (
-    <Block>
+    <>
       <Block
-        flex={false}
-        row
         center
+        row
         space="between"
-        style={[style.mainHeader, {marginTop: 38}]}>
+        style={[
+          style.appBar,
+          {
+            justifyContent: 'space-between',
+          },
+        ]}>
         <Button onPress={() => navigation.goBack()}>
-          <Block center row>
-            <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-          </Block>
+          <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </Button>
         {user.host ? (
           <Button>
@@ -147,7 +150,7 @@ const ChatScreen = observer(props => {
             </Text>
           </Button>
         ) : (
-          <Button onPress={() => navigation.navigate('Shop', {shopId: shopId})}>
+          <Button onPress={() => navigation.push('Shop', {shopId: shopId})}>
             <Text h1 bold>
               {title}
             </Text>
@@ -155,7 +158,7 @@ const ChatScreen = observer(props => {
         )}
       </Block>
       {renderChat()}
-    </Block>
+    </>
   );
 });
 

@@ -7,8 +7,6 @@ import {fromRight, fromBottom} from 'react-navigation-transitions';
 import HomeScreen from 'app/src/screens/Home';
 import CategoryScreen from 'app/src/screens/Category';
 
-import TestScreen from 'app/src/screens/Search/TestScreen';
-
 import MyTripScreen from 'app/src/screens/MyTrip';
 
 import ChatListScreen from 'app/src/screens/ChatList';
@@ -24,11 +22,7 @@ import TripInfoScreen from 'app/src/screens/Profile/TripInfoScreen';
 import MyShopScreen from 'app/src/screens/Profile/MyShopScreen';
 import ReservationScreen from 'app/src/screens/Profile/ReservationScreen';
 
-// import ShopScreen from 'app/src/screens/Search/ShopScreen';
 import ShopScreen from 'app/src/screens/Shop';
-
-// import ActivityScreen from 'app/src/screens/Search/ActivityScreen';
-import CategoryActivityScreen from 'app/src/screens/Search/CategoryActivityScreen';
 
 import TabBarIcon from 'app/src/components/TabBarIcon';
 
@@ -39,9 +33,7 @@ const SearchStack = createStackNavigator(
     Home: HomeScreen,
     Category: CategoryScreen,
     Shop: ShopScreen,
-    CategoryActivity: CategoryActivityScreen,
     Chat: ChatScreen,
-    Test: TestScreen,
   },
   {
     initialRouteName: 'Home',

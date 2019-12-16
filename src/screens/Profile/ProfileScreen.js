@@ -122,7 +122,7 @@ const ProfileScreen = observer(props => {
 
   return (
     <>
-      <Block style={style.mainHeader}>
+      <Block style={style.appBar}>
         <Text h1 bold>
           내 정보
         </Text>

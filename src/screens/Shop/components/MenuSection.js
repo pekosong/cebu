@@ -5,7 +5,7 @@ import {Block, Text} from 'app/src/components';
 import CardProgram from './CardProgram';
 import CardMenu from './CardMenu';
 
-import {colors, style} from 'app/src/styles';
+import {style} from 'app/src/styles';
 
 export default MenuSection = ({shop}) => {
   return (
@@ -35,19 +35,4 @@ MenuSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingBottom: 20,
-    marginBottom: 20,
-    borderBottomWidth: 0.2,
-    borderBottomColor: colors.gray2,
-  },
-  imageStyle: {
-    borderRadius: 5,
-    width: 110,
-    height: 90,
-    resizeMode: 'cover',
-  },
-});
+const styles = StyleSheet.create({});
