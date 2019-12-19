@@ -10,119 +10,90 @@ const {width} = Dimensions.get('window');
 
 export default ProgramSection = ({}) => {
   return (
-    <Block style={style.shop.categories}>
-      <Block style={[style.shop.categories, {marginTop: 20}]}>
-        <Block row space="between">
-          <Block>
-            <Text accent bold style={{fontSize: 20, marginBottom: 5}}>
-              호핑
-            </Text>
-            <Text bold style={{fontSize: 25, marginBottom: 5}}>
-              세부 3섬 스페셜 호핑투어
-            </Text>
-            <Text h3 gray style={style.shop.content}>
-              하루 동안 즐기는 세부 인기 3섬
-            </Text>
-          </Block>
-        </Block>
+    <>
+      <Block style={style.shop.categories}>
+        <Text h3 accent bold>
+          호핑
+        </Text>
+        <Text h1 bold style={{marginVertical: 10}}>
+          세부 3섬 스페셜 호핑투어
+        </Text>
+        <Text h3 gray>
+          하루 동안 즐기는 세부 인기 3섬
+        </Text>
       </Block>
       <Divider />
-      <Block style={[style.shop.categories, {marginTop: 10}]}>
-        <Text h3 bold style={{...style.shop.content, marginBottom: 30}}>
+      <Block style={style.shop.categories}>
+        <Text h2 bold style={{marginBottom: 30}}>
           프로그램 정보
         </Text>
-        <Block row space="between">
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-time"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              진행시간
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              8시간
-            </Text>
+        {[
+          {
+            firstIcon: 'ios-time',
+            firstName: '진행시간',
+            firstContent: '8시간',
+            secondIcon: 'ios-people',
+            secondName: '그룹당 인원',
+            secondContent: '최대 20명',
+          },
+          {
+            firstIcon: 'ios-document',
+            firstName: '포함사항',
+            firstContent: '식사, 음료수',
+            secondIcon: 'ios-map',
+            secondName: '제공언어',
+            secondContent: '한국어, 영어',
+          },
+          {
+            firstIcon: 'ios-car',
+            firstName: '픽업',
+            firstContent: '호텔 픽업',
+            secondIcon: 'ios-hand',
+            secondName: '취소가능 여부',
+            secondContent: '가능',
+          },
+        ].map((item, idx) => (
+          <Block
+            key={idx}
+            row
+            space="between"
+            style={{marginTop: idx == 0 ? 0 : 20}}>
+            <Block>
+              <Ionicons
+                size={25}
+                name={item.firstIcon}
+                style={{color: colors.darkgray, marginBottom: 5}}
+              />
+              <Text h4 style={{marginBottom: 5}}>
+                {item.firstName}
+              </Text>
+              <Text h3 bold>
+                {item.firstContent}
+              </Text>
+            </Block>
+            <Block>
+              <Ionicons
+                size={25}
+                name={item.secondIcon}
+                style={{color: colors.darkgray, marginBottom: 5}}
+              />
+              <Text h4 style={{marginBottom: 5}}>
+                {item.secondName}
+              </Text>
+              <Text h3 bold>
+                {item.secondContent}
+              </Text>
+            </Block>
           </Block>
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-people"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              그룹당 인원
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              최대 20명
-            </Text>
-          </Block>
-        </Block>
-        <Block row space="between" style={{marginTop: 20}}>
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-document"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              포함사항
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              식사, 음료수
-            </Text>
-          </Block>
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-map"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              제공언어
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              한국어, 영어
-            </Text>
-          </Block>
-        </Block>
-        <Block row space="between" style={{marginTop: 20}}>
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-car"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              픽업
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              호텔 픽업
-            </Text>
-          </Block>
-          <Block>
-            <Ionicons
-              size={25}
-              name="ios-hand"
-              style={{color: colors.darkgray, marginBottom: 5}}
-            />
-            <Text h4 style={{marginBottom: 5}}>
-              취소가능 여부
-            </Text>
-            <Text h3 bold style={style.shop.content}>
-              가능
-            </Text>
-          </Block>
-        </Block>
+        ))}
       </Block>
       <Divider />
-      <Block style={[style.shop.categories, {marginTop: 10}]}>
-        <Text h3 bold style={{...style.shop.content, marginBottom: 30}}>
+      <Block style={[style.shop.categories, {marginBottom: 30}]}>
+        <Text h2 bold style={{marginBottom: 30}}>
           프로그램 세부
         </Text>
         <Block>
-          <Text h2 bold style={style.shop.content}>
+          <Text h2 bold style={{marginBottom: 20}}>
             세부 호핑투어! 왕복 픽업+스노클링+중식+BBQ중식 까지!
           </Text>
           <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
@@ -153,7 +124,7 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
@@ -168,7 +139,7 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
@@ -183,12 +154,12 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 30, lineHeight: 25}}>
+        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
       </Block>
-    </Block>
+    </>
   );
 };
 

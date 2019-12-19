@@ -69,7 +69,7 @@ const FavoritesScreen = observer(props => {
 
   return (
     <>
-      <Block style={[style.appBar, styles.shadow, {height: 215}]}>
+      <Block style={[style.appBar, styles.shadow, {height: 200}]}>
         <Text h1 bold>
           저장소
         </Text>

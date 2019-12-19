@@ -35,7 +35,6 @@ export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
 export const styles = StyleSheet.create({
   tab: {
     marginRight: sizes.base * 1.2,
-    paddingBottom: sizes.base * 0.8,
   },
   active: {
     borderBottomColor: colors.secondary,

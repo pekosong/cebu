@@ -9,7 +9,7 @@ import {style} from 'app/src/styles';
 
 export default MenuSection = ({shop}) => {
   return (
-    <Block style={[style.shop.categories]}>
+    <Block style={style.shop.categories}>
       <Block row space="between" style={{marginBottom: 30}}>
         <Text h2 bold>
           {shop.category == 'Massage' ? '프로그램' : '대표메뉴'}

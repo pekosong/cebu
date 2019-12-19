@@ -12,12 +12,12 @@ import {
   ActivityIndicator,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView,
 } from 'react-native';
 
 import {Block, Text} from 'app/src/components';
 
 import {sizes, colors, style} from 'app/src/styles';
+import {mocks} from 'app/src/constants';
 
 import AppBar from './components/AppBar';
 import Header from './components/Header';
@@ -61,6 +61,7 @@ export default ShopScreen = observer(({navigation}) => {
   const shopScroll = createRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isActivity, setIsActivity] = useState(false);
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [yAnim] = useState(new Animated.Value(0));
@@ -69,14 +70,25 @@ export default ShopScreen = observer(({navigation}) => {
   const [xAnim] = useState(new Animated.Value(sizes.padding));
 
   useEffect(() => {
-    let shopId = navigation.getParam('shopId');
+    const shopId = navigation.getParam('shopId');
     let unsubscribe;
-    unsubscribe = streamShop(shopId).onSnapshot(doc => {
-      setShop(doc.data());
-      setActive(MAPCAT[doc.data().category]);
+    if (shopId.indexOf('activity') == -1) {
+      unsubscribe = streamShop(shopId).onSnapshot(doc => {
+        setShop(doc.data());
+        setActive(MAPCAT[doc.data().category]);
+        setIsLoaded(true);
+        setIsActivity(false);
+      });
+      setTodo(navigation.getParam('todo'));
+    } else {
+      setShop(mocks.ActivityList.filter(e => e.id == shopId)[0]);
       setIsLoaded(true);
-    });
-    setTodo(navigation.getParam('todo'));
+      setIsActivity(true);
+      setTodo(navigation.getParam('todo'));
+      // setShop(doc.data());
+      // setActive(MAPCAT[doc.data().category]);
+      // setIsLoaded(true);
+    }
 
     return () => {
       if (unsubscribe) {
@@ -224,7 +236,10 @@ export default ShopScreen = observer(({navigation}) => {
           {todo && (
             <ReservationSection shop={shop} todo={todo}></ReservationSection>
           )}
-          {show === 'menu' && <MenuSection shop={shop}></MenuSection>}
+          {!isActivity && show === 'menu' && (
+            <MenuSection shop={shop}></MenuSection>
+          )}
+          {isActivity && show === 'menu' && <ProgramSection></ProgramSection>}
           {show === 'review' && (
             <ReviewSection shop={shop} navigation={navigation}></ReviewSection>
           )}

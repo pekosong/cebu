@@ -12,7 +12,7 @@ import {AntDesign} from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
 export default CardShop = props => {
-  const {shop, navigation, isActivity, isLast} = props;
+  const {shop, navigation, isLast} = props;
   const {
     name,
     preview,
@@ -47,11 +47,11 @@ export default CardShop = props => {
   };
   return (
     <TouchableOpacity
-      onPress={() => {
+      onPress={() =>
         navigation.navigate('Shop', {
-          shopId: isActivity ? null : shop.id,
-        });
-      }}>
+          shopId: shop.id,
+        })
+      }>
       <Block
         style={[
           styles.categories,
