@@ -16,7 +16,7 @@ import {UserStoreContext} from 'app/src/store/user';
 
 import {Ionicons} from '@expo/vector-icons';
 
-const EMAIL = 'peko22@naver.com';
+const EMAIL = 'b@naver.com';
 
 const {width} = Dimensions.get('window');
 

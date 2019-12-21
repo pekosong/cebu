@@ -49,7 +49,7 @@ const MAP = {
   주변: 'nearby',
 };
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 export default ShopScreen = observer(({navigation}) => {
   const {user} = useContext(UserStoreContext);
@@ -232,6 +232,7 @@ export default ShopScreen = observer(({navigation}) => {
             marginTop: 350,
             paddingTop: 70,
             backgroundColor: colors.white,
+            minHeight: height - 180,
           }}>
           {todo && (
             <ReservationSection shop={shop} todo={todo}></ReservationSection>

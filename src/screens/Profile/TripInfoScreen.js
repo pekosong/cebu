@@ -148,7 +148,7 @@ const TripInfoScreen = observer(props => {
             markedDates={date}
             markingType="period"
             theme={{
-              arrowColor: colors.primary,
+              arrowColor: colors.accent,
               todayTextColor: colors.primary,
               mondayTextColor: colors.primary,
               'stylesheet.day.period': {
@@ -164,17 +164,17 @@ const TripInfoScreen = observer(props => {
 
           <Block top padding={[0, sizes.padding]}>
             <Button
-              gradient
+              normal
               onPress={() => {
                 setStep(step + 1);
                 setLoading(false);
               }}>
-              <Text bold white center>
+              <Text white center>
                 다음
               </Text>
             </Button>
-            <Button shadow style={styles.shadow}>
-              <Text center semibold onPress={() => navigation.goBack()}>
+            <Button border style={styles.shadow}>
+              <Text center accent onPress={() => navigation.goBack()}>
                 뒤로
               </Text>
             </Button>
@@ -196,21 +196,17 @@ const TripInfoScreen = observer(props => {
                 setHotel(text);
               }}
             />
-            <Button
-              gradient
-              onPress={() => {
-                handleSignUp();
-              }}>
+            <Button normal onPress={() => handleSignUp()}>
               {loading ? (
                 <ActivityIndicator size="small" color="white" />
               ) : (
-                <Text bold white center>
+                <Text white center>
                   등록
                 </Text>
               )}
             </Button>
-            <Button shadow style={styles.shadow}>
-              <Text center semibold onPress={() => setStep(step - 1)}>
+            <Button border style={styles.shadow}>
+              <Text center accent onPress={() => setStep(step - 1)}>
                 뒤로
               </Text>
             </Button>

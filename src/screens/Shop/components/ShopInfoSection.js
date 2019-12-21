@@ -21,7 +21,7 @@ export default ShopInfoSection = ({shop}) => {
   return (
     <>
       <Block style={style.shop.categories}>
-        <Text h2 bold style={{marginBottom: 30}}>
+        <Text h1 bold style={{marginBottom: 30}}>
           사진 정보
         </Text>
         <ScrollView
@@ -51,7 +51,7 @@ export default ShopInfoSection = ({shop}) => {
       </Block>
       <Divider></Divider>
       <Block style={style.shop.categories}>
-        <Text h2 bold style={[{marginBottom: 30}]}>
+        <Text h1 bold style={[{marginBottom: 30}]}>
           업체 정보
         </Text>
         <Block>
@@ -95,7 +95,7 @@ export default ShopInfoSection = ({shop}) => {
       </Block>
       <Divider></Divider>
       <Block style={style.shop.categories}>
-        <Text h3 bold style={{marginBottom: 30}}>
+        <Text h1 bold style={{marginBottom: 30}}>
           위치
         </Text>
         <Block row space="between">

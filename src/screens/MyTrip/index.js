@@ -1,11 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  ScrollView,
-  StyleSheet,
-  TouchableOpacity,
-  Platform,
-  ActivityIndicator,
-} from 'react-native';
+import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
 
 import {
   Block,
@@ -48,7 +42,7 @@ const MyTripScreen = observer(props => {
       let days = {};
 
       Object.keys(myPlans).forEach((key, idx) => {
-        days[`${idx + 1}일차`] = key;
+        days[idx + 1] = key;
       });
 
       setActive('전체');
@@ -91,20 +85,29 @@ const MyTripScreen = observer(props => {
       <TouchableOpacity
         key={`tab-${tab}`}
         onPress={() => handleTripTab(tab)}
-        style={[styles.tab, isActive ? styles.active : null]}>
-        <Text size={16} medium gray={!isActive} secondary={isActive}>
-          {tab}
-        </Text>
+        style={[styles.tab, isActive && styles.active]}>
+        {
+          <>
+            {tab != '전체' && (
+              <Text gray={!isActive} white={isActive} style={{marginBottom: 2}}>
+                Day
+              </Text>
+            )}
+            <Text size={18} gray={!isActive} white={isActive}>
+              {tab}
+            </Text>
+          </>
+        }
       </TouchableOpacity>
     );
   };
 
-  renderList = (day, lastItem) => {
+  renderList = (day, idx) => {
+    lastItem = Object.values(selectedDates).length == idx + 1 ? true : false;
     let items = reservations.filter(e => e.date == day);
 
     let korDay = makeMonDay(day);
     let item = plans[day];
-
     return (
       <Block key={day} style={styles.categories}>
         <Block center row space="between" style={{marginBottom: 10}}>
@@ -163,13 +166,13 @@ const MyTripScreen = observer(props => {
             );
           })
         ) : (
-          <Button border onPress={() => navigation.navigate('Search')}>
+          <Button border onPress={() => navigation.navigate('Home')}>
             <Text accent center>
               새로운 일정을 등록하세요
             </Text>
           </Button>
         )}
-        {!lastItem && <Divider style={{marginHorizontal: 0}}></Divider>}
+        {!lastItem && <Divider></Divider>}
       </Block>
     );
   };
@@ -180,19 +183,26 @@ const MyTripScreen = observer(props => {
 
   return (
     <>
-      <Block style={style.appBar}>
-        <Text h1 bold>
-          내 일정
-        </Text>
+      <Block style={[style.appBar, styles.shadow, {height: 180}]}>
+        <Block style={{flex: 0, height: 30}}>
+          <Text h1 bold>
+            내일정
+          </Text>
+        </Block>
+
+        <Block style={styles.tabs}>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}>
+            {tabs.map(tab => renderTripTab(tab))}
+          </ScrollView>
+        </Block>
       </Block>
-      <Block style={styles.tabs}>{tabs.map(tab => renderTripTab(tab))}</Block>
+
       <ScrollView showsVerticalScrollIndicator={false}>
-        <Block style={{marginTop: 20, marginBottom: 40}}>
-          {Object.values(selectedDates).map((day, idx) => {
-            lastItem =
-              Object.values(selectedDates).length == idx + 1 ? true : false;
-            return renderList(day, lastItem);
-          })}
+        <Block style={{paddingTop: sizes.base * 2, marginBottom: 40}}>
+          {Object.values(selectedDates).map((day, idx) => renderList(day, idx))}
         </Block>
       </ScrollView>
     </>
@@ -215,22 +225,35 @@ const styles = StyleSheet.create({
     height: sizes.base * 4,
     borderRadius: 3,
   },
+  shadow: {
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+  },
   tabs: {
     flex: 0,
     flexDirection: 'row',
-    borderBottomColor: colors.gray2,
-    borderBottomWidth: StyleSheet.hairlineWidth,
-    paddingTop: 20,
-    marginVertical: Platform.OS === 'ios' ? sizes.base * 0.8 : sizes.base,
-    marginHorizontal: sizes.padding,
+    marginTop: 20,
+    height: 90,
   },
   tab: {
-    marginRight: sizes.base,
-    paddingBottom: sizes.base,
+    flex: 0,
+    width: 60,
+    height: 60,
+    borderRadius: 30,
+    backgroundColor: '#eee',
+    marginRight: sizes.base * 1.2,
+    justifyContent: 'center',
+    alignItems: 'center',
   },
   active: {
-    borderBottomColor: colors.secondary,
-    borderBottomWidth: 3,
+    backgroundColor: colors.accent,
   },
   categories: {
     paddingHorizontal: sizes.padding,

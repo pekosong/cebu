@@ -18,6 +18,7 @@ class Button extends Component {
       shadow,
       children,
       border,
+      normal,
       ...props
     } = this.props;
 
@@ -50,6 +51,16 @@ class Button extends Component {
       return (
         <TouchableOpacity
           style={[buttonStyles, styles.border]}
+          activeOpacity={opacity}
+          {...props}>
+          {children}
+        </TouchableOpacity>
+      );
+    }
+    if (normal) {
+      return (
+        <TouchableOpacity
+          style={[buttonStyles, styles.normal]}
           activeOpacity={opacity}
           {...props}>
           {children}
@@ -95,6 +106,9 @@ const styles = StyleSheet.create({
     shadowOffset: {width: 0, height: 2},
     shadowOpacity: 0.1,
     shadowRadius: 10,
+  },
+  normal: {
+    backgroundColor: colors.accent,
   },
   accent: {backgroundColor: colors.accent},
   primary: {backgroundColor: colors.primary},

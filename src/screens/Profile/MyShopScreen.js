@@ -309,7 +309,7 @@ const MyShopScreen = observer(props => {
   }
 
   return (
-    <SafeAreaView>
+    <>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView>
           <Block style={style.header}>
@@ -609,7 +609,7 @@ const MyShopScreen = observer(props => {
           </Block>
         </ScrollView>
       </KeyboardAvoidingView>
-    </SafeAreaView>
+    </>
   );
 });
 

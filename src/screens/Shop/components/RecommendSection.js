@@ -11,7 +11,7 @@ import {AntDesign} from '@expo/vector-icons';
 export default RecommendSection = ({navigation, recommendList, shop}) => {
   return (
     <Block style={[style.shop.categories]}>
-      <Text h2 bold style={{marginBottom: 30}}>
+      <Text h1 bold style={{marginBottom: 30}}>
         근처 추천 장소
       </Text>
       <ScrollView
@@ -30,23 +30,14 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
               <Block
                 style={{
                   flex: 0,
-                  width: 110,
-                  height: 120,
-                  marginRight: 10,
+                  width: 80,
+                  height: 80,
+                  marginRight: 16,
                 }}>
                 <Image style={styles.imageStyle} source={item.src}></Image>
-                <Favorite
-                  shop={{
-                    id: item.shopCode,
-                    name: item.shop,
-                    preview: item.url,
-                  }}></Favorite>
-                <Block style={styles.overlap}></Block>
               </Block>
               <Block>
-                <Text bold accent>
-                  {item.tag}
-                </Text>
+                <Text accent>{item.tag}</Text>
                 <Text h3 bold style={{marginVertical: 5}}>
                   {item.shop}
                 </Text>
@@ -86,13 +77,10 @@ RecommendSection.navigationOptions = {
 const styles = StyleSheet.create({
   elementContainer: {
     borderRadius: 3,
-    height: 140,
+    height: 130,
     display: 'flex',
     flexDirection: 'row',
-    justifyContent: 'flex-start',
-    alignItems: 'center',
-    paddingBottom: 20,
-    marginBottom: 30,
+    marginBottom: 20,
     borderBottomWidth: 0.2,
     borderBottomColor: 'grey',
   },
@@ -100,15 +88,5 @@ const styles = StyleSheet.create({
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 3,
-  },
-  overlap: {
-    position: 'absolute',
-    width: '100%',
-    height: '100%',
-    top: 0,
-    left: 0,
-    backgroundColor: 'rgba(0,0,0,0.1)',
-    borderRadius: 5,
   },
 });

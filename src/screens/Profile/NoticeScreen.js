@@ -79,7 +79,7 @@ const NoticeScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView>
+    <>
       <ScrollView>
         <Block style={style.header}>
           <Block row center space="between">
@@ -190,7 +190,7 @@ const NoticeScreen = observer(props => {
           </Block>
         </Block>
       </ScrollView>
-    </SafeAreaView>
+    </>
   );
 });
 

@@ -184,7 +184,7 @@ const ReservationScreen = observer(props => {
   }
 
   return (
-    <SafeAreaView>
+    <>
       <Block
         style={{
           flex: 0,
@@ -193,7 +193,7 @@ const ReservationScreen = observer(props => {
         <Button onPress={() => navigation.goBack()} style={{width: 30}}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </Button>
-        <Text h1 bold>
+        <Text h1 bold style={{marginBottom: 20}}>
           예약 관리
         </Text>
       </Block>
@@ -219,7 +219,7 @@ const ReservationScreen = observer(props => {
           setVisible={setVisible}
         />
       </Modal>
-    </SafeAreaView>
+    </>
   );
 });
 

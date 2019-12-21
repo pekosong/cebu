@@ -21,11 +21,11 @@ const style = {
   },
   appBar: {
     flex: 0,
-    height: 100,
-    justifyContent: 'center',
-    paddingTop: Platform.OS === 'ios' ? sizes.base * 3 : sizes.base * 2.8,
+    height: 90,
+    paddingTop: Platform.OS === 'ios' ? sizes.base * 4 : sizes.base * 3.8,
     paddingHorizontal: sizes.padding,
   },
+
   shop: {
     categories: {
       marginVertical: 10,

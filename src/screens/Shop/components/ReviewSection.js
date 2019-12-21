@@ -1,5 +1,11 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, TouchableOpacity, Modal, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  TouchableWithoutFeedback,
+  Modal,
+  Dimensions,
+} from 'react-native';
 
 import {
   Block,
@@ -8,6 +14,8 @@ import {
   ReviewNewModal,
   CachedImage,
 } from 'app/src/components';
+import {AntDesign} from '@expo/vector-icons';
+
 import {UserStoreContext} from 'app/src/store/user';
 import {sizes, colors, style} from 'app/src/styles';
 
@@ -16,25 +24,80 @@ import {observer} from 'mobx-react-lite';
 import StarRating from 'react-native-star-rating';
 import moment from 'moment';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const ReviewSection = observer(({navigation, shop}) => {
   const {user} = useContext(UserStoreContext);
   const [reviewVisible, setReviewVisible] = useState(false);
   const [newReviewVisible, setNewReviewVisible] = useState(false);
 
-  return (
-    <>
-      <Block style={[style.shop.categories]}>
-        <Block row space="between" style={{marginBottom: 30}}>
-          <Text h2 bold>
-            이용 후기
-          </Text>
-          <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
-            <Text h2 bold accent>
+  if (shop.reviews.length == 0) {
+    return (
+      <Block
+        style={{
+          justifyContent: 'center',
+          alignItems: 'center',
+        }}>
+        <Text bold center h2 style={{marginBottom: 10}}>
+          등록된 후기가 없습니다.
+        </Text>
+        <Text center h4 style={{marginBottom: 20}}>
+          첫 후기를 작성하세요.
+        </Text>
+        <TouchableWithoutFeedback onPress={() => setNewReviewVisible(true)}>
+          <Block
+            style={[
+              styles.shadow,
+              {
+                flex: 0,
+                paddingVertical: 10,
+                borderRadius: 20,
+                width: 300,
+                backgroundColor: colors.accent,
+              },
+            ]}>
+            <Text white center h3>
               후기 작성
             </Text>
-          </TouchableOpacity>
+          </Block>
+        </TouchableWithoutFeedback>
+        <Modal
+          animationType="slide"
+          visible={newReviewVisible}
+          onRequestClose={() => setNewReviewVisible(false)}>
+          <ReviewNewModal
+            navigation={navigation}
+            user={user}
+            shop={shop}
+            setNewReviewVisible={setNewReviewVisible}
+          />
+        </Modal>
+      </Block>
+    );
+  }
+  return (
+    <>
+      <Block style={[style.shop.categories, {minHeight: height - 180}]}>
+        <Block style={{marginBottom: 30}}>
+          <Block row space="between">
+            <Text h1 bold>
+              이용 후기
+            </Text>
+            <TouchableWithoutFeedback onPress={() => setNewReviewVisible(true)}>
+              <Text h2 bold accent>
+                후기 작성
+              </Text>
+            </TouchableWithoutFeedback>
+          </Block>
+          <Block left row center style={{marginTop: 10}}>
+            <AntDesign size={24} color={colors.primary} name="star"></AntDesign>
+            <Text h1 bold style={{marginLeft: 5}}>
+              {shop.review}
+            </Text>
+            <Text h2 bold style={{marginLeft: 5}}>
+              {` (${shop.reviewCnt})`}
+            </Text>
+          </Block>
         </Block>
         {shop.reviews
           .sort((a, b) => {
@@ -63,7 +126,7 @@ const ReviewSection = observer(({navigation, shop}) => {
                   </Block>
                 </Block>
                 <Block style={{marginTop: 16}}>
-                  <Text h3>{review.comment}</Text>
+                  <Text>{review.comment}</Text>
                 </Block>
                 <Block row style={{marginTop: 16}}>
                   {[
@@ -75,9 +138,6 @@ const ReviewSection = observer(({navigation, shop}) => {
                     <CachedImage key={e} uri={e} style={styles.menuImage} />
                   ))}
                 </Block>
-                <Text right h3 style={{marginTop: 5}}>
-                  더보기
-                </Text>
               </Block>
             </TouchableOpacity>
           ))}
@@ -131,6 +191,16 @@ const styles = StyleSheet.create({
     width: (width - 30 - sizes.padding * 2) / 4,
     height: (width - 30 - sizes.padding * 2) / 4,
     marginRight: 10,
+  },
+  shadow: {
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 2,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 2,
   },
 });
 

@@ -124,7 +124,7 @@ const ProfileScreen = observer(props => {
     <>
       <Block style={style.appBar}>
         <Text h1 bold>
-          내 정보
+          내정보
         </Text>
       </Block>
       <ScrollView showsHorizontalScrollIndicator={false}>

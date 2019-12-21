@@ -24,7 +24,40 @@ export default ProgramSection = ({}) => {
       </Block>
       <Divider />
       <Block style={style.shop.categories}>
-        <Text h2 bold style={{marginBottom: 30}}>
+        <Text h1 bold style={{marginBottom: 30}}>
+          가격 안내
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          성인(만12세 이상) : 80,000원/1인
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          소인(만12세 미만-24개월) : 70,000원/1인
+        </Text>
+      </Block>
+      <Divider />
+      <Block style={style.shop.categories}>
+        <Text h1 bold style={{marginBottom: 30}}>
+          프로그램 일정
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          스노클링(힐루뚱안 포인트)
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          퀴쇼 및 상푸
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          스노클링(올랑고 산빈센트)
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          낚시
+        </Text>
+        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
+          댄스공연
+        </Text>
+      </Block>
+      <Divider />
+      <Block style={style.shop.categories}>
+        <Text h1 bold style={{marginBottom: 30}}>
           프로그램 정보
         </Text>
         {[
@@ -57,7 +90,7 @@ export default ProgramSection = ({}) => {
             key={idx}
             row
             space="between"
-            style={{marginTop: idx == 0 ? 0 : 20}}>
+            style={{marginTop: idx == 0 ? 0 : 30}}>
             <Block>
               <Ionicons
                 size={25}
@@ -89,28 +122,25 @@ export default ProgramSection = ({}) => {
       </Block>
       <Divider />
       <Block style={[style.shop.categories, {marginBottom: 30}]}>
-        <Text h2 bold style={{marginBottom: 30}}>
-          프로그램 세부
+        <Text h1 bold style={{marginBottom: 30}}>
+          상세 프로그램
         </Text>
         <Block>
           <Text h2 bold style={{marginBottom: 20}}>
             세부 호핑투어! 왕복 픽업+스노클링+중식+BBQ중식 까지!
           </Text>
-          <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
-            <Ionicons size={25} name="ios-checkmark" /> 세부자유여행객을 위한
-            막탄 내 리조트 무료픽업 &드랍서비스
+          <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+            세부자유여행객을 위한 막탄 내 리조트 무료픽업 &드랍서비스
           </Text>
-          <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
-            <Ionicons size={25} name="ios-checkmark" /> 세부액티비티호핑투어를
-            즐기고 선상BBQ중식제공(선셋투어 시 석시)
+          <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+            세부액티비티호핑투어를 즐기고 선상BBQ중식제공(선셋투어 시 석시)
           </Text>
-          <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
-            <Ionicons size={25} name="ios-checkmark" /> 세부여행 최고 액티비티
-            최신스노클링장비 세부여행추억담기
+          <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+            세부여행 최고 액티비티 최신스노클링장비 세부여행추억담기
           </Text>
-          <Text h3 style={{marginBottom: 15, lineHeight: 25}}>
-            <Ionicons size={25} name="ios-checkmark" /> 수중카메라 촬영서비스
-            세부호핑투 무료 베이비시터 서비스 호핑 도우미 서비스
+          <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+            수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
+            서비스
           </Text>
         </Block>
         <CachedImage
@@ -124,7 +154,7 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
+        <Text h4 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
@@ -139,7 +169,7 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
+        <Text h4 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
@@ -154,11 +184,61 @@ export default ProgramSection = ({}) => {
             resizeMode: 'contain',
           }}
         />
-        <Text h3 style={{marginTop: 10, lineHeight: 25}}>
+        <Text h4 style={{marginTop: 10, lineHeight: 25}}>
           수중카메라 촬영서비스 세부호핑투 무료 베이비시터 서비스 호핑 도우미
           서비스
         </Text>
       </Block>
+      <Divider />
+      <Block style={style.shop.categories}>
+        <Text h1 bold style={{marginBottom: 30}}>
+          유의 사항
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          1. 점심식사는 막탄내 유명 레스토랑에서 진행하고 상황에 따라 변경될수
+          있습니다.
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          2. 보모 서비스가 필요하신분은 사전에 요청하시면 가능하고 250페소
+          현장지불입니다 .
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          3. 선착장 오피스에 짐보관가능합니다.
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          4. 천재지변(태풍, 지진등 )으로 인해 행사가 불가 할수있으며 이럴경우
+          100% 환불처리 되십니다.
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          5. 해당일 기상 상황에따라 스노클링 포인트는 안전지역으로 변경진행 될수
+          있습니다.
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          6. 여행자보험은 개별적으로 반드시 가입하여 주시길 바랍니다.
+        </Text>
+      </Block>
+      <Divider />
+      <Block style={style.shop.categories}>
+        <Text h1 bold style={{marginBottom: 30}}>
+          취소 및 환불 규정
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          여행일 기준 20일 ~ 이전 취소 요청시 : 전액환불
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          여행일 기준 10일 ~ 19일전 취소 요청 시 : 결제금액의 5% 공제
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          여행일 기준 8일 ~ 9일전 취소 요청 시 : 결제금액의 10% 공제
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          여행일 기준 1일 ~ 7일전 취소 요청 시 : 결제금액의 20% 공제
+        </Text>
+        <Text h4 style={{marginBottom: 5, lineHeight: 25}}>
+          여행일 당일 취소 요청 시 : 결제금액의 50% 공제
+        </Text>
+      </Block>
+      <Divider />
     </>
   );
 };

@@ -21,17 +21,6 @@ const cateSrc = {
   샌딩: require('app/src/assets/images/search/sanding.jpg'),
 };
 
-const cateMap = {
-  Restaurant: '식당',
-  Massage: '마사지',
-  Cafe: '카페',
-  Bar: '술집',
-  Nail: '네일',
-  SeaSports: '수상스포츠',
-  Activity: '액티비티',
-  Shopping: '쇼핑',
-};
-
 const filerMap = {
   추천: 'review',
   리뷰수: 'reviewCnt',
@@ -83,7 +72,11 @@ export default CategoryScreen = observer(props => {
 
   return (
     <>
-      <Block style={styles.header}>
+      <Block
+        style={[
+          styles.header,
+          {height: navigation.getParam('category') === 'Activity' ? null : 90},
+        ]}>
         <Block style={styles.appBar}>
           <Block row center>
             <TouchableWithoutFeedback
@@ -91,9 +84,6 @@ export default CategoryScreen = observer(props => {
               style={{marginRight: 12}}>
               <Ionicons size={30} name="ios-arrow-back" />
             </TouchableWithoutFeedback>
-            <Text h2 bold>
-              {cateMap[navigation.getParam('category')]}
-            </Text>
           </Block>
           <Block row bottom center>
             <Text h2 style={{marginRight: 15}}>
@@ -152,7 +142,7 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,

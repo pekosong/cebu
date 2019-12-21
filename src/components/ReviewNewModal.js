@@ -47,14 +47,14 @@ export default ReviewNewModal = ({setNewReviewVisible, user, shop}) => {
     });
   };
   return (
-    <Block padding={[sizes.padding * 1.5, sizes.padding]}>
+    <Block padding={[sizes.padding * 2, sizes.padding]}>
       <TouchableOpacity onPress={() => setNewReviewVisible(false)}>
         <Ionicons size={50} color={colors.black} name="ios-close" />
       </TouchableOpacity>
       <Text h1 bold style={{marginBottom: 20}}>
         후기 작성
       </Text>
-      <Block bottom style={{marginBottom: 30, marginHorizontal: 50}}>
+      <Block bottom style={{marginBottom: 30, marginHorizontal: 80}}>
         <StarRating
           disabled={false}
           emptyStar={'ios-star-outline'}
@@ -75,11 +75,22 @@ export default ReviewNewModal = ({setNewReviewVisible, user, shop}) => {
           setText(e);
         }}
       />
-      <Button gradient onPress={() => handleWriteReview()}>
-        <Text white center bold>
-          작성완료
-        </Text>
-      </Button>
+      <TouchableOpacity onPress={() => handleWriteReview(true)}>
+        <Block
+          style={[
+            styles.shadow,
+            {
+              flex: 0,
+              paddingVertical: 10,
+              borderRadius: 20,
+              backgroundColor: colors.accent,
+            },
+          ]}>
+          <Text white center h3>
+            작성 완료
+          </Text>
+        </Block>
+      </TouchableOpacity>
     </Block>
   );
 };

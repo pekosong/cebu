@@ -70,10 +70,12 @@ const FavoritesScreen = observer(props => {
   return (
     <>
       <Block style={[style.appBar, styles.shadow, {height: 200}]}>
-        <Text h1 bold>
-          저장소
-        </Text>
-        <Block flex={false} row style={styles.tabs}>
+        <Block style={{flex: 0, height: 30}}>
+          <Text h1 bold>
+            저장소
+          </Text>
+        </Block>
+        <Block style={styles.tabs}>
           {tabs.map((tab, idx) => (
             <CategoryTab
               key={idx}
@@ -119,14 +121,17 @@ const styles = StyleSheet.create({
     shadowColor: '#000',
     shadowOffset: {
       width: 0,
-      height: 2,
+      height: 1,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 2,
+    elevation: 1,
   },
   tabs: {
+    flex: 0,
+    flexDirection: 'row',
     marginTop: 20,
+    height: 90,
   },
 });
 

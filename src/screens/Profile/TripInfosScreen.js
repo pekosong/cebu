@@ -52,7 +52,7 @@ const TripInfosScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <>
       <ScrollView>
         <Block style={style.header}>
           <Block row center space="between">
@@ -111,15 +111,15 @@ const TripInfosScreen = observer(props => {
       <Block
         flex={false}
         style={{marginHorizontal: sizes.padding, marginBottom: 10}}>
-        <Button gradient onPress={() => navigation.navigate('TripInfo')}>
-          <Text bold white center>
+        <Button normal onPress={() => navigation.navigate('TripInfo')}>
+          <Text white center>
             {Object.entries(plans).length != 0
               ? '여행 정보 변경'
               : '새로운 여행 등록'}
           </Text>
         </Button>
       </Block>
-    </SafeAreaView>
+    </>
   );
 });
 
