@@ -5,7 +5,6 @@ import {Block, Text} from 'app/src/components';
 
 export default CardCategory = props => {
   const {item, navigation, last} = props;
-
   return (
     <TouchableWithoutFeedback
       key={item.name}

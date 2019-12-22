@@ -1,14 +1,18 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  Dimensions,
+  TouchableOpacity,
+} from 'react-native';
 
-import {SearchBar, Block, Text, Loader, Button} from 'app/src/components';
+import {SearchBar, Block, Text, Loader} from 'app/src/components';
 
-import Card from './components/Card';
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
 
 import {mocks} from 'app/src/constants';
-import {colors, sizes} from 'app/src/styles';
+import {sizes} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
@@ -18,10 +22,14 @@ import {Ionicons} from '@expo/vector-icons';
 
 const EMAIL = 'b@naver.com';
 
-const {width} = Dimensions.get('window');
-
 const HomeScreen = observer(props => {
-  const {navigation, categories, recommendList, eventList, loveList} = props;
+  const {
+    navigation,
+    categories,
+    restaurantList,
+    messageList,
+    ActivityList,
+  } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
   const userStore = useContext(UserStoreContext);
@@ -39,21 +47,20 @@ const HomeScreen = observer(props => {
     };
   }, []);
 
-  if (!isLoaded) {
-    return <Loader></Loader>;
-  }
+  if (!isLoaded) return <Loader></Loader>;
+
   return (
     <>
       <SearchBar />
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
         <Block style={styles.title}>
-          <Text h1 bold>
+          <Text h2 bold>
             평생 잊지 못할 세부를 원하세요?
           </Text>
         </Block>
         <Block style={{height: 140}}>
           <ScrollView
-            style={{paddingLeft: sizes.padding}}
+            style={{paddingLeft: sizes.padding - 5}}
             horizontal={true}
             showsHorizontalScrollIndicator={false}
             scrollEnabled={true}>
@@ -66,142 +73,93 @@ const HomeScreen = observer(props => {
             ))}
           </ScrollView>
         </Block>
+
         <Block style={styles.title}>
-          <Text h1 bold>
-            이런 활동은 어떠세요
-          </Text>
-        </Block>
-        <Block
-          style={{
-            paddingHorizontal: sizes.padding,
-            margin: 2,
-          }}>
-          <CachedImage
-            style={{
-              height: 350,
-              width: width - sizes.padding * 2,
-              borderRadius: 10,
-            }}
-            uri={
-              'https://cebu365.com/wp-content/uploads/2016/12/hopping-tour-1.jpg'
-            }></CachedImage>
-          <Block
-            center
-            style={{width: width, position: 'absolute', top: 30, zindex: 10}}>
-            <Text white>헬로우 세부와 함께하는</Text>
-            <Text white bold h3 style={{paddingVertical: 15}}>
-              다양한 Activity
+          <Block center row space="between">
+            <Text h3 bold>
+              지금 뜨는 레스토랑
             </Text>
-            <Button
-              style={{
-                width: 120,
-              }}
-              onPress={() => {
-                navigation.navigate('CategoryActivity');
-              }}>
-              <Text center black>
-                자세히 알아보기
-              </Text>
-            </Button>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Restaurant',
+                })
+              }>
+              <Ionicons size={26} name="ios-arrow-forward" />
+            </TouchableOpacity>
           </Block>
-        </Block>
-        {/* 할인 정보 */}
-        <Block style={styles.title}>
-          <Block row space="between">
-            <Text h1 bold>
-              지금 할인 하고 있어요
-            </Text>
-            <Ionicons size={26} color={colors.black} name="ios-arrow-forward" />
-          </Block>
-          <Text h4 style={{marginTop: 6}}>
-            Hello, Cebu 만을 위한 특별 할인 행사를 하고 있어요
-          </Text>
         </Block>
         <ScrollView
           style={{paddingLeft: sizes.padding}}
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
-          {recommendList.map((item, idx) => (
-            <Card
-              key={idx}
-              item={item}
-              last={recommendList.length - 1 == idx}
-              navigation={navigation}
-              favorite={user.myfavorites}>
-              <Text
-                right
-                gray
-                caption
-                style={{
-                  textDecorationLine: 'line-through',
-                  textDecorationStyle: 'solid',
-                }}>
-                {item.beforePrice}원
-              </Text>
-              <Text right h4 bold style={{marginTop: 5}}>
-                {item.afterPrice}원
-              </Text>
-            </Card>
-          ))}
-        </ScrollView>
-        <Block style={styles.title}>
-          <Block row space="between">
-            <Text h1 bold>
-              많은 분들이 사랑하는 곳
-            </Text>
-            <Ionicons size={26} color={colors.black} name="ios-arrow-forward" />
-          </Block>
-          <Text h4 style={{marginTop: 6}}>
-            Hello, Cebu 이용객들이 많은 곳이에요
-          </Text>
-        </Block>
-        <Block
-          style={{
-            marginHorizontal: sizes.padding,
-            flexDirection: 'row',
-            flexWrap: 'wrap',
-          }}>
-          {loveList.map((item, idx) => (
+          {restaurantList.map((item, idx) => (
             <CardRect
               key={idx}
               item={item}
               navigation={navigation}
-              favorite={user.myfavorites}
-              idx={idx}></CardRect>
+              isLast={restaurantList.length - 1 == idx}></CardRect>
           ))}
-        </Block>
+        </ScrollView>
+
         <Block style={styles.title}>
-          <Block row space="between">
-            <Text h1 bold>
-              지금 이벤트 중이에요
+          <Block center row space="between">
+            <Text h3 bold>
+              하루의 피로를 풀어줄 마사지
             </Text>
-            <Ionicons size={26} color={colors.black} name="ios-arrow-forward" />
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Massage',
+                })
+              }>
+              <Ionicons size={26} name="ios-arrow-forward" />
+            </TouchableOpacity>
           </Block>
-          <Text h4 style={{marginTop: 6}}>
-            Hello, Cebu 만을 위한 특별 이벤트를 하고 있어요
-          </Text>
         </Block>
-        <Block style={{marginBottom: 40}}>
-          <ScrollView
-            style={{paddingLeft: sizes.padding}}
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}>
-            {eventList.map((item, idx) => (
-              <Card
-                key={idx}
-                item={item}
-                last={eventList.length - 1 == idx}
-                navigation={navigation}
-                favorite={user.myfavorites}>
-                <Text right h4 bold style={{marginTop: 5}}>
-                  {item.event}
-                </Text>
-              </Card>
-            ))}
-          </ScrollView>
+        <ScrollView
+          style={{paddingLeft: sizes.padding}}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {messageList.map((item, idx) => (
+            <CardRect
+              key={idx}
+              item={item}
+              navigation={navigation}
+              isLast={messageList.length - 1 == idx}></CardRect>
+          ))}
+        </ScrollView>
+        <Block style={styles.title}>
+          <Block center row space="between">
+            <Text h3 bold>
+              세부에서 놀기
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Activity',
+                })
+              }>
+              <Ionicons size={26} name="ios-arrow-forward" />
+            </TouchableOpacity>
+          </Block>
         </Block>
+        <ScrollView
+          style={{paddingLeft: sizes.padding}}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {ActivityList.map((item, idx) => (
+            <CardRect
+              key={idx}
+              item={item}
+              navigation={navigation}
+              isLast={ActivityList.length - 1 == idx}></CardRect>
+          ))}
+        </ScrollView>
+        <Block style={styles.title}></Block>
       </ScrollView>
     </>
   );
@@ -211,22 +169,17 @@ HomeScreen.navigationOptions = {
   header: null,
 };
 HomeScreen.defaultProps = {
-  profiles: mocks.profiles,
   categories: mocks.categories,
-  recommendList: mocks.recommendList,
-  eventList: mocks.eventList,
-  loveList: mocks.loveList,
+  restaurantList: mocks.restaurantList,
+  messageList: mocks.messageList,
+  ActivityList: mocks.ActivityList,
 };
 
 const styles = StyleSheet.create({
   title: {
     marginHorizontal: sizes.padding,
-    marginTop: 40,
-    marginBottom: 20,
-  },
-  content: {
-    marginLeft: sizes.padding,
-    height: 220,
+    marginTop: 20,
+    marginBottom: 8,
   },
 });
 

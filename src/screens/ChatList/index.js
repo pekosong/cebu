@@ -111,9 +111,7 @@ const ChatListScreen = observer(props => {
     );
   };
 
-  if (!isLoaded) {
-    return <Loader></Loader>;
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
     <>

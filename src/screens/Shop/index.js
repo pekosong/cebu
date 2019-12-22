@@ -6,15 +6,9 @@ import React, {
   useContext,
   memo,
 } from 'react';
-import {
-  StyleSheet,
-  Animated,
-  ActivityIndicator,
-  TouchableOpacity,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
-import {Block, Text} from 'app/src/components';
+import {Block, Text, Loader} from 'app/src/components';
 
 import {sizes, colors, style} from 'app/src/styles';
 import {mocks} from 'app/src/constants';
@@ -71,6 +65,7 @@ export default ShopScreen = observer(({navigation}) => {
 
   useEffect(() => {
     const shopId = navigation.getParam('shopId');
+    console.log(shopId);
     let unsubscribe;
     if (shopId.indexOf('activity') == -1) {
       unsubscribe = streamShop(shopId).onSnapshot(doc => {
@@ -85,9 +80,6 @@ export default ShopScreen = observer(({navigation}) => {
       setIsLoaded(true);
       setIsActivity(true);
       setTodo(navigation.getParam('todo'));
-      // setShop(doc.data());
-      // setActive(MAPCAT[doc.data().category]);
-      // setIsLoaded(true);
     }
 
     return () => {
@@ -173,15 +165,8 @@ export default ShopScreen = observer(({navigation}) => {
     }
   };
 
-  if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
-  }
+  if (!isLoaded) return <Loader></Loader>;
+
   return (
     <>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
@@ -213,6 +198,7 @@ export default ShopScreen = observer(({navigation}) => {
         }}
         showsVerticalScrollIndicator={false}
         style={{
+          flex: 1,
           paddingTop: 0,
           marginBottom: 20,
           zIndex: 10,
@@ -229,10 +215,10 @@ export default ShopScreen = observer(({navigation}) => {
         <ShopTitle shop={shop}></ShopTitle>
         <Animated.View
           style={{
-            marginTop: 350,
+            marginTop: 340,
             paddingTop: 70,
             backgroundColor: colors.white,
-            minHeight: height - 180,
+            minHeight: height - 100,
           }}>
           {todo && (
             <ReservationSection shop={shop} todo={todo}></ReservationSection>

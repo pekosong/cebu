@@ -15,7 +15,8 @@ import {Ionicons} from '@expo/vector-icons';
 import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';
 
-export default SearchBar = ({style, children}) => {
+export default SearchBar = props => {
+  const {style, children} = props;
   const [showSearch, setShowSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const searchRef = useRef(null);

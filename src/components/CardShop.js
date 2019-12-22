@@ -12,7 +12,7 @@ import {AntDesign} from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
 export default CardShop = props => {
-  const {shop, navigation, isLast} = props;
+  const {shop, navigation} = props;
   const {
     name,
     preview,
@@ -52,11 +52,7 @@ export default CardShop = props => {
           shopId: shop.id,
         })
       }>
-      <Block
-        style={[
-          styles.categories,
-          {marginBottom: isLast ? sizes.padding * 2 : sizes.base * 1.6},
-        ]}>
+      <Block style={[styles.categories, {marginBottom: sizes.base * 1.6}]}>
         <CachedImage uri={preview} style={styles.image} />
         <Block style={styles.overlap}></Block>
         <Favorite shop={shop}></Favorite>

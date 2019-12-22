@@ -1,5 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {ScrollView, StyleSheet, TouchableOpacity} from 'react-native';
+import {
+  ScrollView,
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import {
   Block,
@@ -22,6 +27,8 @@ const MAP = {
   end: '종료',
   not: '예약불가',
 };
+
+const {height} = Dimensions.get('window');
 
 const MyTripScreen = observer(props => {
   const {navigation} = props;
@@ -110,14 +117,16 @@ const MyTripScreen = observer(props => {
     let item = plans[day];
     return (
       <Block key={day} style={styles.categories}>
-        <Block center row space="between" style={{marginBottom: 10}}>
-          <Text h3 bold>
-            {`${korDay}   Day ${item.nDay + 1}  `}
-          </Text>
-          <Text h4 bold color={colors.accent}>
-            {'in ' + item.hotel}
-          </Text>
-        </Block>
+        {(items.length != 0 || active == '전체') && (
+          <Block center row space="between" style={{marginBottom: 10}}>
+            <Text h3 bold>
+              {`${korDay}   Day ${item.nDay + 1}  `}
+            </Text>
+            <Text h4 bold color={colors.accent}>
+              {'in ' + item.hotel}
+            </Text>
+          </Block>
+        )}
         {items.length != 0 ? (
           items.map((item, idx) => {
             const todo = item;
@@ -166,20 +175,30 @@ const MyTripScreen = observer(props => {
             );
           })
         ) : (
-          <Button border onPress={() => navigation.navigate('Home')}>
-            <Text accent center>
-              새로운 일정을 등록하세요
-            </Text>
-          </Button>
+          <Block style={active != '전체' && {marginTop: height / 5}}>
+            {active != '전체' && (
+              <>
+                <Text h2 bold center style={{marginBottom: 10}}>
+                  등록된 일정이 없습니다.
+                </Text>
+                <Text center h4 style={{marginBottom: 20}}>
+                  {`${korDay}의 일정을 등록하세요.`}
+                </Text>
+              </>
+            )}
+            <Button border onPress={() => navigation.navigate('Home')}>
+              <Text accent center>
+                새로운 일정을 등록하세요
+              </Text>
+            </Button>
+          </Block>
         )}
         {!lastItem && <Divider></Divider>}
       </Block>
     );
   };
 
-  if (!isLoaded) {
-    return <Loader></Loader>;
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
     <>

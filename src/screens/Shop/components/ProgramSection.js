@@ -27,12 +27,47 @@ export default ProgramSection = ({}) => {
         <Text h1 bold style={{marginBottom: 30}}>
           가격 안내
         </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          성인(만12세 이상) : 80,000원/1인
-        </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          소인(만12세 미만-24개월) : 70,000원/1인
-        </Text>
+        <Block row>
+          {[
+            {title: '성인', subTitle: '(만 12세 이상)', price: '80,000원'},
+            {
+              title: '소인',
+              subTitle: '(만 12세 미만-24개월)',
+              price: '70,000원',
+            },
+          ].map((e, idx) => (
+            <Block
+              key={idx}
+              style={{
+                borderRadius: 20,
+                height: 150,
+                width: (width - sizes.padding * 2) / 2 - 8,
+                justifyContent: 'center',
+                alignItems: 'center',
+                backgroundColor: colors.white,
+                borderColor: colors.accent,
+                shadowColor: '#000',
+                shadowOffset: {
+                  width: 2,
+                  height: 3,
+                },
+                shadowOpacity: 0.25,
+                shadowRadius: 3.84,
+                elevation: 3,
+                marginRight: idx == 0 ? 16 : 0,
+              }}>
+              <Text bold black center h2>
+                {e.title}
+              </Text>
+              <Text center style={{marginBottom: 5, lineHeight: 25}}>
+                {`${e.subTitle}`}
+              </Text>
+              <Text bold center h2>
+                {`${e.price}`}
+              </Text>
+            </Block>
+          ))}
+        </Block>
       </Block>
       <Divider />
       <Block style={style.shop.categories}>

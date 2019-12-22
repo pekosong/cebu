@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, FlatList} from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {CardShop, CategoryTab, Block, Text, Loader} from 'app/src/components';
@@ -66,9 +66,7 @@ export default CategoryScreen = observer(props => {
 
   handleSongTab = tab => setCatActive(tab);
 
-  if (!isLoaded) {
-    return <Loader></Loader>;
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
     <>
@@ -109,22 +107,15 @@ export default CategoryScreen = observer(props => {
           </ScrollView>
         )}
       </Block>
-      <ScrollView
+      <FlatList
         showsVerticalScrollIndicator={false}
-        style={{
-          paddingTop: sizes.base * 2,
-          marginBottom: 20,
-          paddingBottom: 50,
-        }}>
-        {selectedLists.map((shop, idx) => (
-          <CardShop
-            key={idx}
-            shop={shop}
-            navigation={navigation}
-            isLast={selectedLists.length - 1 === idx}
-          />
-        ))}
-      </ScrollView>
+        ListHeaderComponent={<Block style={{marginBottom: 30}}></Block>}
+        data={selectedLists}
+        renderItem={({item}) => (
+          <CardShop shop={item} navigation={navigation}></CardShop>
+        )}
+        keyExtractor={item => item.id}
+      />
     </>
   );
 });

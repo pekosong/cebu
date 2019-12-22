@@ -42,7 +42,7 @@ export default Favorite = observer(props => {
     <TouchableOpacity
       onPress={() => handleFavorite(shop)}
       style={{position: 'absolute', top: 10, right: 10, zIndex: 10, ...style}}>
-      {isLoaded ? (
+      {isLoaded && (
         <AntDesign
           size={25}
           color={
@@ -58,7 +58,7 @@ export default Favorite = observer(props => {
             textShadowRadius: 1,
           }}
         />
-      ) : null}
+      )}
     </TouchableOpacity>
   );
 });

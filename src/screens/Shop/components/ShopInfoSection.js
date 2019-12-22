@@ -21,36 +21,6 @@ export default ShopInfoSection = ({shop}) => {
   return (
     <>
       <Block style={style.shop.categories}>
-        <Text h1 bold style={{marginBottom: 30}}>
-          사진 정보
-        </Text>
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEventThrottle={360}
-          pagingEnabled
-          onScroll={handleScrollByX}>
-          {shop.source.map(e => (
-            <CachedImage
-              key={e}
-              uri={e}
-              style={{
-                height: 260,
-                width: width - sizes.padding * 2,
-                borderRadius: 5,
-                resizeMode: 'contain',
-              }}
-            />
-          ))}
-        </ScrollView>
-        <Block style={styles.imageNum}>
-          <Text white bold size={11}>
-            {imageNum + ' / ' + shop.source.length}
-          </Text>
-        </Block>
-      </Block>
-      <Divider></Divider>
-      <Block style={style.shop.categories}>
         <Text h1 bold style={[{marginBottom: 30}]}>
           업체 정보
         </Text>
@@ -96,6 +66,37 @@ export default ShopInfoSection = ({shop}) => {
       <Divider></Divider>
       <Block style={style.shop.categories}>
         <Text h1 bold style={{marginBottom: 30}}>
+          사진 정보
+        </Text>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEventThrottle={360}
+          pagingEnabled
+          onScroll={handleScrollByX}>
+          {shop.source.map(e => (
+            <CachedImage
+              key={e}
+              uri={e}
+              style={{
+                height: 260,
+                width: width - sizes.padding * 2,
+                borderRadius: 5,
+                resizeMode: 'contain',
+              }}
+            />
+          ))}
+        </ScrollView>
+        <Block style={styles.imageNum}>
+          <Text white bold size={13}>
+            {imageNum + ' / ' + shop.source.length}
+          </Text>
+        </Block>
+      </Block>
+      <Divider></Divider>
+
+      <Block style={style.shop.categories}>
+        <Text h1 bold style={{marginBottom: 30}}>
           위치
         </Text>
         <Block row space="between">
@@ -134,8 +135,8 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 30,
-    right: 5,
+    bottom: 10,
+    right: 30,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: 10,
     paddingVertical: 3,

@@ -15,64 +15,54 @@ import StarRating from 'react-native-star-rating';
 const {width} = Dimensions.get('window');
 
 export default CardRect = props => {
-  const {item, navigation, idx} = props;
+  const {item, navigation, isLast} = props;
+
+  let image = item.preview;
+  if (item.id.startsWith('activity')) {
+    image = {uri: item.preview};
+  }
+
   return (
     <TouchableOpacity
-      onPress={() => {
+      onPress={() =>
         navigation.push('Shop', {
-          shopId: item.shopCode,
-        });
-      }}>
+          shopId: item.id,
+        })
+      }>
       <Block
-        style={[
-          styles.container,
-          {paddingRight: idx % 2 == 0 ? 16 : 0},
-          {marginBottom: idx == 1 || idx == 0 ? 30 : 0},
-          {
-            width:
-              idx % 2 == 0
-                ? width / 2 - sizes.padding + 8
-                : width / 2 - sizes.padding - 8,
-          },
-        ]}>
-        <Block flex={2}>
-          <Image style={styles.imageStyle} source={item.src}></Image>
+        style={[styles.container, isLast && {marginRight: sizes.padding * 1}]}>
+        <Block flex={2} style={{position: 'relative'}}>
+          <Image style={styles.imageStyle} source={image}></Image>
           <Favorite
             shop={{
-              id: item.shopCode,
-              name: item.shop,
-              preview: item.url,
+              id: item.id,
+              name: item.name,
+              preview: item.source,
             }}></Favorite>
           <Block style={styles.overlap}></Block>
         </Block>
-        <Block style={{marginTop: 6}}>
-          <Block flex={3} middle>
-            <Text
-              primary
-              caption
-              style={{marginBottom: Platform.OS == 'ios' ? 5 : 0}}>
-              {item.tag}
+        <Block flex={1} style={{marginTop: 6}}>
+          <Text bold size={14}>
+            {item.name + '  '}
+            <Text primary caption style={{marginBottom: 5}}>
+              {item.tags[0]}
             </Text>
-            <Text bold style={{marginBottom: Platform.OS == 'ios' ? 0 : 5}}>
-              {item.shop}
+          </Text>
+          <Block center row>
+            <Text accent bold style={{marginRight: 5}}>
+              {item.review}
             </Text>
-            <Block center row style={{alignItems: 'center'}}>
-              <Text accent bold style={{paddingBottom: 3, marginRight: 5}}>
-                {item.star}
-              </Text>
-
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={item.star}
-                starSize={12}
-                fullStarColor={colors.accent}
-                containerStyle={{width: 12}}
-              />
-              <Text accent bold style={{marginLeft: 50}}>
-                123
-              </Text>
-            </Block>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={item.review}
+              starSize={13}
+              fullStarColor={colors.accent}
+              containerStyle={{width: 12}}
+            />
+            <Text accent style={{marginLeft: 52}}>
+              {item.reviewCnt}
+            </Text>
           </Block>
         </Block>
       </Block>
@@ -82,8 +72,10 @@ export default CardRect = props => {
 
 export const styles = StyleSheet.create({
   container: {
-    borderRadius: 2,
-    height: width / 2 - sizes.padding,
+    borderRadius: 3,
+    paddingRight: 10,
+    height: width / 2.4 - sizes.padding,
+    width: width / 2 - sizes.padding,
   },
   imageStyle: {
     width: '100%',
@@ -95,9 +87,7 @@ export const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    top: 0,
-    left: 0,
-    backgroundColor: 'rgba(0,0,0,0.1)',
+    backgroundColor: 'rgba(0,0,0,0.2)',
     borderRadius: 3,
   },
 });

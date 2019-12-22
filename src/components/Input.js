@@ -18,11 +18,11 @@ export default class Input extends Component {
 
     return (
       <Block flex={false}>
-        {label ? (
+        {label && (
           <Text gray2={!error} accent={error}>
             {label}
           </Text>
-        ) : null}
+        )}
       </Block>
     );
   }

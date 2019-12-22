@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {ScrollView, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet} from 'react-native';
 
 import {Block, Text, CardShop, CategoryTab, Loader} from 'app/src/components';
 import {mocks} from 'app/src/constants';
@@ -63,9 +63,7 @@ const FavoritesScreen = observer(props => {
     setActive(tab);
   };
 
-  if (!isLoaded) {
-    return <Loader></Loader>;
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
     <>
@@ -87,20 +85,15 @@ const FavoritesScreen = observer(props => {
           ))}
         </Block>
       </Block>
-      <ScrollView
+      <FlatList
         showsVerticalScrollIndicator={false}
-        scrollEnabled={true}
-        style={{
-          paddingTop: sizes.base * 2,
-        }}>
-        {selectedFavorites.map((shop, idx) => (
-          <CardShop
-            key={idx}
-            shop={shop}
-            navigation={navigation}
-            isLast={selectedFavorites.length - 1 === idx}></CardShop>
-        ))}
-      </ScrollView>
+        ListHeaderComponent={<Block style={{marginBottom: 30}}></Block>}
+        data={selectedFavorites}
+        renderItem={({item}) => (
+          <CardShop shop={item} navigation={navigation}></CardShop>
+        )}
+        keyExtractor={item => item.id}
+      />
     </>
   );
 });

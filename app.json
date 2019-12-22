@@ -3,7 +3,7 @@
     "name": "헬로우 세부",
     "slug": "hellocebu",
     "privacy": "public",
-    "sdkVersion": "35.0.0",
+    "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
     "version": "1.0.1",
     "orientation": "portrait",
@@ -26,7 +26,7 @@
     },
     "android": {
       "package": "com.os1.cebu",
-      "versionCode": 4,
+      "versionCode": 5,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBJZ_NlQuoa_YnOPdwH0iFk3B2vhzimE2Y"
