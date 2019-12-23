@@ -1,24 +1,23 @@
 import React from 'react';
-import {
-  Platform,
-  StyleSheet,
-  TouchableOpacity,
-  Image,
-  Dimensions,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 
 import {Favorite, Block, Text} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
-import StarRating from 'react-native-star-rating';
-
+import {convertComma} from 'app/src/utils';
+import {AntDesign} from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
 export default CardRect = props => {
   const {item, navigation, isLast} = props;
 
   let image = item.preview;
-  if (item.id.startsWith('activity')) {
+
+  if (
+    item.id.startsWith('activity') ||
+    item.id.startsWith('food') ||
+    item.id.startsWith('place')
+  ) {
     image = {uri: item.preview};
   }
 
@@ -48,20 +47,10 @@ export default CardRect = props => {
               {item.tags[0]}
             </Text>
           </Text>
-          <Block center row>
-            <Text accent bold style={{marginRight: 5}}>
-              {item.review}
-            </Text>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={item.review}
-              starSize={13}
-              fullStarColor={colors.accent}
-              containerStyle={{width: 12}}
-            />
-            <Text accent style={{marginLeft: 52}}>
-              {item.reviewCnt}
+          <Block row center>
+            <AntDesign size={13} name="star" style={{color: colors.primary}} />
+            <Text size={13} style={{marginLeft: 5}}>
+              {`${item.review} · 리뷰 ${convertComma(item.reviewCnt)}`}
             </Text>
           </Block>
         </Block>

@@ -29,6 +29,8 @@ const HomeScreen = observer(props => {
     restaurantList,
     messageList,
     ActivityList,
+    FoodList,
+    PlaceList,
   } = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -73,7 +75,6 @@ const HomeScreen = observer(props => {
             ))}
           </ScrollView>
         </Block>
-
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
@@ -102,11 +103,38 @@ const HomeScreen = observer(props => {
               isLast={restaurantList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
-
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
-              하루의 피로를 풀어줄 마사지
+              세부에서 배달시켜 먹자
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Activity',
+                })
+              }>
+              <Ionicons size={26} name="ios-arrow-forward" />
+            </TouchableOpacity>
+          </Block>
+        </Block>
+        <ScrollView
+          style={{paddingLeft: sizes.padding}}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {FoodList.map((item, idx) => (
+            <CardRect
+              key={idx}
+              item={item}
+              navigation={navigation}
+              isLast={FoodList.length - 1 == idx}></CardRect>
+          ))}
+        </ScrollView>
+        <Block style={styles.title}>
+          <Block center row space="between">
+            <Text h3 bold>
+              하루의 피로는 스파로
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -159,6 +187,34 @@ const HomeScreen = observer(props => {
               isLast={ActivityList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
+        <Block style={styles.title}>
+          <Block center row space="between">
+            <Text h3 bold>
+              세부 즐기기
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Activity',
+                })
+              }>
+              <Ionicons size={26} name="ios-arrow-forward" />
+            </TouchableOpacity>
+          </Block>
+        </Block>
+        <ScrollView
+          style={{paddingLeft: sizes.padding}}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {PlaceList.map((item, idx) => (
+            <CardRect
+              key={idx}
+              item={item}
+              navigation={navigation}
+              isLast={PlaceList.length - 1 == idx}></CardRect>
+          ))}
+        </ScrollView>
         <Block style={styles.title}></Block>
       </ScrollView>
     </>
@@ -173,13 +229,15 @@ HomeScreen.defaultProps = {
   restaurantList: mocks.restaurantList,
   messageList: mocks.messageList,
   ActivityList: mocks.ActivityList,
+  FoodList: mocks.FoodList,
+  PlaceList: mocks.PlaceList,
 };
 
 const styles = StyleSheet.create({
   title: {
     marginHorizontal: sizes.padding,
     marginTop: 20,
-    marginBottom: 8,
+    marginBottom: 4,
   },
 });
 
