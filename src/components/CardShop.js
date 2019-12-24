@@ -29,8 +29,8 @@ export default CardShop = props => {
     return (
       <View
         style={{
-          height: 20,
-          width: 43,
+          paddingVertical: 2,
+          paddingHorizontal: 6,
           borderWidth: 1,
           borderColor: colors.accent,
           borderRadius: 10,
@@ -39,7 +39,7 @@ export default CardShop = props => {
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text center accent style={{fontSize: 9}}>
+        <Text center accent style={{fontSize: 10, fontWeight: 'bold'}}>
           {text}
         </Text>
       </View>
@@ -56,15 +56,12 @@ export default CardShop = props => {
         <CachedImage uri={preview} style={styles.image} />
         <Block style={styles.overlap}></Block>
         <Favorite shop={shop}></Favorite>
-        <Block
-          style={{
-            height: 80,
-          }}>
+        <Block>
           <Block style={styles.top}>
             <Text h3 bold>
               {name}
             </Text>
-            <Text h5 style={{marginLeft: 10}}>
+            <Text h5 primary style={{marginLeft: 6}}>
               {tags.join(', ')}
             </Text>
           </Block>
@@ -108,13 +105,13 @@ export const styles = StyleSheet.create({
   },
   top: {
     flexDirection: 'row',
-    alignItems: 'flex-end',
-    marginTop: 6,
+    alignItems: 'center',
+    marginTop: 4,
   },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 3,
+    paddingVertical: 2,
   },
   corner: {
     flexDirection: 'row',

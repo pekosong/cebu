@@ -84,12 +84,15 @@ export default CategoryScreen = observer(props => {
             </TouchableWithoutFeedback>
           </Block>
           <Block row bottom center>
-            <Text h2 style={{marginRight: 15}}>
+            <Text h3 style={{marginRight: 10}}>
               추천순
             </Text>
-            <AntDesign size={26} name="bars" />
+            <TouchableWithoutFeedback onPress={() => console.log('song')}>
+              <AntDesign size={26} name="bars" />
+            </TouchableWithoutFeedback>
           </Block>
         </Block>
+
         {navigation.getParam('category') === 'Activity' && (
           <ScrollView horizontal={true} showsHorizontalScrollIndicator={false}>
             <Block style={styles.tabs}>

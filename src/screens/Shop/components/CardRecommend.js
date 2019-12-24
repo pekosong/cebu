@@ -26,14 +26,28 @@ export default CardRecommend = ({item, navigation}) => {
           <Image style={styles.imageStyle} source={item.src}></Image>
         </Block>
         <Block>
-          <Text accent>{item.tag}</Text>
-          <Text h3 bold style={{marginVertical: 5}}>
+          <Block row center space="between" style={{flex: 0}}>
+            <Text accent>{item.tag}</Text>
+            <Text
+              size={10}
+              white
+              bold
+              style={{
+                backgroundColor: colors.primary,
+                borderRadius: 8,
+                paddingVertical: 3,
+                paddingHorizontal: 6,
+              }}>
+              마사지
+            </Text>
+          </Block>
+          <Text h3 bold style={{marginVertical: 2}}>
             {item.shop}
           </Text>
           <Text gray>
             필리핀 인기 만점의 전신 아로마 마사지 제공하며, 필리핀 전통
           </Text>
-          <Block row style={{marginVertical: 5}}>
+          <Block row center style={{flex: 0, marginTop: 2}}>
             <AntDesign size={13} name="star" style={{color: colors.primary}} />
             <Text style={{marginLeft: 5}}>
               {`3 · 리뷰 ${convertComma(123)}`}
@@ -49,7 +63,7 @@ export default CardRecommend = ({item, navigation}) => {
 export const styles = StyleSheet.create({
   container: {
     borderRadius: 3,
-    height: 130,
+    height: 120,
     display: 'flex',
     flexDirection: 'row',
     marginBottom: 20,

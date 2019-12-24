@@ -4,6 +4,8 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 import {Block, Text, CachedImage} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
+import {AntDesign} from '@expo/vector-icons';
+
 export default CardMenu = ({item}) => {
   return (
     <TouchableOpacity onPress={() => {}}>
@@ -12,10 +14,10 @@ export default CardMenu = ({item}) => {
           <Text h3 bold>
             {item.name}
           </Text>
-          <Text gray style={{marginVertical: 10, lineHeight: 20}}>
-            {item.desc}
+          <Text h3 style={{marginVertical: 6, lineHeight: 20}}>
+            {item.price}
           </Text>
-          <Text h3>{item.price}</Text>
+          <Text gray>{item.desc}</Text>
         </Block>
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
       </Block>
@@ -33,8 +35,8 @@ export const styles = StyleSheet.create({
     borderBottomColor: colors.gray2,
   },
   imageStyle: {
-    borderRadius: 5,
-    width: 110,
+    borderRadius: 2,
+    width: 90,
     height: 90,
     resizeMode: 'cover',
   },
