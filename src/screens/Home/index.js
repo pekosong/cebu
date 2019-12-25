@@ -1,10 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Dimensions,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 
 import {SearchBar, Block, Text, Loader} from 'app/src/components';
 
@@ -20,19 +15,17 @@ import {UserStoreContext} from 'app/src/store/user';
 
 import {Ionicons} from '@expo/vector-icons';
 
-const EMAIL = 'b@naver.com';
+const EMAIL = 'peko22@naver.com';
 
 const HomeScreen = observer(props => {
-  const {
-    navigation,
-    categories,
-    restaurantList,
-    messageList,
-    ActivityList,
-    FoodList,
-    PlaceList,
-  } = props;
+  const {navigation, categories} = props;
   const [isLoaded, setIsLoaded] = useState(false);
+
+  const [restaurantList, setRestaurantList] = useState([]);
+  const [massageList, setMassageList] = useState([]);
+  const [foodList, setFoodList] = useState([]);
+  const [activityList, setActivityList] = useState([]);
+  const [placeList, setPlaceList] = useState([]);
 
   const userStore = useContext(UserStoreContext);
   const {user, getUser} = useContext(UserStoreContext);
@@ -42,6 +35,26 @@ const HomeScreen = observer(props => {
     userStore.email = EMAIL;
     let unsubscribe = getUser();
     shopStore.getShopList().then(() => {
+      const resList = shopStore.shopList
+        .filter(e => e.category == 'Restaurant')
+        .sort((a, b) => b.review - a.review);
+      setRestaurantList(resList);
+      const masList = shopStore.shopList
+        .filter(e => e.category == 'Massage')
+        .sort((a, b) => b.review - a.review);
+      setMassageList(masList);
+      const fList = shopStore.shopList
+        .filter(e => e.category == 'Food')
+        .sort((a, b) => b.review - a.review);
+      setFoodList(fList);
+      const actList = shopStore.shopList
+        .filter(e => e.category == 'Activity')
+        .sort((a, b) => b.review - a.review);
+      setActivityList(actList);
+      const plList = shopStore.shopList
+        .filter(e => e.category == 'Place')
+        .sort((a, b) => b.review - a.review);
+      setPlaceList(plList);
       setIsLoaded(true);
     });
     return () => {
@@ -60,7 +73,7 @@ const HomeScreen = observer(props => {
             평생 잊지 못할 세부를 원하세요?
           </Text>
         </Block>
-        <Block style={{height: 140}}>
+        <Block style={{height: 120}}>
           <ScrollView
             style={{paddingLeft: sizes.padding - 5}}
             horizontal={true}
@@ -111,7 +124,7 @@ const HomeScreen = observer(props => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Category', {
-                  category: 'Activity',
+                  category: 'Food',
                 })
               }>
               <Ionicons size={26} name="ios-arrow-forward" />
@@ -123,12 +136,12 @@ const HomeScreen = observer(props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
-          {FoodList.map((item, idx) => (
+          {foodList.map((item, idx) => (
             <CardRect
               key={idx}
               item={item}
               navigation={navigation}
-              isLast={FoodList.length - 1 == idx}></CardRect>
+              isLast={foodList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
         <Block style={styles.title}>
@@ -151,12 +164,12 @@ const HomeScreen = observer(props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
-          {messageList.map((item, idx) => (
+          {massageList.map((item, idx) => (
             <CardRect
               key={idx}
               item={item}
               navigation={navigation}
-              isLast={messageList.length - 1 == idx}></CardRect>
+              isLast={massageList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
         <Block style={styles.title}>
@@ -179,12 +192,12 @@ const HomeScreen = observer(props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
-          {ActivityList.map((item, idx) => (
+          {activityList.map((item, idx) => (
             <CardRect
               key={idx}
               item={item}
               navigation={navigation}
-              isLast={ActivityList.length - 1 == idx}></CardRect>
+              isLast={activityList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
         <Block style={styles.title}>
@@ -195,7 +208,7 @@ const HomeScreen = observer(props => {
             <TouchableOpacity
               onPress={() =>
                 navigation.navigate('Category', {
-                  category: 'Activity',
+                  category: 'Place',
                 })
               }>
               <Ionicons size={26} name="ios-arrow-forward" />
@@ -207,12 +220,12 @@ const HomeScreen = observer(props => {
           horizontal={true}
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
-          {PlaceList.map((item, idx) => (
+          {placeList.map((item, idx) => (
             <CardRect
               key={idx}
               item={item}
               navigation={navigation}
-              isLast={PlaceList.length - 1 == idx}></CardRect>
+              isLast={placeList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
         <Block style={styles.title}></Block>
@@ -226,11 +239,6 @@ HomeScreen.navigationOptions = {
 };
 HomeScreen.defaultProps = {
   categories: mocks.categories,
-  restaurantList: mocks.restaurantList,
-  messageList: mocks.messageList,
-  ActivityList: mocks.ActivityList,
-  FoodList: mocks.FoodList,
-  PlaceList: mocks.PlaceList,
 };
 
 const styles = StyleSheet.create({

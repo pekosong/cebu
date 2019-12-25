@@ -8,6 +8,7 @@ const style = {
     paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
+    alignItems: 'center',
     borderBottomWidth: 0.6,
     borderBottomColor: colors.gray2,
   },

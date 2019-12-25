@@ -584,6 +584,15 @@ const categories = [
     src: require('../assets/images/search/restaurant.jpg'),
   },
   {
+    id: 'Massage',
+    name: '마사지',
+    tags: ['all', 'aesthetic'],
+    count: 16,
+    icon: 'ios-hand',
+    src: require('../assets/images/search/massage.jpg'),
+  },
+
+  {
     id: 'Activity',
     name: '액티비티',
     tags: ['all', 'activity'],
@@ -592,12 +601,12 @@ const categories = [
     src: require('../assets/images/search/seasports.jpg'),
   },
   {
-    id: 'Massage',
-    name: '마사지',
+    id: 'Food',
+    name: '배달',
     tags: ['all', 'aesthetic'],
     count: 16,
     icon: 'ios-hand',
-    src: require('../assets/images/search/massage.jpg'),
+    src: require('../assets/images/search/food.jpg'),
   },
   {
     id: 'Nail',
@@ -704,53 +713,50 @@ const profiles = {
 const recommendList = [
   {
     shop: '메디핑거',
-    url:
-      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage1.jpg?alt=media&token=01df0f3f-75f6-4c4d-ab1f-07353fd528aa',
     src: require('../assets/images/cebu_massage1.jpg'),
-    tag: '편안함, 피로싹',
+    tag: ['전통', '피로싹'],
     desc: '전신 아로마 마사지',
     shopCode: 'massage1',
-    afterPrice: '30,000',
-    beforePrice: '20,000',
     category: 'Massage',
   },
   {
+    shop: '점보 7',
+    src: require('../assets/images/cebu_food1.jpg'),
+    tag: ['씨푸드'],
+    desc: '전신 아로마 마사지',
+    shopCode: 'restaurant1',
+    category: 'Restaurant',
+  },
+  {
     shop: '프라나스파',
-    url:
-      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage2.jpeg?alt=media&token=1ad5531f-8db0-4d63-8ac9-8a903a926614',
     src: require('../assets/images/cebu_massage2.jpeg'),
-    tag: '편안함, 피로싹',
-
+    tag: ['고급', '피로싹'],
     desc: '전신 아로마 마사지',
     shopCode: 'massage2',
-    afterPrice: '30,000',
-    beforePrice: '20,000',
     category: 'Massage',
   },
   {
     shop: '오션스파',
-    url:
-      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage3.jpg?alt=media&token=99f5159f-0efb-438d-841f-0d63967f3f34',
-
     src: require('../assets/images/cebu_massage3.jpg'),
-    tag: '편안함, 피로싹',
+    tag: ['편안함', '피로싹'],
     desc: '전신 아로마 마사지',
     shopCode: 'massage3',
-    afterPrice: '30,000',
-    beforePrice: '20,000',
     category: 'Massage',
   },
   {
+    shop: 'Buffet 101',
+    src: require('../assets/images/cebu_food2.jpeg'),
+    tag: ['부페'],
+    desc: '전신 아로마 마사지',
+    shopCode: 'restaurant2',
+    category: 'Restaurant',
+  },
+  {
     shop: '에코스파',
-    url:
-      'https://firebasestorage.googleapis.com/v0/b/cabu-c030d.appspot.com/o/cebu_massage4.jpg?alt=media&token=5d676307-3d60-426a-9af8-9cea7310462f',
-
     src: require('../assets/images/cebu_massage4.jpg'),
-    tag: '편안함, 피로싹',
+    tag: ['편안함', '피로싹'],
     desc: '전신 아로마 마사지',
     shopCode: 'massage4',
-    afterPrice: '30,000',
-    beforePrice: '20,000',
     category: 'Massage',
   },
 ];

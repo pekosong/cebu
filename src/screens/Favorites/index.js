@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {FlatList, StyleSheet} from 'react-native';
+import {FlatList, StyleSheet, ScrollView} from 'react-native';
 
 import {Block, Text, CardShop, CategoryTab, Loader} from 'app/src/components';
 import {mocks} from 'app/src/constants';
@@ -10,18 +10,22 @@ import {UserStoreContext} from 'app/src/store/user';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 const cateSrc = {
-  All: require('app/src/assets/images/search/activity.jpg'),
+  All: require('app/src/assets/images/search/all.jpg'),
   Restaurant: require('app/src/assets/images/search/restaurant.jpg'),
   Massage: require('app/src/assets/images/search/massage.jpg'),
   Nail: require('app/src/assets/images/search/nail.jpg'),
   Activity: require('app/src/assets/images/search/seasports.jpg'),
+  Place: require('app/src/assets/images/search/activity.jpg'),
+  Food: require('app/src/assets/images/search/food.jpg'),
 };
 
 const cateMap = {
   All: '전체',
   Restaurant: '식당',
-  Massage: '마사지',
-  Cafe: '카페',
+  Food: '배달',
+  Massage: '스파',
+  Activity: '액티비티',
+  Place: '명소',
   Bar: '술집',
   Nail: '네일',
 };
@@ -73,7 +77,11 @@ const FavoritesScreen = observer(props => {
             저장소
           </Text>
         </Block>
-        <Block style={styles.tabs}>
+
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          style={styles.tabs}>
           {tabs.map((tab, idx) => (
             <CategoryTab
               key={idx}
@@ -83,7 +91,7 @@ const FavoritesScreen = observer(props => {
               isActive={active == tab}
               handleTab={handleTab}></CategoryTab>
           ))}
-        </Block>
+        </ScrollView>
       </Block>
       <FlatList
         showsVerticalScrollIndicator={false}

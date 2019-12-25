@@ -26,7 +26,7 @@ export default MenuSection = ({shop}) => {
             <CardMenu item={item}></CardMenu>
           )
         }
-        keyExtractor={item => item.id}
+        keyExtractor={item => item.name}
       />
     </Block>
   );

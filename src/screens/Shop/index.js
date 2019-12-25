@@ -33,6 +33,8 @@ import {streamShop} from 'app/src/api/shop';
 const MAPCAT = {
   Massage: '프로그램',
   Activity: '프로그램',
+  Place: '정보',
+  Food: '메뉴',
   Restaurant: '메뉴',
 };
 const MAP = {
@@ -63,24 +65,23 @@ export default ShopScreen = observer(({navigation}) => {
   const [active, setActive] = useState('');
   const [xAnim] = useState(new Animated.Value(sizes.padding));
 
+  const MENUS = ['Restaurant', 'Food', 'Massage'];
+  const PROGRAMS = ['Activity', 'Place'];
+
   useEffect(() => {
     const shopId = navigation.getParam('shopId');
-    console.log(shopId);
     let unsubscribe;
-    if (shopId.indexOf('activity') == -1) {
-      unsubscribe = streamShop(shopId).onSnapshot(doc => {
-        setShop(doc.data());
-        setActive(MAPCAT[doc.data().category]);
-        setIsLoaded(true);
-        setIsActivity(false);
-      });
-      setTodo(navigation.getParam('todo'));
-    } else {
-      setShop(mocks.ActivityList.filter(e => e.id == shopId)[0]);
+    unsubscribe = streamShop(shopId).onSnapshot(doc => {
+      setShop(doc.data());
+      setActive(doc.data().category);
       setIsLoaded(true);
-      setIsActivity(true);
-      setTodo(navigation.getParam('todo'));
-    }
+      if (shopId.indexOf('activity') == -1 && shopId.indexOf('place') == -1) {
+        setIsActivity(false);
+      } else {
+        setIsActivity(true);
+      }
+    });
+    setTodo(navigation.getParam('todo'));
 
     return () => {
       if (unsubscribe) {
@@ -90,7 +91,7 @@ export default ShopScreen = observer(({navigation}) => {
   }, [user]);
 
   renderShopTab = tab => {
-    const isActive = active == tab;
+    const isActive = MAPCAT[active] == tab;
 
     return (
       <TouchableOpacity
@@ -104,7 +105,6 @@ export default ShopScreen = observer(({navigation}) => {
             });
           }
           setShow(MAP[tab]);
-          setActive(tab);
           if (tab == '메뉴' || tab == '프로그램') {
             Animated.timing(xAnim, {
               toValue: sizes.padding,
@@ -223,10 +223,12 @@ export default ShopScreen = observer(({navigation}) => {
           {todo && (
             <ReservationSection shop={shop} todo={todo}></ReservationSection>
           )}
-          {!isActivity && show === 'menu' && (
+          {show === 'menu' && MENUS.includes(active) && (
             <MenuSection shop={shop}></MenuSection>
           )}
-          {isActivity && show === 'menu' && <ProgramSection></ProgramSection>}
+          {show === 'menu' && PROGRAMS.includes(active) && (
+            <ProgramSection shop={shop}></ProgramSection>
+          )}
           {show === 'review' && (
             <ReviewSection shop={shop} navigation={navigation}></ReviewSection>
           )}

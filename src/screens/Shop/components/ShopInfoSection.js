@@ -1,16 +1,24 @@
 import React, {useState} from 'react';
-import {StyleSheet, Dimensions, ScrollView, Platform} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Platform,
+  Linking,
+} from 'react-native';
 
 import {Block, Text, CachedImage, Divider} from 'app/src/components';
-import {sizes, style} from 'app/src/styles';
+import {colors, sizes, style} from 'app/src/styles';
 
 import MapView from 'react-native-maps';
+
+import {AntDesign} from '@expo/vector-icons';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('window');
 
 export default ShopInfoSection = ({shop}) => {
   const [imageNum, setImageNum] = useState(1);
-
   handleScrollByX = e => {
     const xPosition = Platform.OS === 'android' ? 316 : 370;
     if (e.nativeEvent.contentOffset.x % xPosition == 0) {
@@ -49,16 +57,26 @@ export default ShopInfoSection = ({shop}) => {
               {shop.openTime} ~ {shop.closeTime}
             </Text>
           </Block>
-          <Block style={style.inputRow}>
-            <Text h3>주소</Text>
-            <Text darkgray h3>
-              {shop.address}
-            </Text>
-          </Block>
-          <Block style={style.inputRow}>
+          <Block center style={style.inputRow}>
             <Text h3>전화번호</Text>
-            <Text darkgray h3>
-              {shop.phone}
+            <Block row right>
+              <Text darkgray h3 style={{marginRight: 10}}>
+                {shop.phone}
+              </Text>
+              <TouchableOpacity
+                onPress={() => Linking.openURL(`tel:${shop.phone}`)}>
+                <AntDesign size={20} name="phone"></AntDesign>
+              </TouchableOpacity>
+            </Block>
+          </Block>
+          <Block
+            style={[
+              style.inputRow,
+              {flexDirection: 'column', alignItems: 'flex-start'},
+            ]}>
+            <Text h3>주소</Text>
+            <Text darkgray style={{marginTop: 10}}>
+              {shop.address}
             </Text>
           </Block>
         </Block>
@@ -96,12 +114,11 @@ export default ShopInfoSection = ({shop}) => {
       <Divider></Divider>
 
       <Block style={style.shop.categories}>
-        <Text h1 bold style={{marginBottom: 30}}>
+        <Text h1 bold style={{marginBottom: 20}}>
           위치
         </Text>
-        <Block row space="between">
-          <Text h3>{shop.address}</Text>
-          <Text h3>{shop.engAddress}</Text>
+        <Block style={{marginBottom: 10}}>
+          <Text h4>{shop.address}</Text>
         </Block>
         <MapView
           style={{
@@ -110,13 +127,13 @@ export default ShopInfoSection = ({shop}) => {
             marginTop: sizes.padding / 2,
           }}
           initialRegion={{
-            latitude: 37.78825,
-            longitude: -122.4324,
-            latitudeDelta: 0.0922,
-            longitudeDelta: 0.0421,
+            latitude: shop.latitude ? shop.latitude : 37.78825,
+            longitude: shop.longitude ? shop.longitude : -122.4324,
+            latitudeDelta: 0.05,
+            longitudeDelta: 0.05,
           }}>
           <MapView.Marker
-            coordinate={{latitude: 37.78825, longitude: -122.4324}}
+            coordinate={{latitude: shop.latitude, longitude: shop.longitude}}
           />
         </MapView>
       </Block>

@@ -11,16 +11,6 @@ const {width} = Dimensions.get('window');
 export default CardRect = props => {
   const {item, navigation, isLast} = props;
 
-  let image = item.preview;
-
-  if (
-    item.id.startsWith('activity') ||
-    item.id.startsWith('food') ||
-    item.id.startsWith('place')
-  ) {
-    image = {uri: item.preview};
-  }
-
   return (
     <TouchableOpacity
       onPress={() =>
@@ -31,7 +21,7 @@ export default CardRect = props => {
       <Block
         style={[styles.container, isLast && {marginRight: sizes.padding * 1}]}>
         <Block flex={2} style={{position: 'relative'}}>
-          <Image style={styles.imageStyle} source={image}></Image>
+          <Image style={styles.imageStyle} source={{uri: item.preview}}></Image>
           <Favorite
             shop={{
               id: item.id,

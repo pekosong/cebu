@@ -45,7 +45,7 @@ const LoginScreen = props => {
           dispatch(downloadShopData()).then(() => {
             setIsError(false);
             setLoading(false);
-            navigation.navigate('Search');
+            navigation.navigate('Home');
           });
         })
         .catch(err => {

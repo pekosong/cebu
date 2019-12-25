@@ -3,7 +3,6 @@ import {StyleSheet, ScrollView, FlatList} from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {CardShop, CategoryTab, Block, Text, Loader} from 'app/src/components';
-import {mocks} from 'app/src/constants';
 import {sizes} from 'app/src/styles';
 
 import {TouchableWithoutFeedback} from 'react-native-gesture-handler';
@@ -50,18 +49,11 @@ export default CategoryScreen = observer(props => {
   const shops = useContext(ShopStoreContext).shopList;
 
   useEffect(() => {
-    if (Object.entries(shops).length != 0) {
-      filteredShops = shops
-        .filter(e => e.category == navigation.getParam('category'))
-        .sort((a, b) => b.review - a.review);
-      if (filteredShops.length) {
-        setSelectedLists(filteredShops);
-        setIsLoaded(true);
-      } else {
-        setSelectedLists(mocks.ActivityList);
-        setIsLoaded(true);
-      }
-    }
+    filteredShops = shops
+      .filter(e => e.category == navigation.getParam('category'))
+      .sort((a, b) => b.review - a.review);
+    setSelectedLists(filteredShops);
+    setIsLoaded(true);
   }, []);
 
   handleSongTab = tab => setCatActive(tab);

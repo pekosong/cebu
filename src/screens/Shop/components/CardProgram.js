@@ -3,6 +3,7 @@ import {StyleSheet, Dimensions} from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
 import {sizes, colors} from 'app/src/styles';
+import {convertComma} from 'app/src/utils';
 
 const {width} = Dimensions.get('window');
 
@@ -12,37 +13,21 @@ export default CardProgram = ({item}) => {
       <Block row space="between">
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
         <Block style={{marginLeft: 10}}>
-          <Text h2>{item.name}</Text>
+          <Text h3>{item.name}</Text>
           <Text h4 gray style={{marginTop: 5, lineHeight: 20}}>
             {item.desc}
           </Text>
         </Block>
       </Block>
-
       <Block style={{marginTop: 10}}>
-        <Text h3 bold style={{marginVertical: 10}}>
-          가격 정보
-        </Text>
         <Block row>
-          {[
-            {
-              type: '120분',
-              price: '1100',
-            },
-            {
-              type: '90분',
-              price: '850',
-            },
-            {
-              type: '60분',
-              price: '600',
-            },
-          ].map((e, idx) => (
+          {item.plans.map((e, idx) => (
             <Block
               key={idx}
               style={{
-                borderRadius: 20,
-                height: 100,
+                marginLeft: 2,
+                borderRadius: 10,
+                height: 80,
                 width: (width - sizes.padding * 2) / 3,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -51,18 +36,26 @@ export default CardProgram = ({item}) => {
                 shadowColor: '#000',
                 shadowOffset: {
                   width: 2,
-                  height: 3,
+                  height: 2,
                 },
+                elevation: 4,
                 shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 3,
-                marginRight: idx == 2 ? 0 : 10,
+                shadowRadius: 2,
+                marginRight: idx == 2 ? 2 : 10,
               }}>
-              <Text bold h3 style={{marginBottom: 10}}>
-                {e.type}
+              <Text center bold h4>
+                {`${e.time}분`}
               </Text>
+              <Block
+                style={{
+                  flex: 0,
+                  width: 50,
+                  borderBottomWidth: 2,
+                  borderBottomColor: 'red',
+                  marginVertical: 4,
+                }}></Block>
               <Text bold h2>
-                {`${e.price}`}
+                {`${convertComma(e.price)}`}
                 <Text>{`P`}</Text>
               </Text>
             </Block>
@@ -75,8 +68,8 @@ export default CardProgram = ({item}) => {
 
 export const styles = StyleSheet.create({
   container: {
-    marginBottom: 30,
-    paddingBottom: 30,
+    marginBottom: 20,
+    paddingBottom: 20,
     borderBottomWidth: 0.2,
     borderBottomColor: colors.gray2,
   },
@@ -87,7 +80,7 @@ export const styles = StyleSheet.create({
   },
   imageStyle: {
     borderRadius: 3,
-    width: 160,
+    width: 90,
     height: 90,
     resizeMode: 'cover',
   },

@@ -29,7 +29,7 @@ export default CardCategory = props => {
             style={{
               width: '100%',
               resizeMode: 'cover',
-              height: 85,
+              height: 70,
             }}
             source={item.src}></Image>
 
@@ -46,8 +46,8 @@ export const styles = StyleSheet.create({
   categoryContainer: {
     flex: 0,
     borderRadius: 10,
-    width: 130,
-    height: 130,
+    width: 110,
+    height: 110,
     marginLeft: 5,
     backgroundColor: 'white',
   },

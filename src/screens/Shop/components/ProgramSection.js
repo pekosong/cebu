@@ -1,25 +1,27 @@
 import React from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 
-import {Block, Text, Divider} from 'app/src/components';
+import {Block, Text, Divider, CachedImage} from 'app/src/components';
 import {sizes, colors, style} from 'app/src/styles';
+import {convertComma} from 'app/src/utils';
 
 import {Ionicons} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 
-export default ProgramSection = ({}) => {
+export default ProgramSection = ({shop}) => {
+  const {program} = shop;
   return (
     <>
       <Block style={style.shop.categories}>
         <Text h3 accent bold>
-          호핑
+          {program.type.join(', ')}
         </Text>
         <Text h1 bold style={{marginVertical: 10}}>
-          세부 3섬 스페셜 호핑투어
+          {program.name}
         </Text>
         <Text h3 gray>
-          하루 동안 즐기는 세부 인기 3섬
+          {program.subName}
         </Text>
       </Block>
       <Divider />
@@ -28,19 +30,12 @@ export default ProgramSection = ({}) => {
           가격 안내
         </Text>
         <Block row>
-          {[
-            {title: '성인', subTitle: '(만 12세 이상)', price: '80,000원'},
-            {
-              title: '소인',
-              subTitle: '(만 12세 미만-24개월)',
-              price: '70,000원',
-            },
-          ].map((e, idx) => (
+          {program.plan.map((e, idx) => (
             <Block
               key={idx}
               style={{
                 borderRadius: 20,
-                height: 150,
+                height: 120,
                 width: (width - sizes.padding * 2) / 2 - 8,
                 justifyContent: 'center',
                 alignItems: 'center',
@@ -54,16 +49,24 @@ export default ProgramSection = ({}) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 3,
-                marginRight: idx == 0 ? 16 : 0,
+                marginRight: idx == 0 ? 0 : 0,
               }}>
-              <Text bold black center h2>
-                {e.title}
+              <Text bold center h2 style={{marginBottom: 6}}>
+                {e.type === 'adult' ? '어른' : '어린이'}
               </Text>
-              <Text center style={{marginBottom: 5, lineHeight: 25}}>
-                {`${e.subTitle}`}
+              <Text center>
+                {e.type === 'adult' ? '만 13세 이상' : '만 13세 이하'}
               </Text>
+              <Block
+                style={{
+                  flex: 0,
+                  width: 50,
+                  borderBottomWidth: 2,
+                  borderBottomColor: 'red',
+                  marginVertical: 6,
+                }}></Block>
               <Text bold center h2>
-                {`${e.price}`}
+                {`${convertComma(e.price)}원`}
               </Text>
             </Block>
           ))}
@@ -74,21 +77,28 @@ export default ProgramSection = ({}) => {
         <Text h1 bold style={{marginBottom: 30}}>
           프로그램 일정
         </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          스노클링(힐루뚱안 포인트)
-        </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          퀴쇼 및 상푸
-        </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          스노클링(올랑고 산빈센트)
-        </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          낚시
-        </Text>
-        <Text h3 style={{marginBottom: 5, lineHeight: 25}}>
-          댄스공연
-        </Text>
+        {program.plans.map((e, idx) => (
+          <Block key={idx} style={style.inputRow}>
+            <Block>
+              <Block row space="between">
+                <Text h3 bold>
+                  {e.time}
+                </Text>
+                <Text h3 bold>
+                  {e.title}
+                </Text>
+              </Block>
+              <Block row space="between" style={{marginTop: 10}}>
+                <Block middle style={{marginRight: 10}}>
+                  <Text style={{lineHeight: 25}}>{e.desc}</Text>
+                </Block>
+                <CachedImage
+                  style={styles.imageStyle}
+                  uri={e.src}></CachedImage>
+              </Block>
+            </Block>
+          </Block>
+        ))}
       </Block>
       <Divider />
       <Block style={style.shop.categories}>
@@ -284,4 +294,11 @@ ProgramSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({});
+const styles = StyleSheet.create({
+  imageStyle: {
+    borderRadius: 2,
+    width: 90,
+    height: 90,
+    resizeMode: 'cover',
+  },
+});
