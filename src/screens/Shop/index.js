@@ -4,7 +4,6 @@ import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 import {Block, Text, Loader} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
-import {mocks} from 'app/src/constants';
 
 import AppBar from './components/AppBar';
 import Header from './components/Header';
@@ -31,14 +30,6 @@ const MAPCAT = {
   Restaurant: '메뉴',
 };
 
-const MAP = {
-  프로그램: 'menu',
-  메뉴: 'menu',
-  후기: 'review',
-  기본정보: 'info',
-  주변: 'nearby',
-};
-
 const MENUS = ['Restaurant', 'Food', 'Massage'];
 const PROGRAMS = ['Activity', 'Place'];
 
@@ -49,17 +40,15 @@ export default ShopScreen = observer(({navigation}) => {
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
-  const [show, setShow] = useState('menu');
+  const [show, setShow] = useState('');
 
   const shopScroll = createRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
-  const [isActivity, setIsActivity] = useState(false);
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [yAnim] = useState(new Animated.Value(0));
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
-  const [active, setActive] = useState('');
   const [xAnim] = useState(new Animated.Value(sizes.padding));
 
   useEffect(() => {
@@ -67,13 +56,8 @@ export default ShopScreen = observer(({navigation}) => {
     let unsubscribe;
     unsubscribe = streamShop(shopId).onSnapshot(doc => {
       setShop(doc.data());
-      setActive(doc.data().category);
       setIsLoaded(true);
-      if (shopId.indexOf('activity') == -1 && shopId.indexOf('place') == -1) {
-        setIsActivity(false);
-      } else {
-        setIsActivity(true);
-      }
+      setShow(MAPCAT[doc.data().category]);
     });
     setTodo(navigation.getParam('todo'));
 
@@ -85,7 +69,7 @@ export default ShopScreen = observer(({navigation}) => {
   }, [user]);
 
   renderShopTab = tab => {
-    const isActive = active == tab;
+    const isActive = show == tab;
 
     return (
       <TouchableOpacity
@@ -98,8 +82,8 @@ export default ShopScreen = observer(({navigation}) => {
               animated: true,
             });
           }
-          setShow(MAP[tab]);
-          if (tab == '메뉴' || tab == '프로그램') {
+          setShow(tab);
+          if (tab == '메뉴' || tab == '프로그램' || tab == '정보') {
             Animated.timing(xAnim, {
               toValue: sizes.padding,
               duration: 400,
@@ -217,17 +201,21 @@ export default ShopScreen = observer(({navigation}) => {
           {todo && (
             <ReservationSection shop={shop} todo={todo}></ReservationSection>
           )}
-          {show === 'menu' && MENUS.includes(active) && (
-            <MenuSection shop={shop}></MenuSection>
-          )}
-          {show === 'menu' && PROGRAMS.includes(active) && (
-            <ProgramSection shop={shop}></ProgramSection>
-          )}
-          {show === 'review' && (
+          {['메뉴', '프로그램'].includes(show) &&
+            MENUS.includes(shop.category) && (
+              <MenuSection shop={shop}></MenuSection>
+            )}
+          {['메뉴', '프로그램'].includes(show) &&
+            PROGRAMS.includes(shop.category) && (
+              <ProgramSection shop={shop}></ProgramSection>
+            )}
+          {show === '후기' && (
             <ReviewSection shop={shop} navigation={navigation}></ReviewSection>
           )}
-          {show === 'info' && <ShopInfoSection shop={shop}></ShopInfoSection>}
-          {show === 'nearby' && (
+          {show === '기본정보' && (
+            <ShopInfoSection shop={shop}></ShopInfoSection>
+          )}
+          {show === '주변' && (
             <RecommendSection
               navigation={navigation}
               shop={shop}></RecommendSection>

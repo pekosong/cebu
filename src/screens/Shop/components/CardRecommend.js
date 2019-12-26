@@ -18,7 +18,7 @@ export default CardRecommend = ({item, navigation}) => {
             flex: 0,
             width: 80,
             height: 80,
-            marginRight: 16,
+            marginRight: 12,
           }}>
           <CachedImage
             style={styles.imageStyle}
@@ -47,7 +47,7 @@ export default CardRecommend = ({item, navigation}) => {
           <Text gray style={{marginVertical: 4}}>
             필리핀 인기 만점의 전신 아로마 마사지 제공하며, 필리핀 전통
           </Text>
-          <Block center row space="between">
+          <Block center row space="between" style={{flex: 0}}>
             <Block row center style={{flex: 0}}>
               <AntDesign
                 size={13}

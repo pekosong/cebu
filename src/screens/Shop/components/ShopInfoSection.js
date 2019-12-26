@@ -5,7 +5,9 @@ import {
   ScrollView,
   Platform,
   Linking,
+  Modal,
 } from 'react-native';
+import ImageViewer from 'react-native-image-zoom-viewer';
 
 import {Block, Text, CachedImage, Divider} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
@@ -19,6 +21,8 @@ const {width} = Dimensions.get('window');
 
 export default ShopInfoSection = ({shop}) => {
   const [imageNum, setImageNum] = useState(1);
+  const [isVisible, setIsVisible] = useState(false);
+
   handleScrollByX = e => {
     const xPosition = Platform.OS === 'android' ? 316 : 370;
     if (e.nativeEvent.contentOffset.x % xPosition == 0) {
@@ -83,9 +87,16 @@ export default ShopInfoSection = ({shop}) => {
       </Block>
       <Divider></Divider>
       <Block style={style.shop.categories}>
-        <Text h1 bold style={{marginBottom: 30}}>
-          사진 정보
-        </Text>
+        <Block row space="between" style={{marginBottom: 30}}>
+          <Text h1 bold>
+            사진 정보
+          </Text>
+          <TouchableOpacity onPress={() => setIsVisible(true)}>
+            <Text accent h2 bold>
+              크게보기
+            </Text>
+          </TouchableOpacity>
+        </Block>
         <ScrollView
           horizontal={true}
           showsHorizontalScrollIndicator={false}
@@ -112,7 +123,6 @@ export default ShopInfoSection = ({shop}) => {
         </Block>
       </Block>
       <Divider></Divider>
-
       <Block style={style.shop.categories}>
         <Text h1 bold style={{marginBottom: 20}}>
           위치
@@ -137,6 +147,17 @@ export default ShopInfoSection = ({shop}) => {
           />
         </MapView>
       </Block>
+      <Modal
+        visible={isVisible}
+        transparent={true}
+        onRequestClose={() => setIsVisible(false)}>
+        <ImageViewer
+          onClick={() => setIsVisible(false)}
+          imageUrls={shop.source.map(e => {
+            return {url: e};
+          })}
+        />
+      </Modal>
     </>
   );
 };

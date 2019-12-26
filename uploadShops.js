@@ -351,24 +351,28 @@ const restaurantList = [
 
 const foodList = [
   {
-    category: 'Food',
-    id: 'food1',
-    image: 'https://randomuser.me/api/portraits/women/5.jpg',
-    name: '김떡순',
-    engName: 'kimbab',
-    address: '세부 막탄',
-    engAddress: 'cebu maktan',
-    latitude: 10.294684,
-    longitude: 123.999592,
-    phone: '+63 32 239 6546',
+    category: 'Food', // 고정
+    id: 'food1', // food1 ~ 2,3,4,5,6,7
+    image: 'https://randomuser.me/api/portraits/women/5.jpg', // 5.jpg 번호만 수정 6.7,8,9,9,
+    kakao: 'kimttoksun', // 카카오톡 아이디
+    name: '김떡순', // 가게 이름
+    engName: 'kimbab', // 가게 영어 이름
+    address: 'Pajac-Maribago Rd, Maribago, Lapu-Lapu City, Cebu, 필리핀', // 가게 주소
+    engAddress: 'Pajac-Maribago Rd, Maribago, Lapu-Lapu City, Cebu, 필리핀', // 가게 영어주소
+    latitude: 10.2842345, // 위도
+    longitude: 123.9950882, // 경도
+    phone: ['+63 32 316 3415', '+82 32 316 3415'],
     baby: false,
-    korean: false,
+    korean: true,
     pickup: false,
     reservations: [],
     preview:
       'https://mblogthumb-phinf.pstatic.net/MjAxODA2MzBfMjc3/MDAxNTMwMzMxNDQ3OTk0.uZugAvGm6M1LxG4rBnV57Xm9p_-1oxYr37upl2_Rf9Qg.tE_e5LoEqpqiKNOH4kdIP7f2rZuhjx0J8wq4WP0xkhMg.JPEG.say9811011/image_7610330001530331403840.jpg?type=w800',
     source: [
       'https://mblogthumb-phinf.pstatic.net/MjAxODA2MzBfMjc3/MDAxNTMwMzMxNDQ3OTk0.uZugAvGm6M1LxG4rBnV57Xm9p_-1oxYr37upl2_Rf9Qg.tE_e5LoEqpqiKNOH4kdIP7f2rZuhjx0J8wq4WP0xkhMg.JPEG.say9811011/image_7610330001530331403840.jpg?type=w800',
+      'http://mblogthumb2.phinf.naver.net/MjAxODAxMjJfMjk3/MDAxNTE2NjMyMjU0Njg0.fGZ8W8zMfSk1hbvkM00LP1ckVA8w58hmkK91aLuzntcg.WC5ThTmo8c60l5zcWxYp7cxSSRQxjmDGLApUsQ1wbSQg.JPEG.kejsms1107/image_89989591516632204243.jpg?type=w800',
+      'https://thumb-wishbeen.akamaized.net/2jhkLW7U6-Wzl41IfiPx38Bup4o=/898x420/smart/filters:no_upscale()/img-wishbeen.akamaized.net/spot/1411611420186_%E3%84%B1%E3%84%B7%E3%85%85.jpg',
+      'https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcT5K2cjd5VIi47TUnZ0azWJoJmMF8N7-7nqCBuXtFF50OnUeh1i&s',
     ],
     likes: 20,
     review: 3.5,
@@ -404,32 +408,94 @@ const foodList = [
     closeTime: '24:00',
     menus: [
       {
-        name: '크리스피파타',
-        price: '10,000원',
-        desc:
-          '족발튀김, 마늘, 생상, 후추 등으로 양녕한 족발을 통째로 기름에 튀긴 음식',
-        src: 'https://t1.daumcdn.net/cfile/tistory/265A443952F13BAE09',
+        name: '김밥',
+        price: 140,
+        desc: '',
+        src: '',
       },
       {
-        name: '레촌',
-        price: '10,000원',
-        desc: '새끼돼지를 통째로 숯불에 구운 바비큐',
-        src:
-          'http://www.timely.co.kr/files/attach/images/539/552/9a6dc1f9489e456c4f27f4fe4811073c.jpg',
+        name: '치즈김밥',
+        price: 170,
+        desc: '',
+        src: '',
       },
       {
-        name: '카레카레',
-        price: '10,000원',
-        desc:
-          '소 꼬리를 삶아서 땅콩 또는 땅콩 버터, 양파, 마늘로 맛을 낸 스튜 요리',
-        src:
-          'https://www.itsmorefuninthephilippines.co.kr/img/thephilippines/kare-kare-img.jpg',
+        name: '김치김밥',
+        price: 170,
+        desc: '',
+        src: '',
       },
       {
-        name: '아도보',
-        price: '10,000원',
-        desc: '조림한 요리를 뜻하며 육류, 해산물, 채소 등 다양한 재료로 만든다',
-        src: 'http://cfile206.uf.daum.net/image/23397F4B53587E7E0439C9',
+        name: '김밥',
+        price: 140,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '치즈김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김치김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김밥',
+        price: 140,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '치즈김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김치김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김밥',
+        price: 140,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '치즈김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김치김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김밥',
+        price: 140,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '치즈김밥',
+        price: 170,
+        desc: '',
+        src: '',
+      },
+      {
+        name: '김치김밥',
+        price: 170,
+        desc: '',
+        src: '',
       },
     ],
   },
@@ -1854,7 +1920,7 @@ const placeList = [
   },
 ];
 
-activityList.forEach(e => {
+foodList.forEach(e => {
   db.collection('shops')
     .doc(e.id)
     .set(e)
