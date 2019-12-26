@@ -1,7 +1,7 @@
 import React from 'react';
 import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
 
-import {CachedImage} from 'app/src/components';
+import {Block, CachedImage} from 'app/src/components';
 
 const {width} = Dimensions.get('window');
 
@@ -23,23 +23,25 @@ export default HeaderSection = ({shop, top}) => {
           useNativeDriver: true,
         }),
       }}>
-      <ScrollView
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEventThrottle={360}
-        pagingEnabled>
-        {shop.source.map(e => (
-          <CachedImage
-            key={e}
-            uri={e}
-            style={{
-              height: 260,
-              width: width,
-              resizeMode: 'cover',
-            }}
-          />
-        ))}
-      </ScrollView>
+      <Block style={{position: 'relative'}}>
+        <CachedImage
+          key={shop.preview}
+          uri={shop.preview}
+          style={{
+            height: 280,
+            width: width,
+            resizeMode: 'cover',
+          }}
+        />
+        <Block
+          style={{
+            position: 'absolute',
+            flex: 0,
+            width: '100%',
+            height: 260,
+            background: 'linear-gradient(rgba(0,0,0,0.1),transparent)',
+          }}></Block>
+      </Block>
     </Animated.View>
   );
 };
@@ -50,17 +52,5 @@ const styles = StyleSheet.create({
     width: width,
     height: 260,
     zIndex: -1,
-  },
-
-  imageNum: {
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 60,
-    right: 5,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 10,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
   },
 });

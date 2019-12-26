@@ -1,16 +1,9 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  createRef,
-  useContext,
-  memo,
-} from 'react';
+import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
-import {sizes, colors, style} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 import {mocks} from 'app/src/constants';
 
 import AppBar from './components/AppBar';
@@ -37,6 +30,7 @@ const MAPCAT = {
   Food: '메뉴',
   Restaurant: '메뉴',
 };
+
 const MAP = {
   프로그램: 'menu',
   메뉴: 'menu',
@@ -44,6 +38,9 @@ const MAP = {
   기본정보: 'info',
   주변: 'nearby',
 };
+
+const MENUS = ['Restaurant', 'Food', 'Massage'];
+const PROGRAMS = ['Activity', 'Place'];
 
 const {width, height} = Dimensions.get('window');
 
@@ -64,9 +61,6 @@ export default ShopScreen = observer(({navigation}) => {
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
   const [active, setActive] = useState('');
   const [xAnim] = useState(new Animated.Value(sizes.padding));
-
-  const MENUS = ['Restaurant', 'Food', 'Massage'];
-  const PROGRAMS = ['Activity', 'Place'];
 
   useEffect(() => {
     const shopId = navigation.getParam('shopId');
@@ -91,7 +85,7 @@ export default ShopScreen = observer(({navigation}) => {
   }, [user]);
 
   renderShopTab = tab => {
-    const isActive = MAPCAT[active] == tab;
+    const isActive = active == tab;
 
     return (
       <TouchableOpacity

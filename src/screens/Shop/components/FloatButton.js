@@ -12,17 +12,11 @@ export default BottomSection = ({navigation, shop, user}) => {
     <>
       <Block center middle style={styles.container}>
         {Object.keys(user.plans).length > 0 ? (
-          <TouchableOpacity
-            onPress={() => {
-              setVisible(true);
-            }}>
+          <TouchableOpacity onPress={() => setVisible(true)}>
             <AntDesign color={colors.white} size={30} name="plus"></AntDesign>
           </TouchableOpacity>
         ) : (
-          <TouchableOpacity
-            onPress={() => {
-              navigation.navigate('Profile');
-            }}>
+          <TouchableOpacity onPress={() => navigation.navigate('Profile')}>
             <Text white center bold>
               일정 등록
             </Text>

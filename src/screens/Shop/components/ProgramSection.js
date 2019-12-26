@@ -68,7 +68,7 @@ export default ProgramSection = ({shop}) => {
               <Text bold center h2>
                 {`${convertComma(e.price)}원`}
               </Text>
-            </Block>
+              </Block>
           ))}
         </Block>
       </Block>
