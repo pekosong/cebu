@@ -1,7 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
 
-import {SearchBar, Block, Text, Loader} from 'app/src/components';
+import {SearchBar, Block, Text, Loader, CachedImage} from 'app/src/components';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
@@ -68,6 +68,55 @@ const HomeScreen = observer(props => {
     <>
       <SearchBar />
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
+        <Block row space="between" style={styles.title}>
+          <Text h2 bold>
+            세부 날씨 / 환율
+          </Text>
+          <Text h3>더보기</Text>
+        </Block>
+        <Block row style={{height: 40, paddingLeft: 20}}>
+          <CachedImage
+            style={{width: 50}}
+            uri={
+              'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
+            }></CachedImage>
+          <Block row>
+            <Block center middle style={{marginLeft: 8, flex: 0, width: 60}}>
+              <Text h2 bold style={{marginRight: 10}}>
+                30 <Text h3>℃</Text>
+              </Text>
+            </Block>
+            <Block middle>
+              <Text>맑음, 체감온도 36℃</Text>
+              <Text>자외선 10 나쁨</Text>
+            </Block>
+          </Block>
+        </Block>
+        <Block row style={{height: 30, marginTop: 10, paddingLeft: 20}}>
+          <CachedImage
+            style={{width: 50}}
+            uri={
+              'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/300px-Flag_of_the_Philippines.svg.png'
+            }></CachedImage>
+          <Block row>
+            <Block center middle style={{marginLeft: 8, flex: 0, width: 60}}>
+              <Text h3 bold style={{marginRight: 10}}>
+                22.82
+              </Text>
+            </Block>
+            <Block middle>
+              <Text style={{color: 'darkblue'}}>▼ 0.05 (-0.22%)</Text>
+            </Block>
+            <Block style={{position: 'absolute', right: 20, top: 0}}>
+              <Text right size={10}>
+                2019.12.27
+              </Text>
+              <Text right size={10}>
+                12:49
+              </Text>
+            </Block>
+          </Block>
+        </Block>
         <Block style={styles.title}>
           <Text h2 bold>
             평생 잊지 못할 세부를 원하세요?

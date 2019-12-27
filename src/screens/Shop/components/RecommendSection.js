@@ -3,7 +3,6 @@ import {StyleSheet, FlatList} from 'react-native';
 
 import CardRecommend from './CardRecommend';
 
-import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 import {Block, Text} from 'app/src/components';
@@ -14,9 +13,6 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
   const shopList = useContext(ShopStoreContext)
     .shopList.filter(e => e.id != shop.id)
     .filter(e => ['Massage', 'Restaurant'].includes(e.category));
-
-  // console.log(shop.latitude);
-  // console.log(shop.longitude);
 
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     var R = 6371; // Radius of the earth in km
@@ -48,7 +44,7 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
   }));
   const sortedShop = distances
     .sort((a, b) => a.distance > b.distance)
-    .slice(0, 5);
+    .slice(0, 7);
 
   return (
     <Block style={[style.shop.categories]}>
