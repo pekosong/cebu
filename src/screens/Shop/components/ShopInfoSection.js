@@ -1,12 +1,5 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  Dimensions,
-  ScrollView,
-  Platform,
-  Linking,
-  Modal,
-} from 'react-native';
+import {StyleSheet, Dimensions, ScrollView, Linking, Modal} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 import {Block, Text, CachedImage, Divider} from 'app/src/components';
@@ -24,9 +17,8 @@ export default ShopInfoSection = ({shop}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   handleScrollByX = e => {
-    const xPosition = Platform.OS === 'android' ? 316 : 370;
-    if (e.nativeEvent.contentOffset.x % xPosition == 0) {
-      setImageNum(parseInt(e.nativeEvent.contentOffset.x / xPosition) + 1);
+    if (e.nativeEvent.contentOffset.x % width == 0) {
+      setImageNum(parseInt(e.nativeEvent.contentOffset.x / width) + 1);
     }
   };
 
@@ -61,17 +53,38 @@ export default ShopInfoSection = ({shop}) => {
               {shop.openTime} ~ {shop.closeTime}
             </Text>
           </Block>
-          <Block center style={style.inputRow}>
-            <Text h3>전화번호</Text>
-            <Block row right>
-              <Text darkgray h3 style={{marginRight: 10}}>
-                {shop.phone}
+          {shop.kakao && (
+            <Block style={style.inputRow}>
+              <Text h3>카카오톡</Text>
+              <Text darkgray h3>
+                {shop.kakao}
               </Text>
-              <TouchableOpacity
-                onPress={() => Linking.openURL(`tel:${shop.phone}`)}>
-                <AntDesign size={20} name="phone"></AntDesign>
-              </TouchableOpacity>
             </Block>
+          )}
+          <Block
+            style={[
+              style.inputRow,
+              {
+                flexDirection: 'column',
+                alignItems: 'flex-start',
+              },
+            ]}>
+            <Text h3 style={{marginBottom: 6}}>
+              전화번호
+            </Text>
+            {shop.phone.map(e => (
+              <Block row middle center space="between" style={{marginTop: 16}}>
+                <Text darkgray h3 style={{marginRight: 10}}>
+                  {e}
+                </Text>
+                <TouchableOpacity onPress={() => Linking.openURL(`tel:${e}`)}>
+                  <AntDesign
+                    size={20}
+                    name="phone"
+                    style={{color: colors.darkgray}}></AntDesign>
+                </TouchableOpacity>
+              </Block>
+            ))}
           </Block>
           <Block
             style={[
@@ -86,13 +99,16 @@ export default ShopInfoSection = ({shop}) => {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={style.shop.categories}>
-        <Block row space="between" style={{marginBottom: 30}}>
+      <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
+        <Block
+          row
+          space="between"
+          style={{paddingHorizontal: sizes.padding, marginBottom: 20}}>
           <Text h1 bold>
             사진 정보
           </Text>
           <TouchableOpacity onPress={() => setIsVisible(true)}>
-            <Text accent h2 bold>
+            <Text accent h3 bold>
               크게보기
             </Text>
           </TouchableOpacity>
@@ -108,9 +124,8 @@ export default ShopInfoSection = ({shop}) => {
               key={e}
               uri={e}
               style={{
-                height: 260,
-                width: width - sizes.padding * 2,
-                borderRadius: 5,
+                height: 280,
+                width: width,
                 resizeMode: 'contain',
               }}
             />
@@ -123,17 +138,17 @@ export default ShopInfoSection = ({shop}) => {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={style.shop.categories}>
-        <Text h1 bold style={{marginBottom: 20}}>
-          위치
-        </Text>
-        <Block style={{marginBottom: 10}}>
+      <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
+        <Block style={{paddingHorizontal: sizes.padding, marginBottom: 10}}>
+          <Text h1 bold style={{marginBottom: 20}}>
+            위치
+          </Text>
           <Text h4>{shop.address}</Text>
         </Block>
         <MapView
           style={{
-            width: width - sizes.padding * 2,
-            height: 250,
+            width: width,
+            height: 280,
             marginTop: sizes.padding / 2,
           }}
           initialRegion={{

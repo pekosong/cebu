@@ -2,33 +2,32 @@ import React from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 
 import {Block, Text} from 'app/src/components';
-import CardMenu from './CardMenu';
+import CardMassage from './CardMassage';
 
 import {style} from 'app/src/styles';
 
-export default MenuSection = ({shop, isKorean}) => {
+export default MassageSection = ({shop, isKorean}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
-        contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Block row space="between" style={{marginBottom: 30}}>
             <Text h1 bold>
-              대표 메뉴
+              프로그램
             </Text>
           </Block>
         }
         data={shop.menus}
-        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
-        keyExtractor={(item, idx) => idx}
+        renderItem={({item}) => <CardMassage item={item} isKorean={isKorean} />}
+        keyExtractor={item => item.name}
       />
     </Block>
   );
 };
 
-MenuSection.defaultProps = {};
+MassageSection.defaultProps = {};
 
-MenuSection.navigationOptions = {
+MassageSection.navigationOptions = {
   header: null,
 };
 

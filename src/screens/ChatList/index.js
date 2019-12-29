@@ -61,8 +61,8 @@ const ChatListScreen = observer(props => {
   }, [user]);
 
   shottenMsg = item => {
-    return item.message.length > 15
-      ? `${item.message.slice(0, 15)}...`
+    return item.message.length > 20
+      ? `${item.message.slice(0, 20)}...`
       : item.message;
   };
 
@@ -82,28 +82,26 @@ const ChatListScreen = observer(props => {
           })
         }>
         <Block style={styles.wrapper}>
-          <Block left flex={1.2}>
-            <CachedImage uri={item.avatar} style={styles.avatarChat} />
-          </Block>
-          <Block flex={4}>
+          <CachedImage uri={item.avatar} style={styles.avatarChat} />
+          <Block middle style={{flex: 1, marginLeft: 10, paddingVertical: 0}}>
             <Block row center space="between">
               <Text h4 bold>
                 {user.host ? item.email : item.shopName}
               </Text>
-              <Block flex={false}>
-                <Text caption right>
-                  {makeYM(item)}
-                </Text>
-              </Block>
+              <Text caption right>
+                {makeYM(item)}
+              </Text>
             </Block>
             <Block>
-              <Text style={{marginVertical: 3}}>{shottenMsg(item)}</Text>
-              {reservation ? (
-                <Text accent>
+              <Text darkgray numberOfLines={1} style={{marginRight: 20}}>
+                {item.message}
+              </Text>
+              {reservation && (
+                <Text size={11} accent style={{marginTop: 2}}>
                   {MAP[reservation.status]}
-                  <Text> - {makeYM(reservation)}</Text>
+                  <Text size={11}> - {makeYM(reservation)}</Text>
                 </Text>
-              ) : null}
+              )}
             </Block>
           </Block>
         </Block>
@@ -149,7 +147,6 @@ const styles = StyleSheet.create({
     flexDirection: 'row',
     justifyContent: 'center',
     marginVertical: 10,
-    paddingBottom: 5,
   },
 });
 

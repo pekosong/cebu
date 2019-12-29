@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, Keyboard, Platform} from 'react-native';
+import {StyleSheet, Keyboard, Platform, SafeAreaView} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
@@ -111,9 +111,9 @@ const ChatScreen = observer(props => {
           locale="ko"
           placeholder="Message"
           dateFormat="ll"
-          bottomOffset={50}
+          bottomOffset={Platform.OS === 'android' ? 0 : 226}
         />
-        {Platform.OS === 'android' && <KeyboardSpacer topSpacing={40} />}
+        {<KeyboardSpacer topSpacing={Platform.OS === 'android' ? 40 : 0} />}
       </>
     );
   };

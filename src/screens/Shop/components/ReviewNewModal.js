@@ -11,8 +11,6 @@ import {Block, Text} from 'app/src/components';
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
-import {useDispatch} from 'react-redux';
-import {updateShop} from 'app/src/redux/action';
 
 import firebase from 'app/src/constants/store';
 
@@ -22,10 +20,8 @@ export default ReviewNewModal = props => {
   const [starCount, setStarCount] = useState(3);
   const [err, setErr] = useState('');
 
-  const dispatch = useDispatch();
-
   handleWriteReview = () => {
-    const {email, name, image} = user;
+    const {email, image} = user;
     const {id} = shop;
 
     if (!text) {
@@ -35,10 +31,8 @@ export default ReviewNewModal = props => {
         .firestore()
         .collection('shops')
         .doc(id);
-
       shopRef.get().then(doc => {
         let reviews = doc.data().reviews;
-
         reviews.push({
           comment: text,
           writer: email,
@@ -46,9 +40,7 @@ export default ReviewNewModal = props => {
           star: starCount,
           date: new Date(),
         });
-        const newShop = {...shop, reviews: reviews};
         shopRef.update({reviews: reviews}).then(() => {
-          dispatch(updateShop(newShop));
           setNewReviewVisible(false);
         });
       });

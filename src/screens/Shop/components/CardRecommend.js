@@ -25,21 +25,28 @@ export default CardRecommend = ({item, navigation}) => {
             uri={shop.preview}></CachedImage>
         </Block>
         <Block middle style={{height: 80}}>
-          <Block row center space="between" style={{flex: 0}}>
-            <Text h3 bold style={{marginVertical: 2}}>
+          <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
+            <Text h3 bold>
               {shop.name + ' '}
               <Text primary>{shop.tags[0]}</Text>
             </Text>
             <Block
               style={{
                 flex: 0,
-                backgroundColor:
+                borderWidth: 1,
+                borderColor:
                   shop.category === 'Massage' ? colors.primary : colors.black,
                 borderRadius: 18,
                 paddingVertical: 3,
                 paddingHorizontal: 6,
               }}>
-              <Text size={10} white bold>
+              <Text
+                size={10}
+                bold
+                style={{
+                  color:
+                    shop.category === 'Massage' ? colors.primary : colors.black,
+                }}>
                 {shop.category === 'Massage' ? '마사지' : '식당'}
               </Text>
             </Block>
@@ -54,16 +61,20 @@ export default CardRecommend = ({item, navigation}) => {
                 name="star"
                 style={{color: colors.primary}}
               />
-              <Text style={{marginLeft: 5}}>
+              <Text darkgray style={{marginLeft: 5}}>
                 {`3 · 리뷰 ${convertComma(123)}`}
               </Text>
-              <Text style={{marginLeft: 5}}>
+              <Text darkgray style={{marginLeft: 5}}>
                 {'· 저장 ' + convertComma(423)}
               </Text>
             </Block>
             <Block row bottom center>
-              <AntDesign size={12} name="car" style={{marginRight: 3}} />
-              <Text size={12}>{`${distance.toFixed(1)}km`}</Text>
+              <AntDesign
+                size={12}
+                name="car"
+                style={{color: colors.darkgray, marginRight: 3}}
+              />
+              <Text darkgray size={12}>{`${distance.toFixed(1)}km`}</Text>
             </Block>
           </Block>
         </Block>
@@ -75,10 +86,10 @@ export default CardRecommend = ({item, navigation}) => {
 export const styles = StyleSheet.create({
   container: {
     borderRadius: 3,
-    height: 100,
+    height: 90,
     display: 'flex',
     flexDirection: 'row',
-    marginBottom: 20,
+    marginBottom: 10,
     borderBottomWidth: 0.2,
     borderBottomColor: 'grey',
   },

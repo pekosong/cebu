@@ -7,13 +7,15 @@ import {convertComma} from 'app/src/utils';
 
 const {width} = Dimensions.get('window');
 
-export default CardProgram = ({item}) => {
+export default CardMassage = ({item, isKorean}) => {
   return (
     <Block style={styles.container}>
       <Block row space="between">
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
         <Block style={{marginLeft: 10}}>
-          <Text h3>{item.name}</Text>
+          <Text h3 bold>
+            {item.name}
+          </Text>
           <Text h4 gray style={{marginTop: 5, lineHeight: 20}}>
             {item.desc}
           </Text>
@@ -41,7 +43,8 @@ export default CardProgram = ({item}) => {
                 elevation: 4,
                 shadowOpacity: 0.25,
                 shadowRadius: 2,
-                marginRight: idx == 2 ? 2 : 10,
+                marginRight:
+                  idx == 2 ? 2 : item.plans.length - 1 == idx ? 2 : 10,
               }}>
               <Text center bold h4>
                 {`${e.time}분`}
@@ -54,10 +57,21 @@ export default CardProgram = ({item}) => {
                   borderBottomColor: 'red',
                   marginVertical: 4,
                 }}></Block>
-              <Text bold h2>
-                {`${convertComma(e.price)}`}
-                <Text>{`P`}</Text>
-              </Text>
+              {isKorean ? (
+                <Block row center style={{flex: 0}}>
+                  <Text h3>{`${convertComma(e.price * 22)} `}</Text>
+                  <Text darkgray style={{marginTop: 3}}>
+                    원
+                  </Text>
+                </Block>
+              ) : (
+                <Block row center style={{flex: 0}}>
+                  <Text h3>{`${convertComma(e.price)} `}</Text>
+                  <Text darkgray style={{marginTop: 3}}>
+                    페소
+                  </Text>
+                </Block>
+              )}
             </Block>
           ))}
         </Block>

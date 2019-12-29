@@ -31,7 +31,7 @@ export default CardRect = props => {
           <Block style={styles.overlap}></Block>
         </Block>
         <Block flex={1} style={{marginTop: 6}}>
-          <Text bold size={14}>
+          <Text bold numberOfLines={1} size={14}>
             {item.name + '  '}
             <Text primary caption style={{marginBottom: 5}}>
               {item.tags[0]}
@@ -39,7 +39,7 @@ export default CardRect = props => {
           </Text>
           <Block row center>
             <AntDesign size={13} name="star" style={{color: colors.primary}} />
-            <Text size={13} style={{marginLeft: 5}}>
+            <Text size={13} darkgray style={{marginLeft: 5}}>
               {`${item.review} · 리뷰 ${convertComma(item.reviewCnt)}`}
             </Text>
           </Block>

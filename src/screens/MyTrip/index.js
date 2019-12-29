@@ -96,11 +96,11 @@ const MyTripScreen = observer(props => {
         {
           <>
             {tab != '전체' && (
-              <Text gray={!isActive} white={isActive} style={{marginBottom: 2}}>
+              <Text bold gray={!isActive} white={isActive}>
                 Day
               </Text>
             )}
-            <Text size={18} gray={!isActive} white={isActive}>
+            <Text bold size={17} gray={!isActive} white={isActive}>
               {tab}
             </Text>
           </>
@@ -112,19 +112,16 @@ const MyTripScreen = observer(props => {
   renderList = (day, idx) => {
     lastItem = Object.values(selectedDates).length == idx + 1 ? true : false;
     let items = reservations.filter(e => e.date == day);
-
     let korDay = makeMonDay(day);
     let item = plans[day];
     return (
       <Block key={day} style={styles.categories}>
         {(items.length != 0 || active == '전체') && (
           <Block center row space="between" style={{marginBottom: 10}}>
-            <Text h3 bold>
+            <Text h4 bold>
               {`${korDay}   Day ${item.nDay + 1}  `}
             </Text>
-            <Text h4 bold color={colors.accent}>
-              {'in ' + item.hotel}
-            </Text>
+            <Text bold>{'in ' + item.hotel}</Text>
           </Block>
         )}
         {items.length != 0 ? (
@@ -146,28 +143,32 @@ const MyTripScreen = observer(props => {
                     marginVertical: 5,
                     paddingBottom: 5,
                   }}>
-                  <Block left flex={1}>
-                    <CachedImage uri={shop.src} style={styles.avatarChat} />
-                  </Block>
-                  <Block flex={2.2} style={{marginTop: 5, height: 48}}>
-                    <Block middle row space="between">
-                      <Text h3 bold>
+                  <CachedImage uri={shop.src} style={styles.avatarChat} />
+                  <Block style={{marginLeft: 10, marginTop: 5, height: 48}}>
+                    <Block row space="between">
+                      <Text h4 bold>
                         {shop.name}
                       </Text>
-                      <Text h4>{todo.time}</Text>
-                    </Block>
-                    <Block middle row space="between" style={{marginTop: 5}}>
-                      <Text>{shop.engName}</Text>
-                      <Text
-                        h3
-                        style={{
-                          color:
-                            todo.status == 'not'
-                              ? colors.primary
-                              : colors.accent,
-                        }}>
-                        {MAP[todo.status]}
+                      <Text h4 darkgray>
+                        {todo.time}
                       </Text>
+                    </Block>
+                    <Block center row space="between">
+                      <Text darkgray>{shop.engName}</Text>
+                      <Block
+                        style={[
+                          styles.tag,
+                          {
+                            backgroundColor:
+                              todo.status == 'not'
+                                ? colors.primary
+                                : colors.accent,
+                          },
+                        ]}>
+                        <Text size={11} white>
+                          {MAP[todo.status]}
+                        </Text>
+                      </Block>
                     </Block>
                   </Block>
                 </Block>
@@ -181,14 +182,14 @@ const MyTripScreen = observer(props => {
                 <Text h2 bold center style={{marginBottom: 10}}>
                   등록된 일정이 없습니다.
                 </Text>
-                <Text center h4 style={{marginBottom: 20}}>
+                <Text center h4 darkgray style={{marginBottom: 20}}>
                   {`${korDay}의 일정을 등록하세요.`}
                 </Text>
               </>
             )}
             <Button border onPress={() => navigation.navigate('Home')}>
               <Text accent center>
-                새로운 일정을 등록하세요
+                새로운 일정 등록
               </Text>
             </Button>
           </Block>
@@ -202,21 +203,20 @@ const MyTripScreen = observer(props => {
 
   return (
     <>
-      <Block style={[style.appBar, styles.shadow, {height: 180}]}>
+      <Block style={[style.appBar, styles.shadow, {height: 165}]}>
         <Block style={{flex: 0, height: 30}}>
           <Text h1 bold>
             내일정
           </Text>
         </Block>
 
-        <Block style={styles.tabs}>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEnabled={true}>
-            {tabs.map(tab => renderTripTab(tab))}
-          </ScrollView>
-        </Block>
+        <ScrollView
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}
+          style={styles.tabs}>
+          {tabs.map(tab => renderTripTab(tab))}
+        </ScrollView>
       </Block>
 
       <ScrollView showsVerticalScrollIndicator={false}>
@@ -255,24 +255,36 @@ const styles = StyleSheet.create({
     shadowRadius: 3.84,
     elevation: 1,
   },
+  tag: {
+    flex: 0,
+    paddingVertical: 3,
+    paddingHorizontal: 8,
+    borderRadius: 10,
+    justifyContent: 'center',
+    alignItems: 'center',
+  },
   tabs: {
     flex: 0,
     flexDirection: 'row',
-    marginTop: 20,
-    height: 90,
+    marginTop: 10,
+    marginHorizontal: -sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
   tab: {
     flex: 0,
     width: 60,
     height: 60,
     borderRadius: 30,
+    borderWidth: 2,
+    borderColor: colors.gray,
     backgroundColor: '#eee',
-    marginRight: sizes.base * 1.2,
+    marginRight: sizes.base * 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   active: {
     backgroundColor: colors.accent,
+    borderColor: colors.black,
   },
   categories: {
     paddingHorizontal: sizes.padding,

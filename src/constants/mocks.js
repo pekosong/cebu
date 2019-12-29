@@ -609,6 +609,14 @@ const categories = [
     src: require('../assets/images/search/food.jpg'),
   },
   {
+    id: 'Place',
+    name: '명소',
+    tags: ['all', 'aesthetic'],
+    count: 16,
+    icon: 'ios-hand',
+    src: require('../assets/images/search/activity.jpg'),
+  },
+  {
     id: 'Nail',
     name: '19금',
     tags: ['all', 'aesthetic'],

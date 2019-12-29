@@ -3,23 +3,42 @@ import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
 import {colors} from 'app/src/styles';
+import {convertComma} from 'app/src/utils';
 
-export default CardMenu = ({item}) => {
+export default CardMenu = ({item, isKorean}) => {
   return (
-    <TouchableOpacity onPress={() => {}}>
-      <Block style={styles.container}>
-        <Block style={{marginRight: 10}}>
-          <Text h3 bold>
-            {item.name}
-          </Text>
-          <Text size={12} gray style={{marginVertical: 3, lineHeight: 16}}>
+    <Block style={styles.container}>
+      <Block style={{marginRight: 20}}>
+        <Text h3 bold>
+          {item.name}
+        </Text>
+        {item.desc != '' && (
+          <Text
+            size={12}
+            darkgray
+            style={{marginTop: 6, lineHeight: 16}}
+            numberOfLines={2}>
             {item.desc}
           </Text>
-          <Text h3>{item.price}</Text>
-        </Block>
-        <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
+        )}
+        {isKorean ? (
+          <Block row center>
+            <Text h3>{`${convertComma(item.price * 22)} `}</Text>
+            <Text darkgray style={{marginTop: 3}}>
+              원
+            </Text>
+          </Block>
+        ) : (
+          <Block row center>
+            <Text h3>{`${convertComma(item.price)} `}</Text>
+            <Text darkgray style={{marginTop: 3}}>
+              페소
+            </Text>
+          </Block>
+        )}
       </Block>
-    </TouchableOpacity>
+      <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
+    </Block>
   );
 };
 
@@ -34,8 +53,8 @@ export const styles = StyleSheet.create({
   },
   imageStyle: {
     borderRadius: 2,
-    width: 90,
-    height: 90,
+    width: 80,
+    height: 80,
     resizeMode: 'cover',
   },
 });

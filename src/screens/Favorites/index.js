@@ -71,7 +71,7 @@ const FavoritesScreen = observer(props => {
 
   return (
     <>
-      <Block style={[style.appBar, styles.shadow, {height: 200}]}>
+      <Block style={[style.appBar, styles.shadow, {height: 185}]}>
         <Block style={{flex: 0, height: 30}}>
           <Text h1 bold>
             저장소
@@ -131,8 +131,9 @@ const styles = StyleSheet.create({
   tabs: {
     flex: 0,
     flexDirection: 'row',
-    marginTop: 20,
-    height: 90,
+    marginTop: 10,
+    marginHorizontal: -sizes.padding,
+    paddingHorizontal: sizes.padding,
   },
 });
 

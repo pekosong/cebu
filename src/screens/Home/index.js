@@ -7,7 +7,7 @@ import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
 
 import {mocks} from 'app/src/constants';
-import {sizes} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
@@ -68,51 +68,47 @@ const HomeScreen = observer(props => {
     <>
       <SearchBar />
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
-        <Block row space="between" style={styles.title}>
+        <Block center row space="between" style={styles.title}>
           <Text h2 bold>
-            세부 날씨 / 환율
+            오늘의 세부
           </Text>
-          <Text h3>더보기</Text>
+          <Ionicons size={20} name="ios-arrow-down" />
         </Block>
-        <Block row style={{height: 40, paddingLeft: 20}}>
-          <CachedImage
-            style={{width: 50}}
-            uri={
-              'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
-            }></CachedImage>
-          <Block row>
-            <Block center middle style={{marginLeft: 8, flex: 0, width: 60}}>
-              <Text h2 bold style={{marginRight: 10}}>
-                30 <Text h3>℃</Text>
+        <Block
+          row
+          style={{
+            marginTop: 4,
+            marginBottom: 6,
+            paddingHorizontal: sizes.padding,
+          }}>
+          <Block row center>
+            <CachedImage
+              style={{height: 20, width: 30}}
+              uri={
+                'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
+              }></CachedImage>
+            <Block style={{marginLeft: 10}}>
+              <Text style={{marginRight: 6}}>
+                30<Text> ℃</Text>
               </Text>
-            </Block>
-            <Block middle>
-              <Text>맑음, 체감온도 36℃</Text>
-              <Text>자외선 10 나쁨</Text>
+              <Text darkgray size={11}>
+                맑음, 체감온도 36℃
+              </Text>
             </Block>
           </Block>
-        </Block>
-        <Block row style={{height: 30, marginTop: 10, paddingLeft: 20}}>
-          <CachedImage
-            style={{width: 50}}
-            uri={
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/300px-Flag_of_the_Philippines.svg.png'
-            }></CachedImage>
-          <Block row>
-            <Block center middle style={{marginLeft: 8, flex: 0, width: 60}}>
-              <Text h3 bold style={{marginRight: 10}}>
-                22.82
+          <Block row center>
+            <CachedImage
+              style={{height: 20, width: 30}}
+              uri={
+                'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/300px-Flag_of_the_Philippines.svg.png'
+              }></CachedImage>
+            <Block style={{marginLeft: 10}}>
+              <Text style={{marginRight: 6}}>
+                {22.82 + ' '}
+                <Text size={11}>(원/페소)</Text>
               </Text>
-            </Block>
-            <Block middle>
-              <Text style={{color: 'darkblue'}}>▼ 0.05 (-0.22%)</Text>
-            </Block>
-            <Block style={{position: 'absolute', right: 20, top: 0}}>
-              <Text right size={10}>
-                2019.12.27
-              </Text>
-              <Text right size={10}>
-                12:49
+              <Text darkgray size={11}>
+                ▼ 0.05 (-0.22%)
               </Text>
             </Block>
           </Block>
@@ -148,7 +144,7 @@ const HomeScreen = observer(props => {
                   category: 'Restaurant',
                 })
               }>
-              <Ionicons size={26} name="ios-arrow-forward" />
+              <Ionicons size={22} name="ios-arrow-forward" />
             </TouchableOpacity>
           </Block>
         </Block>
@@ -176,7 +172,7 @@ const HomeScreen = observer(props => {
                   category: 'Food',
                 })
               }>
-              <Ionicons size={26} name="ios-arrow-forward" />
+              <Ionicons size={22} name="ios-arrow-forward" />
             </TouchableOpacity>
           </Block>
         </Block>
@@ -204,7 +200,7 @@ const HomeScreen = observer(props => {
                   category: 'Massage',
                 })
               }>
-              <Ionicons size={26} name="ios-arrow-forward" />
+              <Ionicons size={22} name="ios-arrow-forward" />
             </TouchableOpacity>
           </Block>
         </Block>
@@ -232,7 +228,7 @@ const HomeScreen = observer(props => {
                   category: 'Activity',
                 })
               }>
-              <Ionicons size={26} name="ios-arrow-forward" />
+              <Ionicons size={22} name="ios-arrow-forward" />
             </TouchableOpacity>
           </Block>
         </Block>
@@ -260,7 +256,7 @@ const HomeScreen = observer(props => {
                   category: 'Place',
                 })
               }>
-              <Ionicons size={26} name="ios-arrow-forward" />
+              <Ionicons size={22} name="ios-arrow-forward" />
             </TouchableOpacity>
           </Block>
         </Block>
@@ -294,7 +290,7 @@ const styles = StyleSheet.create({
   title: {
     marginHorizontal: sizes.padding,
     marginTop: 20,
-    marginBottom: 4,
+    marginBottom: 6,
   },
 });
 

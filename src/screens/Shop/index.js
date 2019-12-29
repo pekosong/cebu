@@ -9,11 +9,15 @@ import AppBar from './components/AppBar';
 import Header from './components/Header';
 import ShopTitle from './components/ShopTitle';
 import FloatButton from './components/FloatButton';
+import ExchangeButton from './components/ExchangeButton';
 
 import ReservationSection from './components/ReservationSection';
 
 import MenuSection from './components/MenuSection';
+import MassageSection from './components/MassageSection';
 import ProgramSection from './components/ProgramSection';
+import PlaceSection from './components/PlaceSection';
+
 import ReviewSection from './components/ReviewSection';
 import ShopInfoSection from './components/ShopInfoSection';
 import RecommendSection from './components/RecommendSection';
@@ -22,16 +26,21 @@ import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {streamShop} from 'app/src/api/shop';
 
+const MENUS = ['Restaurant', 'Food'];
+
 const MAPCAT = {
+  1: '리뷰',
+  2: '기본정보',
+  3: '근처',
+};
+
+const SHOPCAT = {
+  Restaurant: '메뉴',
+  Food: '메뉴',
   Massage: '프로그램',
   Activity: '프로그램',
   Place: '정보',
-  Food: '메뉴',
-  Restaurant: '메뉴',
 };
-
-const MENUS = ['Restaurant', 'Food', 'Massage'];
-const PROGRAMS = ['Activity', 'Place'];
 
 const {width, height} = Dimensions.get('window');
 
@@ -40,11 +49,12 @@ export default ShopScreen = observer(({navigation}) => {
 
   const [shop, setShop] = useState({});
   const [todo, setTodo] = useState({});
-  const [show, setShow] = useState('');
+  const [show, setShow] = useState(0);
 
   const shopScroll = createRef(null);
 
   const [isLoaded, setIsLoaded] = useState(false);
+  const [isKorean, setIsKorean] = useState(false);
 
   const [fadeAnim] = useState(new Animated.Value(0));
   const [yAnim] = useState(new Animated.Value(0));
@@ -57,7 +67,6 @@ export default ShopScreen = observer(({navigation}) => {
     unsubscribe = streamShop(shopId).onSnapshot(doc => {
       setShop(doc.data());
       setIsLoaded(true);
-      setShow(MAPCAT[doc.data().category]);
     });
     setTodo(navigation.getParam('todo'));
 
@@ -66,11 +75,10 @@ export default ShopScreen = observer(({navigation}) => {
         unsubscribe();
       }
     };
-  }, [user]);
+  }, []);
 
   renderShopTab = tab => {
     const isActive = show == tab;
-
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
@@ -83,17 +91,17 @@ export default ShopScreen = observer(({navigation}) => {
             });
           }
           setShow(tab);
-          if (tab == '메뉴' || tab == '프로그램' || tab == '정보') {
+          if (tab === 0) {
             Animated.timing(xAnim, {
               toValue: sizes.padding,
               duration: 400,
             }).start();
-          } else if (tab == '후기') {
+          } else if (tab === 1) {
             Animated.timing(xAnim, {
               toValue: sizes.padding + (width - sizes.padding * 2) / 4,
               duration: 400,
             }).start();
-          } else if (tab == '기본정보') {
+          } else if (tab === 2) {
             Animated.timing(xAnim, {
               toValue: sizes.padding + ((width - sizes.padding * 2) / 4) * 2,
               duration: 400,
@@ -111,7 +119,7 @@ export default ShopScreen = observer(({navigation}) => {
           style={{
             color: isActive ? colors.black : colors.gray,
           }}>
-          {tab}
+          {tab === 0 ? SHOPCAT[shop.category] : MAPCAT[tab]}
         </Text>
       </TouchableOpacity>
     );
@@ -160,9 +168,7 @@ export default ShopScreen = observer(({navigation}) => {
           }),
         }}>
         <Block flex={false} row>
-          {[MAPCAT[shop.category], '후기', '기본정보', '주변'].map(tab =>
-            renderShopTab(tab),
-          )}
+          {[0, 1, 2, 3].map(tab => renderShopTab(tab))}
         </Block>
         <Animated.View
           style={{
@@ -198,31 +204,28 @@ export default ShopScreen = observer(({navigation}) => {
             backgroundColor: colors.white,
             minHeight: height - 100,
           }}>
-          {todo && (
-            <ReservationSection shop={shop} todo={todo}></ReservationSection>
+          {todo && <ReservationSection shop={shop} todo={todo} />}
+          {show === 0 && MENUS.includes(shop.category) && (
+            <MenuSection shop={shop} isKorean={isKorean} />
           )}
-          {['메뉴', '프로그램'].includes(show) &&
-            MENUS.includes(shop.category) && (
-              <MenuSection shop={shop}></MenuSection>
-            )}
-          {['메뉴', '프로그램'].includes(show) &&
-            PROGRAMS.includes(shop.category) && (
-              <ProgramSection shop={shop}></ProgramSection>
-            )}
-          {show === '후기' && (
-            <ReviewSection shop={shop} navigation={navigation}></ReviewSection>
+          {show === 0 && shop.category === 'Massage' && (
+            <MassageSection shop={shop} isKorean={isKorean} />
           )}
-          {show === '기본정보' && (
-            <ShopInfoSection shop={shop}></ShopInfoSection>
+          {show === 0 && shop.category === 'Activity' && (
+            <ProgramSection shop={shop} />
           )}
-          {show === '주변' && (
-            <RecommendSection
-              navigation={navigation}
-              shop={shop}></RecommendSection>
+          {show === 0 && shop.category === 'Place' && (
+            <PlaceSection shop={shop} isKorean={isKorean} />
+          )}
+          {show === 1 && <ReviewSection shop={shop} navigation={navigation} />}
+          {show === 2 && <ShopInfoSection shop={shop} />}
+          {show === 3 && (
+            <RecommendSection navigation={navigation} shop={shop} />
           )}
         </Animated.View>
       </Animated.ScrollView>
       <FloatButton navigation={navigation} shop={shop} user={user} />
+      <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
     </>
   );
 });

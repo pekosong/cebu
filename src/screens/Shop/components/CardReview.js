@@ -4,9 +4,9 @@ import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 import {Block, Text, CachedImage} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
+import {pastDay} from 'app/src/utils';
 
 import StarRating from 'react-native-star-rating';
-import moment from 'moment';
 
 const {width} = Dimensions.get('window');
 const mockImages = [
@@ -22,19 +22,25 @@ export default CardReview = ({item}) => {
       <Block style={styles.container}>
         <Block row space="between">
           <CachedImage uri={item.src} style={styles.avatarChat} />
-          <Block bottom style={{marginLeft: 10}}>
-            <Text>{item.writer}</Text>
-            <Text>{moment.unix(item.date.seconds).format('YYYY-MM-DD')}</Text>
-          </Block>
-          <Block style={{position: 'absolute', right: 50, bottom: 0}}>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={item.star}
-              starSize={15}
-              fullStarColor={colors.accent}
-              containerStyle={{width: 20}}
-            />
+          <Block middle style={{marginLeft: 10}}>
+            <Block row center style={{marginBottom: 3}}>
+              <Text h4 bold style={{marginRight: 10}}>
+                {item.writer.substring(0, 4) + '**'}
+              </Text>
+              <Text size={12} darkgray>
+                {pastDay(item.date)}
+              </Text>
+            </Block>
+            <Block>
+              <StarRating
+                disabled={false}
+                maxStars={5}
+                rating={item.star}
+                starSize={15}
+                fullStarColor={colors.primary}
+                containerStyle={{width: 20}}
+              />
+            </Block>
           </Block>
         </Block>
         <Block style={{marginTop: 16}}>
@@ -58,8 +64,8 @@ export const styles = StyleSheet.create({
     marginBottom: 30,
   },
   avatarChat: {
-    width: sizes.base * 4,
-    height: sizes.base * 4,
+    width: sizes.base * 3,
+    height: sizes.base * 3,
     borderRadius: sizes.base * 2,
   },
   image: {

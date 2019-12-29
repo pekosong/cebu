@@ -3,6 +3,21 @@ import moment from 'moment';
 const convertComma = string => {
   return string.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ',');
 };
+
+const pastDay = date => {
+  const oneDay = 24 * 60 * 60 * 1000;
+  const today = new Date();
+  const diffDays = Math.round(Math.abs((date.seconds * 1000 - today) / oneDay));
+
+  if (diffDays == 0) {
+    return '오늘';
+  } else if (diffDays < 7) {
+    return '이번 주';
+  } else if (diffDays < 31) {
+    return '이번 달';
+  }
+};
+
 const makeYM = item => {
   return `${new Date(item.date).getMonth() + 1}월 ${new Date(
     item.date,
@@ -52,4 +67,4 @@ const msg2Chat = (querySnapshot, isShop) => {
   });
   return myList;
 };
-export {convertComma, makeYM, msg2Chat};
+export {convertComma, pastDay, makeYM, msg2Chat};

@@ -12,25 +12,21 @@ const {width} = Dimensions.get('window');
 export default HeaderSection = ({shop}) => {
   return (
     <Block style={styles.shopTitle}>
-      <Block middle center>
-        <Text h1 bold>
-          {shop.name}
-        </Text>
-        <Text>{shop.tags.join(', ')}</Text>
-        <Block left row center>
-          <AntDesign size={20} color={colors.primary} name="star"></AntDesign>
-          <Text h3 bold style={{marginLeft: 5}}>
-            {shop.review}
-          </Text>
-        </Block>
-        <Text>
-          {'리뷰 ' +
-            convertComma(shop.reviewCnt) +
-            ' · ' +
-            '저장 ' +
-            shop.likes}
+      <Text h1 bold style={{marginBottom: 0}}>
+        {shop.name}
+      </Text>
+      <Text primary bold>
+        {shop.tags.join(', ')}
+      </Text>
+      <Block row center>
+        <AntDesign size={20} color={colors.primary} name="star"></AntDesign>
+        <Text h3 bold style={{marginLeft: 5}}>
+          {shop.review}
         </Text>
       </Block>
+      <Text>
+        {'리뷰 ' + convertComma(shop.reviewCnt) + ' · ' + '저장 ' + shop.likes}
+      </Text>
     </Block>
   );
 };
@@ -41,6 +37,8 @@ const styles = StyleSheet.create({
     position: 'absolute',
     height: 140,
     width: width - 60,
+    justifyContent: 'center',
+    alignItems: 'center',
     backgroundColor: 'white',
     marginHorizontal: 30,
     paddingVertical: sizes.padding * 0.8,

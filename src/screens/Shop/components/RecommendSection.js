@@ -49,6 +49,7 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
   return (
     <Block style={[style.shop.categories]}>
       <FlatList
+        contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Text h1 bold style={{marginBottom: 30}}>
             근처 추천 장소

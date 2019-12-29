@@ -14,6 +14,8 @@ export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
           style={{
             height: '100%',
             width: '100%',
+            borderColor: isActive ? colors.black : colors.gray,
+            borderWidth: 2,
             resizeMode: 'cover',
             borderRadius: 30,
           }}
@@ -23,7 +25,7 @@ export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
         center
         size={16}
         style={{
-          marginTop: 6,
+          marginTop: 5,
           color: isActive ? colors.black : colors.gray,
         }}>
         {tabName}
@@ -34,7 +36,7 @@ export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
 
 export const styles = StyleSheet.create({
   tab: {
-    marginRight: sizes.base * 1.2,
+    marginRight: sizes.base,
   },
   active: {
     borderBottomColor: colors.secondary,

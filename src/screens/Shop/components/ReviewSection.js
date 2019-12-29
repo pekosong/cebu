@@ -62,41 +62,40 @@ const ReviewSection = observer(({navigation, shop}) => {
     );
   }
   return (
-    <>
-      <Block style={style.shop.categories}>
-        <FlatList
-          ListHeaderComponent={
-            <Block style={{marginBottom: 30}}>
-              <Block row space="between">
-                <Text h1 bold>
-                  이용 후기
+    <Block style={style.shop.categories}>
+      <FlatList
+        contentContainerStyle={{paddingBottom: 50}}
+        ListHeaderComponent={
+          <Block style={{marginBottom: 30}}>
+            <Block row space="between">
+              <Text h1 bold>
+                이용 후기
+              </Text>
+              <TouchableWithoutFeedback
+                onPress={() => setNewReviewVisible(true)}>
+                <Text h3 bold accent>
+                  후기 작성
                 </Text>
-                <TouchableWithoutFeedback
-                  onPress={() => setNewReviewVisible(true)}>
-                  <Text h2 bold accent>
-                    후기 작성
-                  </Text>
-                </TouchableWithoutFeedback>
-              </Block>
-              <Block left row center style={{marginTop: 10}}>
-                <AntDesign
-                  size={24}
-                  color={colors.primary}
-                  name="star"></AntDesign>
-                <Text h1 bold style={{marginLeft: 5}}>
-                  {shop.review}
-                </Text>
-                <Text h2 bold style={{marginLeft: 5}}>
-                  {` (${shop.reviewCnt})`}
-                </Text>
-              </Block>
+              </TouchableWithoutFeedback>
             </Block>
-          }
-          data={shop.reviews.sort((a, b) => b.date.seconds - a.date.seconds)}
-          renderItem={({item}) => <CardReview item={item}></CardReview>}
-          keyExtractor={item => item.id}
-        />
-      </Block>
+            <Block left row center style={{marginTop: 10}}>
+              <AntDesign
+                size={24}
+                color={colors.primary}
+                name="star"></AntDesign>
+              <Text h1 bold style={{marginLeft: 5}}>
+                {shop.review}
+              </Text>
+              <Text h2 bold style={{marginLeft: 5}}>
+                {` (${shop.reviewCnt})`}
+              </Text>
+            </Block>
+          </Block>
+        }
+        data={shop.reviews.sort((a, b) => b.date.seconds - a.date.seconds)}
+        renderItem={({item}) => <CardReview item={item}></CardReview>}
+        keyExtractor={item => item.id}
+      />
       <Modal
         animationType="slide"
         visible={newReviewVisible}
@@ -108,7 +107,7 @@ const ReviewSection = observer(({navigation, shop}) => {
           setNewReviewVisible={setNewReviewVisible}
         />
       </Modal>
-    </>
+    </Block>
   );
 });
 

@@ -11,9 +11,9 @@ import {AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 
-export default CardShop = props => {
-  const {shop, navigation} = props;
+export default CardShop = ({shop, navigation}) => {
   const {
+    id,
     name,
     preview,
     review,
@@ -47,41 +47,38 @@ export default CardShop = props => {
   };
   return (
     <TouchableOpacity
+      style={[styles.categories, {marginBottom: sizes.base * 1.6}]}
       onPress={() =>
         navigation.navigate('Shop', {
-          shopId: shop.id,
+          shopId: id,
         })
       }>
-      <Block style={[styles.categories, {marginBottom: sizes.base * 1.6}]}>
-        <CachedImage uri={preview} style={styles.image} />
-        <Block style={styles.overlap}></Block>
-        <Favorite shop={shop}></Favorite>
-        <Block>
-          <Block style={styles.top}>
-            <Text h3 bold>
-              {name}
-            </Text>
-            <Text h5 primary style={{marginLeft: 6}}>
-              {tags.join(', ')}
-            </Text>
-          </Block>
-          <Block style={styles.bottom}>
-            <AntDesign size={13} name="star" style={{color: colors.primary}} />
-            <Text style={{marginLeft: 5}}>
-              {`${review} · 리뷰 ${convertComma(reviewCnt)}`}
-            </Text>
-            <Text style={{marginLeft: 5}}>
-              {'· 저장 ' + convertComma(likes)}
-            </Text>
-          </Block>
-          <Block row>
-            {korean && renderTag('한국어')}
-            {pickup && renderTag('픽업')}
-            {baby && renderTag('애기')}
-          </Block>
-          <Block style={styles.corner}></Block>
-        </Block>
+      <CachedImage uri={preview} style={styles.image} />
+      <Block style={styles.overlap}></Block>
+      <Favorite shop={shop}></Favorite>
+      <Block style={styles.top}>
+        <Text h3 bold>
+          {name}
+        </Text>
+        <Text h5 primary style={{marginLeft: 6}}>
+          {tags.join(', ')}
+        </Text>
       </Block>
+      <Block style={styles.bottom}>
+        <AntDesign size={13} name="star" style={{color: colors.primary}} />
+        <Text darkgray style={{marginLeft: 5}}>
+          {`${review} · 리뷰 ${convertComma(reviewCnt)}`}
+        </Text>
+        <Text darkgray style={{marginLeft: 5}}>
+          {'· 저장 ' + convertComma(likes)}
+        </Text>
+      </Block>
+      <Block row>
+        {korean && renderTag('한국어')}
+        {pickup && renderTag('픽업')}
+        {baby && renderTag('애기')}
+      </Block>
+      <Block style={styles.corner}></Block>
     </TouchableOpacity>
   );
 };
@@ -106,12 +103,12 @@ export const styles = StyleSheet.create({
   top: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginTop: 4,
+    marginTop: 6,
   },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',
-    paddingVertical: 2,
+    marginVertical: 5,
   },
   corner: {
     flexDirection: 'row',

@@ -39,7 +39,7 @@ export default HeaderSection = ({shop, top}) => {
             flex: 0,
             width: '100%',
             height: 260,
-            background: 'linear-gradient(rgba(0,0,0,0.1),transparent)',
+            backgroundColor: 'rgba(0,0,0,0.1)',
           }}></Block>
       </Block>
     </Animated.View>
