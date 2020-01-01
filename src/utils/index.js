@@ -23,6 +23,7 @@ const makeYM = item => {
     item.date,
   ).getDate() + 1}일`;
 };
+
 const msg2Chat = (querySnapshot, isShop) => {
   let myList = [];
   querySnapshot.forEach(doc => {
@@ -62,9 +63,7 @@ const msg2Chat = (querySnapshot, isShop) => {
       myList.push(chat);
     }
   });
-  myList = myList.sort(function(a, b) {
-    return b.timeStamp - a.timeStamp;
-  });
+  myList = myList.sort((a, b) => b.timeStamp - a.timeStamp);
   return myList;
 };
 export {convertComma, pastDay, makeYM, msg2Chat};

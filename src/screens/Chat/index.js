@@ -48,7 +48,7 @@ const ChatScreen = observer(props => {
             setIsLoaded(true);
           });
         } else {
-          querySnapshot.forEach(function(doc) {
+          querySnapshot.forEach(doc => {
             let msgList = doc.data().message;
             let newMsgList = [];
             if (msgList) {
