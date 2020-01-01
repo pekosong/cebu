@@ -1614,28 +1614,35 @@ const massageList = [
       'https://cebuin.com/assets/file/630f76fd32b4c7a1861a006e068ebfe9.jpg',
     ],
     likes: 20,
-    review: 4,
-    reviewCnt: 200,
+    review: 3.8,
+    reviewCnt: 17,
     reviews: [
       {
         src: 'https://randomuser.me/api/portraits/women/68.jpg',
-        writer: 'peko22@naver.com',
-        comment: '너무 좋아요',
-        star: 5,
-        date: new Date(),
-      },
-      {
-        src: 'https://randomuser.me/api/portraits/men/43.jpg',
-        writer: 'peko2@naver.com',
-        comment: '좋긴 한데 서비스가 조금 별로 였어요',
+        writer: 'google',
+        comment: '가성비좋고,마사지쏨씨도 좋아요',
         star: 3,
         date: new Date(),
       },
       {
+        src: 'https://randomuser.me/api/portraits/men/43.jpg',
+        writer: 'google',
+        comment: '가끔 피곤할 때 , 마사지 땡길 때 가면 굿 !',
+        star: 5,
+        date: new Date(),
+      },
+      {
         src: 'https://randomuser.me/api/portraits/men/78.jpg',
-        writer: 'peko1@naver.com',
-        comment: '다음에 꼭 다시 오고 싶어요',
+        writer: 'google',
+        comment: '가성비 좋습니다',
         star: 4,
+        date: new Date(),
+      },
+      {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
+        writer: 'google',
+        comment: '세부시티 한국마사지',
+        star: 5,
         date: new Date(),
       },
     ],
@@ -1722,7 +1729,7 @@ const massageList = [
     image: 'https://randomuser.me/api/portraits/women/2.jpg',
     id: 'massage2',
     name: '프라나 스파',
-    engName: 'Prana Spa',
+    engName: 'Prana Medispa',
     address:
       '16th Floor, Tower 2, Crown Regency Hotel & Towers, Osmeña Blvd, Cebu City, 6000 Cebu, 필리핀',
     engAddress: 'cebu maktan',
@@ -1742,28 +1749,31 @@ const massageList = [
       'https://post-phinf.pstatic.net/MjAxNzEyMDJfMTA3/MDAxNTEyMTgxOTAzMTI0.OJiqXAyFe8_S5nG2Gkb_yqyAzoHW5VR61Bw9jro3grQg.a01dVWkQzpeNUnHSL52Z8Q0JBuH6WcFJOGIm0o5RWjQg.JPEG/%EC%84%B8%EB%B6%80%EB%A7%88%EC%82%AC%EC%A7%80_%28202%29.jpg?type=w1200',
     ],
     likes: 20,
-    review: 4.5,
-    reviewCnt: 234,
+    review: 3.5,
+    reviewCnt: 13,
     reviews: [
       {
         src: 'https://randomuser.me/api/portraits/women/68.jpg',
-        writer: 'peko22@naver.com',
-        comment: '너무 좋아요',
-        star: 5,
+        writer: 'google',
+        comment:
+          '나와 아내는 3 in 1 프로모션 (Body Scrub, Massage and Facial)을 준비했습니다. 그것이 우리의 첫 번째 (롤) 이후 나와 함께 내 아내가 몸에 스크럽과 재미 있었어. 마사지는 얼굴뿐만 아니라 OK이었다.\n그러나 제가 말할 수있는 것은, 필자는 지금까지도 다이아몬드 필과 일관성이 있습니다. 지금까지 그들은 결코 나를 후회하게 만들지 않았습니다.',
+        star: 4,
         date: new Date(),
       },
       {
         src: 'https://randomuser.me/api/portraits/men/43.jpg',
-        writer: 'peko2@naver.com',
-        comment: '좋긴 한데 서비스가 조금 별로 였어요',
-        star: 3,
+        writer: 'google',
+        comment:
+          '내 딸은 그녀의 얼굴에 범프 같은 감염 뾰루지 / 여드름 결과 자신의 다이아몬드 껍질 서비스의 쓸모. 그녀는 결과를 알리 할 다음 일을 반환하지만 최악의 고객 서비스 경험을했다. 그녀는 그녀의 사건에 대해 어떤 변명, 환불이나 그럴듯한 설명과 함께 올 수 없었다 complain.The 직원에 대한 관리자를 통해 가져올 수 없습니다. 나는 우리가이 설립을 향한 어떤 법적 조치를 취할 필요가 없습니다 바랍니다. 그들이 할 수있는 최소한 그녀의 상태를 확인하고 필요한 경우 의사에게 그녀를 참조한다. 나는 그들의 서비스를 얻기에주의를 취할 모든 사람에게 물어 것입니다. 아주 전문가가 아닌',
+        star: 1,
         date: new Date(),
       },
       {
         src: 'https://randomuser.me/api/portraits/men/78.jpg',
-        writer: 'peko1@naver.com',
-        comment: '다음에 꼭 다시 오고 싶어요',
-        star: 4,
+        writer: 'google',
+        comment:
+          '줄 수있는 별의 수가 1 개 미만인 경우이를 평가할 수 있습니다. 제 조카가 14 세션 다이아몬드 껍질 패키지를 샀습니다. 그녀의 첫 번째 세션이 끝난 다음 날 그녀는 고름이 보였던 얼굴에 통증을 일으켰습니다. 그녀는 Prana로 돌아가서 그들을 보여주고 문제를 해결하기 위해 무엇을 할 수 있는지 보았습니다. 또는 분명히 그녀가 분명히 거기로 돌아가고 싶지 않았기 때문에 그녀에게 환불을 제공 할 수있었습니다. 그들은 그녀에게 환불을하지 않을 것이고, 심지어 그녀가 매니저를 보게하지 않을 것입니다! 최악의 고객 서비스! 나는 평범한 고객 이었지만 내 비즈니스 나 친구들과 가족의 사업을받을 자격이 없습니다. 나는이 사건을 소셜 미디어와 내가 아는 모든 사람들에게 알려주고 있습니다. 왜냐하면 이것은 일어나서는 안되며 다시는 발생해서는 안되기 때문입니다. 그들은 이미 당신의 돈이있는 한 당신에게 일어나는 일에 대해 책임을지지 않습니다. 내 조카에게 일어난 일을 당신이 그들의 서비스를 이용할 생각이라면 경고해라.',
+        star: 1,
         date: new Date(),
       },
     ],
@@ -1820,8 +1830,8 @@ const massageList = [
     longitude: 123.96548129335054,
     phone: ['+63 32 494 0011'],
     baby: false,
-    korean: false,
-    pickup: false,
+    korean: true,
+    pickup: true,
     reservations: [],
     preview:
       'https://lh3.googleusercontent.com/DL5ouiS3FiiBbBDxAhDzUJNchLNR83LdboFRV13G581MgXUWxCivdPdjVES1nvcCJ05jK23G=w1080-h608-p-no-v0',
@@ -1830,28 +1840,55 @@ const massageList = [
       'http://mblogthumb2.phinf.naver.net/20160326_61/hm1697_1458999038819nSLMn_JPEG/attachImage_855025216.jpeg?type=w800',
     ],
     likes: 20,
-    review: 5,
-    reviewCnt: 156,
+    review: 3.9,
+    reviewCnt: 152,
     reviews: [
       {
         src: 'https://randomuser.me/api/portraits/women/68.jpg',
-        writer: 'peko22@naver.com',
-        comment: '너무 좋아요',
+        writer: 'google',
+        comment:
+          '자유로운 픽드랍에 위치도 좋고 친절하고\n저렴하고 계좌이체도 돼요ㅋㅋ\n넘 좋아서 사실 젤 중요한 마사지는 기대도 안했고 오일+발 맛사지 90분했는데\n120분할걸 후회했어요\n섬세하고꼼꼼하게 부드러우면서 시원해요\n팁이절로나옴..\n세부 있는동안 매일 올듯합니다.',
         star: 5,
         date: new Date(),
       },
       {
         src: 'https://randomuser.me/api/portraits/men/43.jpg',
-        writer: 'peko2@naver.com',
-        comment: '좋긴 한데 서비스가 조금 별로 였어요',
+        writer: 'google',
+        comment:
+          '자주이용합니다. 한국출발노선 도착시간이 그래놔서 더이상의 대안은 없을것 같네요. 이번에 한국분들하고 같이 이동하면서 주변에 한식집도 알게됐는데 괜찮은것 같습니다.',
+        star: 5,
+        date: new Date(),
+      },
+      {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
+        writer: 'google',
+        comment:
+          '세부 여행중 두번 방문했습니다\n첫번째 건마 90분\n마사지사 복불복이지만 좋진 않았습니다\n두번재 핫스톤 100분\n젋어보이는 마사지사였는데 정말 쵝오였어요\n100분동안 힘있는 압에 순발력빠르게 핫스톤을 왔다 갔다 온몸이 녹아서 숙소에 왔네요 정말 좋았습니다\n시설은 좋아보이진 않지만 가격대비 가성비가 정말 좋은듯해요',
+        star: 4,
+        date: new Date(),
+      },
+      {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
+        writer: 'google',
+        comment:
+          '정말 좋은곳이에요. 가성비 완전좋은곳 마사지사들이 거의 달인 수준인듯. 아무나 해줘도  완전좋아요.',
+        star: 5,
+        date: new Date(),
+      },
+      {
+        src: 'https://randomuser.me/api/portraits/men/78.jpg',
+        writer: 'google',
+        comment:
+          '한국인 사장님들은 다 친절하십니다\n마지막날 귀국패키지 이용해서 스케줄짜기 좋습니다\n하지만 마사지사 복불복은 존재함',
         star: 3,
         date: new Date(),
       },
       {
         src: 'https://randomuser.me/api/portraits/men/78.jpg',
-        writer: 'peko1@naver.com',
-        comment: '다음에 꼭 다시 오고 싶어요',
-        star: 4,
+        writer: 'google',
+        comment:
+          '맛사지는 만족하지만..사람이많아 그런지 정신없고..서비스면에선..그냥그냥입였다고느꼈습니다..또 그근처로간다면 다른곳으로 방문할것같습니다',
+        star: 3,
         date: new Date(),
       },
     ],
@@ -2398,7 +2435,7 @@ const massageList = [
           },
           {
             time: 120,
-            price: 6600,
+            price: 660,
           },
         ],
         src:
@@ -2414,7 +2451,7 @@ const massageList = [
           },
           {
             time: 120,
-            price: 6600,
+            price: 660,
           },
         ],
         src:
@@ -2430,7 +2467,7 @@ const massageList = [
           },
           {
             time: 120,
-            price: 6600,
+            price: 660,
           },
         ],
         src:
@@ -2446,7 +2483,7 @@ const massageList = [
           },
           {
             time: 120,
-            price: 6600,
+            price: 660,
           },
         ],
         src:
@@ -2630,7 +2667,7 @@ const massageList = [
       'Behik Building, 2483 M.L. Quezon National Highway, Lapu-Lapu City, 6015 Cebu, 필리핀',
     latitude: 10.3189929,
     longitude: 123.965179,
-    kakao: "lomispa",
+    kakao: 'lomispa',
     phone: ['+63 915 999 0620'],
     baby: true,
     korean: true,
@@ -2641,7 +2678,7 @@ const massageList = [
     source: [
       'https://img-wishbeen.akamaized.net/spot/1391595553817_lomi%20spa.png',
       'https://ph.monkeytravel.com/attach/product/PH/201702/o_1b8h37vcv1knhslc5eh1gt4tbtf.jpg?w=500&h=0',
-      'https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile2.uf.tistory.com%2Fimage%2F2747A646578B991B17EC57'
+      'https://img1.daumcdn.net/thumb/R720x0.q80/?scode=mtistory2&fname=http%3A%2F%2Fcfile2.uf.tistory.com%2Fimage%2F2747A646578B991B17EC57',
     ],
     likes: 20,
     review: 4.2,
@@ -2838,7 +2875,7 @@ const massageList = [
           },
           {
             time: 60,
-            price: 4600,
+            price: 400,
           },
         ],
         src:

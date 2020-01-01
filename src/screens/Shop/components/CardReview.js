@@ -21,11 +21,20 @@ export default CardReview = ({item}) => {
     <TouchableOpacity>
       <Block style={styles.container}>
         <Block row space="between">
-          <CachedImage uri={item.src} style={styles.avatarChat} />
+          <CachedImage
+            uri={
+              item.writer == 'google'
+                ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
+                : item.src
+            }
+            style={styles.avatarChat}
+          />
           <Block middle style={{marginLeft: 10}}>
             <Block row center style={{marginBottom: 3}}>
               <Text h4 bold style={{marginRight: 10}}>
-                {item.writer.substring(0, 4) + '**'}
+                {item.writer == 'google'
+                  ? 'google'
+                  : item.writer.substring(0, 4) + '**'}
               </Text>
               <Text size={12} darkgray>
                 {pastDay(item.date)}

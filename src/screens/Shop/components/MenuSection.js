@@ -20,7 +20,7 @@ export default MenuSection = ({shop, isKorean}) => {
         }
         data={shop.menus}
         renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
-        keyExtractor={(item, idx) => idx}
+        keyExtractor={(item, idx) => idx.toString()}
       />
     </Block>
   );
