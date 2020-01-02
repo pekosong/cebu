@@ -19,59 +19,49 @@ const mockImages = [
 export default CardReview = ({item}) => {
   return (
     <TouchableOpacity>
-      <Block style={styles.container}>
-        <Block row space="between">
-          <CachedImage
-            uri={
-              item.writer == 'google'
-                ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
-                : item.src
-            }
-            style={styles.avatarChat}
-          />
-          <Block middle style={{marginLeft: 10}}>
-            <Block row center style={{marginBottom: 3}}>
-              <Text h4 bold style={{marginRight: 10}}>
-                {item.writer == 'google'
-                  ? 'google'
-                  : item.writer.substring(0, 4) + '**'}
-              </Text>
-              <Text size={12} darkgray>
-                {pastDay(item.date)}
-              </Text>
-            </Block>
-            <Block>
-              <StarRating
-                disabled={false}
-                maxStars={5}
-                rating={item.star}
-                starSize={15}
-                fullStarColor={colors.primary}
-                containerStyle={{width: 20}}
-              />
-            </Block>
+      <Block row space="between">
+        <CachedImage
+          uri={
+            item.writer == 'google'
+              ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
+              : item.src
+          }
+          style={styles.avatarChat}
+        />
+        <Block middle style={{marginLeft: 10}}>
+          <Block row center style={{marginBottom: 3}}>
+            <Text h4 bold style={{marginRight: 10}}>
+              {item.writer == 'google'
+                ? 'google'
+                : item.writer.substring(0, 4) + '**'}
+            </Text>
+            <Text size={12} darkgray>
+              {pastDay(item.date)}
+            </Text>
+          </Block>
+          <Block>
+            <StarRating
+              disabled={false}
+              maxStars={5}
+              rating={item.star}
+              starSize={15}
+              fullStarColor={colors.primary}
+              containerStyle={{width: 20}}
+            />
           </Block>
         </Block>
-        <Block style={{marginTop: 16}}>
-          <Text>{item.comment}</Text>
-        </Block>
-        <Block row style={{marginTop: 16}}>
-          {mockImages.map(e => (
-            <CachedImage key={e} uri={e} style={styles.image} />
-          ))}
-        </Block>
+      </Block>
+      <Text style={{marginVertical: 16}}>{item.comment}</Text>
+      <Block row>
+        {mockImages.map(e => (
+          <CachedImage key={e} uri={e} style={styles.image} />
+        ))}
       </Block>
     </TouchableOpacity>
   );
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    borderBottomWidth: 0.6,
-    borderBottomColor: colors.gray2,
-    paddingBottom: 30,
-    marginBottom: 30,
-  },
   avatarChat: {
     width: sizes.base * 3,
     height: sizes.base * 3,

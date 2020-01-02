@@ -9,7 +9,7 @@ const {width} = Dimensions.get('window');
 
 export default CardMassage = ({item, isKorean}) => {
   return (
-    <Block style={styles.container}>
+    <Block>
       <Block row space="between">
         <CachedImage style={styles.imageStyle} uri={item.src}></CachedImage>
         <Block style={{marginLeft: 10}}>
@@ -30,7 +30,6 @@ export default CardMassage = ({item, isKorean}) => {
                 marginLeft: 2,
                 borderRadius: 10,
                 height: 80,
-                width: (width - sizes.padding * 2) / 3,
                 justifyContent: 'center',
                 alignItems: 'center',
                 backgroundColor: colors.white,
@@ -43,6 +42,7 @@ export default CardMassage = ({item, isKorean}) => {
                 elevation: 4,
                 shadowOpacity: 0.25,
                 shadowRadius: 2,
+                marginBottom: 3,
                 marginRight:
                   idx == 2 ? 2 : item.plans.length - 1 == idx ? 2 : 10,
               }}>
@@ -57,21 +57,14 @@ export default CardMassage = ({item, isKorean}) => {
                   borderBottomColor: 'red',
                   marginVertical: 4,
                 }}></Block>
-              {isKorean ? (
-                <Block row center style={{flex: 0}}>
-                  <Text h3>{`${convertComma(e.price * 22)} `}</Text>
-                  <Text darkgray style={{marginTop: 3}}>
-                    원
-                  </Text>
-                </Block>
-              ) : (
-                <Block row center style={{flex: 0}}>
-                  <Text h3>{`${convertComma(e.price)} `}</Text>
-                  <Text darkgray style={{marginTop: 3}}>
-                    페소
-                  </Text>
-                </Block>
-              )}
+              <Block row center style={{flex: 0}}>
+                <Text h3>{`${convertComma(
+                  isKorean ? e.price * 22 : e.price,
+                )} `}</Text>
+                <Text darkgray style={{marginTop: 3}}>
+                  {isKorean ? '원' : '페소'}
+                </Text>
+              </Block>
             </Block>
           ))}
         </Block>
@@ -81,12 +74,6 @@ export default CardMassage = ({item, isKorean}) => {
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    marginBottom: 20,
-    paddingBottom: 20,
-    borderBottomWidth: 0.2,
-    borderBottomColor: colors.gray2,
-  },
   rightBorder: {
     borderRightWidth: 1,
     borderRightColor: colors.gray2,

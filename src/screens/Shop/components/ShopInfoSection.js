@@ -72,8 +72,14 @@ export default ShopInfoSection = ({shop}) => {
             <Text h3 style={{marginBottom: 6}}>
               전화번호
             </Text>
-            {shop.phone.map(e => (
-              <Block row middle center space="between" style={{marginTop: 16}}>
+            {shop.phone.map((e, idx) => (
+              <Block
+                key={idx}
+                row
+                middle
+                center
+                space="between"
+                style={{marginTop: 16}}>
                 <Text darkgray h3 style={{marginRight: 10}}>
                   {e}
                 </Text>
@@ -119,9 +125,9 @@ export default ShopInfoSection = ({shop}) => {
           scrollEventThrottle={360}
           pagingEnabled
           onScroll={handleScrollByX}>
-          {shop.source.map(e => (
+          {shop.source.map((e, idx) => (
             <CachedImage
-              key={e}
+              key={idx}
               uri={e}
               style={{
                 height: 280,

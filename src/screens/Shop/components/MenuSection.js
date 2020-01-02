@@ -4,12 +4,20 @@ import {StyleSheet, FlatList} from 'react-native';
 import {Block, Text} from 'app/src/components';
 import CardMenu from './CardMenu';
 
-import {style} from 'app/src/styles';
+import {style, colors} from 'app/src/styles';
 
 export default MenuSection = ({shop, isKorean}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              borderBottomWidth: 0.3,
+              borderBottomColor: colors.gray,
+              marginVertical: 10,
+            }}></Block>
+        )}
         contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Block row space="between" style={{marginBottom: 30}}>

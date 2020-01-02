@@ -1,13 +1,12 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
-import {colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
 export default CardMenu = ({item, isKorean}) => {
   return (
-    <Block style={styles.container}>
+    <Block row space="between">
       <Block style={{marginRight: 20}}>
         <Text h3 bold>
           {item.name}
@@ -43,14 +42,6 @@ export default CardMenu = ({item, isKorean}) => {
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingBottom: 10,
-    marginBottom: 10,
-    borderBottomWidth: 0.2,
-    borderBottomColor: colors.gray2,
-  },
   imageStyle: {
     borderRadius: 2,
     width: 80,

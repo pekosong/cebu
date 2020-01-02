@@ -64,6 +64,14 @@ const ReviewSection = observer(({navigation, shop}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              borderBottomWidth: 0.3,
+              borderBottomColor: colors.gray,
+              marginVertical: 10,
+            }}></Block>
+        )}
         contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Block style={{marginBottom: 30}}>

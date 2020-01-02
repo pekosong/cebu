@@ -12,19 +12,9 @@ export default CardRecommend = ({item, navigation}) => {
   return (
     <TouchableOpacity
       onPress={() => navigation.push('Shop', {shopId: shop.id})}>
-      <Block style={styles.container}>
-        <Block
-          style={{
-            flex: 0,
-            width: 80,
-            height: 80,
-            marginRight: 10,
-          }}>
-          <CachedImage
-            style={styles.imageStyle}
-            uri={shop.preview}></CachedImage>
-        </Block>
-        <Block middle style={{height: 80}}>
+      <Block row>
+        <CachedImage style={styles.imageStyle} uri={shop.preview}></CachedImage>
+        <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
             <Text h3 bold>
               {shop.name + ' '}
@@ -51,21 +41,18 @@ export default CardRecommend = ({item, navigation}) => {
               </Text>
             </Block>
           </Block>
-          {/* <Text gray style={{marginVertical: 4}}>
-            필리핀 인기 만점의 전신 아로마 마사지 제공
-          </Text> */}
-          <Block center row space="between" style={{flex: 0}}>
-            <Block row center style={{flex: 0}}>
+          <Block row center space="between" style={{flex: 0}}>
+            <Block row>
               <AntDesign
                 size={13}
                 name="star"
                 style={{color: colors.primary}}
               />
               <Text darkgray style={{marginLeft: 5}}>
-                {`3 · 리뷰 ${convertComma(123)}`}
+                {`${shop.review} · 리뷰 ${convertComma(shop.reviewCnt)}`}
               </Text>
               <Text darkgray style={{marginLeft: 5}}>
-                {'· 저장 ' + convertComma(423)}
+                {'· 저장 ' + convertComma(shop.likes)}
               </Text>
             </Block>
             <Block row bottom center>
@@ -84,18 +71,12 @@ export default CardRecommend = ({item, navigation}) => {
 };
 
 export const styles = StyleSheet.create({
-  container: {
-    borderRadius: 3,
-    height: 90,
-    display: 'flex',
-    flexDirection: 'row',
-    marginBottom: 10,
-    borderBottomWidth: 0.2,
-    borderBottomColor: 'grey',
-  },
   imageStyle: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
+    width: 80,
+    height: 80,
+    marginRight: 10,
   },
 });

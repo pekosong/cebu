@@ -47,7 +47,8 @@ export default ProgramSection = ({shop}) => {
                 shadowOpacity: 0.25,
                 shadowRadius: 3.84,
                 elevation: 3,
-                marginRight: idx == 0 ? 0 : 0,
+                marginRight:
+                  idx == 2 ? 2 : program.plans.length - 1 == idx ? 2 : 10,
               }}>
               <Text bold center h2 style={{marginBottom: 6}}>
                 {e.type === 'adult' ? '어른' : '어린이'}

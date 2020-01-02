@@ -7,9 +7,9 @@ import {ShopStoreContext} from 'app/src/store/shop';
 
 import {Block, Text} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {style} from 'app/src/styles';
+import {style, colors} from 'app/src/styles';
 
-export default RecommendSection = ({navigation, recommendList, shop}) => {
+export default RecommendSection = ({navigation, shop}) => {
   const shopList = useContext(ShopStoreContext)
     .shopList.filter(e => e.id != shop.id)
     .filter(e => ['Massage', 'Restaurant'].includes(e.category));
@@ -42,6 +42,7 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
       e.longitude,
     ),
   }));
+
   const sortedShop = distances
     .sort((a, b) => a.distance > b.distance)
     .slice(0, 7);
@@ -49,6 +50,14 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
   return (
     <Block style={[style.shop.categories]}>
       <FlatList
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              borderBottomWidth: 0.3,
+              borderBottomColor: colors.gray,
+              marginVertical: 10,
+            }}></Block>
+        )}
         contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Text h1 bold style={{marginBottom: 30}}>
@@ -59,7 +68,7 @@ export default RecommendSection = ({navigation, recommendList, shop}) => {
         renderItem={({item}) => (
           <CardRecommend item={item} navigation={navigation}></CardRecommend>
         )}
-        keyExtractor={item => item.id}
+        keyExtractor={(item, idx) => idx.toString()}
       />
     </Block>
   );
