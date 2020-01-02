@@ -53,7 +53,8 @@
     "redux": "^4.0.4",
     "redux-thunk": "^2.3.0",
     "sharp-cli": "^1.13.1",
-    "use-force-update": "^1.0.7"
+    "use-force-update": "^1.0.7",
+    "react-native-webview": "7.4.3"
   },
   "devDependencies": {
     "babel-preset-expo": "^6.0.0",
