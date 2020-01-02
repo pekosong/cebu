@@ -228,7 +228,9 @@ export default ShopScreen = observer(({navigation}) => {
         </Animated.View>
       </Animated.ScrollView>
       <FloatButton navigation={navigation} shop={shop} user={user} />
-      <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
+      {show === 0 && (
+        <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
+      )}
     </>
   );
 });
