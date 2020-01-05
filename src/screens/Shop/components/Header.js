@@ -1,34 +1,19 @@
 import React from 'react';
-import {Dimensions, StyleSheet, ScrollView, Animated} from 'react-native';
+import {Dimensions, StyleSheet, Animated} from 'react-native';
 
 import {Block, CachedImage} from 'app/src/components';
 
 const {width} = Dimensions.get('window');
 
-export default HeaderSection = ({shop, top}) => {
+export default HeaderSection = ({shop}) => {
   return (
-    <Animated.View
-      style={{
-        ...styles.container,
-        top: top.interpolate({
-          inputRange: [0, 200],
-          outputRange: [0, -50],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-        opacity: top.interpolate({
-          inputRange: [170, 200],
-          outputRange: [1, 0],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-      }}>
+    <Animated.View style={styles.container}>
       <Block style={{position: 'relative'}}>
         <CachedImage
           key={shop.preview}
           uri={shop.preview}
           style={{
-            height: 280,
+            height: '100%',
             width: width,
             resizeMode: 'cover',
           }}
@@ -36,10 +21,9 @@ export default HeaderSection = ({shop, top}) => {
         <Block
           style={{
             position: 'absolute',
-            flex: 0,
-            width: '100%',
-            height: 260,
-            backgroundColor: 'rgba(0,0,0,0.1)',
+            width: width,
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.2)',
           }}></Block>
       </Block>
     </Animated.View>
@@ -50,8 +34,7 @@ const styles = StyleSheet.create({
   container: {
     position: 'absolute',
     width: width,
-    paddingLeft: -20,
-    height: 260,
+    height: 280,
     zIndex: -1,
   },
 });

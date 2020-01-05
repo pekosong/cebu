@@ -4,6 +4,7 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
+  SafeAreaView,
 } from 'react-native';
 
 import {
@@ -85,14 +86,18 @@ const MyTripScreen = observer(props => {
     setActive(tab);
   };
 
-  renderTripTab = tab => {
+  renderTripTab = (tab, isLast) => {
     const isActive = active == tab;
 
     return (
       <TouchableOpacity
         key={`tab-${tab}`}
         onPress={() => handleTripTab(tab)}
-        style={[styles.tab, isActive && styles.active]}>
+        style={[
+          styles.tab,
+          isActive && styles.active,
+          {marginRight: isLast ? sizes.base * 3 : sizes.base * 0.8},
+        ]}>
         {
           <>
             {tab != '전체' && (
@@ -202,29 +207,32 @@ const MyTripScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
-      <Block style={[style.appBar, styles.shadow, {height: 165}]}>
-        <Block style={{flex: 0, height: 30}}>
-          <Text h1 bold>
-            내일정
-          </Text>
+    <SafeAreaView>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}>
+        <Block style={style.scrollTab}>
+          <Block style={{flex: 0, height: 40}}>
+            <Text h1 bold>
+              내일정
+            </Text>
+          </Block>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}
+            style={styles.tabs}>
+            {tabs.map((tab, idx) =>
+              renderTripTab(tab, tabs.length - 1 === idx),
+            )}
+          </ScrollView>
         </Block>
-
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={true}
-          style={styles.tabs}>
-          {tabs.map(tab => renderTripTab(tab))}
-        </ScrollView>
-      </Block>
-
-      <ScrollView showsVerticalScrollIndicator={false}>
-        <Block style={{paddingTop: sizes.base * 2, marginBottom: 40}}>
+        <Block
+          style={{paddingTop: sizes.base * 2, marginBottom: 40, zIndex: -1}}>
           {Object.values(selectedDates).map((day, idx) => renderList(day, idx))}
         </Block>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 });
 
@@ -243,17 +251,6 @@ const styles = StyleSheet.create({
     width: sizes.base * 6,
     height: sizes.base * 4,
     borderRadius: 3,
-  },
-  shadow: {
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 1,
   },
   tag: {
     flex: 0,
@@ -278,12 +275,11 @@ const styles = StyleSheet.create({
     borderWidth: 2,
     borderColor: colors.gray,
     backgroundColor: '#eee',
-    marginRight: sizes.base * 1,
     justifyContent: 'center',
     alignItems: 'center',
   },
   active: {
-    backgroundColor: colors.accent,
+    backgroundColor: colors.black,
     borderColor: colors.black,
   },
   categories: {

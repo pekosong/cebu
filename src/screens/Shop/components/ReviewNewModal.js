@@ -1,16 +1,17 @@
 import React, {useState} from 'react';
 import {
   StyleSheet,
-  TouchableOpacity,
   TextInput,
   KeyboardAvoidingView,
+  SafeAreaView,
 } from 'react-native';
 
-import {Block, Text} from 'app/src/components';
-
+import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes} from 'app/src/styles';
+
 import {Ionicons} from '@expo/vector-icons';
 import StarRating from 'react-native-star-rating';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import firebase from 'app/src/constants/store';
 
@@ -47,56 +48,53 @@ export default ReviewNewModal = props => {
     }
   };
   return (
-    <KeyboardAvoidingView style={{flex: 1}}>
-      <Block padding={[sizes.padding * 2, sizes.padding]}>
-        <TouchableOpacity onPress={() => setNewReviewVisible(false)}>
-          <Ionicons size={50} color={colors.black} name="ios-close" />
-        </TouchableOpacity>
-        <Text h1 bold style={{marginBottom: 20}}>
-          후기 작성
-        </Text>
-        <Block style={{marginBottom: 30, marginHorizontal: 80}}>
-          <StarRating
-            disabled={false}
-            emptyStar={'ios-star-outline'}
-            fullStar={'ios-star'}
-            halfStar={'ios-star-half'}
-            iconSet={'Ionicons'}
-            fullStarColor={colors.accent}
-            rating={starCount}
-            selectedStar={rating => setStarCount(rating)}></StarRating>
-        </Block>
-        <Text bold h3 style={{marginBottom: 10}}>
-          후기
-        </Text>
-        <TextInput
-          multiline={true}
-          style={{...styles.inputRow, fontSize: 20}}
-          defaultValue={text}
-          onChangeText={e => {
-            setText(e);
-          }}
-        />
-        {err != '' && (
-          <Text h3 style={{color: colors.primary, marginBottom: 10}}>
-            {err}
+    <SafeAreaView style={{flex: 1}}>
+      <KeyboardAvoidingView style={{flex: 1}}>
+        <Block padding={[sizes.padding, sizes.padding]}>
+          <TouchableOpacity onPress={() => setNewReviewVisible(false)}>
+            <Ionicons size={50} color={colors.black} name="ios-close" />
+          </TouchableOpacity>
+          <Text h1 bold style={{marginBottom: 20}}>
+            후기 작성
           </Text>
-        )}
-        <TouchableOpacity onPress={() => handleWriteReview()}>
-          <Block
-            style={{
-              flex: 0,
-              paddingVertical: 10,
-              borderRadius: 5,
-              backgroundColor: colors.accent,
-            }}>
-            <Text white center h3>
-              작성 완료
-            </Text>
+          <Block style={{marginBottom: 30, marginHorizontal: 80}}>
+            <StarRating
+              disabled={false}
+              emptyStar={'ios-star-outline'}
+              fullStar={'ios-star'}
+              halfStar={'ios-star-half'}
+              iconSet={'Ionicons'}
+              fullStarColor={colors.accent}
+              rating={starCount}
+              selectedStar={rating => setStarCount(rating)}></StarRating>
           </Block>
-        </TouchableOpacity>
-      </Block>
-    </KeyboardAvoidingView>
+          <Text bold h3 style={{marginBottom: 10}}>
+            후기
+          </Text>
+          <TextInput
+            multiline={true}
+            style={{...styles.inputRow, fontSize: 20}}
+            defaultValue={text}
+            onChangeText={e => {
+              setText(e);
+            }}
+          />
+          {err !== '' && (
+            <Block style={{flex: 0, height: 30}}>
+              <Text primary h3>
+                {err}
+              </Text>
+            </Block>
+          )}
+
+          <Button border onPress={() => handleWriteReview()}>
+            <Text accent center>
+              후기 작성
+            </Text>
+          </Button>
+        </Block>
+      </KeyboardAvoidingView>
+    </SafeAreaView>
   );
 };
 

@@ -22,16 +22,34 @@ const style = {
   },
   appBar: {
     flex: 0,
-    height: 90,
-    paddingTop: Platform.OS === 'ios' ? sizes.base * 4 : sizes.base * 3.8,
+    marginTop: Platform.OS === 'ios' ? sizes.base : sizes.base * 3.8,
     paddingHorizontal: sizes.padding,
   },
-
+  scrollTab: {
+    flex: 0,
+    paddingTop: Platform.OS === 'ios' ? sizes.base : sizes.base * 3.8,
+    paddingHorizontal: sizes.padding,
+    backgroundColor: colors.white,
+    paddingBottom: 10,
+    borderBottomWidth: 0.5,
+    borderBottomColor: colors.gray2,
+  },
   shop: {
     categories: {
       marginVertical: 10,
       paddingHorizontal: sizes.padding,
     },
+  },
+  shadow: {
+    backgroundColor: 'white',
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
   },
 };
 

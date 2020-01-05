@@ -17,7 +17,7 @@ export default CardRecommend = ({item, navigation}) => {
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
             <Text h3 bold>
-              {shop.name + ' '}
+              {shop.name + '  '}
               <Text primary>{shop.tags[0]}</Text>
             </Text>
             <Block

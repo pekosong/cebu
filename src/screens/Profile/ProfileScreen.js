@@ -1,5 +1,5 @@
 import React, {useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView} from 'react-native';
+import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Block, Text, WideText} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
@@ -121,98 +121,96 @@ const ProfileScreen = observer(props => {
   };
 
   return (
-    <>
-      <Block style={style.appBar}>
-        <Text h1 bold>
+    <SafeAreaView>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+        style={style.appBar}>
+        <Text h1 bold style={{marginBottom: 20}}>
           내정보
         </Text>
-      </Block>
-      <ScrollView showsHorizontalScrollIndicator={false}>
-        <Block style={styles.inputs}>
-          <Block margin={[10, 0]}>
-            <Text h2 bold>
-              계정 관리
-            </Text>
-          </Block>
-          {profileList.map((item, idx) => (
-            <WideText
-              item={item}
-              key={idx}
-              onPress={() => navigation.navigate(item.navigation)}>
-              <Text h3>{item.title}</Text>
-              <AntDesign
-                size={26}
-                name={item.icon}
-                style={{color: colors.black}}></AntDesign>
-            </WideText>
-          ))}
-          {user.host && (
-            <>
-              <Block style={{marginTop: 30, marginBottom: 10}}>
-                <Text h2 bold>
-                  호스팅
-                </Text>
-              </Block>
-              {hostList.map((item, idx) => (
-                <WideText
-                  item={item}
-                  key={idx}
-                  onPress={() => navigation.navigate(item.navigation)}>
-                  <Text h3>{item.title}</Text>
-                  <AntDesign
-                    size={26}
-                    name={item.icon}
-                    style={{
-                      color: colors.black,
-                    }}></AntDesign>
-                </WideText>
-              ))}
-            </>
-          )}
-
-          <Block style={{marginTop: 30, marginBottom: 10}}>
-            <Text h2 bold>
-              지원
-            </Text>
-          </Block>
-          {helpList.map((item, idx) => (
-            <WideText
-              item={item}
-              key={idx}
-              onPress={() => navigation.navigate(item.navigation)}>
-              <Text h3>{item.title}</Text>
-              <AntDesign
-                size={26}
-                name={item.icon}
-                style={{color: colors.black}}></AntDesign>
-            </WideText>
-          ))}
-          <WideText onPress={() => handleNotification}>
-            <Text h3>알림 테스트</Text>
+        <Block margin={[10, 0]}>
+          <Text h2 bold>
+            계정 관리
+          </Text>
+        </Block>
+        {profileList.map((item, idx) => (
+          <WideText
+            item={item}
+            key={idx}
+            onPress={() => navigation.navigate(item.navigation)}>
+            <Text h3>{item.title}</Text>
             <AntDesign
               size={26}
-              name="dingding"
+              name={item.icon}
               style={{color: colors.black}}></AntDesign>
           </WideText>
-          <TouchableOpacity onPress={() => handleLogout()}>
-            <Block
-              row
-              space="between"
-              style={{
-                marginVertical: 30,
-              }}>
-              <Text h3 primary>
-                로그아웃
+        ))}
+        {user.host && (
+          <>
+            <Block style={{marginTop: 30, marginBottom: 10}}>
+              <Text h2 bold>
+                호스팅
               </Text>
-              <AntDesign
-                size={26}
-                name="logout"
-                style={{color: colors.primary}}></AntDesign>
             </Block>
-          </TouchableOpacity>
+            {hostList.map((item, idx) => (
+              <WideText
+                item={item}
+                key={idx}
+                onPress={() => navigation.navigate(item.navigation)}>
+                <Text h3>{item.title}</Text>
+                <AntDesign
+                  size={26}
+                  name={item.icon}
+                  style={{
+                    color: colors.black,
+                  }}></AntDesign>
+              </WideText>
+            ))}
+          </>
+        )}
+        <Block style={{marginTop: 30, marginBottom: 10}}>
+          <Text h2 bold>
+            지원
+          </Text>
         </Block>
+        {helpList.map((item, idx) => (
+          <WideText
+            item={item}
+            key={idx}
+            onPress={() => navigation.navigate(item.navigation)}>
+            <Text h3>{item.title}</Text>
+            <AntDesign
+              size={26}
+              name={item.icon}
+              style={{color: colors.black}}></AntDesign>
+          </WideText>
+        ))}
+        <WideText onPress={() => handleNotification}>
+          <Text h3>알림 테스트</Text>
+          <AntDesign
+            size={26}
+            name="dingding"
+            style={{color: colors.black}}></AntDesign>
+        </WideText>
+        <TouchableOpacity onPress={() => handleLogout()}>
+          <Block
+            row
+            space="between"
+            style={{
+              marginVertical: 30,
+            }}>
+            <Text h3 primary>
+              로그아웃
+            </Text>
+            <AntDesign
+              size={26}
+              name="logout"
+              style={{color: colors.primary}}></AntDesign>
+          </Block>
+        </TouchableOpacity>
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 });
 

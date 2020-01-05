@@ -6,9 +6,18 @@ import Text from './Text';
 
 import {colors, sizes} from 'app/src/styles';
 
-export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
+export default CategoryTap = ({
+  isActive,
+  handleTab,
+  image,
+  tabName,
+  tab,
+  isLast,
+}) => {
   return (
-    <TouchableOpacity onPress={() => handleTab(tab)} style={styles.tab}>
+    <TouchableOpacity
+      onPress={() => handleTab(tab)}
+      style={{marginRight: isLast ? sizes.base * 3 : sizes.base * 0.8}}>
       <Block style={{flex: 0, width: 60, height: 60}}>
         <Image
           style={{
@@ -35,9 +44,6 @@ export default CategoryTap = ({isActive, handleTab, image, tabName, tab}) => {
 };
 
 export const styles = StyleSheet.create({
-  tab: {
-    marginRight: sizes.base,
-  },
   active: {
     borderBottomColor: colors.secondary,
     borderBottomWidth: 3,

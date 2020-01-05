@@ -1,24 +1,24 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {Block, Text} from 'app/src/components';
+import {Ionicons} from '@expo/vector-icons';
+// import {TouchableOpacity} from 'react-native-gesture-handler';
+import {Text} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
-export default ExchangeButton = ({isKorean, setIsKorean}) => {
+export default CloseButton = ({isKorean, setwebViewVisible}) => {
   return (
     <TouchableOpacity
-      onPress={() => setIsKorean(!isKorean)}
+      onPress={() => setwebViewVisible(false)}
       style={styles.container}>
-      <Text size={20} accent bold>
-        {isKorean ? '페소' : '원'}
-      </Text>
+      <Ionicons size={40} color={colors.accent} name="ios-close" />
     </TouchableOpacity>
   );
 };
 
-ExchangeButton.defaultProps = {};
+CloseButton.defaultProps = {};
 
-ExchangeButton.navigationOptions = {
+CloseButton.navigationOptions = {
   header: null,
 };
 
@@ -31,7 +31,7 @@ const styles = StyleSheet.create({
     backgroundColor: colors.white,
     position: 'absolute',
     bottom: 15,
-    left: 15,
+    right: 15,
     shadowColor: '#000',
     shadowOffset: {
       width: 2,

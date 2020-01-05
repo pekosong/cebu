@@ -18,6 +18,7 @@ export default MassageSection = ({shop, isKorean}) => {
               marginVertical: 20,
             }}></Block>
         )}
+        contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Block row space="between" style={{marginBottom: 30}}>
             <Text h1 bold>

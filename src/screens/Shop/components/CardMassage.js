@@ -1,11 +1,9 @@
 import React from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet} from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
-import {sizes, colors} from 'app/src/styles';
+import {colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
-
-const {width} = Dimensions.get('window');
 
 export default CardMassage = ({item, isKorean}) => {
   return (
@@ -16,7 +14,7 @@ export default CardMassage = ({item, isKorean}) => {
           <Text h3 bold>
             {item.name}
           </Text>
-          <Text h4 gray style={{marginTop: 5, lineHeight: 20}}>
+          <Text gray style={{marginTop: 5, lineHeight: 20}}>
             {item.desc}
           </Text>
         </Block>

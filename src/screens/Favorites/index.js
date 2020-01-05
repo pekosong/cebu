@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {FlatList, StyleSheet, ScrollView} from 'react-native';
+import {FlatList, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 
 import {Block, Text, CardShop, CategoryTab, Loader} from 'app/src/components';
 import {mocks} from 'app/src/constants';
@@ -70,39 +70,42 @@ const FavoritesScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
-      <Block style={[style.appBar, styles.shadow, {height: 185}]}>
-        <Block style={{flex: 0, height: 30}}>
-          <Text h1 bold>
-            저장소
-          </Text>
-        </Block>
-
-        <ScrollView
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          style={styles.tabs}>
-          {tabs.map((tab, idx) => (
-            <CategoryTab
-              key={idx}
-              tab={tab}
-              tabName={cateMap[tab]}
-              image={cateSrc[tab]}
-              isActive={active == tab}
-              handleTab={handleTab}></CategoryTab>
-          ))}
-        </ScrollView>
-      </Block>
+    <SafeAreaView>
       <FlatList
+        bounces={true}
+        stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
-        ListHeaderComponent={<Block style={{marginBottom: 30}}></Block>}
+        ListHeaderComponent={
+          <Block style={[style.scrollTab, {marginBottom: 20}]}>
+            <Block style={{flex: 0, height: 40}}>
+              <Text h1 bold>
+                저장소
+              </Text>
+            </Block>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.tabs}>
+              {tabs.map((tab, idx) => (
+                <CategoryTab
+                  key={idx}
+                  tab={tab}
+                  tabName={cateMap[tab]}
+                  image={cateSrc[tab]}
+                  isActive={active == tab}
+                  handleTab={handleTab}
+                  isLast={tabs.length - 1 === idx}></CategoryTab>
+              ))}
+            </ScrollView>
+          </Block>
+        }
         data={selectedFavorites}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
         )}
         keyExtractor={item => item.id}
       />
-    </>
+    </SafeAreaView>
   );
 });
 
@@ -117,17 +120,6 @@ FavoritesScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  shadow: {
-    backgroundColor: 'white',
-    shadowColor: '#000',
-    shadowOffset: {
-      width: 0,
-      height: 1,
-    },
-    shadowOpacity: 0.25,
-    shadowRadius: 3.84,
-    elevation: 1,
-  },
   tabs: {
     flex: 0,
     flexDirection: 'row',

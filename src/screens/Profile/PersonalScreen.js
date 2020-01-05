@@ -5,12 +5,12 @@ import {
   TextInput,
   KeyboardAvoidingView,
   SafeAreaView,
+  TouchableOpacity,
 } from 'react-native';
 import {Button, Block, Text, CachedImage} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {observer} from 'mobx-react-lite';
 import {updateUser} from 'app/src/api/user';
@@ -147,108 +147,105 @@ const PersonalScreen = observer(props => {
   };
 
   return (
-    <>
+    <SafeAreaView>
       <KeyboardAvoidingView behavior="padding">
-        <ScrollView>
-          <Block style={style.header}>
-            <Block row center space="between">
-              <Button onPress={() => navigation.goBack()}>
-                <Block center row>
-                  <Ionicons
-                    size={30}
-                    color={colors.black}
-                    name="ios-arrow-back"
-                  />
-                </Block>
-              </Button>
+        <ScrollView
+          stickyHeaderIndices={[0]}
+          showsVerticalScrollIndicator={false}
+          style={style.appBar}>
+          <Block style={{backgroundColor: colors.white}}>
+            <Block center row space="between">
+              <TouchableOpacity onPress={() => navigation.goBack()}>
+                <Ionicons
+                  size={30}
+                  color={colors.black}
+                  name="ios-arrow-back"
+                />
+              </TouchableOpacity>
               <TouchableOpacity onPress={() => savePerson()}>
                 <Text bold h3>
                   {progress ? progress : '저장'}
                 </Text>
               </TouchableOpacity>
             </Block>
-            <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
+            <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
               내 정보
             </Text>
           </Block>
-
-          <Block style={styles.inputs}>
-            <Block style={{marginBottom: 20}}>
-              <Block row space="between">
-                <Block flex={1}>
-                  <Text style={styles.textStyle}>사진</Text>
-                </Block>
-                <Block right row flex={2}>
-                  <TouchableOpacity onPress={_cameraImage}>
-                    <AntDesign
-                      size={30}
-                      name={'camera'}
-                      style={{
-                        color: colors.black,
-                        marginRight: 10,
-                      }}
-                    />
-                  </TouchableOpacity>
-                  <TouchableOpacity onPress={_pickImage}>
-                    <AntDesign
-                      size={30}
-                      name={'picture'}
-                      style={{
-                        color: colors.black,
-                      }}
-                    />
-                  </TouchableOpacity>
-                </Block>
+          <Block style={{marginBottom: 20}}>
+            <Block row space="between">
+              <Block flex={1}>
+                <Text style={styles.textStyle}>사진</Text>
               </Block>
-              <CachedImage uri={image} style={styles.avatar} />
+              <Block right row flex={2}>
+                <TouchableOpacity onPress={_cameraImage}>
+                  <AntDesign
+                    size={30}
+                    name={'camera'}
+                    style={{
+                      color: colors.black,
+                      marginRight: 10,
+                    }}
+                  />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={_pickImage}>
+                  <AntDesign
+                    size={30}
+                    name={'picture'}
+                    style={{
+                      color: colors.black,
+                    }}
+                  />
+                </TouchableOpacity>
+              </Block>
             </Block>
-
-            <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
-              <Text style={styles.textStyle}>이메일</Text>
-              <Text bold style={{fontSize: 20}}>
-                {email}
-              </Text>
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text style={styles.textStyle}>이름</Text>
-              <TextInput
-                defaultValue={name}
-                placeholder="홍길동"
-                onChangeText={e => setName(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text style={styles.textStyle}>성별</Text>
-              <TextInput
-                defaultValue={sex}
-                placeholder="남/여"
-                onChangeText={e => setSex(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text style={styles.textStyle}>생년월일</Text>
-              <TextInput
-                defaultValue={birth}
-                placeholder="2001-01-01"
-                onChangeText={e => setBirth(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
-            <Block style={styles.inputRow}>
-              <Text style={styles.textStyle}>전화번호</Text>
-              <TextInput
-                defaultValue={phone}
-                placeholder="010-"
-                onChangeText={e => setPhone(e)}
-                style={{fontSize: 20}}
-              />
-            </Block>
+            <CachedImage uri={image} style={styles.avatar} />
+          </Block>
+          <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
+            <Text style={styles.textStyle}>이메일</Text>
+            <Text bold style={{fontSize: 20}}>
+              {email}
+            </Text>
+          </Block>
+          <Block style={styles.inputRow}>
+            <Text style={styles.textStyle}>이름</Text>
+            <TextInput
+              defaultValue={name}
+              placeholder="홍길동"
+              onChangeText={e => setName(e)}
+              style={{fontSize: 20}}
+            />
+          </Block>
+          <Block style={styles.inputRow}>
+            <Text style={styles.textStyle}>성별</Text>
+            <TextInput
+              defaultValue={sex}
+              placeholder="남/여"
+              onChangeText={e => setSex(e)}
+              style={{fontSize: 20}}
+            />
+          </Block>
+          <Block style={styles.inputRow}>
+            <Text style={styles.textStyle}>생년월일</Text>
+            <TextInput
+              defaultValue={birth}
+              placeholder="2001-01-01"
+              onChangeText={e => setBirth(e)}
+              style={{fontSize: 20}}
+            />
+          </Block>
+          <Block style={[styles.inputRow]}>
+            <Text style={styles.textStyle}>전화번호</Text>
+            <TextInput
+              defaultValue={phone}
+              placeholder="010-"
+              onChangeText={e => setPhone(e)}
+              style={{fontSize: 20}}
+            />
           </Block>
         </ScrollView>
       </KeyboardAvoidingView>
-    </>
+    </SafeAreaView>
   );
 });
 

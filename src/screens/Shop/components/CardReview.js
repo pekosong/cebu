@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions} from 'react-native';
 
 import {Block, Text, CachedImage} from 'app/src/components';
 
@@ -7,6 +7,7 @@ import {sizes, colors} from 'app/src/styles';
 import {pastDay} from 'app/src/utils';
 
 import StarRating from 'react-native-star-rating';
+import ReadMore from 'react-native-read-more-text';
 
 const {width} = Dimensions.get('window');
 const mockImages = [
@@ -17,17 +18,35 @@ const mockImages = [
 ];
 
 export default CardReview = ({item}) => {
+  _renderTruncatedFooter = handlePress => {
+    return (
+      <Text style={{color: colors.accent, marginTop: 5}} onPress={handlePress}>
+        더보기
+      </Text>
+    );
+  };
+
+  _renderRevealedFooter = handlePress => {
+    return (
+      <Text style={{color: colors.accent, marginTop: 5}} onPress={handlePress}>
+        닫기
+      </Text>
+    );
+  };
+
   return (
-    <TouchableOpacity>
+    <>
       <Block row space="between">
-        <CachedImage
-          uri={
-            item.writer == 'google'
-              ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
-              : item.src
-          }
-          style={styles.avatarChat}
-        />
+        <Block middle center flex={false}>
+          <CachedImage
+            uri={
+              item.writer == 'google'
+                ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
+                : item.src
+            }
+            style={styles.avatarChat}
+          />
+        </Block>
         <Block middle style={{marginLeft: 10}}>
           <Block row center style={{marginBottom: 3}}>
             <Text h4 bold style={{marginRight: 10}}>
@@ -39,33 +58,42 @@ export default CardReview = ({item}) => {
               {pastDay(item.date)}
             </Text>
           </Block>
-          <Block>
-            <StarRating
-              disabled={false}
-              maxStars={5}
-              rating={item.star}
-              starSize={15}
-              fullStarColor={colors.primary}
-              containerStyle={{width: 20}}
-            />
-          </Block>
+          <StarRating
+            disabled={false}
+            maxStars={5}
+            rating={item.star}
+            starSize={15}
+            fullStarColor={colors.primary}
+            containerStyle={{width: 20}}
+          />
         </Block>
       </Block>
-      <Text style={{marginVertical: 16}}>{item.comment}</Text>
-      <Block row>
-        {mockImages.map(e => (
-          <CachedImage key={e} uri={e} style={styles.image} />
-        ))}
-      </Block>
-    </TouchableOpacity>
+      {item.comment.length > 80 ? (
+        <Block style={{marginTop: 5}}>
+          <ReadMore
+            numberOfLines={3}
+            renderTruncatedFooter={e => _renderTruncatedFooter(e)}
+            renderRevealedFooter={e => _renderRevealedFooter(e)}>
+            <Text size={14} style={{lineHeight: 24}}>
+              {item.comment}
+            </Text>
+          </ReadMore>
+        </Block>
+      ) : (
+        <Text size={14} style={{marginVertical: 5, lineHeight: 24}}>
+          {item.comment}
+        </Text>
+      )}
+    </>
   );
 };
 
 export const styles = StyleSheet.create({
   avatarChat: {
-    width: sizes.base * 3,
-    height: sizes.base * 3,
+    width: sizes.base * 2,
+    height: sizes.base * 2,
     borderRadius: sizes.base * 2,
+    marginTop: 5,
   },
   image: {
     width: (width - 30 - sizes.padding * 2) / 4,

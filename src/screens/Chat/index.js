@@ -1,10 +1,15 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, Keyboard, Platform, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  Platform,
+  SafeAreaView,
+  TouchableOpacity,
+} from 'react-native';
 
 import {GiftedChat} from 'react-native-gifted-chat';
 import KeyboardSpacer from 'react-native-keyboard-spacer';
 
-import {Button, Block, Text, Loader} from 'app/src/components';
+import {Block, Text, Loader} from 'app/src/components';
 import {colors, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
@@ -83,7 +88,6 @@ const ChatScreen = observer(props => {
 
   onSend = async msg => {
     msg[0].user.avatar = user.image;
-
     await firebase
       .firestore()
       .collection('messages')
@@ -98,30 +102,10 @@ const ChatScreen = observer(props => {
       });
   };
 
-  renderChat = () => {
-    Keyboard.dismiss();
-    return (
-      <>
-        <GiftedChat
-          messages={messages}
-          onSend={msg => onSend(msg)}
-          user={{
-            _id: user.host ? shopId : email,
-          }}
-          locale="ko"
-          placeholder="Message"
-          dateFormat="ll"
-          bottomOffset={Platform.OS === 'android' ? 0 : 226}
-        />
-        {<KeyboardSpacer topSpacing={Platform.OS === 'android' ? 40 : 0} />}
-      </>
-    );
-  };
-
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <Block
         center
         row
@@ -132,25 +116,35 @@ const ChatScreen = observer(props => {
             justifyContent: 'space-between',
           },
         ]}>
-        <Button onPress={() => navigation.goBack()}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-        </Button>
+        </TouchableOpacity>
         {user.host ? (
-          <Button>
-            <Text h2 bold>
-              {email}
-            </Text>
-          </Button>
+          <Text h2 bold>
+            {email}
+          </Text>
         ) : (
-          <Button onPress={() => navigation.push('Shop', {shopId: shopId})}>
+          <TouchableOpacity
+            onPress={() => navigation.push('Shop', {shopId: shopId})}>
             <Text h1 bold>
               {title}
             </Text>
-          </Button>
+          </TouchableOpacity>
         )}
       </Block>
-      {renderChat()}
-    </>
+      <GiftedChat
+        messages={messages}
+        onSend={msg => onSend(msg)}
+        user={{
+          _id: user.host ? shopId : email,
+        }}
+        locale="ko"
+        placeholder="Message"
+        dateFormat="ll"
+        bottomOffset={Platform.OS === 'android' ? 0 : 226}
+      />
+      <KeyboardSpacer topSpacing={Platform.OS === 'android' ? 40 : 0} />
+    </SafeAreaView>
   );
 });
 

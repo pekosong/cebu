@@ -52,31 +52,28 @@ const TripInfosScreen = observer(props => {
   };
 
   return (
-    <>
-      <ScrollView>
-        <Block style={style.header}>
-          <Block row center space="between">
-            <Button onPress={() => navigation.goBack()}>
-              <Block center row>
-                <Ionicons
-                  size={30}
-                  color={colors.black}
-                  name="ios-arrow-back"
-                />
-              </Block>
-            </Button>
-            <TouchableOpacity onPress={() => {}}>
+    <SafeAreaView style={{flex: 1}}>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+        style={style.appBar}>
+        <Block style={{backgroundColor: colors.white}}>
+          <Block center row space="between">
+            <TouchableOpacity onPress={() => navigation.goBack()}>
+              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
+            </TouchableOpacity>
+            <TouchableOpacity onPress={() => saveNotice()}>
               <Text bold h3>
                 저장
               </Text>
             </TouchableOpacity>
           </Block>
-          <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
+          <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
             내 여행 정보
           </Text>
         </Block>
         {Object.entries(plans).length != 0 ? (
-          <Block style={styles.inputs}>
+          <Block>
             <Block
               space="between"
               row
@@ -109,8 +106,11 @@ const TripInfosScreen = observer(props => {
         )}
       </ScrollView>
       <Block
-        flex={false}
-        style={{marginHorizontal: sizes.padding, marginBottom: 10}}>
+        style={{
+          flex: 0,
+          marginHorizontal: sizes.padding,
+          marginBottom: 10,
+        }}>
         <Button normal onPress={() => navigation.navigate('TripInfo')}>
           <Text white center>
             {Object.entries(plans).length != 0
@@ -119,7 +119,7 @@ const TripInfosScreen = observer(props => {
           </Text>
         </Button>
       </Block>
-    </>
+    </SafeAreaView>
   );
 });
 

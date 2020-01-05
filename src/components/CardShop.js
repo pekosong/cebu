@@ -32,14 +32,14 @@ export default CardShop = ({shop, navigation}) => {
           paddingVertical: 2,
           paddingHorizontal: 6,
           borderWidth: 1,
-          borderColor: colors.accent,
+          backgroundColor: colors.black,
           borderRadius: 10,
           marginTop: 2,
           marginRight: 3,
           alignItems: 'center',
           justifyContent: 'center',
         }}>
-        <Text center accent style={{fontSize: 10, fontWeight: 'bold'}}>
+        <Text center white style={{fontSize: 10, fontWeight: 'bold'}}>
           {text}
         </Text>
       </View>

@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, TouchableOpacity, FlatList} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  FlatList,
+  SafeAreaView,
+} from 'react-native';
 
 import {Block, Text, CachedImage, Loader} from 'app/src/components';
 
@@ -112,25 +118,20 @@ const ChatListScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
-      <Block style={style.appBar}>
-        <Text h1 bold>
-          메시지
-        </Text>
-      </Block>
-      <ScrollView
+    <SafeAreaView>
+      <FlatList
+        style={style.appBar}
         showsVerticalScrollIndicator={false}
-        style={{
-          marginHorizontal: sizes.padding,
-          paddingTop: sizes.padding,
-        }}>
-        <FlatList
-          data={chatList}
-          keyExtractor={item => (user.host ? item.email : item.shopName)}
-          renderItem={item => renderList(item)}
-        />
-      </ScrollView>
-    </>
+        data={chatList}
+        ListHeaderComponent={
+          <Text h1 bold style={{marginBottom: 20}}>
+            메시지
+          </Text>
+        }
+        keyExtractor={item => (user.host ? item.email : item.shopName)}
+        renderItem={item => renderList(item)}
+      />
+    </SafeAreaView>
   );
 });
 
