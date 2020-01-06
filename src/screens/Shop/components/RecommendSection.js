@@ -53,7 +53,7 @@ export default RecommendSection = ({navigation, shop}) => {
         ItemSeparatorComponent={() => (
           <Block
             style={{
-              marginVertical: 10,
+              marginVertical: 12,
             }}></Block>
         )}
         contentContainerStyle={{paddingBottom: 50}}

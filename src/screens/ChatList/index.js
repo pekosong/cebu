@@ -94,7 +94,7 @@ const ChatListScreen = observer(props => {
               <Text h4 bold>
                 {user.host ? item.email : item.shopName}
               </Text>
-              <Text caption right>
+              <Text gray caption right>
                 {makeYM(item)}
               </Text>
             </Block>

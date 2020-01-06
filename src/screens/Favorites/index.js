@@ -75,6 +75,12 @@ const FavoritesScreen = observer(props => {
         bounces={true}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              marginVertical: 12,
+            }}></Block>
+        )}
         ListHeaderComponent={
           <Block style={[style.scrollTab, {marginBottom: 20}]}>
             <Block style={{flex: 0, height: 40}}>

@@ -16,9 +16,11 @@ export default CardRecommend = ({item, navigation}) => {
         <CachedImage style={styles.imageStyle} uri={shop.preview}></CachedImage>
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
-            <Text h3 bold>
+            <Text h4 bold>
               {shop.name + '  '}
-              <Text primary>{shop.tags[0]}</Text>
+              <Text size={12} gray>
+                {shop.tags[0]}
+              </Text>
             </Text>
             <Block
               style={{
@@ -42,7 +44,7 @@ export default CardRecommend = ({item, navigation}) => {
             </Block>
           </Block>
           <Block row center space="between" style={{flex: 0}}>
-            <Block row>
+            <Block row center>
               <AntDesign
                 size={13}
                 name="star"
@@ -50,9 +52,6 @@ export default CardRecommend = ({item, navigation}) => {
               />
               <Text darkgray style={{marginLeft: 5}}>
                 {`${shop.review} · 리뷰 ${convertComma(shop.reviewCnt)}`}
-              </Text>
-              <Text darkgray style={{marginLeft: 5}}>
-                {'· 저장 ' + convertComma(shop.likes)}
               </Text>
             </Block>
             <Block row bottom center>
@@ -72,11 +71,9 @@ export default CardRecommend = ({item, navigation}) => {
 
 export const styles = StyleSheet.create({
   imageStyle: {
-    width: '100%',
-    height: '100%',
-    resizeMode: 'cover',
     width: 80,
     height: 80,
-    marginRight: 10,
+    marginRight: 12,
+    borderRadius: 8,
   },
 });

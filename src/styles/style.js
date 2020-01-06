@@ -4,8 +4,8 @@ import {Platform} from 'react-native';
 
 const style = {
   inputRow: {
-    marginBottom: 20,
-    paddingBottom: 20,
+    marginBottom: 25,
+    paddingBottom: 25,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',

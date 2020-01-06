@@ -48,5 +48,6 @@ export const styles = StyleSheet.create({
     width: sizes.base * 5,
     height: sizes.base * 5,
     marginRight: 10,
+    borderRadius: 5,
   },
 });

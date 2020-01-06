@@ -47,14 +47,6 @@ const ReviewSection = observer(({navigation, shop}) => {
             <Text center h4 style={{marginBottom: 20}}>
               첫 후기를 작성하세요.
             </Text>
-            <Button
-              border
-              onPress={() => setNewReviewVisible(true)}
-              style={{width: width - sizes.padding * 2}}>
-              <Text accent center>
-                후기 작성
-              </Text>
-            </Button>
             <Modal
               animationType="slide"
               visible={newReviewVisible}
@@ -70,16 +62,9 @@ const ReviewSection = observer(({navigation, shop}) => {
         }
         ListHeaderComponent={
           <Block style={{marginBottom: 30}}>
-            <Block row space="between">
-              <Text h1 bold>
-                이용 후기
-              </Text>
-              <TouchableOpacity onPress={() => setNewReviewVisible(true)}>
-                <Text h3 bold accent>
-                  후기 작성
-                </Text>
-              </TouchableOpacity>
-            </Block>
+            <Text h1 bold>
+              이용 후기
+            </Text>
             <Block left row center style={{marginTop: 10}}>
               <AntDesign
                 size={24}
@@ -88,11 +73,21 @@ const ReviewSection = observer(({navigation, shop}) => {
               <Text h1 bold style={{marginLeft: 5}}>
                 {shop.review}
               </Text>
-              <Text h2 bold style={{marginLeft: 5}}>
+              <Text h3 bold style={{marginLeft: 5}}>
                 {` (${convertComma(shop.reviewCnt)})`}
               </Text>
             </Block>
           </Block>
+        }
+        ListFooterComponent={
+          <Button
+            border
+            onPress={() => setNewReviewVisible(true)}
+            style={{width: width / 2, marginTop: 20}}>
+            <Text bold accent center>
+              후기 작성
+            </Text>
+          </Button>
         }
         data={shop.reviews.sort((a, b) => b.date.seconds - a.date.seconds)}
         renderItem={({item}) => <CardReview item={item}></CardReview>}
@@ -108,17 +103,20 @@ const ReviewSection = observer(({navigation, shop}) => {
         )}
         ListHeaderComponent={
           <Block style={{marginBottom: 30}}>
-            <Block row space="between">
-              <Text h1 bold>
-                구글 후기
-              </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Text h3 bold accent>
-                  더보기
-                </Text>
-              </TouchableOpacity>
-            </Block>
+            <Text h1 bold>
+              구글 후기
+            </Text>
           </Block>
+        }
+        ListFooterComponent={
+          <Button
+            border
+            onPress={() => {}}
+            style={{width: width / 2, marginTop: 20}}>
+            <Text bold accent center>
+              더 보기
+            </Text>
+          </Button>
         }
         data={shop.googles.sort((a, b) => b.date.seconds - a.date.seconds)}
         renderItem={({item}) => <CardReview item={item}></CardReview>}
@@ -135,17 +133,20 @@ const ReviewSection = observer(({navigation, shop}) => {
         contentContainerStyle={{paddingBottom: 50}}
         ListHeaderComponent={
           <Block style={{marginBottom: 30}}>
-            <Block row space="between">
-              <Text h1 bold>
-                소셜 후기
-              </Text>
-              <TouchableOpacity onPress={() => {}}>
-                <Text h3 bold accent>
-                  더보기
-                </Text>
-              </TouchableOpacity>
-            </Block>
+            <Text h1 bold>
+              소셜 후기
+            </Text>
           </Block>
+        }
+        ListFooterComponent={
+          <Button
+            border
+            onPress={() => {}}
+            style={{width: width / 2, marginTop: 20}}>
+            <Text bold accent center>
+              더 보기
+            </Text>
+          </Button>
         }
         data={shop.blogs.filter(e => e.title != '')}
         renderItem={({item}) => (

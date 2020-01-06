@@ -13,9 +13,9 @@ export default MenuSection = ({shop, isKorean}) => {
         ItemSeparatorComponent={() => (
           <Block
             style={{
-              borderBottomWidth: 0.3,
-              borderBottomColor: colors.gray,
-              marginVertical: 10,
+              borderBottomWidth: 0.2,
+              borderBottomColor: '#ddd',
+              marginVertical: 15,
             }}></Block>
         )}
         contentContainerStyle={{paddingBottom: 50}}

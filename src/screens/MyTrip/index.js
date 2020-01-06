@@ -193,7 +193,7 @@ const MyTripScreen = observer(props => {
               </>
             )}
             <Button border onPress={() => navigation.navigate('Home')}>
-              <Text accent center>
+              <Text bold accent center>
                 새로운 일정 등록
               </Text>
             </Button>

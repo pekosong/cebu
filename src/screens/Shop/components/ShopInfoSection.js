@@ -30,33 +30,33 @@ export default ShopInfoSection = ({shop}) => {
         </Text>
         <Block>
           <Block style={style.inputRow}>
-            <Text h3>한국어</Text>
-            <Text darkgray h3>
+            <Text h2>한국어</Text>
+            <Text darkgray h2>
               {shop.korean ? '가능' : '불가'}
             </Text>
           </Block>
           <Block style={style.inputRow}>
-            <Text h3>픽업여부</Text>
-            <Text darkgray h3>
+            <Text h2>픽업여부</Text>
+            <Text darkgray h2>
               {shop.pickup ? '가능' : '불가'}
             </Text>
           </Block>
           <Block style={style.inputRow}>
-            <Text h3>베이비시터</Text>
-            <Text darkgray h3>
+            <Text h2>베이비시터</Text>
+            <Text darkgray h2>
               {shop.baby ? '가능' : '불가'}
             </Text>
           </Block>
           <Block style={style.inputRow}>
-            <Text h3>영업시간</Text>
-            <Text darkgray h3>
+            <Text h2>영업시간</Text>
+            <Text darkgray h2>
               {shop.openTime} ~ {shop.closeTime}
             </Text>
           </Block>
           {shop.kakao && (
             <Block style={style.inputRow}>
-              <Text h3>카카오톡</Text>
-              <Text darkgray h3>
+              <Text h2>카카오톡</Text>
+              <Text darkgray h2>
                 {shop.kakao}
               </Text>
             </Block>

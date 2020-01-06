@@ -14,7 +14,7 @@ export default CardMenu = ({item, isKorean}) => {
         {item.desc != '' && (
           <Text
             size={12}
-            darkgray
+            gray
             style={{marginTop: 6, lineHeight: 16}}
             numberOfLines={2}>
             {item.desc}
@@ -44,8 +44,8 @@ export default CardMenu = ({item, isKorean}) => {
 export const styles = StyleSheet.create({
   imageStyle: {
     borderRadius: 2,
-    width: 80,
-    height: 80,
+    width: 90,
+    height: 90,
     resizeMode: 'cover',
   },
 });

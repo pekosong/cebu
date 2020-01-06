@@ -2,7 +2,14 @@ import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, ScrollView, FlatList, SafeAreaView} from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
+import {
+  CardShop,
+  CategoryTab,
+  Block,
+  Loader,
+  Text,
+  Button,
+} from 'app/src/components';
 import {sizes, style} from 'app/src/styles';
 
 import FilterButton from './components/FilterButton';
@@ -77,9 +84,24 @@ export default CategoryScreen = observer(props => {
       <FlatList
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              marginVertical: 12,
+            }}></Block>
+        )}
         ListEmptyComponent={
-          <Block>
-            <Text>song</Text>
+          <Block
+            middle
+            style={{
+              height: 550,
+              paddingHorizontal: sizes.padding,
+            }}>
+            <Button border onPress={() => {}}>
+              <Text bold accent center>
+                검색 결과 없음
+              </Text>
+            </Button>
           </Block>
         }
         ListHeaderComponent={

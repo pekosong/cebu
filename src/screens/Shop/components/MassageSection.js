@@ -13,9 +13,9 @@ export default MassageSection = ({shop, isKorean}) => {
         ItemSeparatorComponent={() => (
           <Block
             style={{
-              borderBottomWidth: 0.3,
-              borderBottomColor: colors.gray2,
-              marginVertical: 20,
+              borderBottomWidth: 0.2,
+              borderBottomColor: '#eee',
+              marginVertical: 25,
             }}></Block>
         )}
         contentContainerStyle={{paddingBottom: 50}}

@@ -47,7 +47,7 @@ export default CardShop = ({shop, navigation}) => {
   };
   return (
     <TouchableOpacity
-      style={[styles.categories, {marginBottom: sizes.base * 1.6}]}
+      style={[styles.categories]}
       onPress={() =>
         navigation.navigate('Shop', {
           shopId: id,

@@ -14,7 +14,7 @@ export default CardMassage = ({item, isKorean}) => {
           <Text h3 bold>
             {item.name}
           </Text>
-          <Text gray style={{marginTop: 5, lineHeight: 20}}>
+          <Text size={12} gray style={{marginTop: 2, lineHeight: 16}}>
             {item.desc}
           </Text>
         </Block>

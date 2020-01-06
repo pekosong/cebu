@@ -88,7 +88,7 @@ export default ReviewNewModal = props => {
           )}
 
           <Button border onPress={() => handleWriteReview()}>
-            <Text accent center>
+            <Text bold accent center>
               후기 작성
             </Text>
           </Button>

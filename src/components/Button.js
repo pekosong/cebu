@@ -98,7 +98,7 @@ const styles = StyleSheet.create({
     marginVertical: sizes.padding / 3,
   },
   border: {
-    borderWidth: 1,
+    borderWidth: 2,
     borderColor: colors.accent,
   },
   shadow: {

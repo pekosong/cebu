@@ -26,8 +26,6 @@ import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {streamShop} from 'app/src/api/shop';
 
-import {WebView} from 'react-native-webview';
-
 const MENUS = ['Restaurant', 'Food'];
 
 const MAPCAT = {

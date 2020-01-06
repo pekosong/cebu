@@ -16,21 +16,11 @@ firebase.initializeApp(firebaseConfig);
 let db = firebase.firestore();
 
 data.massageList.forEach(e => {
-  if (e.id === 'massage15') {
-    db.collection('shops')
-      .doc(e.id)
-      .set(e)
-      .then(() => console.log('done'))
-      .catch(err => {
-        console.log(err);
-      });
-  } else {
-    db.collection('shops')
-      .doc(e.id)
-      .update(e)
-      .then(() => console.log('done'))
-      .catch(err => {
-        console.log(err);
-      });
-  }
+  db.collection('shops')
+    .doc(e.id)
+    .set(e)
+    .then(() => console.log('done'))
+    .catch(err => {
+      console.log(err);
+    });
 });
