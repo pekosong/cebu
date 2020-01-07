@@ -10,7 +10,6 @@ import ReviewNewModal from './ReviewNewModal';
 import ReviewWebModal from './ReviewWebModal';
 
 import {AntDesign} from '@expo/vector-icons';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {UserStoreContext} from 'app/src/store/user';
 import {colors, style, sizes} from 'app/src/styles';
@@ -47,17 +46,6 @@ const ReviewSection = observer(({navigation, shop}) => {
             <Text center h4 style={{marginBottom: 20}}>
               첫 후기를 작성하세요.
             </Text>
-            <Modal
-              animationType="slide"
-              visible={newReviewVisible}
-              onRequestClose={() => setNewReviewVisible(false)}>
-              <ReviewNewModal
-                navigation={navigation}
-                user={user}
-                shop={shop}
-                setNewReviewVisible={setNewReviewVisible}
-              />
-            </Modal>
           </Block>
         }
         ListHeaderComponent={
@@ -83,7 +71,7 @@ const ReviewSection = observer(({navigation, shop}) => {
           <Button
             border
             onPress={() => setNewReviewVisible(true)}
-            style={{width: width / 2, marginTop: 20}}>
+            style={{marginTop: 20}}>
             <Text bold accent center>
               후기 작성
             </Text>
@@ -109,10 +97,7 @@ const ReviewSection = observer(({navigation, shop}) => {
           </Block>
         }
         ListFooterComponent={
-          <Button
-            border
-            onPress={() => {}}
-            style={{width: width / 2, marginTop: 20}}>
+          <Button border onPress={() => {}} style={{marginTop: 20}}>
             <Text bold accent center>
               더 보기
             </Text>
@@ -139,10 +124,7 @@ const ReviewSection = observer(({navigation, shop}) => {
           </Block>
         }
         ListFooterComponent={
-          <Button
-            border
-            onPress={() => {}}
-            style={{width: width / 2, marginTop: 20}}>
+          <Button border onPress={() => {}} style={{marginTop: 20}}>
             <Text bold accent center>
               더 보기
             </Text>

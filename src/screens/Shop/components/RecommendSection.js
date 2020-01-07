@@ -12,7 +12,7 @@ import {style, colors} from 'app/src/styles';
 export default RecommendSection = ({navigation, shop}) => {
   const shopList = useContext(ShopStoreContext)
     .shopList.filter(e => e.id != shop.id)
-    .filter(e => ['Massage', 'Restaurant'].includes(e.category));
+    .filter(e => ['Massage', 'Restaurant', 'Place'].includes(e.category));
 
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     var R = 6371; // Radius of the earth in km
@@ -45,7 +45,7 @@ export default RecommendSection = ({navigation, shop}) => {
 
   const sortedShop = distances
     .sort((a, b) => a.distance > b.distance)
-    .slice(0, 7);
+    .slice(0, 10);
 
   return (
     <Block style={[style.shop.categories]}>
@@ -53,7 +53,7 @@ export default RecommendSection = ({navigation, shop}) => {
         ItemSeparatorComponent={() => (
           <Block
             style={{
-              marginVertical: 12,
+              marginVertical: 8,
             }}></Block>
         )}
         contentContainerStyle={{paddingBottom: 50}}

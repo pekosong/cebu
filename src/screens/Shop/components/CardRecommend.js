@@ -7,6 +7,11 @@ import {convertComma} from 'app/src/utils';
 import {colors} from 'app/src/styles';
 import {AntDesign} from '@expo/vector-icons';
 
+const MAP = {
+  Massage: '마사지',
+  Place: '명소',
+  Restaurant: '식당',
+};
 export default CardRecommend = ({item, navigation}) => {
   const {shop, distance} = item;
   return (
@@ -27,7 +32,11 @@ export default CardRecommend = ({item, navigation}) => {
                 flex: 0,
                 borderWidth: 1,
                 borderColor:
-                  shop.category === 'Massage' ? colors.primary : colors.black,
+                  shop.category === 'Massage'
+                    ? colors.primary
+                    : shop.category === 'Place'
+                    ? colors.accent
+                    : colors.black,
                 borderRadius: 18,
                 paddingVertical: 3,
                 paddingHorizontal: 6,
@@ -37,9 +46,13 @@ export default CardRecommend = ({item, navigation}) => {
                 bold
                 style={{
                   color:
-                    shop.category === 'Massage' ? colors.primary : colors.black,
+                    shop.category === 'Massage'
+                      ? colors.primary
+                      : shop.category === 'Place'
+                      ? colors.accent
+                      : colors.black,
                 }}>
-                {shop.category === 'Massage' ? '마사지' : '식당'}
+                {MAP[shop.category]}
               </Text>
             </Block>
           </Block>
@@ -74,6 +87,6 @@ export const styles = StyleSheet.create({
     width: 80,
     height: 80,
     marginRight: 12,
-    borderRadius: 8,
+    borderRadius: 5,
   },
 });

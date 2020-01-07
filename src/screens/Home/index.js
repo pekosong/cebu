@@ -136,7 +136,7 @@ const HomeScreen = observer(props => {
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
-              지금 뜨는 레스토랑
+              맛집
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -161,38 +161,11 @@ const HomeScreen = observer(props => {
               isLast={restaurantList.length - 1 == idx}></CardRect>
           ))}
         </ScrollView>
+
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
-              세부에서 배달시켜 먹자
-            </Text>
-            <TouchableOpacity
-              onPress={() =>
-                navigation.navigate('Category', {
-                  category: 'Food',
-                })
-              }>
-              <Ionicons size={22} name="ios-arrow-forward" />
-            </TouchableOpacity>
-          </Block>
-        </Block>
-        <ScrollView
-          style={{paddingLeft: sizes.padding}}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={true}>
-          {foodList.map((item, idx) => (
-            <CardRect
-              key={idx}
-              item={item}
-              navigation={navigation}
-              isLast={foodList.length - 1 == idx}></CardRect>
-          ))}
-        </ScrollView>
-        <Block style={styles.title}>
-          <Block center row space="between">
-            <Text h3 bold>
-              하루의 피로는 스파로
+              스파
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -220,7 +193,35 @@ const HomeScreen = observer(props => {
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
-              세부에서 놀기
+              배달음식
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: 'Food',
+                })
+              }>
+              <Ionicons size={22} name="ios-arrow-forward" />
+            </TouchableOpacity>
+          </Block>
+        </Block>
+        <ScrollView
+          style={{paddingLeft: sizes.padding}}
+          horizontal={true}
+          showsHorizontalScrollIndicator={false}
+          scrollEnabled={true}>
+          {foodList.map((item, idx) => (
+            <CardRect
+              key={idx}
+              item={item}
+              navigation={navigation}
+              isLast={foodList.length - 1 == idx}></CardRect>
+          ))}
+        </ScrollView>
+        <Block style={styles.title}>
+          <Block center row space="between">
+            <Text h3 bold>
+              놀이
             </Text>
             <TouchableOpacity
               onPress={() =>
@@ -248,7 +249,7 @@ const HomeScreen = observer(props => {
         <Block style={styles.title}>
           <Block center row space="between">
             <Text h3 bold>
-              세부 즐기기
+              갈만한 곳
             </Text>
             <TouchableOpacity
               onPress={() =>

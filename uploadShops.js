@@ -15,7 +15,7 @@ firebase.initializeApp(firebaseConfig);
 
 let db = firebase.firestore();
 
-data.massageList.forEach(e => {
+data.foodList.forEach(e => {
   db.collection('shops')
     .doc(e.id)
     .set(e)

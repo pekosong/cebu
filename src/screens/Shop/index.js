@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
@@ -44,6 +50,53 @@ const SHOPCAT = {
 
 const {width, height} = Dimensions.get('window');
 
+const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
+  return (
+    <TouchableOpacity
+      key={`tab-${tab}`}
+      style={styles.tab}
+      onPress={() => {
+        if (shopScroll.current) {
+          shopScroll.current.getNode().scrollTo({
+            y: 260,
+            animated: true,
+          });
+        }
+        setShow(tab);
+        if (tab === 0) {
+          Animated.timing(xAnim, {
+            toValue: sizes.padding,
+            duration: 400,
+          }).start();
+        } else if (tab === 1) {
+          Animated.timing(xAnim, {
+            toValue: sizes.padding + (width - sizes.padding * 2) / 4,
+            duration: 400,
+          }).start();
+        } else if (tab === 2) {
+          Animated.timing(xAnim, {
+            toValue: sizes.padding + ((width - sizes.padding * 2) / 4) * 2,
+            duration: 400,
+          }).start();
+        } else {
+          Animated.timing(xAnim, {
+            toValue: sizes.padding + ((width - sizes.padding * 2) / 4) * 3,
+            duration: 400,
+          }).start();
+        }
+      }}>
+      <Text
+        h3
+        center
+        style={{
+          color: isActive ? colors.black : colors.gray,
+        }}>
+        {tab === 0 ? SHOPCAT[shop.category] : MAPCAT[tab]}
+      </Text>
+    </TouchableOpacity>
+  );
+};
+
 export default ShopScreen = observer(({navigation}) => {
   const {user} = useContext(UserStoreContext);
 
@@ -77,54 +130,6 @@ export default ShopScreen = observer(({navigation}) => {
     };
   }, []);
 
-  renderShopTab = tab => {
-    const isActive = show == tab;
-    return (
-      <TouchableOpacity
-        key={`tab-${tab}`}
-        style={styles.tab}
-        onPress={() => {
-          if (shopScroll.current) {
-            shopScroll.current.getNode().scrollTo({
-              y: 260,
-              animated: true,
-            });
-          }
-          setShow(tab);
-          if (tab === 0) {
-            Animated.timing(xAnim, {
-              toValue: sizes.padding,
-              duration: 400,
-            }).start();
-          } else if (tab === 1) {
-            Animated.timing(xAnim, {
-              toValue: sizes.padding + (width - sizes.padding * 2) / 4,
-              duration: 400,
-            }).start();
-          } else if (tab === 2) {
-            Animated.timing(xAnim, {
-              toValue: sizes.padding + ((width - sizes.padding * 2) / 4) * 2,
-              duration: 400,
-            }).start();
-          } else {
-            Animated.timing(xAnim, {
-              toValue: sizes.padding + ((width - sizes.padding * 2) / 4) * 3,
-              duration: 400,
-            }).start();
-          }
-        }}>
-        <Text
-          h3
-          center
-          style={{
-            color: isActive ? colors.black : colors.gray,
-          }}>
-          {tab === 0 ? SHOPCAT[shop.category] : MAPCAT[tab]}
-        </Text>
-      </TouchableOpacity>
-    );
-  };
-
   handleScrollByY = e => {
     if (e.nativeEvent.contentOffset.y > 130) {
       Animated.timing(yAnim, {
@@ -156,8 +161,7 @@ export default ShopScreen = observer(({navigation}) => {
   return (
     <>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
-      <Header top={animatedScrollYValue} shop={shop} yAnim={yAnim}></Header>
-
+      <Header top={animatedScrollYValue} shop={shop}></Header>
       <Animated.View
         style={{
           ...styles.tabs,
@@ -168,8 +172,17 @@ export default ShopScreen = observer(({navigation}) => {
             useNativeDriver: true,
           }),
         }}>
-        <Block flex={false} row>
-          {[0, 1, 2, 3].map(tab => renderShopTab(tab))}
+        <Block row flex={false}>
+          {[0, 1, 2, 3].map(tab => (
+            <ShopTab
+              key={tab}
+              tab={tab}
+              shop={shop}
+              isActive={show == tab}
+              setShow={setShow}
+              shopScroll={shopScroll}
+              xAnim={xAnim}></ShopTab>
+          ))}
         </Block>
         <Animated.View
           style={{
@@ -182,12 +195,6 @@ export default ShopScreen = observer(({navigation}) => {
           shopScroll.current = ref;
         }}
         showsVerticalScrollIndicator={false}
-        style={{
-          flex: 1,
-          paddingTop: 0,
-          marginBottom: 20,
-          zIndex: 10,
-        }}
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
           {

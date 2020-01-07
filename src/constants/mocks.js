@@ -591,15 +591,6 @@ const categories = [
     icon: 'ios-hand',
     src: require('../assets/images/search/massage.jpg'),
   },
-
-  {
-    id: 'Activity',
-    name: '액티비티',
-    tags: ['all', 'activity'],
-    count: 47,
-    icon: 'ios-bicycle',
-    src: require('../assets/images/search/seasports.jpg'),
-  },
   {
     id: 'Food',
     name: '배달',
@@ -607,6 +598,14 @@ const categories = [
     count: 16,
     icon: 'ios-hand',
     src: require('../assets/images/search/food.jpg'),
+  },
+  {
+    id: 'Activity',
+    name: '액티비티',
+    tags: ['all', 'activity'],
+    count: 47,
+    icon: 'ios-bicycle',
+    src: require('../assets/images/search/seasports.jpg'),
   },
   {
     id: 'Place',

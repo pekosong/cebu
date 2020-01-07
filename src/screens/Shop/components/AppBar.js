@@ -2,7 +2,7 @@ import React, {useContext} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 
 import {Block} from 'app/src/components';
-import {sizes, colors, fonts} from 'app/src/styles';
+import {sizes, colors, fonts, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -72,42 +72,34 @@ const AppBar = observer(props => {
           useNativeDriver: true,
         }),
       }}>
-      <Block middle center row space="between">
-        <Block>
-          <TouchableOpacity
-            onPressIn={() => {
-              navigation.goBack();
-            }}
+      <Block center row>
+        <TouchableOpacity
+          onPressIn={() => {
+            navigation.goBack();
+          }}>
+          <Animated.Text
             style={{
-              height: 100,
-              width: 100,
+              color: fadeAnim.interpolate({
+                inputRange: [0, 1],
+                outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+                extrapolate: 'clamp',
+                useNativeDriver: true,
+              }),
             }}>
-            <Block center row>
-              <Animated.Text
-                style={{
-                  color: fadeAnim.interpolate({
-                    inputRange: [0, 1],
-                    outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
-                    extrapolate: 'clamp',
-                    useNativeDriver: true,
-                  }),
-                }}>
-                <Ionicons size={30} name="ios-arrow-back" />
-              </Animated.Text>
-            </Block>
-          </TouchableOpacity>
-        </Block>
+            <Ionicons size={30} name="ios-arrow-back" />
+          </Animated.Text>
+        </TouchableOpacity>
         <Animated.Text
           style={{
             color: colors.black,
             fontWeight: 'bold',
             fontSize: fonts.h3,
             opacity: fadeAnim,
-            marginRight: 30,
+            marginLeft: 12,
           }}>
           {shop.name}
         </Animated.Text>
-        <Block middle row right style={{marginRight: 2}}>
+        <Block row right>
           <TouchableOpacity
             onPress={() =>
               navigation.navigate('Chat', {
@@ -129,7 +121,6 @@ const AppBar = observer(props => {
               <AntDesign size={26} name="message1" />
             </Animated.Text>
           </TouchableOpacity>
-
           <TouchableOpacity onPress={() => handleAddHeart(shop)}>
             <Animated.Text
               style={{
