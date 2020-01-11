@@ -1,10 +1,20 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  TouchableOpacity,
+  Dimensions,
+} from 'react-native';
 
 import {SearchBar, Block, Text, Loader, CachedImage} from 'app/src/components';
+import {LinearGradient} from 'expo-linear-gradient';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
+
+import {convertComma} from 'app/src/utils';
+
+import {AntDesign} from '@expo/vector-icons';
 
 import {mocks} from 'app/src/constants';
 import {sizes, colors} from 'app/src/styles';
@@ -14,6 +24,7 @@ import {ShopStoreContext} from 'app/src/store/shop';
 import {UserStoreContext} from 'app/src/store/user';
 
 import {Ionicons} from '@expo/vector-icons';
+const {width} = Dimensions.get('window');
 
 const EMAIL = 'peko22@naver.com';
 
@@ -37,23 +48,28 @@ const HomeScreen = observer(props => {
     shopStore.getShopList().then(() => {
       const resList = shopStore.shopList
         .filter(e => e.category == 'Restaurant')
-        .sort((a, b) => b.review - a.review);
+        .sort((a, b) => b.review - a.review)
+        .slice(0, 5);
       setRestaurantList(resList);
       const masList = shopStore.shopList
         .filter(e => e.category == 'Massage')
-        .sort((a, b) => b.review - a.review);
+        .sort((a, b) => b.review - a.review)
+        .slice(0, 5);
       setMassageList(masList);
       const fList = shopStore.shopList
         .filter(e => e.category == 'Food')
-        .sort((a, b) => b.review - a.review);
+        .sort((a, b) => b.review - a.review)
+        .slice(0, 5);
       setFoodList(fList);
       const actList = shopStore.shopList
         .filter(e => e.category == 'Activity')
-        .sort((a, b) => b.review - a.review);
+        .sort((a, b) => b.review - a.review)
+        .slice(0, 5);
       setActivityList(actList);
       const plList = shopStore.shopList
         .filter(e => e.category == 'Place')
-        .sort((a, b) => b.review - a.review);
+        .sort((a, b) => b.review - a.review)
+        .slice(0, 5);
       setPlaceList(plList);
       setIsLoaded(true);
     });
@@ -66,8 +82,51 @@ const HomeScreen = observer(props => {
 
   return (
     <>
-      <SearchBar />
+      {/* <SearchBar /> */}
+
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
+        <Block style={{height: 460, position: 'relative'}}>
+          {/* <CachedImage
+            uri={restaurantList[5]['preview']}
+            style={{height: '100%', width: '100%'}}></CachedImage> */}
+          <CachedImage
+            uri={restaurantList[2]['preview']}
+            style={{height: '100%', width: '100%'}}></CachedImage>
+
+          <Block
+            style={{
+              opacity: 0.4,
+              backgroundColor: 'black',
+              position: 'absolute',
+              top: 0,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              zIndex: 100,
+              height: '100%',
+              width: '100%',
+            }}>
+            <Block center bottom style={{marginBottom: 30}}>
+              <Block center style={{flex: 0, height: 100}}>
+                <Text size={40} bold white>
+                  {restaurantList[2]['name']}
+                </Text>
+                <Block row center>
+                  <AntDesign
+                    size={23}
+                    color={colors.primary}
+                    name="star"></AntDesign>
+                  <Text h2 bold white style={{marginLeft: 8}}>
+                    {restaurantList[2].review}
+                  </Text>
+                </Block>
+                <Text h2 bold white style={{marginTop: 5}}>
+                  {'리뷰 ' + convertComma(restaurantList[2].reviewCnt)}
+                </Text>
+              </Block>
+            </Block>
+          </Block>
+        </Block>
         <Block center row space="between" style={styles.title}>
           <Text h2 bold>
             오늘의 세부

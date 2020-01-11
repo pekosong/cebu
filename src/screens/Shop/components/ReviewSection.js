@@ -104,7 +104,7 @@ const ReviewSection = observer(({navigation, shop}) => {
           </Button>
         }
         data={shop.googles.sort((a, b) => b.date.seconds - a.date.seconds)}
-        renderItem={({item}) => <CardReview item={item}></CardReview>}
+        renderItem={({item}) => <CardReview item={item} google></CardReview>}
         keyExtractor={(item, idx) => idx.toString()}
       />
       <Divider></Divider>

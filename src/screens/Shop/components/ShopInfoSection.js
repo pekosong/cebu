@@ -144,30 +144,32 @@ export default ShopInfoSection = ({shop}) => {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
-        <Block style={{paddingHorizontal: sizes.padding, marginBottom: 10}}>
-          <Text h1 bold style={{marginBottom: 20}}>
-            위치
-          </Text>
-          <Text h4>{shop.address}</Text>
+      {shop.latitude !== '' && (
+        <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
+          <Block style={{paddingHorizontal: sizes.padding, marginBottom: 10}}>
+            <Text h1 bold style={{marginBottom: 20}}>
+              위치
+            </Text>
+            <Text h4>{shop.address}</Text>
+          </Block>
+          <MapView
+            style={{
+              width: width,
+              height: 280,
+              marginTop: sizes.padding / 2,
+            }}
+            initialRegion={{
+              latitude: shop.latitude,
+              longitude: shop.longitude,
+              latitudeDelta: 0.05,
+              longitudeDelta: 0.05,
+            }}>
+            <MapView.Marker
+              coordinate={{latitude: shop.latitude, longitude: shop.longitude}}
+            />
+          </MapView>
         </Block>
-        <MapView
-          style={{
-            width: width,
-            height: 280,
-            marginTop: sizes.padding / 2,
-          }}
-          initialRegion={{
-            latitude: shop.latitude ? shop.latitude : 37.78825,
-            longitude: shop.longitude ? shop.longitude : -122.4324,
-            latitudeDelta: 0.05,
-            longitudeDelta: 0.05,
-          }}>
-          <MapView.Marker
-            coordinate={{latitude: shop.latitude, longitude: shop.longitude}}
-          />
-        </MapView>
-      </Block>
+      )}
       <Modal
         visible={isVisible}
         transparent={true}

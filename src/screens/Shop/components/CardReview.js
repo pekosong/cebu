@@ -17,7 +17,7 @@ const mockImages = [
   'http://mblogthumb1.phinf.naver.net/MjAxODA1MDFfMjM1/MDAxNTI1MTUwNDI4OTk2.wxcrd2EExOVkvVME5u5Of4RjC9WtgbxPdU87M1GdZLMg.h7J7gl9PmcMrLUAZgri5-f4iUKyJsvSIydWGliMLWykg.JPEG.386265/%EC%84%B8%EB%B6%80%EC%9D%8C%EC%8B%9D.jpg?type=w800',
 ];
 
-export default CardReview = ({item}) => {
+export default CardReview = ({item, google}) => {
   _renderTruncatedFooter = handlePress => {
     return (
       <Text style={{color: colors.accent, marginTop: 5}} onPress={handlePress}>
@@ -40,7 +40,7 @@ export default CardReview = ({item}) => {
         <Block middle center flex={false}>
           <CachedImage
             uri={
-              item.writer == 'google'
+              google
                 ? 'https://cdn2.iconfinder.com/data/icons/social-icons-33/128/Google-512.png'
                 : item.src
             }
@@ -50,9 +50,7 @@ export default CardReview = ({item}) => {
         <Block middle style={{marginLeft: 10}}>
           <Block row center style={{marginBottom: 3}}>
             <Text h4 bold style={{marginRight: 10}}>
-              {item.writer == 'google'
-                ? 'google'
-                : item.writer.substring(0, 4) + '**'}
+              {item.writer.substring(0, 2) + '*'}
             </Text>
             <Text size={12} darkgray>
               {pastDay(item.date)}
@@ -84,6 +82,16 @@ export default CardReview = ({item}) => {
           {item.comment}
         </Text>
       )}
+      <Block row style={{marginTop: 10}}>
+        {item.image.length > 0 &&
+          item.image.map(e => (
+            <CachedImage
+              key={e}
+              uri={e}
+              style={{height: 70, width: 70, marginRight: 6}}
+            />
+          ))}
+      </Block>
     </>
   );
 };
