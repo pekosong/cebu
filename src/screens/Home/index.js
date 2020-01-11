@@ -85,46 +85,81 @@ const HomeScreen = observer(props => {
       {/* <SearchBar /> */}
 
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
-        <Block style={{height: 460, position: 'relative'}}>
+        <Block
+          style={{
+            height: 460,
+            position: 'relative',
+            borderBottomLeftRadius: 50,
+            borderBottomRightRadius: 200,
+          }}>
           {/* <CachedImage
             uri={restaurantList[5]['preview']}
             style={{height: '100%', width: '100%'}}></CachedImage> */}
           <CachedImage
             uri={restaurantList[2]['preview']}
-            style={{height: '100%', width: '100%'}}></CachedImage>
-
-          <Block
             style={{
-              opacity: 0.4,
-              backgroundColor: 'black',
+              height: '100%',
+              width: '100%',
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
+            }}></CachedImage>
+          <LinearGradient
+            locations={[0.2, 1.0]}
+            colors={['transparent', '#111']}
+            style={{
+              backgroundColor: 'transparent',
+              position: 'absolute',
+              top: -400,
+              bottom: 0,
+              left: 0,
+              right: 0,
+              borderRadius: 50,
+            }}></LinearGradient>
+          <Block
+            bottom
+            style={{
               position: 'absolute',
               top: 0,
               bottom: 0,
               left: 0,
               right: 0,
               zIndex: 100,
-              height: '100%',
-              width: '100%',
             }}>
-            <Block center bottom style={{marginBottom: 30}}>
-              <Block center style={{flex: 0, height: 100}}>
-                <Text size={40} bold white>
-                  {restaurantList[2]['name']}
+            <Block center style={{flex: 0, height: 80, marginBottom: 20}}>
+              <Text size={40} bold white>
+                {restaurantList[2]['name'] + ' '}
+                <Text size={20} gray>
+                  {restaurantList[2]['tags']}
                 </Text>
-                <Block row center>
-                  <AntDesign
-                    size={23}
-                    color={colors.primary}
-                    name="star"></AntDesign>
-                  <Text h2 bold white style={{marginLeft: 8}}>
-                    {restaurantList[2].review}
-                  </Text>
-                </Block>
-                <Text h2 bold white style={{marginTop: 5}}>
-                  {'리뷰 ' + convertComma(restaurantList[2].reviewCnt)}
+              </Text>
+              <Block row center>
+                <AntDesign
+                  size={23}
+                  color={colors.primary}
+                  name="star"></AntDesign>
+                <Text h2 bold white style={{marginLeft: 8}}>
+                  {restaurantList[2].review}
+                </Text>
+                <Text h2 bold white>
+                  {' · 리뷰 ' + convertComma(restaurantList[2].reviewCnt)}
                 </Text>
               </Block>
             </Block>
+          </Block>
+          <Block
+            bottom
+            style={{
+              position: 'absolute',
+              top: 50,
+              right: 10,
+              zIndex: 100,
+              backgroundColor: 'rgba(0,0,0,0.3)',
+              padding: 5,
+              borderRadius: 5,
+            }}>
+            <Text h4 white bold>
+              헬로우 세부 추천 맛집
+            </Text>
           </Block>
         </Block>
         <Block center row space="between" style={styles.title}>

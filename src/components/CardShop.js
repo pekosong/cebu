@@ -23,6 +23,7 @@ export default CardShop = ({shop, navigation}) => {
     baby,
     tags,
     reviewCnt,
+    location,
   } = shop;
 
   renderTag = text => {
@@ -56,6 +57,7 @@ export default CardShop = ({shop, navigation}) => {
       <CachedImage uri={preview} style={styles.image} />
       <Block style={styles.overlap}></Block>
       <Favorite shop={shop}></Favorite>
+      <Text h4>{location}</Text>
       <Block style={styles.top}>
         <Text h3 bold>
           {name}

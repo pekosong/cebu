@@ -4,8 +4,8 @@ import {Platform} from 'react-native';
 
 const style = {
   inputRow: {
-    marginBottom: 25,
-    paddingBottom: 25,
+    marginBottom: 20,
+    paddingBottom: 20,
     flexDirection: 'row',
     justifyContent: 'space-between',
     alignItems: 'center',
@@ -31,7 +31,6 @@ const style = {
     paddingHorizontal: sizes.padding,
     backgroundColor: colors.white,
     paddingBottom: 10,
-    borderBottomWidth: 0.5,
     borderBottomColor: colors.gray2,
   },
   shop: {

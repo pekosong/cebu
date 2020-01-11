@@ -53,13 +53,13 @@ export default CardReview = ({item, google}) => {
               {item.writer.substring(0, 2) + '*'}
             </Text>
             <Text size={12} darkgray>
-              {pastDay(item.date)}
+              {google ? item.date : pastDay(item.date)}
             </Text>
           </Block>
           <StarRating
             disabled={false}
             maxStars={5}
-            rating={item.star}
+            rating={parseInt(item.star)}
             starSize={15}
             fullStarColor={colors.primary}
             containerStyle={{width: 20}}

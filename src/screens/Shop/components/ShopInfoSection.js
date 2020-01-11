@@ -53,7 +53,7 @@ export default ShopInfoSection = ({shop}) => {
               {shop.openTime} ~ {shop.closeTime}
             </Text>
           </Block>
-          {shop.kakao && (
+          {shop.kakao !== '' && (
             <Block style={style.inputRow}>
               <Text h2>카카오톡</Text>
               <Text darkgray h2>

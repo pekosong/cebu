@@ -35,6 +35,7 @@ export default ReviewNewModal = props => {
       shopRef.get().then(doc => {
         let reviews = doc.data().reviews;
         reviews.push({
+          image: [],
           comment: text,
           writer: email,
           src: image,

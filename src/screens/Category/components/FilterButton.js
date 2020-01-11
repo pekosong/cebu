@@ -37,8 +37,8 @@ FilterButton.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    paddingVertical: 6,
-    paddingHorizontal: 12,
+    paddingVertical: 8,
+    paddingHorizontal: 16,
     borderWidth: 1,
     borderRadius: 14,
     marginRight: 6,
