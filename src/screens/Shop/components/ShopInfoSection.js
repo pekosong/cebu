@@ -17,8 +17,11 @@ export default ShopInfoSection = ({shop}) => {
   const [isVisible, setIsVisible] = useState(false);
 
   handleScrollByX = e => {
-    if (e.nativeEvent.contentOffset.x % width == 0) {
-      setImageNum(parseInt(e.nativeEvent.contentOffset.x / width) + 1);
+    if (e.nativeEvent.contentOffset.x % (width - sizes.padding * 2) == 0) {
+      setImageNum(
+        parseInt(e.nativeEvent.contentOffset.x / (width - sizes.padding * 2)) +
+          1,
+      );
     }
   };
 
@@ -105,11 +108,8 @@ export default ShopInfoSection = ({shop}) => {
         </Block>
       </Block>
       <Divider></Divider>
-      <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
-        <Block
-          row
-          space="between"
-          style={{paddingHorizontal: sizes.padding, marginBottom: 20}}>
+      <Block style={[style.shop.categories]}>
+        <Block row space="between" style={{marginBottom: 20}}>
           <Text h1 bold>
             사진 정보
           </Text>
@@ -130,9 +130,10 @@ export default ShopInfoSection = ({shop}) => {
               key={idx}
               uri={e}
               style={{
-                height: 280,
-                width: width,
-                resizeMode: 'contain',
+                borderRadius: 6,
+                height: 260,
+                width: width - sizes.padding * 2,
+                resizeMode: 'cover',
               }}
             />
           ))}
@@ -145,8 +146,8 @@ export default ShopInfoSection = ({shop}) => {
       </Block>
       <Divider></Divider>
       {shop.latitude !== '' && (
-        <Block style={[style.shop.categories, {paddingHorizontal: 0}]}>
-          <Block style={{paddingHorizontal: sizes.padding, marginBottom: 10}}>
+        <Block style={[style.shop.categories, {marginBottom: 50}]}>
+          <Block style={{marginBottom: 10}}>
             <Text h1 bold style={{marginBottom: 20}}>
               위치
             </Text>
@@ -154,8 +155,9 @@ export default ShopInfoSection = ({shop}) => {
           </Block>
           <MapView
             style={{
-              width: width,
-              height: 280,
+              borderRadius: 6,
+              width: width - sizes.padding * 2,
+              height: 260,
               marginTop: sizes.padding / 2,
             }}
             initialRegion={{

@@ -1,5 +1,11 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Dimensions,
+  View,
+  Platform,
+} from 'react-native';
 
 import Favorite from './Favorite';
 import Block from './Block';
@@ -57,8 +63,12 @@ export default CardShop = ({shop, navigation}) => {
       <CachedImage uri={preview} style={styles.image} />
       <Block style={styles.overlap}></Block>
       <Favorite shop={shop}></Favorite>
-      <Text h4>{location}</Text>
-      <Block style={styles.top}>
+      {location && (
+        <Text h5 darkgray style={{marginTop: 6}}>
+          {location}
+        </Text>
+      )}
+      <Block row center style={{marginVertical: 3}}>
         <Text h3 bold>
           {name}
         </Text>
@@ -66,7 +76,7 @@ export default CardShop = ({shop, navigation}) => {
           {tags.join(', ')}
         </Text>
       </Block>
-      <Block style={styles.bottom}>
+      <Block row center>
         <AntDesign size={13} name="star" style={{color: colors.primary}} />
         <Text darkgray style={{marginLeft: 5}}>
           {`${review} · 리뷰 ${convertComma(reviewCnt)}`}
@@ -102,15 +112,10 @@ export const styles = StyleSheet.create({
     borderRadius: 5,
     backgroundColor: 'rgba(0,0,0,0.1)',
   },
-  top: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    marginTop: 6,
-  },
   bottom: {
     flexDirection: 'row',
     alignItems: 'center',
-    marginVertical: 5,
+    marginTop: 2,
   },
   corner: {
     flexDirection: 'row',

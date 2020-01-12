@@ -21,14 +21,18 @@ export default CardRecommend = ({item, navigation}) => {
         <CachedImage style={styles.imageStyle} uri={shop.preview}></CachedImage>
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
-            <Text h4 bold>
-              {shop.name + '  '}
+            <Text h4 bold style={{width: 200}}>
+              {shop.name.length < 8
+                ? shop.name + ' '
+                : shop.name.substring(0, 8) + '..' + ' '}
               <Text size={12} gray>
                 {shop.tags[0]}
               </Text>
             </Text>
             <Block
               style={{
+                position: 'absolute',
+                right: 0,
                 flex: 0,
                 borderWidth: 1,
                 borderColor:

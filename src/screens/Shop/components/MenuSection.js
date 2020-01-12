@@ -26,6 +26,7 @@ export default MenuSection = ({shop, isKorean}) => {
             </Text>
           </Block>
         }
+        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
         data={shop.menus}
         renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
         keyExtractor={(item, idx) => idx.toString()}

@@ -67,6 +67,9 @@ export default CategoryScreen = observer(props => {
   const [isBaby, setIsBaby] = useState(false);
   const [isReservation, setIsReservation] = useState(false);
 
+  const [isMak, setIsMak] = useState(true);
+  const [isCebu, setIsCebu] = useState(true);
+
   const shops = useContext(ShopStoreContext).shopList;
 
   useEffect(() => {
@@ -168,7 +171,10 @@ export default CategoryScreen = observer(props => {
               </ScrollView>
             )}
             {navigation.getParam('category') !== 'Place' && (
-              <Block row style={{marginTop: 8}}>
+              <Block row center style={{marginTop: 8}}>
+                <Text darkgray style={{marginRight: 8}}>
+                  필터
+                </Text>
                 <FilterButton
                   isActive={isKorean}
                   setActive={setIsKorean}
@@ -191,8 +197,26 @@ export default CategoryScreen = observer(props => {
                 />
               </Block>
             )}
+            {navigation.getParam('category') !== 'Place' && (
+              <Block row center style={{marginTop: 8}}>
+                <Text darkgray style={{marginRight: 8}}>
+                  지역
+                </Text>
+                <FilterButton
+                  isActive={isMak}
+                  setActive={setIsMak}
+                  text={'막탄'}
+                />
+                <FilterButton
+                  isActive={isCebu}
+                  setActive={setIsCebu}
+                  text={'세부시티'}
+                />
+              </Block>
+            )}
           </Block>
         }
+        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
         data={selectedLists
           .sort((a, b) => {
             if (sort === 'review') {
@@ -206,7 +230,9 @@ export default CategoryScreen = observer(props => {
           .filter(e => (isKorean ? e.korean : e))
           .filter(e => (isBaby ? e.baby : e))
           .filter(e => (isPickup ? e.pickup : e))
-          .filter(e => (isReservation ? e.reservation : e))}
+          .filter(e => (isReservation ? e.reservation : e))
+          .filter(e => (!isMak ? e.location !== '막탄' : e))
+          .filter(e => (!isCebu ? e.location !== '세부시티' : e))}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
         )}

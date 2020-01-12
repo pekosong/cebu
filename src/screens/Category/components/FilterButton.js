@@ -37,11 +37,11 @@ FilterButton.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    paddingVertical: 8,
-    paddingHorizontal: 16,
+    paddingVertical: 6,
+    paddingHorizontal: 14,
     borderWidth: 1,
     borderRadius: 14,
-    marginRight: 6,
+    marginRight: 4,
     alignItems: 'center',
     justifyContent: 'center',
   },

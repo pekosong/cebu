@@ -105,6 +105,7 @@ const FavoritesScreen = observer(props => {
             </ScrollView>
           </Block>
         }
+        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
         data={selectedFavorites}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
