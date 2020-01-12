@@ -11,6 +11,7 @@ import {LinearGradient} from 'expo-linear-gradient';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
+import CardActivity from './components/CardActivity';
 
 import {convertComma} from 'app/src/utils';
 
@@ -87,7 +88,7 @@ const HomeScreen = observer(props => {
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
         <Block
           style={{
-            height: 460,
+            height: 300,
             position: 'relative',
             borderBottomLeftRadius: 50,
             borderBottomRightRadius: 200,
@@ -99,9 +100,10 @@ const HomeScreen = observer(props => {
             uri={restaurantList[2]['preview']}
             style={{
               height: '100%',
-              width: '100%',
-              borderBottomLeftRadius: 50,
-              borderBottomRightRadius: 50,
+              width: width - sizes.padding * 2,
+              marginHorizontal: sizes.padding,
+              borderBottomLeftRadius: 10,
+              borderBottomRightRadius: 10,
             }}></CachedImage>
           <LinearGradient
             locations={[0.2, 1.0]}
@@ -109,11 +111,12 @@ const HomeScreen = observer(props => {
             style={{
               backgroundColor: 'transparent',
               position: 'absolute',
+              marginHorizontal: sizes.padding,
               top: -400,
               bottom: 0,
               left: 0,
               right: 0,
-              borderRadius: 50,
+              borderRadius: 10,
             }}></LinearGradient>
           <Block
             bottom
@@ -125,7 +128,8 @@ const HomeScreen = observer(props => {
               right: 0,
               zIndex: 100,
             }}>
-            <Block center style={{flex: 0, height: 80, marginBottom: 20}}>
+            <Block
+              style={{flex: 0, height: 80, marginLeft: 40, marginBottom: 20}}>
               <Text size={40} bold white>
                 {restaurantList[2]['name'] + ' '}
                 <Text size={20} gray>
@@ -150,15 +154,14 @@ const HomeScreen = observer(props => {
             bottom
             style={{
               position: 'absolute',
-              top: 50,
-              right: 10,
+              bottom: 6,
+              right: 30,
               zIndex: 100,
-              backgroundColor: 'rgba(0,0,0,0.3)',
               padding: 5,
               borderRadius: 5,
             }}>
-            <Text h4 white bold>
-              헬로우 세부 추천 맛집
+            <Text h5 white bold>
+              오늘의 추천 맛집
             </Text>
           </Block>
         </Block>
@@ -333,11 +336,11 @@ const HomeScreen = observer(props => {
           showsHorizontalScrollIndicator={false}
           scrollEnabled={true}>
           {activityList.map((item, idx) => (
-            <CardRect
+            <CardActivity
               key={idx}
               item={item}
               navigation={navigation}
-              isLast={activityList.length - 1 == idx}></CardRect>
+              isLast={activityList.length - 1 == idx}></CardActivity>
           ))}
         </ScrollView>
         <Block style={styles.title}>
