@@ -53,7 +53,7 @@ export default CardReview = ({item, google}) => {
               {item.writer.substring(0, 2) + '*'}
             </Text>
             <Text size={12} darkgray>
-              {google ? item.date : pastDay(item.date)}
+              {google ? pastDay(item.date) : pastDay(item.date)}
             </Text>
           </Block>
           <StarRating

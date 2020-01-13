@@ -135,15 +135,17 @@ export const styles = StyleSheet.create({
   header: {
     marginTop: sizes.padding * 2.5,
     marginBottom: 5,
-    paddingHorizontal: sizes.padding,
+    paddingHorizontal: sizes.padding * 2,
   },
   search: {
-    padding: 10,
+    paddingVertical: 8,
+    paddingHorizontal: 20,
+    borderRadius: 20,
     backgroundColor: colors.white,
     shadowColor: '#000',
     shadowOffset: {
-      width: 2,
-      height: 2,
+      width: 4,
+      height: 4,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,

@@ -83,8 +83,6 @@ const HomeScreen = observer(props => {
 
   return (
     <>
-      {/* <SearchBar /> */}
-
       <ScrollView showsVerticalScrollIndicator={false} vertival={true}>
         <Block
           style={{
@@ -100,8 +98,8 @@ const HomeScreen = observer(props => {
             uri={restaurantList[2]['preview']}
             style={{
               height: '100%',
-              width: width - sizes.padding * 2,
-              marginHorizontal: sizes.padding,
+              width: width - sizes.padding,
+              marginHorizontal: sizes.padding / 2,
               borderBottomLeftRadius: 10,
               borderBottomRightRadius: 10,
             }}></CachedImage>
@@ -111,7 +109,7 @@ const HomeScreen = observer(props => {
             style={{
               backgroundColor: 'transparent',
               position: 'absolute',
-              marginHorizontal: sizes.padding,
+              marginHorizontal: sizes.padding / 2,
               top: -400,
               bottom: 0,
               left: 0,
@@ -163,6 +161,17 @@ const HomeScreen = observer(props => {
             <Text h5 white bold>
               오늘의 추천 맛집
             </Text>
+          </Block>
+          <Block style={{
+            width:width,
+              position: 'absolute',
+              top: 10,
+              left: 0,
+              zIndex: 100,
+              padding: 5,
+              borderRadius: 5,
+            }}>
+          <SearchBar />
           </Block>
         </Block>
         <Block center row space="between" style={styles.title}>

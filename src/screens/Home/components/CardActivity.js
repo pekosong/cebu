@@ -59,8 +59,8 @@ export const styles = StyleSheet.create({
     position: 'relative',
     borderRadius: 3,
     marginRight: 6,
-    height: width / 2 - sizes.padding,
-    width: width / 2.8 - sizes.padding,
+    height: width / 1.5 - sizes.padding,
+    width: width / 2.4 - sizes.padding,
   },
   imageStyle: {
     width: '100%',
