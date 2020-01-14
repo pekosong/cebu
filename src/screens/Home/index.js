@@ -98,10 +98,10 @@ const HomeScreen = observer(props => {
             uri={restaurantList[2]['preview']}
             style={{
               height: '100%',
-              width: width - sizes.padding,
-              marginHorizontal: sizes.padding / 2,
-              borderBottomLeftRadius: 10,
-              borderBottomRightRadius: 10,
+              width: width,
+              // marginHorizontal: sizes.padding / 2,
+              borderBottomLeftRadius: 50,
+              borderBottomRightRadius: 50,
             }}></CachedImage>
           <LinearGradient
             locations={[0.2, 1.0]}
@@ -109,12 +109,11 @@ const HomeScreen = observer(props => {
             style={{
               backgroundColor: 'transparent',
               position: 'absolute',
-              marginHorizontal: sizes.padding / 2,
               top: -400,
               bottom: 0,
               left: 0,
               right: 0,
-              borderRadius: 10,
+              borderRadius: 50,
             }}></LinearGradient>
           <Block
             bottom
@@ -128,15 +127,15 @@ const HomeScreen = observer(props => {
             }}>
             <Block
               style={{flex: 0, height: 80, marginLeft: 40, marginBottom: 20}}>
-              <Text size={40} bold white>
+              <Text size={30} bold white>
                 {restaurantList[2]['name'] + ' '}
-                <Text size={20} gray>
+                <Text size={18} gray>
                   {restaurantList[2]['tags']}
                 </Text>
               </Text>
               <Block row center>
                 <AntDesign
-                  size={23}
+                  size={20}
                   color={colors.primary}
                   name="star"></AntDesign>
                 <Text h2 bold white style={{marginLeft: 8}}>
@@ -152,8 +151,8 @@ const HomeScreen = observer(props => {
             bottom
             style={{
               position: 'absolute',
-              bottom: 6,
-              right: 30,
+              bottom: 30,
+              right: 20,
               zIndex: 100,
               padding: 5,
               borderRadius: 5,
@@ -162,8 +161,9 @@ const HomeScreen = observer(props => {
               오늘의 추천 맛집
             </Text>
           </Block>
-          <Block style={{
-            width:width,
+          <Block
+            style={{
+              width: width,
               position: 'absolute',
               top: 10,
               left: 0,
@@ -171,7 +171,7 @@ const HomeScreen = observer(props => {
               padding: 5,
               borderRadius: 5,
             }}>
-          <SearchBar />
+            <SearchBar />
           </Block>
         </Block>
         <Block center row space="between" style={styles.title}>
