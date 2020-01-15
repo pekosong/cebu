@@ -60,7 +60,10 @@ export default CardShop = ({shop, navigation}) => {
           shopId: id,
         })
       }>
-      <CachedImage uri={preview} style={styles.image} />
+      <CachedImage
+        uri={typeof preview === 'string' ? preview : preview[2]}
+        style={styles.image}
+      />
       <Block style={styles.overlap}></Block>
       <Favorite shop={shop}></Favorite>
       {location && (

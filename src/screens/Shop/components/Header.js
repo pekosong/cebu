@@ -6,12 +6,13 @@ import {Block, CachedImage} from 'app/src/components';
 const {width} = Dimensions.get('window');
 
 export default HeaderSection = ({shop}) => {
+  const {preview} = shop;
   return (
     <Animated.View style={styles.container}>
       <Block style={{position: 'relative'}}>
         <CachedImage
-          key={shop.preview}
-          uri={shop.preview}
+          key={typeof preview === 'string' ? preview : preview[2]}
+          uri={typeof preview === 'string' ? preview : preview[2]}
           style={{
             height: '100%',
             width: width,
