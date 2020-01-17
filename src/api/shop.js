@@ -23,6 +23,7 @@ const updateShop = shop => {
 };
 
 const downloadShopList = () => {
+  console.log('실행됨');
   return firebase.firestore().collection('shops');
 };
 

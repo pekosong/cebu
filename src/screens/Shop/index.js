@@ -1,11 +1,5 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
@@ -122,7 +116,6 @@ export default ShopScreen = observer(({navigation}) => {
       setIsLoaded(true);
     });
     setTodo(navigation.getParam('todo'));
-
     return () => {
       if (unsubscribe) {
         unsubscribe();

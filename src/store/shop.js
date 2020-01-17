@@ -4,7 +4,7 @@ import {streamShop, downloadShopList} from 'app/src/api/shop';
 
 class ShopStore {
   @observable shop = null;
-  @observable shopList = null;
+  @observable shopList = [];
   @observable shopId = '';
 
   @action getShop = shopId => {
