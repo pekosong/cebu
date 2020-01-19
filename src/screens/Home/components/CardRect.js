@@ -17,32 +17,44 @@ export default CardRect = props => {
         navigation.push('Shop', {
           shopId: item.id,
         })
-      }>
+      }
+      style={[styles.container, isLast && {marginRight: sizes.padding * 2}]}>
       <Block
-        style={[styles.container, isLast && {marginRight: sizes.padding * 1}]}>
-        <Block flex={2} style={{position: 'relative'}}>
-          <Image style={styles.imageStyle} source={{uri: item.preview}}></Image>
-          <Favorite
-            shop={{
-              id: item.id,
-              name: item.name,
-              preview: item.source,
-            }}></Favorite>
-          <Block style={styles.overlap}></Block>
-        </Block>
-        <Block flex={1} style={{marginTop: 6}}>
-          <Text bold numberOfLines={1} size={14}>
-            {item.name + ' '}
-            <Text gray caption style={{marginBottom: 5}}>
-              {item.tags[0]}
-            </Text>
+        style={{
+          flex: 0,
+          height: '60%',
+          position: 'relative',
+          borderTopLeftRadius: 6,
+          borderTopRightRadius: 6,
+        }}>
+        <Image style={styles.imageStyle} source={{uri: item.preview}}></Image>
+        <Favorite
+          shop={{
+            id: item.id,
+            name: item.name,
+            preview: item.source,
+          }}></Favorite>
+        <Block style={styles.overlap}></Block>
+      </Block>
+      <Block
+        middle
+        style={{
+          padding: 8,
+          backgroundColor: colors.white,
+          borderBottomLeftRadius: 6,
+          borderBottomRightRadius: 6,
+        }}>
+        <Text bold numberOfLines={1} size={14}>
+          {item.name + ' '}
+          <Text gray caption>
+            {item.tags[0]}
           </Text>
-          <Block row center>
-            <AntDesign size={13} name="star" style={{color: colors.primary}} />
-            <Text size={13} darkgray style={{marginLeft: 3}}>
-              {`${item.review} · 리뷰 ${convertComma(item.reviewCnt)}`}
-            </Text>
-          </Block>
+        </Text>
+        <Block row center style={{flex: 0, marginTop: 2}}>
+          <AntDesign size={13} name="star" style={{color: colors.primary}} />
+          <Text size={13} darkgray style={{marginLeft: 3}}>
+            {`${item.review} · 리뷰 ${convertComma(item.reviewCnt)}`}
+          </Text>
         </Block>
       </Block>
     </TouchableOpacity>
@@ -51,16 +63,27 @@ export default CardRect = props => {
 
 export const styles = StyleSheet.create({
   container: {
-    borderRadius: 3,
-    paddingRight: 10,
+    marginLeft: 2,
+    marginRight: 6,
+    marginVertical: 3,
     height: width / 2.4 - sizes.padding,
-    width: width / 2 - sizes.padding,
+    width: width / 2.1 - sizes.padding,
+    shadowColor: '#000',
+    shadowOffset: {
+      width: 0,
+      height: 1,
+    },
+    shadowOpacity: 0.25,
+    shadowRadius: 3.84,
+    elevation: 1,
+    borderRadius: 6,
   },
   imageStyle: {
     width: '100%',
     height: '100%',
     resizeMode: 'cover',
-    borderRadius: 3,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
   },
   overlap: {
     position: 'absolute',
@@ -68,5 +91,7 @@ export const styles = StyleSheet.create({
     height: '100%',
     backgroundColor: 'rgba(0,0,0,0.2)',
     borderRadius: 3,
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
   },
 });

@@ -4,6 +4,7 @@ const colors = {
   // secondary: "#2BDA8E",
   primary: '#d63031',
   secondary: '#e17055',
+  background: '#ecf0f1',
   // accent: '#00b894',
   accent: '#1289A7',
   black: '#323643',

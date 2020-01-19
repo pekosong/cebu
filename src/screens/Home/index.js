@@ -4,18 +4,23 @@ import {
   ScrollView,
   TouchableOpacity,
   Dimensions,
+  Image,
 } from 'react-native';
 
-import {SearchBar, Block, Text, Loader, CachedImage} from 'app/src/components';
-import {LinearGradient} from 'expo-linear-gradient';
-import {AntDesign} from '@expo/vector-icons';
+import {
+  SearchBar,
+  Block,
+  Text,
+  Loader,
+  CachedImage,
+  Divider,
+} from 'app/src/components';
 import {Ionicons} from '@expo/vector-icons';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
 import CardActivity from './components/CardActivity';
 
-import {convertComma} from 'app/src/utils';
 import {mocks} from 'app/src/constants';
 import {sizes, colors} from 'app/src/styles';
 
@@ -23,7 +28,7 @@ import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 import {UserStoreContext} from 'app/src/store/user';
 
-const {width} = Dimensions.get('window');
+const {width, height} = Dimensions.get('window');
 
 const EMAIL = 'peko22@naver.com';
 
@@ -53,6 +58,7 @@ const HomeScreen = observer(props => {
         setIsLoaded(true);
       });
     }
+
     return () => {
       unsubscribe();
     };
@@ -70,91 +76,82 @@ const HomeScreen = observer(props => {
     <ScrollView showsVerticalScrollIndicator={false} vertical={true}>
       <Block
         style={{
-          height: 300,
+          height: height * 0.6,
           position: 'relative',
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 200,
         }}>
         <CachedImage
-          uri={restaurantList[2]['preview']}
+          uri={
+            'https://images.unsplash.com/photo-1565319742422-0a4cf646e166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80'
+          }
           style={{
             height: '100%',
             width: width,
-            borderBottomLeftRadius: 50,
-            borderBottomRightRadius: 50,
           }}></CachedImage>
-        <LinearGradient
-          locations={[0.2, 1.0]}
-          colors={['transparent', '#111']}
-          style={{
-            backgroundColor: 'transparent',
-            position: 'absolute',
-            top: -400,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            borderRadius: 50,
-          }}></LinearGradient>
         <Block
-          bottom
           style={{
             position: 'absolute',
-            top: 0,
-            bottom: 0,
-            left: 0,
-            right: 0,
-            zIndex: 100,
-          }}>
-          <Block
-            style={{flex: 0, height: 80, marginLeft: 40, marginBottom: 20}}>
-            <Text size={30} bold white>
-              {restaurantList[2]['name'] + ' '}
-              <Text size={18} gray>
-                {restaurantList[2]['tags']}
-              </Text>
-            </Text>
-            <Block row center>
-              <AntDesign
-                size={20}
-                color={colors.primary}
-                name="star"></AntDesign>
-              <Text h2 bold white style={{marginLeft: 8}}>
-                {restaurantList[2].review}
-              </Text>
-              <Text h2 bold white>
-                {' · 리뷰 ' + convertComma(restaurantList[2].reviewCnt)}
-              </Text>
-            </Block>
-          </Block>
-        </Block>
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}></Block>
         <Block
-          bottom
           style={{
             position: 'absolute',
-            bottom: 30,
-            right: 20,
-            zIndex: 100,
-            padding: 5,
-            borderRadius: 5,
+            width: '100%',
+            height: '100%',
+            backgroundColor: 'rgba(0,0,0,0.3)',
+          }}></Block>
+        <Block
+          style={{
+            position: 'absolute',
+            top: 50,
+            right: 16,
+            zIndex: 10,
+            borderRadius: 30,
+            borderWidth: 3,
+            borderColor: colors.primary,
           }}>
-          <Text h5 white bold>
-            오늘의 추천 맛집
-          </Text>
+          <CachedImage
+            uri={'https://randomuser.me/api/portraits/women/2.jpg'}
+            style={{
+              height: 50,
+              width: 50,
+              borderRadius: 30,
+            }}></CachedImage>
         </Block>
         <Block
           style={{
             width: width,
             position: 'absolute',
-            top: 10,
+            top: (height * 0.7) / 3,
             left: 0,
             zIndex: 100,
             padding: 5,
-            borderRadius: 5,
           }}>
           <SearchBar />
         </Block>
+        <Block
+          style={{
+            width: width - 100,
+            position: 'absolute',
+            bottom: 20,
+            left: 20,
+            zIndex: 100,
+          }}>
+          <Text size={36} white bold style={{lineHeight: 40}}>
+            Discover
+          </Text>
+          <Text
+            size={50}
+            bold
+            style={{color: '#81ecec', marginTop: 10, lineHeight: 50}}>
+            Cebu
+          </Text>
+        </Block>
       </Block>
-      <Block center row space="between" style={styles.title}>
+      {/* <Block center row space="between" style={styles.title}>
         <Text h2 bold>
           오늘의 세부
         </Text>
@@ -198,169 +195,65 @@ const HomeScreen = observer(props => {
             </Text>
           </Block>
         </Block>
-      </Block>
-      <Block style={styles.title}>
-        <Text h2 bold>
-          평생 잊지 못할 세부를 원하세요?
-        </Text>
-      </Block>
-      <Block style={{height: 120}}>
-        <ScrollView
-          style={{paddingLeft: sizes.padding - 5}}
-          horizontal={true}
-          showsHorizontalScrollIndicator={false}
-          scrollEnabled={true}>
-          {categories.map((item, idx) => (
-            <CardCategory
-              key={idx}
-              last={categories.length - 1 == idx}
-              item={item}
-              navigation={navigation}></CardCategory>
-          ))}
-        </ScrollView>
-      </Block>
-      <Block style={styles.title}>
-        <Block center row space="between">
-          <Text h3 bold>
-            맛집
-          </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: 'Restaurant',
-              })
-            }>
-            <Ionicons size={22} name="ios-arrow-forward" />
-          </TouchableOpacity>
-        </Block>
-      </Block>
-      <ScrollView
-        style={{paddingLeft: sizes.padding}}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}>
-        {restaurantList.map((item, idx) => (
-          <CardRect
+      </Block> */}
+      <Block
+        middle
+        center
+        row
+        style={{
+          marginTop: 10,
+          flexWrap: 'wrap',
+        }}>
+        {categories.map((item, idx) => (
+          <CardCategory
             key={idx}
+            last={categories.length - 1 == idx}
             item={item}
-            navigation={navigation}
-            isLast={restaurantList.length - 1 == idx}></CardRect>
+            navigation={navigation}></CardCategory>
         ))}
-      </ScrollView>
-
-      <Block style={styles.title}>
-        <Block center row space="between">
-          <Text h3 bold>
-            스파
-          </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: 'Massage',
-              })
-            }>
-            <Ionicons size={22} name="ios-arrow-forward" />
-          </TouchableOpacity>
-        </Block>
       </Block>
-      <ScrollView
-        style={{paddingLeft: sizes.padding}}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}>
-        {massageList.map((item, idx) => (
-          <CardRect
-            key={idx}
-            item={item}
-            navigation={navigation}
-            isLast={massageList.length - 1 == idx}></CardRect>
-        ))}
-      </ScrollView>
-      <Block style={styles.title}>
-        <Block center row space="between">
-          <Text h3 bold>
-            배달음식
-          </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: 'Food',
-              })
-            }>
-            <Ionicons size={22} name="ios-arrow-forward" />
-          </TouchableOpacity>
+      <Divider></Divider>
+      {[
+        {title: '맛집', category: 'Restaurant', items: restaurantList},
+        {title: '스파', category: 'Massage', items: massageList},
+        {title: '배달음식', category: 'Food', items: foodList},
+        {title: '놀이', category: 'Activity', items: activityList},
+        {title: '갈만한 곳', category: 'Place', items: placeList},
+      ].map((item, idx) => (
+        <Block key={idx}>
+          <Block center row space="between" style={styles.title}>
+            <Text h3 bold>
+              {item.title}
+            </Text>
+            <TouchableOpacity
+              onPress={() =>
+                navigation.navigate('Category', {
+                  category: item.category,
+                })
+              }>
+              <Ionicons size={22} name="ios-arrow-forward" />
+            </TouchableOpacity>
+          </Block>
+          <ScrollView
+            style={{paddingLeft: sizes.padding - 3}}
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEnabled={true}>
+            {item.items.map((e, idx) => (
+              <CardRect
+                key={idx}
+                item={e}
+                navigation={navigation}
+                isLast={item.items.length - 1 == idx}></CardRect>
+            ))}
+          </ScrollView>
+          {idx !== 4 ? (
+            <Divider></Divider>
+          ) : (
+            <Block style={{marginTop: 40}}></Block>
+          )}
         </Block>
-      </Block>
-      <ScrollView
-        style={{paddingLeft: sizes.padding}}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}>
-        {foodList.map((item, idx) => (
-          <CardRect
-            key={idx}
-            item={item}
-            navigation={navigation}
-            isLast={foodList.length - 1 == idx}></CardRect>
-        ))}
-      </ScrollView>
-      <Block style={styles.title}>
-        <Block center row space="between">
-          <Text h3 bold>
-            놀이
-          </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: 'Activity',
-              })
-            }>
-            <Ionicons size={22} name="ios-arrow-forward" />
-          </TouchableOpacity>
-        </Block>
-      </Block>
-      <ScrollView
-        style={{paddingLeft: sizes.padding}}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}>
-        {activityList.map((item, idx) => (
-          <CardActivity
-            key={idx}
-            item={item}
-            navigation={navigation}
-            isLast={activityList.length - 1 == idx}></CardActivity>
-        ))}
-      </ScrollView>
-      <Block style={styles.title}>
-        <Block center row space="between">
-          <Text h3 bold>
-            갈만한 곳
-          </Text>
-          <TouchableOpacity
-            onPress={() =>
-              navigation.navigate('Category', {
-                category: 'Place',
-              })
-            }>
-            <Ionicons size={22} name="ios-arrow-forward" />
-          </TouchableOpacity>
-        </Block>
-      </Block>
-      <ScrollView
-        style={{paddingLeft: sizes.padding}}
-        horizontal={true}
-        showsHorizontalScrollIndicator={false}
-        scrollEnabled={true}>
-        {placeList.map((item, idx) => (
-          <CardRect
-            key={idx}
-            item={item}
-            navigation={navigation}
-            isLast={placeList.length - 1 == idx}></CardRect>
-        ))}
-      </ScrollView>
-      <Block style={styles.title}></Block>
+      ))}
     </ScrollView>
   );
 });
@@ -375,7 +268,6 @@ HomeScreen.defaultProps = {
 const styles = StyleSheet.create({
   title: {
     marginHorizontal: sizes.padding,
-    marginTop: 20,
     marginBottom: 6,
   },
 });

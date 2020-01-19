@@ -1,5 +1,13 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, FlatList, SafeAreaView} from 'react-native';
+import {
+  StyleSheet,
+  ScrollView,
+  FlatList,
+  SafeAreaView,
+  TextInput,
+  Keyboard,
+  TouchableWithoutFeedback,
+} from 'react-native';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {
@@ -10,57 +18,116 @@ import {
   Text,
   Button,
 } from 'app/src/components';
-import {sizes, style} from 'app/src/styles';
+import {sizes, style, colors} from 'app/src/styles';
 
 import FilterButton from './components/FilterButton';
+import {
+  mapCategory,
+  restaurantSrc,
+  restaurantCategory,
+  activitySrc,
+  activityCategory,
+} from './categoryList.js';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 
-import RNPickerSelect from 'react-native-picker-select';
+import Modal from 'react-native-modal';
 
-export const Dropdown = () => {
+const SortModal = ({sort, setSort, setShowSort}) => {
   return (
-    <RNPickerSelect
-      onValueChange={value => console.log(value)}
-      items={[
-        {label: 'Football', value: 'football'},
-        {label: 'Baseball', value: 'baseball'},
-        {label: 'Hockey', value: 'hockey'},
-      ]}
-    />
+    <Block middle>
+      {[
+        {label: '평점 좋은 순', value: 'review'},
+        {label: '리뷰 많은 순', value: 'reviewCnt'},
+        {label: '저장 많은 순', value: 'like'},
+      ].map((item, idx) =>
+        item.value === sort ? (
+          <Button
+            border
+            key={idx}
+            onPress={() => {
+              setSort(item.value);
+              setShowSort(false);
+            }}>
+            <Text bold accent center>
+              {item.label}
+            </Text>
+          </Button>
+        ) : (
+          <Button
+            key={idx}
+            onPress={() => {
+              setSort(item.value);
+              setShowSort(false);
+            }}>
+            <Text bold gray center>
+              {item.label}
+            </Text>
+          </Button>
+        ),
+      )}
+    </Block>
   );
 };
 
-const cateSrc = {
-  전체: require('app/src/assets/images/search/activity.jpg'),
-  호핑: require('app/src/assets/images/search/hoping.jpg'),
-  고래투어: require('app/src/assets/images/search/gorae.jpg'),
-  시티투어: require('app/src/assets/images/search/city.jpg'),
-  다이빙: require('app/src/assets/images/search/diving.jpg'),
-  경비행기: require('app/src/assets/images/search/plane.jpg'),
-  샌딩: require('app/src/assets/images/search/sanding.jpg'),
+const SearchModal = ({setSearch, setShowSearch}) => {
+  const [text, setText] = useState('');
+  return (
+    <Block
+      center
+      style={{
+        flex: 0,
+        height: 180,
+        backgroundColor: colors.white,
+        borderRadius: 20,
+        position: 'relative',
+      }}>
+      <Block style={{paddingVertical: 20}}>
+        <TextInput
+          autoFocus={true}
+          style={{fontSize: 22, width: 260}}
+          placeholder="여기는 어떠세요?"
+          onChangeText={text => setText(text)}
+          value={text}
+          onSubmitEditing={() => {
+            setSearch(text);
+            setShowSearch(false);
+          }}></TextInput>
+        <Block flex={false} style={{marginVertical: 10}}>
+          <Text h4 gray style={{marginBottom: 6}}>
+            - 식당명 / 가게명
+          </Text>
+          <Text h4 gray>
+            - 중식, 한식, 분식, 현지식
+          </Text>
+        </Block>
+      </Block>
+      <TouchableWithoutFeedback
+        onPress={() => {
+          setShowSearch(false);
+        }}>
+        <Ionicons size={50} color={colors.black} name="ios-close" />
+      </TouchableWithoutFeedback>
+    </Block>
+  );
 };
-
-const activityCategory = [
-  '전체',
-  '호핑',
-  '고래투어',
-  '시티투어',
-  '다이빙',
-  '경비행기',
-  '샌딩',
-];
 
 export default CategoryScreen = observer(props => {
   const {navigation} = props;
   const [catActive, setCatActive] = useState('전체');
+  const [category, setCategory] = useState({});
 
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const [sort, setSort] = useState('review');
+
+  const [search, setSearch] = useState('');
+  const [sort, setSort] = useState('reviewCnt');
+
+  const [showSearch, setShowSearch] = useState(false);
+  const [showSort, setShowSort] = useState(false);
 
   const [isKorean, setIsKorean] = useState(false);
   const [isPickup, setIsPickup] = useState(false);
@@ -76,6 +143,7 @@ export default CategoryScreen = observer(props => {
     const filterShops = (filteredShops = shops.filter(
       e => e.category == navigation.getParam('category'),
     ));
+    setCategory(mapCategory[navigation.getParam('category')]);
     setSelectedLists(filterShops);
     setIsLoaded(true);
   }, []);
@@ -84,6 +152,25 @@ export default CategoryScreen = observer(props => {
 
   return (
     <SafeAreaView>
+      <Modal
+        backdropOpacity={0.8}
+        animationInTiming={200}
+        useNativeDriver={true}
+        isVisible={showSearch}>
+        <SearchModal
+          setSearch={setSearch}
+          setShowSearch={setShowSearch}></SearchModal>
+      </Modal>
+      <Modal
+        backdropOpacity={0.8}
+        animationInTiming={200}
+        useNativeDriver={true}
+        isVisible={showSort}>
+        <SortModal
+          sort={sort}
+          setSort={setSort}
+          setShowSort={setShowSort}></SortModal>
+      </Modal>
       <FlatList
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
@@ -91,7 +178,8 @@ export default CategoryScreen = observer(props => {
           <Block
             style={{
               marginVertical: 12,
-            }}></Block>
+            }}
+          />
         )}
         ListEmptyComponent={
           <Block
@@ -108,70 +196,40 @@ export default CategoryScreen = observer(props => {
           </Block>
         }
         ListHeaderComponent={
-          <Block style={[style.scrollTab, {marginBottom: 20}]}>
+          <Block style={[style.scrollTab]}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
               </TouchableOpacity>
-              <RNPickerSelect
-                style={{
-                  inputIOS: {
-                    flex: 1,
-                    height: 32,
-                    fontSize: 17,
-                    paddingVertical: 12,
-                    paddingRight: 32,
-                    color: 'black',
-                  },
-                  inputAndroid: {
-                    flex: 1,
-                    height: 20,
-                    width: 120,
-                    fontSize: 17,
-                    paddingVertical: 12,
-                    paddingRight: 32,
-                    textAlign: 'right',
-                    color: 'black',
-                    justifyContent: 'center',
-                    alignItems: 'center',
-                  },
-                  iconContainer: {
-                    top: 2,
-                    justifyContent: 'center',
-                  },
-                }}
-                placeholder={{}}
-                onValueChange={value => setSort(value)}
-                items={[
-                  {label: '평점 좋은 순', value: 'review'},
-                  {label: '리뷰 많은 순', value: 'reviewCnt'},
-                  {label: '저장 많은 순', value: 'like'},
-                ]}
-                Icon={() => {
-                  return <AntDesign size={26} name="bars" />;
-                }}
-              />
+              <Block row style={{flex: 0}}>
+                <TouchableOpacity
+                  onPress={() => setShowSearch(true)}
+                  style={{marginRight: 10}}>
+                  <AntDesign size={24} name="search1" />
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => setShowSort(true)}>
+                  <AntDesign size={26} name="bars" />
+                </TouchableOpacity>
+              </Block>
             </Block>
-            {navigation.getParam('category') === 'Activity' && (
-              <ScrollView
-                horizontal={true}
-                showsHorizontalScrollIndicator={false}
-                style={styles.tabs}>
-                {activityCategory.map((tab, idx) => (
-                  <CategoryTab
-                    key={idx}
-                    tab={tab}
-                    image={cateSrc[tab]}
-                    tabName={tab}
-                    isActive={catActive == tab}
-                    handleTab={tab => setCatActive(tab)}
-                    isLast={activityCategory.length - 1 === idx}
-                  />
-                ))}
-              </ScrollView>
-            )}
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              style={styles.tabs}>
+              {category.name.map((tab, idx) => (
+                <CategoryTab
+                  key={idx}
+                  tab={tab}
+                  image={category.src[tab]}
+                  tabName={tab}
+                  isActive={catActive == tab}
+                  handleTab={tab => setCatActive(tab)}
+                  isLast={category.name.length - 1 === idx}
+                />
+              ))}
+            </ScrollView>
             {navigation.getParam('category') !== 'Place' && (
-              <Block row center style={{marginTop: 8}}>
+              <Block row center style={{marginTop: 12}}>
                 <Text darkgray style={{marginRight: 8}}>
                   필터
                 </Text>
@@ -190,16 +248,7 @@ export default CategoryScreen = observer(props => {
                   setActive={setIsBaby}
                   text={'애기'}
                 />
-                <FilterButton
-                  isActive={isReservation}
-                  setActive={setIsReservation}
-                  text={'예약'}
-                />
-              </Block>
-            )}
-            {navigation.getParam('category') !== 'Place' && (
-              <Block row center style={{marginTop: 8}}>
-                <Text darkgray style={{marginRight: 8}}>
+                <Text darkgray style={{marginLeft: 8, marginRight: 8}}>
                   지역
                 </Text>
                 <FilterButton
@@ -232,7 +281,8 @@ export default CategoryScreen = observer(props => {
           .filter(e => (isPickup ? e.pickup : e))
           .filter(e => (isReservation ? e.reservation : e))
           .filter(e => (!isMak ? e.location !== '막탄' : e))
-          .filter(e => (!isCebu ? e.location !== '세부시티' : e))}
+          .filter(e => (!isCebu ? e.location !== '세부시티' : e))
+          .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
         )}

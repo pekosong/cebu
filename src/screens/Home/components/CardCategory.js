@@ -1,10 +1,18 @@
 import React from 'react';
-import {StyleSheet, TouchableWithoutFeedback, Image} from 'react-native';
+import {
+  StyleSheet,
+  TouchableWithoutFeedback,
+  Image,
+  Dimensions,
+} from 'react-native';
 
 import {Block, Text} from 'app/src/components';
+import {sizes} from 'app/src/styles';
+
+const {width} = Dimensions.get('window');
 
 export default CardCategory = props => {
-  const {item, navigation, last} = props;
+  const {item, navigation} = props;
   return (
     <TouchableWithoutFeedback
       key={item.name}
@@ -13,12 +21,7 @@ export default CardCategory = props => {
           category: item.id,
         })
       }>
-      <Block
-        style={[
-          styles.categoryContainer,
-          styles.shadow,
-          {marginRight: last ? 45 : 5},
-        ]}>
+      <Block style={styles.categoryContainer}>
         <Block
           style={{
             borderTopLeftRadius: 10,
@@ -32,7 +35,6 @@ export default CardCategory = props => {
               height: 70,
             }}
             source={item.src}></Image>
-
           <Text black style={{padding: 12}}>
             {item.name}
           </Text>
@@ -46,12 +48,11 @@ export const styles = StyleSheet.create({
   categoryContainer: {
     flex: 0,
     borderRadius: 10,
-    width: 110,
+    width: (width - sizes.padding - 20) / 3,
     height: 110,
-    marginLeft: 5,
     backgroundColor: 'white',
-  },
-  shadow: {
+    marginHorizontal: 5,
+    marginVertical: 6,
     shadowColor: '#000',
     shadowOffset: {
       width: 1,

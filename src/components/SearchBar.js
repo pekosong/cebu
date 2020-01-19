@@ -11,7 +11,7 @@ import {
 import Block from './Block';
 import Text from './Text';
 import {colors, sizes} from 'app/src/styles';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';
 
@@ -38,7 +38,7 @@ export default SearchBar = props => {
           <Text h1 bold>
             세부의 모든게 있어요
           </Text>
-          <Block flex={false} row style={{marginVertical: 20}}>
+          <Block flex={false} row>
             <TextInput
               autoFocus={true}
               style={{fontSize: 20, width: '100%'}}
@@ -107,19 +107,14 @@ export default SearchBar = props => {
   };
 
   return (
-    <Block flex={false} row center space="between" style={styles.header}>
+    <Block flex={false} row center style={styles.header}>
       <Block row center style={styles.search}>
-        <Ionicons
-          size={20}
-          color={colors.black}
-          name="md-search"
-          style={{width: '10%'}}
-        />
+        <AntDesign size={24} name="search1" />
         <TextInput
           ref={searchRef}
           refField={searchRef}
-          style={{width: '90%'}}
           placeholder="여기는 어떠세요?"
+          style={{marginLeft: 10}}
           onFocus={() => {
             Keyboard.dismiss();
             searchRef.current.blur();
@@ -135,7 +130,7 @@ export const styles = StyleSheet.create({
   header: {
     marginTop: sizes.padding * 2.5,
     marginBottom: 5,
-    paddingHorizontal: sizes.padding * 2,
+    paddingHorizontal: sizes.padding,
   },
   search: {
     paddingVertical: 8,

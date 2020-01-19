@@ -616,7 +616,7 @@ const categories = [
     src: require('../assets/images/search/activity.jpg'),
   },
   {
-    id: 'Nail',
+    id: 'Adult',
     name: '19금',
     tags: ['all', 'aesthetic'],
     count: 16,
