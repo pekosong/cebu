@@ -43,9 +43,7 @@ export default RecommendSection = ({navigation, shop}) => {
     ),
   }));
 
-  const sortedShop = distances
-    .sort((a, b) => a.distance > b.distance)
-    .slice(0, 10);
+  const sortedShop = distances.sort((a, b) => a.distance > b.distance);
 
   return (
     <Block style={[style.shop.categories]}>

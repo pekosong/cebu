@@ -22,7 +22,7 @@ export default CardRect = props => {
       <Block
         style={{
           flex: 0,
-          height: '60%',
+          height: '65%',
           position: 'relative',
           borderTopLeftRadius: 6,
           borderTopRightRadius: 6,
@@ -66,8 +66,8 @@ export const styles = StyleSheet.create({
     marginLeft: 2,
     marginRight: 6,
     marginVertical: 3,
-    height: width / 2.4 - sizes.padding,
-    width: width / 2.1 - sizes.padding,
+    height: width / 2.1 - sizes.padding,
+    width: width / 1.8 - sizes.padding,
     shadowColor: '#000',
     shadowOffset: {
       width: 0,

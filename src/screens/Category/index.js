@@ -8,7 +8,6 @@ import {
   Keyboard,
   TouchableWithoutFeedback,
 } from 'react-native';
-
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {
   CardShop,
@@ -21,13 +20,7 @@ import {
 import {sizes, style, colors} from 'app/src/styles';
 
 import FilterButton from './components/FilterButton';
-import {
-  mapCategory,
-  restaurantSrc,
-  restaurantCategory,
-  activitySrc,
-  activityCategory,
-} from './categoryList.js';
+import {mapCategory} from './categoryList.js';
 
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -38,37 +31,83 @@ import Modal from 'react-native-modal';
 
 const SortModal = ({sort, setSort, setShowSort}) => {
   return (
-    <Block middle>
-      {[
-        {label: '평점 좋은 순', value: 'review'},
-        {label: '리뷰 많은 순', value: 'reviewCnt'},
-        {label: '저장 많은 순', value: 'like'},
-      ].map((item, idx) =>
-        item.value === sort ? (
-          <Button
-            border
-            key={idx}
-            onPress={() => {
-              setSort(item.value);
-              setShowSort(false);
+    <Block bottom style={{marginBottom: -15}}>
+      <Block
+        style={{
+          flex: 0,
+          backgroundColor: 'white',
+          marginHorizontal: -sizes.padding,
+        }}>
+        <Block
+          onPress={() => {
+            setShowSort(false);
+          }}
+          style={{
+            flex: 0,
+            paddingVertical: 16,
+            borderBottomWidth: 0.8,
+            borderBottomColor: colors.gray2,
+            position: 'relative',
+          }}>
+          <Text h3 bold center>
+            정렬 순서
+          </Text>
+          <Block
+            style={{
+              flex: 0,
+              position: 'absolute',
+              right: 20,
+              top: 7,
             }}>
-            <Text bold accent center>
-              {item.label}
-            </Text>
-          </Button>
-        ) : (
-          <Button
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setShowSort(false);
+              }}>
+              <Ionicons size={40} color={colors.black} name="ios-close" />
+            </TouchableWithoutFeedback>
+          </Block>
+        </Block>
+        {[
+          {label: '리뷰 많은 순', value: 'reviewCnt'},
+          {label: '평점 좋은 순', value: 'review'},
+          {label: '저장 많은 순', value: 'like'},
+        ].map((item, idx) => (
+          <Block
             key={idx}
-            onPress={() => {
-              setSort(item.value);
-              setShowSort(false);
+            row
+            style={{
+              flex: 0,
+              borderBottomWidth: 0.3,
+              borderBottomColor: colors.gray2,
             }}>
-            <Text bold gray center>
-              {item.label}
-            </Text>
-          </Button>
-        ),
-      )}
+            <TouchableWithoutFeedback
+              onPress={() => {
+                setSort(item.value);
+                setShowSort(false);
+              }}>
+              <Block
+                row
+                middle
+                center
+                style={{
+                  height: 60,
+                }}>
+                {sort === item.value && (
+                  <Ionicons
+                    style={{marginRight: 10}}
+                    size={40}
+                    color={colors.primary}
+                    name="ios-checkmark"
+                  />
+                )}
+                <Text h4 center>
+                  {item.label}
+                </Text>
+              </Block>
+            </TouchableWithoutFeedback>
+          </Block>
+        ))}
+      </Block>
     </Block>
   );
 };
@@ -132,7 +171,6 @@ export default CategoryScreen = observer(props => {
   const [isKorean, setIsKorean] = useState(false);
   const [isPickup, setIsPickup] = useState(false);
   const [isBaby, setIsBaby] = useState(false);
-  const [isReservation, setIsReservation] = useState(false);
 
   const [isMak, setIsMak] = useState(true);
   const [isCebu, setIsCebu] = useState(true);
@@ -162,8 +200,8 @@ export default CategoryScreen = observer(props => {
           setShowSearch={setShowSearch}></SearchModal>
       </Modal>
       <Modal
-        backdropOpacity={0.8}
-        animationInTiming={200}
+        backdropOpacity={0.1}
+        animationInTiming={500}
         useNativeDriver={true}
         isVisible={showSort}>
         <SortModal
@@ -202,11 +240,6 @@ export default CategoryScreen = observer(props => {
                 <Ionicons size={30} name="ios-arrow-back" />
               </TouchableOpacity>
               <Block row style={{flex: 0}}>
-                <TouchableOpacity
-                  onPress={() => setShowSearch(true)}
-                  style={{marginRight: 10}}>
-                  <AntDesign size={24} name="search1" />
-                </TouchableOpacity>
                 <TouchableOpacity onPress={() => setShowSort(true)}>
                   <AntDesign size={26} name="bars" />
                 </TouchableOpacity>
@@ -279,7 +312,6 @@ export default CategoryScreen = observer(props => {
           .filter(e => (isKorean ? e.korean : e))
           .filter(e => (isBaby ? e.baby : e))
           .filter(e => (isPickup ? e.pickup : e))
-          .filter(e => (isReservation ? e.reservation : e))
           .filter(e => (!isMak ? e.location !== '막탄' : e))
           .filter(e => (!isCebu ? e.location !== '세부시티' : e))
           .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))}

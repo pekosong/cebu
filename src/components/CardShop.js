@@ -17,6 +17,27 @@ import {AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
 
+const RenderTag = ({text}) => {
+  return (
+    <View
+      style={{
+        paddingVertical: 2,
+        paddingHorizontal: 6,
+        borderWidth: 1,
+        backgroundColor: colors.black,
+        borderRadius: 10,
+        marginTop: 2,
+        marginRight: 3,
+        alignItems: 'center',
+        justifyContent: 'center',
+      }}>
+      <Text center white style={{fontSize: 10, fontWeight: 'bold'}}>
+        {text}
+      </Text>
+    </View>
+  );
+};
+
 export default CardShop = ({shop, navigation}) => {
   const {
     id,
@@ -32,26 +53,6 @@ export default CardShop = ({shop, navigation}) => {
     location,
   } = shop;
 
-  renderTag = text => {
-    return (
-      <View
-        style={{
-          paddingVertical: 2,
-          paddingHorizontal: 6,
-          borderWidth: 1,
-          backgroundColor: colors.black,
-          borderRadius: 10,
-          marginTop: 2,
-          marginRight: 3,
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-        <Text center white style={{fontSize: 10, fontWeight: 'bold'}}>
-          {text}
-        </Text>
-      </View>
-    );
-  };
   return (
     <TouchableOpacity
       style={[styles.categories]}
@@ -88,10 +89,10 @@ export default CardShop = ({shop, navigation}) => {
           {'· 저장 ' + convertComma(likes)}
         </Text>
       </Block>
-      <Block row>
-        {korean && renderTag('한국어')}
-        {pickup && renderTag('픽업')}
-        {baby && renderTag('애기')}
+      <Block row center style={{marginTop: 3}}>
+        {korean && <RenderTag text={'한국어'}></RenderTag>}
+        {pickup && <RenderTag text={'픽업'}></RenderTag>}
+        {baby && <RenderTag text={'애기'}></RenderTag>}
       </Block>
       <Block style={styles.corner}></Block>
     </TouchableOpacity>

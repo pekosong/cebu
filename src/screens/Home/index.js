@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 
 import {
-  SearchBar,
+  Search,
   Block,
   Text,
   Loader,
@@ -64,11 +64,21 @@ const HomeScreen = observer(props => {
     };
   }, []);
 
-  const filterShopList = category =>
-    shopStore.shopList
-      .filter(e => e.category == category)
-      .sort((a, b) => b.review - a.review)
-      .slice(0, 5);
+  const shuffleArray = array => {
+    let i = array.length - 1;
+    for (; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      const temp = array[i];
+      array[i] = array[j];
+      array[j] = temp;
+    }
+    return array;
+  };
+
+  const filterShopList = category => {
+    const arr = shuffleArray(shopStore.shopList);
+    return arr.filter(e => e.category == category).slice(0, 5);
+  };
 
   if (!isLoaded) return <Loader></Loader>;
 
@@ -76,7 +86,7 @@ const HomeScreen = observer(props => {
     <ScrollView showsVerticalScrollIndicator={false} vertical={true}>
       <Block
         style={{
-          height: height * 0.6,
+          height: height * 0.4,
           position: 'relative',
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 200,
@@ -99,56 +109,40 @@ const HomeScreen = observer(props => {
         <Block
           style={{
             position: 'absolute',
-            width: '100%',
-            height: '100%',
-            backgroundColor: 'rgba(0,0,0,0.3)',
-          }}></Block>
-        <Block
-          style={{
-            position: 'absolute',
-            top: 50,
-            right: 16,
+            width: width,
+            top: 70,
             zIndex: 10,
             borderRadius: 30,
-            borderWidth: 3,
-            borderColor: colors.primary,
+            paddingHorizontal: sizes.padding,
           }}>
-          <CachedImage
-            uri={'https://randomuser.me/api/portraits/women/2.jpg'}
-            style={{
-              height: 50,
-              width: 50,
-              borderRadius: 30,
-            }}></CachedImage>
+          <Block center row space="between">
+            <Block>
+              <Text size={23} white bold>
+                오늘은
+              </Text>
+              <Text size={23} white bold>
+                이런 곳은 어때요?
+              </Text>
+            </Block>
+            <CachedImage
+              uri={'https://randomuser.me/api/portraits/women/2.jpg'}
+              style={{
+                height: 50,
+                width: 50,
+                borderRadius: 30,
+              }}></CachedImage>
+          </Block>
         </Block>
         <Block
           style={{
             width: width,
             position: 'absolute',
-            top: (height * 0.7) / 3,
+            top: (height * 0.5) / 3,
             left: 0,
             zIndex: 100,
             padding: 5,
           }}>
-          <SearchBar />
-        </Block>
-        <Block
-          style={{
-            width: width - 100,
-            position: 'absolute',
-            bottom: 20,
-            left: 20,
-            zIndex: 100,
-          }}>
-          <Text size={36} white bold style={{lineHeight: 40}}>
-            Discover
-          </Text>
-          <Text
-            size={50}
-            bold
-            style={{color: '#81ecec', marginTop: 10, lineHeight: 50}}>
-            Cebu
-          </Text>
+          <Search />
         </Block>
       </Block>
       {/* <Block center row space="between" style={styles.title}>
@@ -214,16 +208,44 @@ const HomeScreen = observer(props => {
       </Block>
       <Divider></Divider>
       {[
-        {title: '맛집', category: 'Restaurant', items: restaurantList},
-        {title: '스파', category: 'Massage', items: massageList},
-        {title: '배달음식', category: 'Food', items: foodList},
-        {title: '놀이', category: 'Activity', items: activityList},
-        {title: '갈만한 곳', category: 'Place', items: placeList},
+        {
+          title: '맛집',
+          subTitle: '세부 최고의 맛집',
+          category: 'Restaurant',
+          items: restaurantList,
+        },
+        {
+          title: '스파',
+          subTitle: '하루의 피로는 스파로',
+          category: 'Massage',
+          items: massageList,
+        },
+        {
+          title: '배달음식',
+          subTitle: '리조트에서 편하게',
+          category: 'Food',
+          items: foodList,
+        },
+        {
+          title: '놀이',
+          subTitle: '하루 정도는 신나게',
+          category: 'Activity',
+          items: activityList,
+        },
+        {
+          title: '갈만한 곳',
+          subTitle: '세부 왔으면 그래도 여기는',
+          category: 'Place',
+          items: placeList,
+        },
       ].map((item, idx) => (
         <Block key={idx}>
           <Block center row space="between" style={styles.title}>
             <Text h3 bold>
-              {item.title}
+              {item.title + '  '}
+              <Text h4 gray>
+                {item.subTitle}
+              </Text>
             </Text>
             <TouchableOpacity
               onPress={() =>

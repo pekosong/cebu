@@ -10,7 +10,7 @@ import Divider from './Divider';
 import Loader from './Loader';
 
 import Switch from './Switch';
-import SearchBar from './SearchBar';
+import Search from './Search';
 import WideText from './WideText';
 import FullImageSlider from './FullImageSlider';
 import CachedImage from './CachedImage';
@@ -31,7 +31,7 @@ export {
   Divider,
   Loader,
   Switch,
-  SearchBar,
+  Search,
   WideText,
   FullImageSlider,
   CachedImage,
