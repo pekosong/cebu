@@ -18,7 +18,11 @@ export default CardRecommend = ({item, navigation}) => {
     <TouchableOpacity
       onPress={() => navigation.push('Shop', {shopId: shop.id})}>
       <Block row>
-        <CachedImage style={styles.imageStyle} uri={shop.preview}></CachedImage>
+        <CachedImage
+          style={styles.imageStyle}
+          uri={
+            typeof shop.preview === 'string' ? shop.preview : shop.preview[1]
+          }></CachedImage>
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
             <Text h4 bold style={{width: 200}}>

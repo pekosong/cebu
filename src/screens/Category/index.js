@@ -7,6 +7,8 @@ import {
   TextInput,
   Keyboard,
   TouchableWithoutFeedback,
+  Dimensions,
+  View,
 } from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {
@@ -28,6 +30,7 @@ import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 import Modal from 'react-native-modal';
+const SCREEN_HEIGHT = Dimensions.get('window').height;
 
 const SortModal = ({sort, setSort, setShowSort}) => {
   return (
@@ -189,7 +192,7 @@ export default CategoryScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <Modal
         backdropOpacity={0.8}
         animationInTiming={200}
@@ -210,27 +213,29 @@ export default CategoryScreen = observer(props => {
           setShowSort={setShowSort}></SortModal>
       </Modal>
       <FlatList
+        style={{flex: 1}}
+        disableVirtualization={false}
+        contentContainerStyle={[{flexGrow: 1}]}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         ItemSeparatorComponent={() => (
           <Block
             style={{
+              height: '100%',
               marginVertical: 12,
             }}
           />
         )}
         ListEmptyComponent={
-          <Block
-            middle
-            style={{
-              height: 550,
-              paddingHorizontal: sizes.padding,
-            }}>
-            <Button border onPress={() => {}}>
-              <Text bold accent center>
-                검색 결과 없음
+          <Block middle>
+            <Block flex={false}>
+              <Text h1 bold center>
+                업체 추가 중
               </Text>
-            </Button>
+              <Text h3 center darkgray style={{marginTop: 10}}>
+                현재 업체를 준비 중에 있습니다.
+              </Text>
+            </Block>
           </Block>
         }
         ListHeaderComponent={

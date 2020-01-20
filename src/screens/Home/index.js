@@ -76,8 +76,9 @@ const HomeScreen = observer(props => {
   };
 
   const filterShopList = category => {
-    const arr = shuffleArray(shopStore.shopList);
-    return arr.filter(e => e.category == category).slice(0, 5);
+    return shuffleArray(shopStore.shopList)
+      .filter(e => e.category == category)
+      .slice(0, 5);
   };
 
   if (!isLoaded) return <Loader></Loader>;
@@ -117,8 +118,8 @@ const HomeScreen = observer(props => {
           }}>
           <Block center row space="between">
             <Block>
-              <Text size={23} white bold>
-                오늘은
+              <Text size={23} white bold style={{marginBottom: 6}}>
+                오늘,
               </Text>
               <Text size={23} white bold>
                 이런 곳은 어때요?
@@ -209,7 +210,7 @@ const HomeScreen = observer(props => {
       <Divider></Divider>
       {[
         {
-          title: '맛집',
+          title: '식당',
           subTitle: '세부 최고의 맛집',
           category: 'Restaurant',
           items: restaurantList,
@@ -227,13 +228,13 @@ const HomeScreen = observer(props => {
           items: foodList,
         },
         {
-          title: '놀이',
+          title: '액티비티',
           subTitle: '하루 정도는 신나게',
           category: 'Activity',
           items: activityList,
         },
         {
-          title: '갈만한 곳',
+          title: '명소',
           subTitle: '세부 왔으면 그래도 여기는',
           category: 'Place',
           items: placeList,

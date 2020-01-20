@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
 
-import {Favorite, Block, Text} from 'app/src/components';
+import {Favorite, Block, Text, CachedImage} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
@@ -27,7 +27,11 @@ export default CardRect = props => {
           borderTopLeftRadius: 6,
           borderTopRightRadius: 6,
         }}>
-        <Image style={styles.imageStyle} source={{uri: item.preview}}></Image>
+        <CachedImage
+          uri={
+            typeof item.preview === 'string' ? item.preview : item.preview[1]
+          }
+          style={styles.imageStyle}></CachedImage>
         <Favorite
           shop={{
             id: item.id,
