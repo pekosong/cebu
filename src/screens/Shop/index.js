@@ -1,5 +1,12 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+  Platform,
+} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
@@ -52,7 +59,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
       onPress={() => {
         if (shopScroll.current) {
           shopScroll.current.getNode().scrollTo({
-            y: 260,
+            y: Platform.OS === 'ios' ? 260 : 210,
             animated: true,
           });
         }
@@ -136,12 +143,12 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
 
-    if (e.nativeEvent.contentOffset.y > 80) {
+    if (e.nativeEvent.contentOffset.y > 200) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 50,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 80) {
+    } else if (e.nativeEvent.contentOffset.y < 200) {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 25,
@@ -152,19 +159,21 @@ export default ShopScreen = observer(({navigation}) => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
+    <SafeAreaView style={{flex: 1}}>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
-      <Header top={animatedScrollYValue} shop={shop}></Header>
       <Animated.View
-        style={{
-          ...styles.tabs,
-          top: animatedScrollYValue.interpolate({
-            inputRange: [0, 260],
-            outputRange: [340, 90],
-            extrapolate: 'clamp',
-            useNativeDriver: true,
-          }),
-        }}>
+        style={[
+          styles.tabs,
+          {
+            top: Platform.OS === 'ios' ? 40 : 90,
+            opacity: fadeAnim.interpolate({
+              inputRange: [0, 1],
+              outputRange: [0, 1],
+              extrapolate: 'clamp',
+              useNativeDriver: true,
+            }),
+          },
+        ]}>
         <Block row flex={false}>
           {[0, 1, 2, 3].map(tab => (
             <ShopTab
@@ -183,6 +192,7 @@ export default ShopScreen = observer(({navigation}) => {
             left: xAnim,
           }}></Animated.View>
       </Animated.View>
+      <Header top={animatedScrollYValue} shop={shop}></Header>
       <Animated.ScrollView
         ref={ref => {
           shopScroll.current = ref;
@@ -198,38 +208,69 @@ export default ShopScreen = observer(({navigation}) => {
         )}
         scrollEventThrottle={360}>
         <ShopTitle shop={shop}></ShopTitle>
-        <Animated.View
+        <Block
           style={{
-            marginTop: 340,
-            paddingTop: 70,
-            backgroundColor: colors.white,
-            minHeight: height - 100,
+            paddingTop: 250,
           }}>
-          {todo && <ReservationSection shop={shop} todo={todo} />}
-          {show === 0 && MENUS.includes(shop.category) && (
-            <MenuSection shop={shop} isKorean={isKorean} />
-          )}
-          {show === 0 && shop.category === 'Massage' && (
-            <MassageSection shop={shop} isKorean={isKorean} />
-          )}
-          {show === 0 && shop.category === 'Activity' && (
-            <ProgramSection shop={shop} />
-          )}
-          {show === 0 && shop.category === 'Place' && (
-            <PlaceSection shop={shop} isKorean={isKorean} />
-          )}
-          {show === 1 && <ReviewSection shop={shop} navigation={navigation} />}
-          {show === 2 && <ShopInfoSection shop={shop} />}
-          {show === 3 && (
-            <RecommendSection navigation={navigation} shop={shop} />
-          )}
-        </Animated.View>
+          <Animated.View
+            style={[
+              styles.tabs,
+              {
+                opacity: fadeAnim.interpolate({
+                  inputRange: [0, 1],
+                  outputRange: [1, 0],
+                  extrapolate: 'clamp',
+                  useNativeDriver: true,
+                }),
+              },
+            ]}>
+            <Block row flex={false}>
+              {[0, 1, 2, 3].map(tab => (
+                <ShopTab
+                  key={tab}
+                  tab={tab}
+                  shop={shop}
+                  isActive={show == tab}
+                  setShow={setShow}
+                  shopScroll={shopScroll}
+                  xAnim={xAnim}></ShopTab>
+              ))}
+            </Block>
+            <Animated.View
+              style={{
+                ...styles.bottomBar,
+                left: xAnim,
+              }}></Animated.View>
+          </Animated.View>
+          <Animated.View style={{paddingTop: 20, backgroundColor: 'white'}}>
+            {/* {todo && <ReservationSection shop={shop} todo={todo} />} */}
+            {show === 0 && MENUS.includes(shop.category) && (
+              <MenuSection shop={shop} isKorean={isKorean} />
+            )}
+            {show === 0 && shop.category === 'Massage' && (
+              <MassageSection shop={shop} isKorean={isKorean} />
+            )}
+            {show === 0 && shop.category === 'Activity' && (
+              <ProgramSection shop={shop} />
+            )}
+            {show === 0 && shop.category === 'Place' && (
+              <PlaceSection shop={shop} isKorean={isKorean} />
+            )}
+            {show === 1 && (
+              <ReviewSection shop={shop} navigation={navigation} />
+            )}
+            {show === 2 && <ShopInfoSection shop={shop} />}
+            {show === 3 && (
+              <RecommendSection navigation={navigation} shop={shop} />
+            )}
+          </Animated.View>
+        </Block>
       </Animated.ScrollView>
       <FloatButton navigation={navigation} shop={shop} user={user} />
       {show === 0 && (
         <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
       )}
-    </>
+    </SafeAreaView>
   );
 });
 
@@ -242,7 +283,6 @@ ShopScreen.navigationOptions = {
 const styles = StyleSheet.create({
   tabs: {
     zIndex: 1000,
-    position: 'absolute',
     height: 50,
     backgroundColor: '#fff',
     paddingHorizontal: sizes.padding,

@@ -27,6 +27,7 @@ const ReviewSection = observer(({navigation, shop}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
+        key={'ReviewList'}
         ItemSeparatorComponent={() => (
           <Block
             style={{

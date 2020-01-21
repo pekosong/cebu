@@ -143,7 +143,7 @@ const HomeScreen = observer(props => {
             zIndex: 100,
             padding: 5,
           }}>
-          <Search />
+          <Search navigation={navigation} />
         </Block>
       </Block>
       {/* <Block center row space="between" style={styles.title}>

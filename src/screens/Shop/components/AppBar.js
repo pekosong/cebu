@@ -1,7 +1,7 @@
 import React, {useContext} from 'react';
 import {Dimensions, StyleSheet, TouchableOpacity, Animated} from 'react-native';
 
-import {Block} from 'app/src/components';
+import {Block, Favorite} from 'app/src/components';
 import {sizes, colors, fonts, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
@@ -11,6 +11,46 @@ import {updateFavorite} from 'app/src/api/user';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 const {width} = Dimensions.get('window');
+
+const ChatIcon = ({handlePress, fadeAnim}) => {
+  return (
+    <TouchableOpacity
+      onPress={handlePress}
+      style={{marginHorizontal: 10, marginTop: 2}}>
+      <Animated.Text
+        style={{
+          color: fadeAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
+          }),
+        }}>
+        <AntDesign size={26} name="message1" />
+      </Animated.Text>
+    </TouchableOpacity>
+  );
+};
+
+const FavoriteIcon = ({handlePress, fadeAnim, onOff}) => {
+  return (
+    <TouchableOpacity onPress={handlePress}>
+      <Animated.Text
+        style={{
+          color: fadeAnim.interpolate({
+            inputRange: [0, 1],
+            outputRange: onOff
+              ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
+              : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
+            extrapolate: 'clamp',
+            useNativeDriver: true,
+          }),
+        }}>
+        <Ionicons size={30} name={onOff ? 'ios-heart-empty' : 'ios-heart'} />
+      </Animated.Text>
+    </TouchableOpacity>
+  );
+};
 
 const AppBar = observer(props => {
   const {navigation, shop, fadeAnim} = props;
@@ -43,34 +83,6 @@ const AppBar = observer(props => {
           extrapolate: 'clamp',
           useNativeDriver: true,
         }),
-        shadowColor: '#000',
-        shadowOffset: {
-          width: 0,
-          height: fadeAnim.interpolate({
-            inputRange: [0, 1],
-            outputRange: [0, 2],
-            extrapolate: 'clamp',
-            useNativeDriver: true,
-          }),
-        },
-        shadowOpacity: fadeAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 0.25],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-        shadowRadius: fadeAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 3.84],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-        elevation: fadeAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 2],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
       }}>
       <Block center row>
         <TouchableOpacity
@@ -100,50 +112,21 @@ const AppBar = observer(props => {
           {shop.name}
         </Animated.Text>
         <Block row right>
-          <TouchableOpacity
-            onPress={() =>
+          <ChatIcon
+            handlePress={() =>
               navigation.navigate('Chat', {
                 email: user.email,
                 shopId: shop.id,
                 shopName: shop.name,
               })
             }
-            style={{marginHorizontal: 10, marginTop: 2}}>
-            <Animated.Text
-              style={{
-                color: fadeAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange: ['rgb(255, 255, 255)', 'rgb(0, 0, 0)'],
-                  extrapolate: 'clamp',
-                  useNativeDriver: true,
-                }),
-              }}>
-              <AntDesign size={26} name="message1" />
-            </Animated.Text>
-          </TouchableOpacity>
-          <TouchableOpacity onPress={() => handleAddHeart(shop)}>
-            <Animated.Text
-              style={{
-                color: fadeAnim.interpolate({
-                  inputRange: [0, 1],
-                  outputRange:
-                    user.myfavorites.map(e => e.id).indexOf(shop.id) == -1
-                      ? ['rgb(255, 255, 255)', 'rgb(0, 0, 0)']
-                      : ['rgb(255, 0, 0)', 'rgb(255, 0, 0)'],
-                  extrapolate: 'clamp',
-                  useNativeDriver: true,
-                }),
-              }}>
-              <Ionicons
-                size={30}
-                name={
-                  user.myfavorites.map(e => e.id).indexOf(shop.id) == -1
-                    ? 'ios-heart-empty'
-                    : 'ios-heart'
-                }
-              />
-            </Animated.Text>
-          </TouchableOpacity>
+            fadeAnim={fadeAnim}
+          />
+          <FavoriteIcon
+            handlePress={() => handleAddHeart(shop)}
+            fadeAnim={fadeAnim}
+            onOff={user.myfavorites.map(e => e.id).indexOf(shop.id) == -1}
+          />
         </Block>
       </Block>
     </Animated.View>
@@ -164,7 +147,6 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
     position: 'absolute',
     zIndex: 100,
-    backgroundColor: 'yellow',
   },
 });
 

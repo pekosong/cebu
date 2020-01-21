@@ -10,6 +10,7 @@ export default MassageSection = ({shop, isKorean}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
+        key={'MassageList'}
         ItemSeparatorComponent={() => (
           <Block
             style={{

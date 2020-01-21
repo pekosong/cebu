@@ -10,6 +10,7 @@ export default MenuSection = ({shop, isKorean}) => {
   return (
     <Block style={style.shop.categories}>
       <FlatList
+        key={'MenuList'}
         ItemSeparatorComponent={() => (
           <Block
             style={{

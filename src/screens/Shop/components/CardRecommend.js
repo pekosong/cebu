@@ -26,9 +26,9 @@ export default CardRecommend = ({item, navigation}) => {
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
             <Text h4 bold style={{width: 200}}>
-              {shop.name.length < 8
+              {shop.name.length < 10
                 ? shop.name + ' '
-                : shop.name.substring(0, 8) + '..' + ' '}
+                : shop.name.substring(0, 10) + '..' + ' '}
               <Text size={12} gray>
                 {shop.tags[0]}
               </Text>
@@ -75,14 +75,16 @@ export default CardRecommend = ({item, navigation}) => {
                 {`${shop.review} · 리뷰 ${convertComma(shop.reviewCnt)}`}
               </Text>
             </Block>
-            <Block row bottom center>
-              <AntDesign
-                size={12}
-                name="car"
-                style={{color: colors.darkgray, marginRight: 3}}
-              />
-              <Text darkgray size={12}>{`${distance.toFixed(1)}km`}</Text>
-            </Block>
+            {distance && (
+              <Block row bottom center>
+                <AntDesign
+                  size={12}
+                  name="car"
+                  style={{color: colors.darkgray, marginRight: 3}}
+                />
+                <Text darkgray size={12}>{`${distance.toFixed(1)}km`}</Text>
+              </Block>
+            )}
           </Block>
         </Block>
       </Block>

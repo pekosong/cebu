@@ -6,6 +6,7 @@ import {fromRight, fromBottom} from 'react-navigation-transitions';
 
 import HomeScreen from 'app/src/screens/Home';
 import CategoryScreen from 'app/src/screens/Category';
+import SearchScreen from 'app/src/screens/Search';
 
 import MyTripScreen from 'app/src/screens/MyTrip';
 
@@ -34,6 +35,7 @@ const SearchStack = createStackNavigator(
     Category: CategoryScreen,
     Shop: ShopScreen,
     Chat: ChatScreen,
+    Search: SearchScreen,
   },
   {
     initialRouteName: 'Home',

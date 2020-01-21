@@ -7,9 +7,6 @@ import {Asset} from 'expo-asset';
 import AppNavigator from './src/navigation/AppNavigator';
 
 import {Block} from './src/components';
-import {store} from './src/redux/store';
-
-import {Provider} from 'react-redux';
 
 // YellowBox.ignoreWarnings(['Warning: ...']);
 // console.ignoredYellowBox = ['Setting a timer'];
@@ -27,12 +24,10 @@ export default function App(props) {
     );
   } else {
     return (
-      <Provider store={store}>
-        <Block style={styles.container}>
-          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-          <AppNavigator />
-        </Block>
-      </Provider>
+      <Block style={styles.container}>
+        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+        <AppNavigator />
+      </Block>
     );
   }
 }

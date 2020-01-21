@@ -239,7 +239,7 @@ export default CategoryScreen = observer(props => {
           </Block>
         }
         ListHeaderComponent={
-          <Block style={[style.scrollTab]}>
+          <Block style={style.scrollTab}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />

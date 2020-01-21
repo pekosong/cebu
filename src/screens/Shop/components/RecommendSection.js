@@ -48,6 +48,7 @@ export default RecommendSection = ({navigation, shop}) => {
   return (
     <Block style={[style.shop.categories]}>
       <FlatList
+        key={'RecommendList'}
         ItemSeparatorComponent={() => (
           <Block
             style={{

@@ -6,6 +6,7 @@ import {
   Modal,
   TextInput,
   Keyboard,
+  TouchableWithoutFeedback,
 } from 'react-native';
 
 import Block from './Block';
@@ -16,7 +17,7 @@ import {FlatList} from 'react-native-gesture-handler';
 import axios from 'axios';
 
 export default Search = props => {
-  const {style, children} = props;
+  const {style, children, navigation} = props;
   const [showSearch, setShowSearch] = useState(false);
   const [searchResult, setSearchResult] = useState([]);
   const searchRef = useRef(null);
@@ -107,22 +108,15 @@ export default Search = props => {
   };
 
   return (
-    <Block flex={false} row center style={styles.header}>
-      <Block row center style={styles.search}>
-        <AntDesign size={24} name="search1" />
-        <TextInput
-          ref={searchRef}
-          refField={searchRef}
-          placeholder="여기는 어떠세요?"
-          style={{marginLeft: 10}}
-          onFocus={() => {
-            Keyboard.dismiss();
-            searchRef.current.blur();
-            setShowSearch(true);
-          }}></TextInput>
+    <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
+      <Block flex={false} row center style={styles.header}>
+        <Block row center style={styles.search}>
+          <AntDesign size={24} name="search1" />
+          <Text style={{marginLeft: 10}}>여기는 어떠세요?</Text>
+        </Block>
+        {renderSearch()}
       </Block>
-      {renderSearch()}
-    </Block>
+    </TouchableWithoutFeedback>
   );
 };
 
