@@ -1,8 +1,9 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {Block, Text, CachedImage} from 'app/src/components';
-
+import Block from './Block';
+import Text from './Text';
+import CachedImage from './CachedImage';
 import {convertComma} from 'app/src/utils';
 import {colors} from 'app/src/styles';
 import {AntDesign} from '@expo/vector-icons';
@@ -13,7 +14,7 @@ const MAP = {
   Restaurant: '식당',
   Food: '배달',
 };
-export default CardRecommend = ({item, navigation}) => {
+export default CardRecommend = ({item, navigation, isDistance}) => {
   const {shop, distance} = item;
   return (
     <TouchableOpacity
@@ -22,14 +23,12 @@ export default CardRecommend = ({item, navigation}) => {
         <CachedImage
           style={styles.imageStyle}
           uri={
-            typeof shop.preview === 'string' ? shop.preview : shop.preview[1]
+            typeof shop.preview === 'string' ? shop.preview : shop.preview[0]
           }></CachedImage>
         <Block middle>
           <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
-            <Text h4 bold style={{width: 200}}>
-              {shop.name.length < 10
-                ? shop.name + ' '
-                : shop.name.substring(0, 10) + '..' + ' '}
+            <Text numberOfLines={1} h4 bold style={{width: 190}}>
+              {shop.name + '  '}
               <Text size={12} gray>
                 {shop.tags[0]}
               </Text>
@@ -76,7 +75,7 @@ export default CardRecommend = ({item, navigation}) => {
                 {`${shop.review} · 리뷰 ${convertComma(shop.reviewCnt)}`}
               </Text>
             </Block>
-            {distance && (
+            {isDistance && distance !== '' && (
               <Block row bottom center>
                 <AntDesign
                   size={12}

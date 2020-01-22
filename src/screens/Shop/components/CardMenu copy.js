@@ -18,12 +18,21 @@ export default CardMenu = ({item, isKorean}) => {
           numberOfLines={2}>
           {item.desc ? item.desc : '메뉴설명'}
         </Text>
-        <Block row center>
-          <Text h3>{`${convertComma(item.price * (isKorean ? 22 : 1))} `}</Text>
-          <Text darkgray style={{marginTop: 3}}>
-            {isKorean ? '원' : '페소'}
-          </Text>
-        </Block>
+        {isKorean ? (
+          <Block row center>
+            <Text h3>{`${convertComma(item.price * 22)} `}</Text>
+            <Text darkgray style={{marginTop: 3}}>
+              원
+            </Text>
+          </Block>
+        ) : (
+          <Block row center>
+            <Text h3>{`${convertComma(item.price)} `}</Text>
+            <Text darkgray style={{marginTop: 3}}>
+              페소
+            </Text>
+          </Block>
+        )}
       </Block>
       <CachedImage
         style={styles.imageStyle}

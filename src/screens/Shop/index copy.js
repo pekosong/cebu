@@ -82,7 +82,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
       onPress={() => {
         if (shopScroll.current) {
           shopScroll.current.getNode().scrollTo({
-            y: 310,
+            y: 240,
             animated: true,
           });
         }
@@ -166,12 +166,12 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
 
-    if (e.nativeEvent.contentOffset.y > 250) {
+    if (e.nativeEvent.contentOffset.y > 200) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 50,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 250) {
+    } else if (e.nativeEvent.contentOffset.y < 200) {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 25,
@@ -216,7 +216,7 @@ export default ShopScreen = observer(({navigation}) => {
         <ShopTitle shop={shop}></ShopTitle>
         <Block
           style={{
-            paddingTop: 350,
+            paddingTop: 280,
           }}>
           <TabBar
             fadeAnim={fadeAnim}

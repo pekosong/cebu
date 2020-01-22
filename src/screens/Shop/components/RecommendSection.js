@@ -1,18 +1,16 @@
 import React, {useContext} from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 
-import CardRecommend from './CardRecommend';
-
 import {ShopStoreContext} from 'app/src/store/shop';
 
-import {Block, Text} from 'app/src/components';
+import {Block, Text, CardRecommend} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {style, colors} from 'app/src/styles';
+import {style} from 'app/src/styles';
 
 export default RecommendSection = ({navigation, shop}) => {
   const shopList = useContext(ShopStoreContext)
     .shopList.filter(e => e.id != shop.id)
-    .filter(e => ['Massage', 'Restaurant', 'Place'].includes(e.category));
+    .slice(0, 20);
 
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     var R = 6371; // Radius of the earth in km
@@ -63,7 +61,10 @@ export default RecommendSection = ({navigation, shop}) => {
         }
         data={sortedShop}
         renderItem={({item}) => (
-          <CardRecommend item={item} navigation={navigation}></CardRecommend>
+          <CardRecommend
+            item={item}
+            navigation={navigation}
+            isDistance={true}></CardRecommend>
         )}
         keyExtractor={(item, idx) => idx.toString()}
       />

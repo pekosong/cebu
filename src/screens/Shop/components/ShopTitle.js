@@ -12,7 +12,7 @@ const {width} = Dimensions.get('window');
 export default HeaderSection = ({shop}) => {
   return (
     <Block style={styles.shopTitle}>
-      <Text h1 bold style={{marginBottom: 0}}>
+      <Text h1 bold>
         {shop.name}
       </Text>
       <Text primary bold>
@@ -33,7 +33,7 @@ export default HeaderSection = ({shop}) => {
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: 100,
+    top: 180,
     position: 'absolute',
     height: 140,
     width: width - 60,

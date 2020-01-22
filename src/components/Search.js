@@ -111,8 +111,14 @@ export default Search = props => {
     <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
       <Block flex={false} row center style={styles.header}>
         <Block row center style={styles.search}>
-          <AntDesign size={24} name="search1" />
-          <Text style={{marginLeft: 10}}>여기는 어떠세요?</Text>
+          <AntDesign
+            size={18}
+            name="search1"
+            style={{color: colors.darkgray}}
+          />
+          <Text darkgray style={{marginLeft: 10}}>
+            여기는 어떠세요?
+          </Text>
         </Block>
         {renderSearch()}
       </Block>

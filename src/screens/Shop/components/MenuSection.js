@@ -31,8 +31,30 @@ export default MenuSection = ({shop, isKorean}) => {
 
   return (
     <Block style={style.shop.categories}>
+      <FlatList
+        key={'MenuList'}
+        ItemSeparatorComponent={() => (
+          <Block
+            style={{
+              borderBottomWidth: 0.2,
+              borderBottomColor: '#ddd',
+              marginVertical: 15,
+            }}></Block>
+        )}
+        ListHeaderComponent={
+          <Block row space="between" style={{marginBottom: 30}}>
+            <Text h1 bold>
+              대표 메뉴
+            </Text>
+          </Block>
+        }
+        data={shop.menus}
+        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
+        keyExtractor={(item, idx) => idx.toString()}
+      />
       {shop.menuImage.length !== 0 && (
-        <Block>
+        <Block style={{marginBottom: 50}}>
+          <Divider></Divider>
           <Block row space="between" style={{marginBottom: 20}}>
             <Text h1 bold>
               메뉴판
@@ -78,32 +100,8 @@ export default MenuSection = ({shop, isKorean}) => {
               })}
             />
           </Modal>
-          <Divider></Divider>
         </Block>
       )}
-      <FlatList
-        key={'MenuList'}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              borderBottomWidth: 0.2,
-              borderBottomColor: '#ddd',
-              marginVertical: 15,
-            }}></Block>
-        )}
-        contentContainerStyle={{paddingBottom: 50}}
-        ListHeaderComponent={
-          <Block row space="between" style={{marginBottom: 30}}>
-            <Text h1 bold>
-              대표 메뉴
-            </Text>
-          </Block>
-        }
-        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
-        data={shop.menus}
-        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
-        keyExtractor={(item, idx) => idx.toString()}
-      />
     </Block>
   );
 };

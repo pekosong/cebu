@@ -1,11 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, FlatList, SafeAreaView, TextInput} from 'react-native';
-import {Block, Loader, Text} from 'app/src/components';
-import CardRecommend from 'app/src/screens/Shop/components/CardRecommend';
+import {Block, Loader, Text, CardRecommend} from 'app/src/components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 
-import {sizes, style} from 'app/src/styles';
+import {sizes, style, colors} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
@@ -70,15 +69,29 @@ export default SearchScreen = observer(props => {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
               </TouchableOpacity>
-              <Block style={styles.search}>
+              <Block
+                center
+                middle
+                style={[styles.search, {paddingLeft: search === '' ? 40 : 15}]}>
                 <TextInput
                   value={search}
                   onChangeText={text => setSearch(text)}
-                  style={{marginLeft: 10, fontSize: 16, width: '100%'}}
+                  style={{fontSize: 16, width: '100%'}}
                   placeholder="여기는 어떠세요?"
                   onSubmitEditing={() => {
                     setSearchText(search);
                   }}></TextInput>
+                {search === '' && (
+                  <Block style={{position: 'absolute', left: 10, top: 6}}>
+                    <AntDesign
+                      size={18}
+                      name="search1"
+                      style={{
+                        color: colors.gray,
+                      }}
+                    />
+                  </Block>
+                )}
                 {search !== '' && (
                   <Block style={{position: 'absolute', right: 20, top: 2}}>
                     <TouchableOpacity
@@ -127,12 +140,13 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
   },
   search: {
+    height: 30,
     position: 'relative',
     marginBottom: 2,
     marginLeft: 12,
     marginRight: 2,
     paddingVertical: 3,
-    paddingLeft: 6,
+
     borderRadius: 20,
     backgroundColor: '#eee',
     shadowColor: '#000',
@@ -142,6 +156,6 @@ const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 2,
   },
 });

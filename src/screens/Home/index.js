@@ -92,14 +92,12 @@ const HomeScreen = observer(props => {
           borderBottomLeftRadius: 50,
           borderBottomRightRadius: 200,
         }}>
-        <CachedImage
-          uri={
-            'https://images.unsplash.com/photo-1565319742422-0a4cf646e166?ixlib=rb-1.2.1&auto=format&fit=crop&w=1868&q=80'
-          }
+        <Image
+          source={require('app/src/assets/images/hello.jpg')}
           style={{
             height: '100%',
-            width: width,
-          }}></CachedImage>
+            resizeMode: 'cover',
+          }}></Image>
         <Block
           style={{
             position: 'absolute',
@@ -119,17 +117,17 @@ const HomeScreen = observer(props => {
           <Block center row space="between">
             <Block>
               <Text size={23} white bold style={{marginBottom: 6}}>
-                오늘,
+                세부,
               </Text>
               <Text size={23} white bold>
                 이런 곳은 어때요?
               </Text>
             </Block>
             <CachedImage
-              uri={'https://randomuser.me/api/portraits/women/2.jpg'}
+              uri={'https://randomuser.me/api/portraits/men/19.jpg'}
               style={{
-                height: 50,
-                width: 50,
+                height: 60,
+                width: 60,
                 borderRadius: 30,
               }}></CachedImage>
           </Block>

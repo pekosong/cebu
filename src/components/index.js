@@ -2,6 +2,8 @@ import Block from './Block';
 import Button from './Button';
 
 import CardShop from './CardShop';
+import CardRecommend from './CardRecommend';
+
 import CategoryTab from './CategoryTab';
 
 import Input from './Input';
@@ -24,6 +26,7 @@ export {
   Block,
   Button,
   CardShop,
+  CardRecommend,
   CategoryTab,
   Favorite,
   Input,
