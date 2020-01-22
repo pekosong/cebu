@@ -1,20 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  SafeAreaView,
-  TextInput,
-  TouchableWithoutFeedback,
-} from 'react-native';
-import {CardShop, Block, Loader, Text} from 'app/src/components';
+import {StyleSheet, FlatList, SafeAreaView, TextInput} from 'react-native';
+import {Block, Loader, Text} from 'app/src/components';
 import CardRecommend from 'app/src/screens/Shop/components/CardRecommend';
 import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Ionicons, AntDesign} from '@expo/vector-icons';
+import {Ionicons} from '@expo/vector-icons';
 
-import {sizes, style, colors} from 'app/src/styles';
+import {sizes, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
+
+import FilterButton from './components/FilterButton';
 
 export default SearchScreen = observer(props => {
   const {navigation} = props;
@@ -53,9 +49,17 @@ export default SearchScreen = observer(props => {
         ListEmptyComponent={
           <Block middle>
             <Block flex={false}>
-              <Text h1 bold center>
-                검색 결과가 없습니다.
+              <Text h2 bold center>
+                검색어를 입력하세요
               </Text>
+              <Block middle row style={{marginTop: 20}}>
+                <FilterButton text="업체명"></FilterButton>
+                <FilterButton text="장소명"></FilterButton>
+                <FilterButton text="배달"></FilterButton>
+                <FilterButton text="한식"></FilterButton>
+                <FilterButton text="비비큐"></FilterButton>
+                <FilterButton text="중식"></FilterButton>
+              </Block>
             </Block>
           </Block>
         }
@@ -80,7 +84,6 @@ export default SearchScreen = observer(props => {
                     <TouchableOpacity
                       style={{zIndex: 1000}}
                       onPress={() => {
-                        setSearchText('');
                         setSearch('');
                       }}>
                       <Ionicons size={30} name="ios-close" />
@@ -92,9 +95,13 @@ export default SearchScreen = observer(props => {
           </Block>
         }
         ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
-        data={selectedLists.filter(e =>
-          searchText ? e.tags.includes(searchText) : e,
-        )}
+        data={
+          searchText !== ''
+            ? selectedLists.filter(e =>
+                searchText ? e.tags.includes(searchText) : e,
+              )
+            : null
+        }
         renderItem={({item}) => (
           <CardRecommend
             item={{shop: item}}
@@ -122,10 +129,10 @@ const styles = StyleSheet.create({
   search: {
     position: 'relative',
     marginBottom: 2,
-    marginLeft: 16,
+    marginLeft: 12,
     marginRight: 2,
-    paddingVertical: 4,
-    paddingLeft: 8,
+    paddingVertical: 3,
+    paddingLeft: 6,
     borderRadius: 20,
     backgroundColor: '#eee',
     shadowColor: '#000',

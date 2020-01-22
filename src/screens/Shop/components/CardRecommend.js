@@ -11,6 +11,7 @@ const MAP = {
   Massage: '마사지',
   Place: '명소',
   Restaurant: '식당',
+  Food: '배달',
 };
 export default CardRecommend = ({item, navigation}) => {
   const {shop, distance} = item;
