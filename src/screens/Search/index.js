@@ -19,7 +19,6 @@ export default SearchScreen = observer(props => {
 
   const [search, setSearch] = useState('');
   const [searchText, setSearchText] = useState('');
-  const [sort, setSort] = useState('reviewCnt');
 
   const shops = useContext(ShopStoreContext).shopList;
 
@@ -72,7 +71,7 @@ export default SearchScreen = observer(props => {
               <Block
                 center
                 middle
-                style={[styles.search, {paddingLeft: search === '' ? 40 : 15}]}>
+                style={[styles.search, {paddingLeft: search === '' ? 35 : 15}]}>
                 <TextInput
                   value={search}
                   onChangeText={text => setSearch(text)}
@@ -111,7 +110,9 @@ export default SearchScreen = observer(props => {
         data={
           searchText !== ''
             ? selectedLists.filter(e =>
-                searchText ? e.tags.includes(searchText) : e,
+                searchText
+                  ? e.tags.includes(searchText) || e.name.includes(searchText)
+                  : e,
               )
             : null
         }

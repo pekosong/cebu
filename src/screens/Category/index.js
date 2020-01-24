@@ -1,24 +1,15 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect, useRef, useContext} from 'react';
 import {
   StyleSheet,
   ScrollView,
   FlatList,
   SafeAreaView,
-  TextInput,
-  Keyboard,
   TouchableWithoutFeedback,
   Dimensions,
-  View,
+  Animated,
 } from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {
-  CardShop,
-  CategoryTab,
-  Block,
-  Loader,
-  Text,
-  Button,
-} from 'app/src/components';
+import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
 import {sizes, style, colors} from 'app/src/styles';
 
 import FilterButton from './components/FilterButton';
@@ -115,48 +106,6 @@ const SortModal = ({sort, setSort, setShowSort}) => {
   );
 };
 
-const SearchModal = ({setSearch, setShowSearch}) => {
-  const [text, setText] = useState('');
-  return (
-    <Block
-      center
-      style={{
-        flex: 0,
-        height: 180,
-        backgroundColor: colors.white,
-        borderRadius: 20,
-        position: 'relative',
-      }}>
-      <Block style={{paddingVertical: 20}}>
-        <TextInput
-          autoFocus={true}
-          style={{fontSize: 22, width: 260}}
-          placeholder="여기는 어떠세요?"
-          onChangeText={text => setText(text)}
-          value={text}
-          onSubmitEditing={() => {
-            setSearch(text);
-            setShowSearch(false);
-          }}></TextInput>
-        <Block flex={false} style={{marginVertical: 10}}>
-          <Text h4 gray style={{marginBottom: 6}}>
-            - 식당명 / 가게명
-          </Text>
-          <Text h4 gray>
-            - 중식, 한식, 분식, 현지식
-          </Text>
-        </Block>
-      </Block>
-      <TouchableWithoutFeedback
-        onPress={() => {
-          setShowSearch(false);
-        }}>
-        <Ionicons size={50} color={colors.black} name="ios-close" />
-      </TouchableWithoutFeedback>
-    </Block>
-  );
-};
-
 export default CategoryScreen = observer(props => {
   const {navigation} = props;
   const [catActive, setCatActive] = useState('전체');
@@ -165,10 +114,7 @@ export default CategoryScreen = observer(props => {
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const [search, setSearch] = useState('');
   const [sort, setSort] = useState('reviewCnt');
-
-  const [showSearch, setShowSearch] = useState(false);
   const [showSort, setShowSort] = useState(false);
 
   const [isKorean, setIsKorean] = useState(false);
@@ -177,6 +123,8 @@ export default CategoryScreen = observer(props => {
 
   const [isMak, setIsMak] = useState(true);
   const [isCebu, setIsCebu] = useState(true);
+
+  const animatedScrollYValue = useRef(new Animated.Value(0)).current;
 
   const shops = useContext(ShopStoreContext).shopList;
 
@@ -194,15 +142,6 @@ export default CategoryScreen = observer(props => {
   return (
     <SafeAreaView style={{flex: 1}}>
       <Modal
-        backdropOpacity={0.8}
-        animationInTiming={200}
-        useNativeDriver={true}
-        isVisible={showSearch}>
-        <SearchModal
-          setSearch={setSearch}
-          setShowSearch={setShowSearch}></SearchModal>
-      </Modal>
-      <Modal
         backdropOpacity={0.1}
         animationInTiming={500}
         useNativeDriver={true}
@@ -213,8 +152,12 @@ export default CategoryScreen = observer(props => {
           setShowSort={setShowSort}></SortModal>
       </Modal>
       <FlatList
+        showsVerticalScrollIndicator={false}
+        onScroll={Animated.event([
+          {nativeEvent: {contentOffset: {y: animatedScrollYValue}}},
+        ])}
+        scrollEventThrottle={360}
         style={{flex: 1}}
-        disableVirtualization={false}
         contentContainerStyle={[{flexGrow: 1}]}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
@@ -239,7 +182,7 @@ export default CategoryScreen = observer(props => {
           </Block>
         }
         ListHeaderComponent={
-          <Block style={style.scrollTab}>
+          <Block animated style={[style.scrollTab]}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
@@ -250,22 +193,33 @@ export default CategoryScreen = observer(props => {
                 </TouchableOpacity>
               </Block>
             </Block>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={styles.tabs}>
-              {category.name.map((tab, idx) => (
-                <CategoryTab
-                  key={idx}
-                  tab={tab}
-                  image={category.src[tab]}
-                  tabName={tab}
-                  isActive={catActive == tab}
-                  handleTab={tab => setCatActive(tab)}
-                  isLast={category.name.length - 1 === idx}
-                />
-              ))}
-            </ScrollView>
+            <Block
+              animated
+              style={{
+                height: animatedScrollYValue.interpolate({
+                  inputRange: [0, 100],
+                  outputRange: [100, 0],
+                  extrapolate: 'clamp',
+                  useNativeDriver: true,
+                }),
+              }}>
+              <ScrollView
+                horizontal={true}
+                showsHorizontalScrollIndicator={false}
+                style={styles.tabs}>
+                {category.name.map((tab, idx) => (
+                  <CategoryTab
+                    key={idx}
+                    tab={tab}
+                    image={category.src[tab]}
+                    tabName={tab}
+                    isActive={catActive == tab}
+                    handleTab={tab => setCatActive(tab)}
+                    isLast={category.name.length - 1 === idx}
+                  />
+                ))}
+              </ScrollView>
+            </Block>
             {navigation.getParam('category') !== 'Place' && (
               <Block row center style={{marginTop: 12}}>
                 <Text darkgray style={{marginRight: 8}}>

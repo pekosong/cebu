@@ -144,7 +144,7 @@ export default ShopScreen = observer(({navigation}) => {
     };
   }, []);
 
-  handleScrollByY = e => {
+  handleScrollByShopY = e => {
     if (e.nativeEvent.contentOffset.y > 130) {
       Animated.timing(yAnim, {
         toValue: 1,
@@ -199,7 +199,7 @@ export default ShopScreen = observer(({navigation}) => {
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
           {
             listener: event => {
-              handleScrollByY(event);
+              handleScrollByShopY(event);
             },
           },
         )}

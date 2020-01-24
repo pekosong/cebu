@@ -116,8 +116,8 @@ export default Search = props => {
             name="search1"
             style={{color: colors.darkgray}}
           />
-          <Text darkgray style={{marginLeft: 10}}>
-            여기는 어떠세요?
+          <Text size={16} darkgray style={{marginLeft: 10}}>
+            검색 해보세요
           </Text>
         </Block>
         {renderSearch()}
@@ -133,7 +133,7 @@ export const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
   },
   search: {
-    paddingVertical: 8,
+    paddingVertical: 10,
     paddingHorizontal: 20,
     borderRadius: 20,
     backgroundColor: colors.white,

@@ -122,12 +122,9 @@ const MyTripScreen = observer(props => {
     return (
       <Block key={day} style={styles.categories}>
         {(items.length != 0 || active == '전체') && (
-          <Block center row space="between" style={{marginBottom: 10}}>
-            <Text h4 bold>
-              {`${korDay}   Day ${item.nDay + 1}  `}
-            </Text>
-            <Text bold>{'in ' + item.hotel}</Text>
-          </Block>
+          <Text h4 bold style={{marginBottom: 10}}>
+            {`${korDay}   Day ${item.nDay + 1}  `}
+          </Text>
         )}
         {items.length != 0 ? (
           items
