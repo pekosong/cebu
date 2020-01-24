@@ -57,6 +57,13 @@ const HomeScreen = observer(props => {
         setPlaceList(filterShopList('Place'));
         setIsLoaded(true);
       });
+    } else if (shopStore.shopList.length !== 0) {
+      setRestaurantList(filterShopList('Restaurant'));
+      setMassageList(filterShopList('Massage'));
+      setFoodList(filterShopList('Food'));
+      setActivityList(filterShopList('Activity'));
+      setPlaceList(filterShopList('Place'));
+      setIsLoaded(true);
     }
 
     return () => {

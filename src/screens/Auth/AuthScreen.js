@@ -69,7 +69,7 @@ function Welcome(props) {
         <Text h2 center bold>
           Hello,
           <Text>{'  '}</Text>
-          <Text primary style={{fontSize: 65}}>
+          <Text bold primary style={{fontSize: 65}}>
             Cebu
           </Text>
         </Text>
@@ -77,7 +77,7 @@ function Welcome(props) {
           세부의 모든 것
         </Text>
       </Block>
-      <Block middle flex={0.4} margin={[0, sizes.padding * 2]}>
+      <Block middle flex={0.4} margin={[0, sizes.padding]}>
         <Button gradient onPress={() => navigation.navigate('Login')}>
           <Text center semibold white>
             로그인

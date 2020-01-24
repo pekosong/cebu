@@ -47,7 +47,7 @@ export default CardReview = ({item, google}) => {
               {item.writer.substring(0, 2) + '*'}
             </Text>
             <Text size={12} darkgray>
-              {google ? pastDay(item.date) : pastDay(item.date)}
+              {google ? item.date : pastDay(item.date)}
             </Text>
           </Block>
           <StarRating
@@ -60,10 +60,10 @@ export default CardReview = ({item, google}) => {
           />
         </Block>
       </Block>
-      {item.comment.length > 80 ? (
+      {item.comment.length > 60 ? (
         <Block style={{marginTop: 5}}>
           <ReadMore
-            numberOfLines={3}
+            numberOfLines={2}
             renderTruncatedFooter={e => _renderTruncatedFooter(e)}
             renderRevealedFooter={e => _renderRevealedFooter(e)}>
             <Text size={14} style={{lineHeight: 24}}>

@@ -33,7 +33,7 @@ export default HeaderSection = ({shop}) => {
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: 180,
+    top: 160,
     position: 'absolute',
     height: 140,
     width: width - 60,

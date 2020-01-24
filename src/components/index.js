@@ -19,6 +19,7 @@ import CachedImage from './CachedImage';
 
 import Favorite from './Favorite';
 
+import PlanModal from './PlanModal';
 import ReservationModal from './ReservationModal';
 import ReservationConfirmModal from './ReservationConfirmModal';
 
@@ -38,6 +39,7 @@ export {
   WideText,
   FullImageSlider,
   CachedImage,
+  PlanModal,
   ReservationModal,
   ReservationConfirmModal,
 };

@@ -24,6 +24,9 @@ const ReviewSection = observer(({navigation, shop}) => {
   const [webViewVisible, setwebViewVisible] = useState(false);
   const [page, setPage] = useState('');
 
+  const [googleCnt, setGoogleCnt] = useState(5);
+  const [naverCnt, setNaverCnt] = useState(5);
+
   return (
     <Block style={style.shop.categories}>
       <FlatList
@@ -98,13 +101,20 @@ const ReviewSection = observer(({navigation, shop}) => {
           </Block>
         }
         ListFooterComponent={
-          <Button border onPress={() => {}} style={{marginTop: 20}}>
+          <Button
+            border
+            onPress={() =>
+              setGoogleCnt(googleCnt === 5 ? shop.googles.length : 5)
+            }
+            style={{marginTop: 20}}>
             <Text bold accent center>
-              더 보기
+              {googleCnt === 5 ? '더 보기' : '닫기'}
             </Text>
           </Button>
         }
-        data={shop.googles.sort((a, b) => b.date.seconds - a.date.seconds)}
+        data={shop.googles
+          .sort((a, b) => b.date.seconds - a.date.seconds)
+          .slice(0, googleCnt)}
         renderItem={({item}) => <CardReview item={item} google></CardReview>}
         keyExtractor={(item, idx) => idx.toString()}
       />
@@ -124,14 +134,7 @@ const ReviewSection = observer(({navigation, shop}) => {
             </Text>
           </Block>
         }
-        ListFooterComponent={
-          <Button border onPress={() => {}} style={{marginTop: 20}}>
-            <Text bold accent center>
-              더 보기
-            </Text>
-          </Button>
-        }
-        data={shop.blogs.filter(e => e.title != '')}
+        data={shop.blogs.filter(e => e.title != '').slice(0, naverCnt)}
         renderItem={({item}) => (
           <CardNaver
             item={item}

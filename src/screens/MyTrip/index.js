@@ -130,56 +130,61 @@ const MyTripScreen = observer(props => {
           </Block>
         )}
         {items.length != 0 ? (
-          items.map((item, idx) => {
-            const todo = item;
-            const shop = item.shop;
-            return (
-              <TouchableOpacity
-                key={shop.id + idx}
-                onPress={() =>
-                  navigation.navigate('Shop', {
-                    shopId: shop.id,
-                    todo: todo,
-                  })
-                }>
-                <Block
-                  row
-                  style={{
-                    marginVertical: 5,
-                    paddingBottom: 5,
-                  }}>
-                  <CachedImage uri={shop.src} style={styles.avatarChat} />
-                  <Block style={{marginLeft: 10, marginTop: 5, height: 48}}>
-                    <Block row space="between">
-                      <Text h4 bold>
-                        {shop.name}
-                      </Text>
-                      <Text h4 darkgray>
-                        {todo.time}
-                      </Text>
-                    </Block>
-                    <Block center row space="between">
-                      <Text darkgray>{shop.engName}</Text>
-                      <Block
-                        style={[
-                          styles.tag,
-                          {
-                            backgroundColor:
-                              todo.status == 'not'
-                                ? colors.primary
-                                : colors.accent,
-                          },
-                        ]}>
-                        <Text size={11} white>
-                          {MAP[todo.status]}
+          items
+            .sort(
+              (a, b) =>
+                parseInt(a.time.substring(0, 2)) >
+                parseInt(b.time.substring(0, 2)),
+            )
+            .map((item, idx) => {
+              const {time, shop} = item;
+              return (
+                <TouchableOpacity
+                  key={shop.id + idx}
+                  onPress={() =>
+                    navigation.navigate('Shop', {
+                      shopId: shop.id,
+                      todo: item,
+                    })
+                  }>
+                  <Block
+                    row
+                    style={{
+                      marginVertical: 5,
+                      paddingBottom: 5,
+                    }}>
+                    <CachedImage
+                      uri={
+                        typeof shop.src === 'string' ? shop.src : shop.src[0]
+                      }
+                      style={styles.avatarChat}
+                    />
+                    <Block style={{marginLeft: 10, marginTop: 5, height: 48}}>
+                      <Block row space="between">
+                        <Text h4 bold>
+                          {shop.name}
                         </Text>
+                        <Text h4 darkgray>
+                          {time}
+                        </Text>
+                      </Block>
+                      <Block center row space="between">
+                        <Text primary>{shop.tags.join(', ')}</Text>
+                        <Block
+                          style={[
+                            styles.tag,
+                            {backgroundColor: colors.accent},
+                          ]}>
+                          <Text size={11} white>
+                            {shop.location}
+                          </Text>
+                        </Block>
                       </Block>
                     </Block>
                   </Block>
-                </Block>
-              </TouchableOpacity>
-            );
-          })
+                </TouchableOpacity>
+              );
+            })
         ) : (
           <Block style={active != '전체' && {marginTop: height / 5}}>
             {active != '전체' && (
@@ -207,7 +212,7 @@ const MyTripScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView style={{flex: 1}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}>

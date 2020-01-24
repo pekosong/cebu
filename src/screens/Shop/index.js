@@ -1,12 +1,5 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Dimensions,
-  SafeAreaView,
-  Platform,
-} from 'react-native';
+import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
@@ -17,8 +10,6 @@ import Header from './components/Header';
 import ShopTitle from './components/ShopTitle';
 import FloatButton from './components/FloatButton';
 import ExchangeButton from './components/ExchangeButton';
-
-import ReservationSection from './components/ReservationSection';
 
 import MenuSection from './components/MenuSection';
 import MassageSection from './components/MassageSection';
@@ -82,7 +73,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
       onPress={() => {
         if (shopScroll.current) {
           shopScroll.current.getNode().scrollTo({
-            y: 310,
+            y: 280,
             animated: true,
           });
         }
@@ -216,7 +207,7 @@ export default ShopScreen = observer(({navigation}) => {
         <ShopTitle shop={shop}></ShopTitle>
         <Block
           style={{
-            paddingTop: 350,
+            paddingTop: 320,
           }}>
           <TabBar
             fadeAnim={fadeAnim}

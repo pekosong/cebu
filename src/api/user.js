@@ -1,5 +1,35 @@
 import firebase from 'app/src/constants/store';
 
+const newCus = {
+  createAt: new Date(),
+  myfavorites: [],
+  plans: {},
+  sex: '',
+  phone: '',
+  name: '',
+  host: false,
+  shops: [],
+  birth: '',
+  notice: {
+    message: {
+      email: true,
+      push: true,
+      sms: true,
+    },
+    notice: {
+      email: true,
+      push: true,
+      sms: true,
+    },
+    promotion: {
+      email: true,
+      push: true,
+      sms: true,
+    },
+  },
+  image: 'https://randomuser.me/api/portraits/men/41.jpg',
+};
+
 const streamUserMsg = email => {
   return firebase
     .firestore()
@@ -12,6 +42,14 @@ const streamUser = email => {
     .firestore()
     .collection('users')
     .doc(email);
+};
+
+const createUser = email => {
+  return firebase
+    .firestore()
+    .collection('users')
+    .doc(email)
+    .set({...newCus, email});
 };
 
 const updateUser = (email, newProfile) => {
@@ -58,6 +96,7 @@ const updateUserReservation = (email, userReservations) => {
 export {
   streamUserMsg,
   streamUser,
+  createUser,
   updateUser,
   updateFavorite,
   updateMessages,

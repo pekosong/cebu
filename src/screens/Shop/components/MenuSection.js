@@ -8,7 +8,7 @@ import {
 } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
-import {Block, Text, CachedImage, Divider} from 'app/src/components';
+import {Block, Button, Text, CachedImage, Divider} from 'app/src/components';
 import CardMenu from './CardMenu';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -19,6 +19,7 @@ const {width} = Dimensions.get('window');
 export default MenuSection = ({shop, isKorean}) => {
   const [imageNum, setImageNum] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
+  const [menuCnt, setMenuCnt] = useState(5);
 
   handleScrollByX = e => {
     if (e.nativeEvent.contentOffset.x % (width - sizes.padding * 2) == 0) {
@@ -31,77 +32,92 @@ export default MenuSection = ({shop, isKorean}) => {
 
   return (
     <Block style={style.shop.categories}>
-      <FlatList
-        key={'MenuList'}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              borderBottomWidth: 0.2,
-              borderBottomColor: '#ddd',
-              marginVertical: 15,
-            }}></Block>
-        )}
-        ListHeaderComponent={
-          <Block row space="between" style={{marginBottom: 30}}>
-            <Text h1 bold>
-              대표 메뉴
-            </Text>
-          </Block>
-        }
-        data={shop.menus}
-        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
-        keyExtractor={(item, idx) => idx.toString()}
-      />
-      {shop.menuImage.length !== 0 && (
-        <Block style={{marginBottom: 50}}>
-          <Divider></Divider>
-          <Block row space="between" style={{marginBottom: 20}}>
-            <Text h1 bold>
-              메뉴판
-            </Text>
-            <TouchableOpacity onPress={() => setIsVisible(true)}>
-              <Text accent h3 bold>
-                크게보기
+      <Block style={{marginBottom: 80}}>
+        <FlatList
+          key={'MenuList'}
+          ItemSeparatorComponent={() => (
+            <Block
+              style={{
+                borderBottomWidth: 0.2,
+                borderBottomColor: '#ddd',
+                marginVertical: 15,
+              }}></Block>
+          )}
+          ListHeaderComponent={
+            <Block row space="between" style={{marginBottom: 30}}>
+              <Text h1 bold>
+                대표 메뉴
               </Text>
-            </TouchableOpacity>
-          </Block>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={360}
-            pagingEnabled
-            onScroll={handleScrollByX}>
-            {shop.menuImage.map((e, idx) => (
-              <CachedImage
-                key={idx}
-                uri={e}
-                style={{
-                  borderRadius: 6,
-                  height: 260,
-                  width: width - sizes.padding * 2,
-                  resizeMode: 'cover',
-                }}
+            </Block>
+          }
+          ListFooterComponent={
+            <Button
+              border
+              onPress={() => setMenuCnt(menuCnt === 5 ? shop.menus.length : 5)}
+              style={{marginTop: 20}}>
+              <Text bold accent center>
+                {menuCnt === 5 ? '더 보기' : '닫기'}
+              </Text>
+            </Button>
+          }
+          data={shop.menus.slice(0, menuCnt)}
+          renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
+          keyExtractor={(item, idx) => idx.toString()}
+        />
+        {shop.menuImage.length !== 0 && (
+          <Block>
+            <Divider></Divider>
+            <Block
+              row
+              space="between"
+              style={{marginTop: 10, marginBottom: 30}}>
+              <Text h1 bold>
+                메뉴판
+              </Text>
+              <TouchableOpacity onPress={() => setIsVisible(true)}>
+                <Text accent h3 bold>
+                  크게보기
+                </Text>
+              </TouchableOpacity>
+            </Block>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              scrollEventThrottle={360}
+              pagingEnabled
+              onScroll={handleScrollByX}>
+              {shop.menuImage.map((e, idx) => (
+                <CachedImage
+                  key={idx}
+                  uri={e}
+                  style={{
+                    borderRadius: 6,
+                    height: 260,
+                    width: width - sizes.padding * 2,
+                    resizeMode: 'cover',
+                  }}
+                />
+              ))}
+            </ScrollView>
+            <Block style={styles.imageNum}>
+              <Text white bold size={13}>
+                {imageNum + ' / ' + shop.menuImage.length}
+              </Text>
+            </Block>
+            <Modal
+              visible={isVisible}
+              transparent={true}
+              onRequestClose={() => setIsVisible(false)}>
+              <ImageViewer
+                onClick={() => setIsVisible(false)}
+                imageUrls={shop.menuImage.map(e => {
+                  return {url: e};
+                })}
               />
-            ))}
-          </ScrollView>
-          <Block style={styles.imageNum}>
-            <Text white bold size={13}>
-              {imageNum + ' / ' + shop.menuImage.length}
-            </Text>
+            </Modal>
           </Block>
-          <Modal
-            visible={isVisible}
-            transparent={true}
-            onRequestClose={() => setIsVisible(false)}>
-            <ImageViewer
-              onClick={() => setIsVisible(false)}
-              imageUrls={shop.menuImage.map(e => {
-                return {url: e};
-              })}
-            />
-          </Modal>
-        </Block>
-      )}
+        )}
+      </Block>
     </Block>
   );
 };
@@ -114,10 +130,11 @@ MenuSection.navigationOptions = {
 
 const styles = StyleSheet.create({
   imageNum: {
+    zIndex: 100,
     justifyContent: 'center',
     alignItems: 'center',
     position: 'absolute',
-    bottom: 60,
+    bottom: 10,
     right: 10,
     backgroundColor: 'rgba(0, 0, 0, 0.6)',
     borderRadius: 10,

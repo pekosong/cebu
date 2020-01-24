@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Modal, TouchableOpacity} from 'react-native';
 
-import {Block, Text, ReservationModal} from 'app/src/components';
+import {Text, PlanModal} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
 import {AntDesign} from '@expo/vector-icons';
@@ -29,7 +29,7 @@ export default BottomSection = ({navigation, shop, user}) => {
         animationType="slide"
         visible={visible}
         onRequestClose={() => setVisible(false)}>
-        <ReservationModal
+        <PlanModal
           shop={shop}
           navigation={navigation}
           setVisible={setVisible}

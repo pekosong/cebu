@@ -1,4 +1,4 @@
-import React, {useState} from 'react';
+import React, {useState, useContext} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -6,25 +6,28 @@ import {
 } from 'react-native';
 
 import {Button, Block, Input, Text} from 'app/src/components';
-
 import {colors, sizes} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
-import {useDispatch} from 'react-redux';
-import {watchUserData, downloadShopData} from 'app/src/redux/action';
+
+import {login} from 'app/src/api/auth';
+import {streamUser, createUser} from 'app/src/api/user';
+
+import {observer} from 'mobx-react-lite';
+import {ShopStoreContext} from 'app/src/store/shop';
+import {UserStoreContext} from 'app/src/store/user';
 
 const EMAIL = '';
 const PASSWORD = '';
 
-const LoginScreen = props => {
+const LoginScreen = observer(props => {
   const {navigation} = props;
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
   const [error, setError] = useState(null);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
-  const dispatch = useDispatch();
 
-  hasErrors = () => (isError ? styles.hasErrors : null);
+  const userStore = useContext(UserStoreContext);
+  const shopStore = useContext(ShopStoreContext);
 
   handleLogin = () => {
     setLoading(true);
@@ -37,12 +40,10 @@ const LoginScreen = props => {
     }
 
     checkUser().then(() => {
-      firebase
-        .auth()
-        .signInWithEmailAndPassword(email, password)
+      login(email, password)
         .then(() => {
-          unsubscribe = dispatch(watchUserData(email));
-          dispatch(downloadShopData()).then(() => {
+          userStore.getUser();
+          shopStore.getShopList().then(() => {
             setIsError(false);
             setLoading(false);
             navigation.navigate('Home');
@@ -66,48 +67,11 @@ const LoginScreen = props => {
   };
 
   checkUser = () => {
-    return firebase
-      .firestore()
-      .collection('users')
-      .doc(email)
+    return streamUser(email)
       .get()
       .then(e => {
         if (e.data() == undefined) {
-          const newCus = {
-            email: email,
-            createAt: new Date(),
-            myfavorites: [],
-            plans: {},
-            sex: '',
-            phone: '',
-            name: '',
-            host: false,
-            shops: [],
-            birth: '',
-            notice: {
-              message: {
-                email: true,
-                push: true,
-                sms: true,
-              },
-              notice: {
-                email: true,
-                push: true,
-                sms: true,
-              },
-              promotion: {
-                email: true,
-                push: true,
-                sms: true,
-              },
-            },
-            image: 'https://randomuser.me/api/portraits/men/41.jpg',
-          };
-          return firebase
-            .firestore()
-            .collection('users')
-            .doc(email)
-            .set(newCus);
+          return createUser(email);
         }
       })
       .catch(err => console.log(err));
@@ -121,7 +85,7 @@ const LoginScreen = props => {
           </Text>
           <Input
             label="Email"
-            style={[styles.input, hasErrors()]}
+            style={[styles.input, isError && styles.hasErrors]}
             defaultValue={email}
             onChangeText={text => {
               setEmail(text);
@@ -130,14 +94,13 @@ const LoginScreen = props => {
           <Input
             secure
             label="Password"
-            style={[styles.input, hasErrors()]}
+            style={[styles.input, isError && styles.hasErrors]}
             defaultValue={password}
             onChangeText={text => {
               setPassword(text);
             }}
           />
-          {isError ? <Text color={'red'}>{error}</Text> : null}
-
+          {isError && <Text color={'red'}>{error}</Text>}
           <Button gradient onPress={() => handleLogin()}>
             {loading ? (
               <ActivityIndicator size="small" color="white" />
@@ -166,7 +129,7 @@ const LoginScreen = props => {
       </Block>
     </KeyboardAvoidingView>
   );
-};
+});
 
 LoginScreen.navigationOptions = {
   header: null,

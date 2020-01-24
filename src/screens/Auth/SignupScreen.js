@@ -9,7 +9,7 @@ import {
 import {Button, Block, Input, Text} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
+import {sign} from 'app/src/api/auth';
 
 const SignupScreen = props => {
   const {navigation} = props;
@@ -33,9 +33,7 @@ const SignupScreen = props => {
       return;
     }
 
-    firebase
-      .auth()
-      .createUserWithEmailAndPassword(email, password)
+    sign(email, password)
       .then(user => {
         setError('');
         setIsError(false);
@@ -49,10 +47,8 @@ const SignupScreen = props => {
       });
   };
 
-  hasErrors = () => (isError ? styles.hasErrors : null);
-
-  renderSignUp = () => {
-    return (
+  return (
+    <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block padding={[0, sizes.padding]}>
         <Block middle>
           <Text bold style={{fontSize: 40, paddingBottom: 40}}>
@@ -60,7 +56,7 @@ const SignupScreen = props => {
           </Text>
           <Input
             label="Email"
-            style={[styles.input, hasErrors()]}
+            style={[styles.input, isError && styles.hasErrors]}
             defaultValue={email}
             onChangeText={text => {
               setEmail(text);
@@ -69,7 +65,7 @@ const SignupScreen = props => {
           <Input
             secure
             label="Password"
-            style={[styles.input, hasErrors()]}
+            style={[styles.input, isError && styles.hasErrors]}
             defaultValue={password}
             onChangeText={text => {
               setPassword(text);
@@ -78,13 +74,13 @@ const SignupScreen = props => {
           <Input
             secure
             label="Confirm Password"
-            style={[styles.input, hasErrors()]}
+            style={[styles.input, isError && styles.hasErrors]}
             defaultValue={confirmPassword}
             onChangeText={text => {
               setConfirmPassword(text);
             }}
           />
-          {isError ? <Text color={'red'}>{error}</Text> : null}
+          {isError && <Text color={'red'}>{error}</Text>}
 
           <Button
             gradient
@@ -106,11 +102,6 @@ const SignupScreen = props => {
           </Button>
         </Block>
       </Block>
-    );
-  };
-  return (
-    <KeyboardAvoidingView style={styles.login} behavior="padding">
-      {renderSignUp()}
     </KeyboardAvoidingView>
   );
 };

@@ -8,7 +8,8 @@ import {
 import {Button, Block, Input, Text} from 'app/src/components';
 
 import {colors, sizes} from 'app/src/styles';
-import firebase from 'app/src/constants/store';
+
+import {reset} from 'app/src/api/auth';
 
 const ForgotScreen = props => {
   const {navigation} = props;
@@ -20,12 +21,7 @@ const ForgotScreen = props => {
 
   handleForgot = () => {
     setLoading(true);
-    var auth = firebase.auth();
-    var emailAddress = email;
-
-    firebase.auth().languageCode = 'ko';
-    auth
-      .sendPasswordResetEmail(emailAddress)
+    reset(email)
       .then(() => {
         setLoading(false);
         navigation.goBack();
