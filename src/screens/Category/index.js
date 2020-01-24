@@ -22,7 +22,11 @@ import {ShopStoreContext} from 'app/src/store/shop';
 
 import Modal from 'react-native-modal';
 const SCREEN_HEIGHT = Dimensions.get('window').height;
-
+const MAP = {
+  reviewCnt: '리뷰 많은 순',
+  review: '평점 좋은 순',
+  like: '저장 많은 순',
+};
 const SortModal = ({sort, setSort, setShowSort}) => {
   return (
     <Block bottom style={{marginBottom: -15}}>
@@ -84,7 +88,7 @@ const SortModal = ({sort, setSort, setShowSort}) => {
                 middle
                 center
                 style={{
-                  height: 60,
+                  height: 50,
                 }}>
                 {sort === item.value && (
                   <Ionicons
@@ -187,7 +191,10 @@ export default CategoryScreen = observer(props => {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
               </TouchableOpacity>
-              <Block row style={{flex: 0}}>
+              <Block center row style={{flex: 0}}>
+                <Text h3 darkgray style={{marginRight: 10}}>
+                  {MAP[sort]}
+                </Text>
                 <TouchableOpacity onPress={() => setShowSort(true)}>
                   <AntDesign size={26} name="bars" />
                 </TouchableOpacity>
