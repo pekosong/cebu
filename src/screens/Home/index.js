@@ -16,7 +16,7 @@ import {
   CachedImage,
   Divider,
 } from 'app/src/components';
-import {Ionicons} from '@expo/vector-icons';
+import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
@@ -120,26 +120,42 @@ const HomeScreen = observer(props => {
           style.shadow,
           {
             opacity: fadeAnim,
-            paddingHorizontal: sizes.padding,
+            paddingHorizontal: sizes.padding / 1.5,
             paddingTop: 40,
             zIndex: 1000,
             position: 'absolute',
-            height: 94,
+            height: 92,
             width,
             backgroundColor: 'white',
             marginBottom: 2,
           },
         ]}>
-        <Text h2 bold>
-          hello, cebu
-        </Text>
-        <CachedImage
-          uri={'https://randomuser.me/api/portraits/men/19.jpg'}
-          style={{
-            height: 44,
-            width: 44,
-            borderRadius: 22,
-          }}></CachedImage>
+        <Block center row>
+          <CachedImage
+            uri={'https://randomuser.me/api/portraits/men/19.jpg'}
+            style={{
+              height: 40,
+              width: 40,
+              borderRadius: 20,
+              marginRight: 8,
+            }}></CachedImage>
+          <Block>
+            <Text h4>
+              hello,{' '}
+              <Text primary h4 bold>
+                Cebu
+              </Text>
+            </Text>
+            <Text size={14}>즐거운 세부 여행 되세요</Text>
+          </Block>
+        </Block>
+        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+          <AntDesign
+            size={26}
+            name="search1"
+            style={{color: colors.darkgray}}
+          />
+        </TouchableOpacity>
       </Block>
       <ScrollView
         onScroll={Animated.event(

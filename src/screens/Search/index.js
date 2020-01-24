@@ -68,10 +68,7 @@ export default SearchScreen = observer(props => {
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
               </TouchableOpacity>
-              <Block
-                center
-                middle
-                style={[styles.search, {paddingLeft: search === '' ? 35 : 15}]}>
+              <Block center middle style={[styles.search, {paddingLeft: 35}]}>
                 <TextInput
                   value={search}
                   onChangeText={text => setSearch(text)}
@@ -80,25 +77,23 @@ export default SearchScreen = observer(props => {
                   onSubmitEditing={() => {
                     setSearchText(search);
                   }}></TextInput>
-                {search === '' && (
-                  <Block style={{position: 'absolute', left: 10, top: 6}}>
-                    <AntDesign
-                      size={18}
-                      name="search1"
-                      style={{
-                        color: colors.gray,
-                      }}
-                    />
-                  </Block>
-                )}
+                <Block style={{position: 'absolute', left: 10, top: 6}}>
+                  <AntDesign
+                    size={18}
+                    name="search1"
+                    style={{
+                      color: colors.gray,
+                    }}
+                  />
+                </Block>
                 {search !== '' && (
-                  <Block style={{position: 'absolute', right: 20, top: 2}}>
+                  <Block style={{position: 'absolute', right: 20}}>
                     <TouchableOpacity
                       style={{zIndex: 1000}}
                       onPress={() => {
                         setSearch('');
                       }}>
-                      <Ionicons size={30} name="ios-close" />
+                      <Ionicons size={34} name="ios-close" />
                     </TouchableOpacity>
                   </Block>
                 )}
