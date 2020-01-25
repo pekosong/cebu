@@ -24,7 +24,7 @@ import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {streamShop} from 'app/src/api/shop';
 
-const MENUS = ['Restaurant', 'Food'];
+const MENUS = ['Restaurant', 'Food', 'Adult'];
 
 const MAPCAT = {
   1: '리뷰',
@@ -35,6 +35,7 @@ const MAPCAT = {
 const SHOPCAT = {
   Restaurant: '메뉴',
   Food: '메뉴',
+  Adult: '메뉴',
   Massage: '프로그램',
   Activity: '프로그램',
   Place: '정보',
@@ -116,7 +117,6 @@ export default ShopScreen = observer(({navigation}) => {
   const {user} = useContext(UserStoreContext);
 
   const [shop, setShop] = useState({});
-  const [todo, setTodo] = useState({});
   const [show, setShow] = useState(0);
 
   const shopScroll = createRef(null);
@@ -136,7 +136,6 @@ export default ShopScreen = observer(({navigation}) => {
       setShop(doc.data());
       setIsLoaded(true);
     });
-    setTodo(navigation.getParam('todo'));
     return () => {
       if (unsubscribe) {
         unsubscribe();

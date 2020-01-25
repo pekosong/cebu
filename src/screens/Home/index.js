@@ -124,29 +124,28 @@ const HomeScreen = observer(props => {
             paddingTop: 40,
             zIndex: 1000,
             position: 'absolute',
-            height: 92,
+            height: 86,
             width,
             backgroundColor: 'white',
-            marginBottom: 2,
+            marginBottom: 3,
           },
         ]}>
         <Block center row>
-          <CachedImage
-            uri={'https://randomuser.me/api/portraits/men/19.jpg'}
+          <Image
+            source={require('app/src/assets/icon.png')}
             style={{
-              height: 40,
-              width: 40,
-              borderRadius: 20,
+              height: 26,
+              width: 36,
+              borderRadius: 5,
               marginRight: 8,
-            }}></CachedImage>
+            }}></Image>
           <Block>
-            <Text h4>
+            <Text h4 bold>
               hello,{' '}
-              <Text primary h4 bold>
+              <Text primary h3 bold>
                 Cebu
               </Text>
             </Text>
-            <Text size={14}>즐거운 세부 여행 되세요</Text>
           </Block>
         </Block>
         <TouchableOpacity onPress={() => navigation.navigate('Search')}>

@@ -161,13 +161,16 @@ export default ShopInfoSection = ({shop}) => {
               marginTop: sizes.padding / 2,
             }}
             initialRegion={{
-              latitude: shop.latitude,
-              longitude: shop.longitude,
+              latitude: parseFloat(shop.latitude),
+              longitude: parseFloat(shop.longitude),
               latitudeDelta: 0.05,
               longitudeDelta: 0.05,
             }}>
             <MapView.Marker
-              coordinate={{latitude: shop.latitude, longitude: shop.longitude}}
+              coordinate={{
+                latitude: parseFloat(shop.latitude),
+                longitude: parseFloat(shop.longitude),
+              }}
             />
           </MapView>
         </Block>

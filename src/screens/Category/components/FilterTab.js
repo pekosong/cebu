@@ -1,0 +1,49 @@
+import React from 'react';
+import {StyleSheet, Dimensions} from 'react-native';
+import {Block, Text} from 'app/src/components';
+import FilterButton from './FilterButton';
+import {sizes} from 'app/src/styles';
+const {width} = Dimensions.get('window');
+
+export default FilterTab = ({filterList, fadeAnim, isTop}) => {
+  return (
+    <Block
+      row
+      center
+      animated
+      style={
+        isTop && {...styles.filterTap, opacity: fadeAnim, zIndex: fadeAnim}
+      }>
+      <Text darkgray style={{marginRight: 8}}>
+        필터
+      </Text>
+      {filterList.map((filter, idx) => (
+        <>
+          {idx === 3 && (
+            <Text darkgray style={{marginHorizontal: 8}}>
+              지역
+            </Text>
+          )}
+          <FilterButton
+            key={idx}
+            isActive={filter.isActive}
+            setActive={filter.setActive}
+            text={filter.title}
+          />
+        </>
+      ))}
+    </Block>
+  );
+};
+
+const styles = StyleSheet.create({
+  filterTap: {
+    flex: 0,
+    position: 'absolute',
+    top: 80,
+    paddingHorizontal: sizes.padding,
+    height: 45,
+    width: width,
+    backgroundColor: 'white',
+  },
+});

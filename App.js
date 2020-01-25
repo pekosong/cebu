@@ -48,6 +48,7 @@ function cacheImages(images) {
 
 async function loadResourcesAsync() {
   const imageAssets = cacheImages([
+    require('app/src/assets/icon.png'),
     require('app/src/assets/images/hello.jpg'),
     require('app/src/assets/images/search/restaurant.jpg'),
     require('app/src/assets/images/category/local.jpg'),

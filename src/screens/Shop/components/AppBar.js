@@ -16,7 +16,7 @@ const ChatIcon = ({handlePress, fadeAnim}) => {
   return (
     <TouchableOpacity
       onPress={handlePress}
-      style={{marginHorizontal: 10, marginTop: 2}}>
+      style={{marginHorizontal: 14, marginTop: 2}}>
       <Animated.Text
         style={{
           color: fadeAnim.interpolate({
