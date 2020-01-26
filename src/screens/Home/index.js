@@ -162,20 +162,15 @@ const HomeScreen = observer(props => {
         style={{position: 'relative'}}>
         <Block
           style={{
-            height: height * 0.38,
+            height: height * 0.4,
           }}>
           <CachedImage
             uri={
-              'https://cdn.pixabay.com/photo/2014/06/11/15/52/palm-366843_960_720.jpg'
+              'https://cdn.pixabay.com/photo/2016/11/29/03/19/beach-1867026_960_720.jpg'
             }
             style={{
               height: '100%',
             }}></CachedImage>
-          {/* <Image
-            source={require('app/src/assets/images/hello.jpg')}
-            style={{
-              height: '100%',
-            }}></Image> */}
           <Block style={styles.overlap}></Block>
           <Block style={styles.avatarContainer}>
             <Block center row space="between">
@@ -195,52 +190,46 @@ const HomeScreen = observer(props => {
           <Block style={styles.seachContainer}>
             <Search navigation={navigation} />
           </Block>
-        </Block>
-        {/* <Block center row space="between" style={styles.title}>
-        <Text h2 bold>
-          오늘의 세부
-        </Text>
-        <Ionicons size={20} name="ios-arrow-down" />
-      </Block>
-      <Block
-        row
-        style={{
-          marginTop: 4,
-          marginBottom: 6,
-          paddingHorizontal: sizes.padding,
-        }}>
-        <Block row center>
-          <CachedImage
-            style={{height: 20, width: 30}}
-            uri={
-              'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
-            }></CachedImage>
-          <Block style={{marginLeft: 10}}>
-            <Text style={{marginRight: 6}}>
-              30<Text> ℃</Text>
-            </Text>
-            <Text darkgray size={11}>
-              맑음, 체감온도 36℃
-            </Text>
+          <Block
+            row
+            right
+            style={{
+              flex: 0,
+              width: width * 0.5,
+              position: 'absolute',
+              bottom: 0,
+              right: 0,
+              marginTop: 4,
+              marginBottom: 6,
+              paddingRight: 10,
+            }}>
+            <Block center flex={false} style={{marginRight: 15}}>
+              <CachedImage
+                style={{height: 20, width: 24}}
+                uri={
+                  'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
+                }></CachedImage>
+              <Text size={12} white>
+                30
+                <Text size={11} white>
+                  ℃ 맑음
+                </Text>
+              </Text>
+            </Block>
+            <Block center flex={false}>
+              <Text white style={{height: 20, paddingTop: 2}}>
+                환율
+              </Text>
+              <Text size={12} white>
+                {22.82 + ' '}
+                <Text white size={11}>
+                  (원/페소)
+                </Text>
+              </Text>
+            </Block>
           </Block>
         </Block>
-        <Block row center>
-          <CachedImage
-            style={{height: 20, width: 30}}
-            uri={
-              'https://upload.wikimedia.org/wikipedia/commons/thumb/9/99/Flag_of_the_Philippines.svg/300px-Flag_of_the_Philippines.svg.png'
-            }></CachedImage>
-          <Block style={{marginLeft: 10}}>
-            <Text style={{marginRight: 6}}>
-              {22.82 + ' '}
-              <Text size={11}>(원/페소)</Text>
-            </Text>
-            <Text darkgray size={11}>
-              ▼ 0.05 (-0.22%)
-            </Text>
-          </Block>
-        </Block>
-      </Block> */}
+
         <Block style={styles.categoryContainer}>
           {categories.map((item, idx) => (
             <CardCategory
@@ -360,7 +349,7 @@ const styles = StyleSheet.create({
     position: 'absolute',
     width: '100%',
     height: '100%',
-    backgroundColor: 'rgba(0,0,0,0.3)',
+    backgroundColor: 'rgba(0,0,0,0.4)',
   },
   avatarContainer: {
     position: 'absolute',
@@ -378,7 +367,7 @@ const styles = StyleSheet.create({
   seachContainer: {
     width: width,
     position: 'absolute',
-    top: (height * 0.35) / 2,
+    top: (height * 0.32) / 2,
     left: 0,
     zIndex: 100,
     padding: 5,

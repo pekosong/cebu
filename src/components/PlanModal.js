@@ -202,10 +202,12 @@ export default ReservationModal = observer(props => {
         <Text h1 bold>
           {isEdit ? '일정 변경' : '일정 등록'}
         </Text>
-        <Text h3>{`${reservationDate}, ${reservationTime.substr(
-          0,
-          2,
-        )}시`}</Text>
+        {isEdit && (
+          <Text h3>{`${reservationDate}, ${reservationTime.substr(
+            0,
+            2,
+          )}시`}</Text>
+        )}
       </Block>
       <Block>
         <Block center row space="between">
@@ -312,18 +314,20 @@ export default ReservationModal = observer(props => {
             {isEdit ? '일정 변경' : '일정 등록'}
           </Text>
         </Button>
-        <Button
-          style={{marginBottom: 0}}
-          border
-          onPress={() => {
-            setVisible(false);
-            handleDeleteReservation();
-          }}>
-          <Text center bold accent>
-            일정 취소
-          </Text>
-        </Button>
-        <Button onPress={() => setVisible(false)}>
+        {isEdit && (
+          <Button
+            style={{marginBottom: 0}}
+            border
+            onPress={() => {
+              setVisible(false);
+              handleDeleteReservation();
+            }}>
+            <Text center bold accent>
+              일정 취소
+            </Text>
+          </Button>
+        )}
+        <Button shadow onPress={() => setVisible(false)}>
           <Text center bold accent>
             닫기
           </Text>

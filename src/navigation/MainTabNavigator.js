@@ -22,6 +22,8 @@ import TripInfosScreen from 'app/src/screens/Profile/TripInfosScreen';
 import TripInfoScreen from 'app/src/screens/Profile/TripInfoScreen';
 import MyShopScreen from 'app/src/screens/Profile/MyShopScreen';
 import ReservationScreen from 'app/src/screens/Profile/ReservationScreen';
+import HelpScreen from 'app/src/screens/Profile/HelpScreen';
+import ProposalScreen from 'app/src/screens/Profile/ProposalScreen';
 
 import ShopScreen from 'app/src/screens/Shop';
 
@@ -175,6 +177,8 @@ const ProfileStack = createStackNavigator(
     TripInfo: TripInfoScreen,
     MyShop: MyShopScreen,
     Reservation: ReservationScreen,
+    Help: HelpScreen,
+    Proposal: ProposalScreen,
   },
   {
     initialRouteName: 'Profile',

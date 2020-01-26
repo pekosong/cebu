@@ -62,7 +62,7 @@ const TripInfoScreen = observer(props => {
       newDate = new Object();
       newDate[day.dateString] = {
         startingDay: true,
-        color: colors.primary,
+        color: colors.accent,
         textColor: colors.white,
         endingDay: true,
       };
@@ -82,7 +82,7 @@ const TripInfoScreen = observer(props => {
         } else {
           option['selected'] = true;
         }
-        option['color'] = colors.primary;
+        option['color'] = colors.accent;
         option['textColor'] = colors.white;
 
         newDate[e] = option;
@@ -96,15 +96,15 @@ const TripInfoScreen = observer(props => {
     setLoading(true);
     Keyboard.dismiss();
 
-    let myPlans = date;
+    let plans = date;
 
-    Object.keys(myPlans).forEach((key, idx) => {
-      myPlans[key] = {hotel: hotel, nDay: idx};
+    Object.keys(plans).forEach((key, idx) => {
+      plans[key] = {hotel, nDay: idx};
     });
     const newCus = {
-      hotel: hotel,
+      hotel,
+      plans,
       date: new Date(),
-      plans: myPlans,
     };
 
     updateUser(user.email, newCus)
@@ -149,8 +149,8 @@ const TripInfoScreen = observer(props => {
             markingType="period"
             theme={{
               arrowColor: colors.accent,
-              todayTextColor: colors.primary,
-              mondayTextColor: colors.primary,
+              todayTextColor: colors.accent,
+              mondayTextColor: colors.accent,
               'stylesheet.day.period': {
                 base: {
                   overflow: 'hidden',

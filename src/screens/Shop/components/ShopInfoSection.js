@@ -13,7 +13,7 @@ import {TouchableOpacity} from 'react-native-gesture-handler';
 
 const {width} = Dimensions.get('window');
 
-export default ShopInfoSection = ({shop}) => {
+export default ShopInfoSection = ({shop, navigation}) => {
   const [imageNum, setImageNum] = useState(1);
   const [isVisible, setIsVisible] = useState(false);
   const [isMapVisible, setIsMapVisible] = useState(false);
@@ -170,8 +170,15 @@ export default ShopInfoSection = ({shop}) => {
               }}></MapView.Marker>
           </MapView>
           <Block style={styles.mapDesc}>
-            <CachedImage uri={shop.preview[0]} style={styles.mapImage} />
-            <Block style={{padding: 10}}>
+            <CachedImage
+              uri={
+                typeof shop.preview === 'string'
+                  ? shop.preview
+                  : shop.preview[0]
+              }
+              style={styles.mapImage}
+            />
+            <Block center middle style={{padding: 10}}>
               <Text h3 bold>
                 {shop.name}
               </Text>
@@ -186,7 +193,10 @@ export default ShopInfoSection = ({shop}) => {
         visible={isMapVisible}
         transparent={true}
         onRequestClose={() => setIsMapVisible(false)}>
-        <MapModal setIsMapVisible={setIsMapVisible} shop={shop}></MapModal>
+        <MapModal
+          setIsMapVisible={setIsMapVisible}
+          shop={shop}
+          navigation={navigation}></MapModal>
       </Modal>
       <Modal
         visible={isVisible}

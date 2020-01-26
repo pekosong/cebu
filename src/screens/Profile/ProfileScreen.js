@@ -36,12 +36,12 @@ const hostList = [
 const helpList = [
   {
     title: '도움말',
-    navigation: '',
+    navigation: 'Help',
     icon: 'infocirlceo',
   },
   {
     title: '의견 남기기',
-    navigation: '',
+    navigation: 'Proposal',
     icon: 'copy1',
   },
   ,
@@ -72,8 +72,6 @@ const ProfileScreen = observer(props => {
 
     // Get the token that uniquely identifies this device
     let token = await Notifications.getExpoPushTokenAsync();
-
-    console.log(token);
     firebase
       .firestore()
       .collection('users')
@@ -82,13 +80,7 @@ const ProfileScreen = observer(props => {
   };
 
   useEffect(() => {
-    // registerForPushNotificationsAsync();
-    // let unsubscribe;
-    // unsubscribe = dispatch(watchUserData('b@naver.com'));
-    // dispatch(downloadShopData()).then(() => {});
-    // return () => {
-    //   unsubscribe();
-    // };
+    registerForPushNotificationsAsync();
   }, []);
 
   handleLogout = () => {
@@ -111,13 +103,14 @@ const ProfileScreen = observer(props => {
         'Content-Type': 'application/json',
       },
       body: JSON.stringify({
-        to: 'ExponentPushToken[m7dV_iM_z4sbRd4LO7Fm5u]',
-        sound: 'default',
-        title: 'Hey',
-        body: '테스트',
+        to: 'ExponentPushToken[phLju0B98qxpxzxjvHgtdf]',
+        vibrate: true,
+        badge: 10,
+        title: 'you have msg',
+        body: 'new msg',
+        data: {msg: 'hello'},
       }),
     });
-    console.log(response);
   };
 
   return (
@@ -186,7 +179,7 @@ const ProfileScreen = observer(props => {
               style={{color: colors.black}}></AntDesign>
           </WideText>
         ))}
-        <WideText onPress={() => handleNotification}>
+        <WideText onPress={() => handleNotification()}>
           <Text h3>알림 테스트</Text>
           <AntDesign
             size={26}

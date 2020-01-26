@@ -13,6 +13,8 @@ const MAP = {
   Place: '명소',
   Restaurant: '식당',
   Food: '배달',
+  Adult: '성인',
+  Activity: '놀이',
 };
 export default CardRecommend = ({item, navigation, isDistance}) => {
   const {shop, distance} = item;
@@ -39,12 +41,13 @@ export default CardRecommend = ({item, navigation, isDistance}) => {
                 right: 0,
                 flex: 0,
                 borderWidth: 1,
-                borderColor:
-                  shop.category === 'Massage'
-                    ? colors.primary
-                    : shop.category === 'Place'
-                    ? colors.accent
-                    : colors.black,
+                borderColor: ['Massage', 'Activity', 'Place'].includes(
+                  shop.category,
+                )
+                  ? colors.primary
+                  : ['Food', 'Restaurant'].includes(shop.category)
+                  ? colors.accent
+                  : colors.black,
                 borderRadius: 18,
                 paddingVertical: 3,
                 paddingHorizontal: 6,
@@ -53,12 +56,13 @@ export default CardRecommend = ({item, navigation, isDistance}) => {
                 size={10}
                 bold
                 style={{
-                  color:
-                    shop.category === 'Massage'
-                      ? colors.primary
-                      : shop.category === 'Place'
-                      ? colors.accent
-                      : colors.black,
+                  color: ['Massage', 'Activity', 'Place'].includes(
+                    shop.category,
+                  )
+                    ? colors.primary
+                    : ['Food', 'Restaurant'].includes(shop.category)
+                    ? colors.accent
+                    : colors.black,
                 }}>
                 {MAP[shop.category]}
               </Text>

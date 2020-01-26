@@ -235,7 +235,9 @@ export default ShopScreen = observer(({navigation}) => {
             {show === 1 && (
               <ReviewSection shop={shop} navigation={navigation} />
             )}
-            {show === 2 && <ShopInfoSection shop={shop} />}
+            {show === 2 && (
+              <ShopInfoSection navigation={navigation} shop={shop} />
+            )}
             {show === 3 && (
               <RecommendSection navigation={navigation} shop={shop} />
             )}
