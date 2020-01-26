@@ -591,18 +591,18 @@ const categories = [
     src: require('../assets/images/search/food.jpg'),
   },
   {
-    id: 'Activity',
-    name: '액티비티',
-    src: require('../assets/images/search/seasports.jpg'),
-  },
-  {
     id: 'Place',
     name: '명소',
     src: require('../assets/images/search/activity.jpg'),
   },
   {
+    id: 'Activity',
+    name: '액티비티',
+    src: require('../assets/images/search/seasports.jpg'),
+  },
+  {
     id: 'Adult',
-    name: '19금',
+    name: '어른전용',
     src: require('../assets/images/search/nail.jpg'),
   },
 ];

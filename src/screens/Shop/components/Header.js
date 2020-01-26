@@ -8,7 +8,7 @@ const {width} = Dimensions.get('window');
 export default HeaderSection = ({shop}) => {
   const {preview} = shop;
   return (
-    <Block>
+    <Block style={{position: 'absolute', top: 0}}>
       <CachedImage
         key={typeof preview === 'string' ? preview : preview[2]}
         uri={typeof preview === 'string' ? preview : preview[2]}

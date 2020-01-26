@@ -51,6 +51,7 @@ export default CardShop = ({shop, navigation}) => {
     tags,
     reviewCnt,
     location,
+    branch,
   } = shop;
 
   return (
@@ -67,11 +68,18 @@ export default CardShop = ({shop, navigation}) => {
       />
       <Block style={styles.overlap}></Block>
       <Favorite shop={shop}></Favorite>
-      {location && (
-        <Text h5 darkgray style={{marginTop: 6}}>
-          {location}
-        </Text>
-      )}
+      <Block row>
+        {location && (
+          <Text h5 darkgray style={{marginTop: 6}}>
+            {location}
+          </Text>
+        )}
+        {branch !== '' && (
+          <Text h5 darkgray style={{marginTop: 6}}>
+            {'  /  ' + branch}
+          </Text>
+        )}
+      </Block>
       <Block row center style={{marginVertical: 3}}>
         <Text h3 bold>
           {name}

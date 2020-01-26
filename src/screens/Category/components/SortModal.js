@@ -1,12 +1,20 @@
 import React from 'react';
-import {TouchableWithoutFeedback} from 'react-native';
+import {TouchableWithoutFeedback, Dimensions} from 'react-native';
 import {Ionicons} from '@expo/vector-icons';
 import {Block, Text} from 'app/src/components';
 import {sizes, colors} from 'app/src/styles';
 
+const {width} = Dimensions.get('window');
+
 export default SortModal = ({sort, setSort, setShowSort}) => {
   return (
-    <Block bottom style={{marginBottom: -15}}>
+    <Block
+      style={{
+        flex: 0,
+        bottom: 0,
+        position: 'absolute',
+        width: width - sizes.padding * 1.9,
+      }}>
       <Block
         style={{
           flex: 0,
@@ -83,6 +91,15 @@ export default SortModal = ({sort, setSort, setShowSort}) => {
           </Block>
         ))}
       </Block>
+      <Block
+        style={{
+          flex: 0,
+          height: 20,
+          width: width,
+          marginLeft: -20,
+          marginBottom: -20,
+          backgroundColor: 'white',
+        }}></Block>
     </Block>
   );
 };

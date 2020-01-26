@@ -1,7 +1,7 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
-import {Block, Text} from 'app/src/components';
+import {Text} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
 export default ExchangeButton = ({isKorean, setIsKorean}) => {

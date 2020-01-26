@@ -16,8 +16,8 @@ export default class Divider extends Component {
 
 export const styles = StyleSheet.create({
   divider: {
-    marginLeft: -sizes.padding,
-    marginRight: -sizes.padding,
+    marginLeft: -sizes.padding * 2,
+    marginRight: -sizes.padding * 2,
     height: 0,
     marginVertical: sizes.base * 1.5,
     borderWidth: 4,

@@ -7,11 +7,54 @@ import {convertComma} from 'app/src/utils';
 
 const {width} = Dimensions.get('window');
 
+const PriceCard = ({item, idx, plans}) => {
+  return (
+    <Block
+      key={idx}
+      style={{
+        borderRadius: 20,
+        height: 120,
+        width: (width - sizes.padding * 2) / 2 - 8,
+        justifyContent: 'center',
+        alignItems: 'center',
+        backgroundColor: colors.white,
+        borderColor: colors.accent,
+        shadowColor: '#000',
+        shadowOffset: {
+          width: 2,
+          height: 3,
+        },
+        shadowOpacity: 0.25,
+        shadowRadius: 3.84,
+        elevation: 3,
+        marginRight: idx == 2 ? 2 : plans.length - 1 == idx ? 2 : 10,
+      }}>
+      <Text bold center h2 style={{marginBottom: 6}}>
+        {item.type === 'adult' ? '어른' : '어린이'}
+      </Text>
+      <Text center>
+        {item.type === 'adult' ? '만 13세 이상' : '만 13세 이하'}
+      </Text>
+      <Block
+        style={{
+          flex: 0,
+          width: 50,
+          borderBottomWidth: 2,
+          borderBottomColor: 'red',
+          marginVertical: 6,
+        }}></Block>
+      <Text bold center h2>
+        {`${convertComma(item.price)}원`}
+      </Text>
+    </Block>
+  );
+};
+
 export default ProgramSection = ({shop}) => {
   const {program} = shop;
   return (
     <>
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h3 accent bold>
           {program.type.join(', ')}
         </Text>
@@ -23,56 +66,18 @@ export default ProgramSection = ({shop}) => {
         </Text>
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           가격 안내
         </Text>
         <Block row>
-          {program.plan.map((e, idx) => (
-            <Block
-              key={idx}
-              style={{
-                borderRadius: 20,
-                height: 120,
-                width: (width - sizes.padding * 2) / 2 - 8,
-                justifyContent: 'center',
-                alignItems: 'center',
-                backgroundColor: colors.white,
-                borderColor: colors.accent,
-                shadowColor: '#000',
-                shadowOffset: {
-                  width: 2,
-                  height: 3,
-                },
-                shadowOpacity: 0.25,
-                shadowRadius: 3.84,
-                elevation: 3,
-                marginRight:
-                  idx == 2 ? 2 : program.plans.length - 1 == idx ? 2 : 10,
-              }}>
-              <Text bold center h2 style={{marginBottom: 6}}>
-                {e.type === 'adult' ? '어른' : '어린이'}
-              </Text>
-              <Text center>
-                {e.type === 'adult' ? '만 13세 이상' : '만 13세 이하'}
-              </Text>
-              <Block
-                style={{
-                  flex: 0,
-                  width: 50,
-                  borderBottomWidth: 2,
-                  borderBottomColor: 'red',
-                  marginVertical: 6,
-                }}></Block>
-              <Text bold center h2>
-                {`${convertComma(e.price)}원`}
-              </Text>
-            </Block>
+          {program.plan.map((item, idx) => (
+            <PriceCard key={idx} item={item} idx={idx} plans={program.plans} />
           ))}
         </Block>
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           프로그램 일정
         </Text>
@@ -95,7 +100,7 @@ export default ProgramSection = ({shop}) => {
         ))}
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           상세 프로그램
         </Text>
@@ -108,21 +113,11 @@ export default ProgramSection = ({shop}) => {
           </Text>
         </Block>
         {program.detail.images.map((e, idx) => (
-          <CachedImage
-            key={idx}
-            uri={e.src}
-            style={{
-              borderRadius: 5,
-              marginTop: 40,
-              height: 200,
-              width: width - sizes.padding * 2,
-              resizeMode: 'contain',
-            }}
-          />
+          <CachedImage key={idx} uri={e.src} style={styles.image} />
         ))}
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           포함 사항
         </Text>
@@ -136,7 +131,7 @@ export default ProgramSection = ({shop}) => {
         ))}
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           불포함 사항
         </Text>
@@ -150,8 +145,7 @@ export default ProgramSection = ({shop}) => {
         ))}
       </Block>
       <Divider />
-
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Text h1 bold style={{marginBottom: 30}}>
           유의 사항
         </Text>
@@ -162,7 +156,7 @@ export default ProgramSection = ({shop}) => {
         ))}
       </Block>
       <Divider />
-      <Block style={style.shop.categories}>
+      <Block style={{marginVertical: 10}}>
         <Block row space="between">
           <Text h1 bold style={{marginBottom: 30}}>
             취소 및 환불 규정
@@ -195,5 +189,12 @@ const styles = StyleSheet.create({
     width: 90,
     height: 90,
     resizeMode: 'cover',
+  },
+  image: {
+    borderRadius: 5,
+    marginTop: 40,
+    height: 200,
+    width: width - sizes.padding * 2,
+    resizeMode: 'contain',
   },
 });

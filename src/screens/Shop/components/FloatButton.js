@@ -1,7 +1,7 @@
 import React, {useState} from 'react';
 import {StyleSheet, Modal, TouchableOpacity} from 'react-native';
 
-import {Text, PlanModal} from 'app/src/components';
+import {PlanModal} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
 import {AntDesign} from '@expo/vector-icons';
@@ -9,22 +9,8 @@ import {AntDesign} from '@expo/vector-icons';
 export default BottomSection = ({navigation, shop, user}) => {
   const [visible, setVisible] = useState(false);
   return (
-    <>
-      {Object.keys(user.plans).length > 0 ? (
-        <TouchableOpacity
-          style={styles.container}
-          onPress={() => setVisible(true)}>
-          <AntDesign color={colors.accent} size={30} name="plus"></AntDesign>
-        </TouchableOpacity>
-      ) : (
-        <TouchableOpacity
-          style={styles.container}
-          onPress={() => navigation.navigate('Profile')}>
-          <Text accent center bold>
-            일정 등록
-          </Text>
-        </TouchableOpacity>
-      )}
+    <TouchableOpacity style={styles.container} onPress={() => setVisible(true)}>
+      <AntDesign color={colors.accent} size={30} name="plus"></AntDesign>
       <Modal
         animationType="slide"
         visible={visible}
@@ -35,7 +21,7 @@ export default BottomSection = ({navigation, shop, user}) => {
           setVisible={setVisible}
         />
       </Modal>
-    </>
+    </TouchableOpacity>
   );
 };
 

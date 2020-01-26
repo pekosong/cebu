@@ -7,12 +7,13 @@ import {
   Modal,
 } from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
+import {TouchableOpacity} from 'react-native-gesture-handler';
 
 import {Block, Button, Text, CachedImage, Divider} from 'app/src/components';
 import CardMenu from './CardMenu';
-import {TouchableOpacity} from 'react-native-gesture-handler';
 
-import {style, sizes, colors} from 'app/src/styles';
+import {sizes} from 'app/src/styles';
+import {colors} from '../../../styles';
 
 const {width} = Dimensions.get('window');
 
@@ -30,94 +31,100 @@ export default MenuSection = ({shop, isKorean}) => {
     }
   };
 
-  return (
-    <Block style={style.shop.categories}>
-      <Block style={{marginBottom: 80}}>
-        <FlatList
-          key={'MenuList'}
-          ItemSeparatorComponent={() => (
-            <Block
-              style={{
-                borderBottomWidth: 0.2,
-                borderBottomColor: '#ddd',
-                marginVertical: 15,
-              }}></Block>
-          )}
-          ListHeaderComponent={
-            <Block row space="between" style={{marginBottom: 30}}>
-              <Text h1 bold>
-                대표 메뉴
+  const itemSeparatorElement = () => (
+    <Block
+      style={{
+        borderBottomWidth: 0.2,
+        borderBottomColor: '#ddd',
+        marginVertical: 15,
+      }}></Block>
+  );
+
+  const headerElement = () => (
+    <Block row space="between" style={{marginBottom: 30}}>
+      <Text h1 bold>
+        대표 메뉴
+      </Text>
+    </Block>
+  );
+
+  const footerElement = () => (
+    <Block>
+      <Button
+        border
+        onPress={() => setMenuCnt(menuCnt === 5 ? shop.menus.length : 5)}
+        style={{marginTop: 20}}>
+        <Text bold accent center>
+          {menuCnt === 5 ? '더 보기' : '닫기'}
+        </Text>
+      </Button>
+      {shop.menuImage.length !== 0 && (
+        <Block
+          style={{
+            marginTop: 20,
+            paddingTop: 20,
+            borderTopWidth: 0.5,
+            borderColor: colors.gray,
+          }}>
+          <Block row space="between" style={{marginTop: 10, marginBottom: 30}}>
+            <Text h1 bold>
+              메뉴판
+            </Text>
+            <TouchableOpacity onPress={() => setIsVisible(true)}>
+              <Text accent h3 bold>
+                크게보기
               </Text>
-            </Block>
-          }
-          ListFooterComponent={
-            <Button
-              border
-              onPress={() => setMenuCnt(menuCnt === 5 ? shop.menus.length : 5)}
-              style={{marginTop: 20}}>
-              <Text bold accent center>
-                {menuCnt === 5 ? '더 보기' : '닫기'}
-              </Text>
-            </Button>
-          }
-          data={shop.menus.slice(0, menuCnt)}
-          renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
-          keyExtractor={(item, idx) => idx.toString()}
-        />
-        {shop.menuImage.length !== 0 && (
-          <Block>
-            <Divider></Divider>
-            <Block
-              row
-              space="between"
-              style={{marginTop: 10, marginBottom: 30}}>
-              <Text h1 bold>
-                메뉴판
-              </Text>
-              <TouchableOpacity onPress={() => setIsVisible(true)}>
-                <Text accent h3 bold>
-                  크게보기
-                </Text>
-              </TouchableOpacity>
-            </Block>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              scrollEventThrottle={360}
-              pagingEnabled
-              onScroll={handleScrollByX}>
-              {shop.menuImage.map((e, idx) => (
-                <CachedImage
-                  key={idx}
-                  uri={e}
-                  style={{
-                    borderRadius: 6,
-                    height: 260,
-                    width: width - sizes.padding * 2,
-                    resizeMode: 'cover',
-                  }}
-                />
-              ))}
-            </ScrollView>
-            <Block style={styles.imageNum}>
-              <Text white bold size={13}>
-                {imageNum + ' / ' + shop.menuImage.length}
-              </Text>
-            </Block>
-            <Modal
-              visible={isVisible}
-              transparent={true}
-              onRequestClose={() => setIsVisible(false)}>
-              <ImageViewer
-                onClick={() => setIsVisible(false)}
-                imageUrls={shop.menuImage.map(e => {
-                  return {url: e};
-                })}
-              />
-            </Modal>
+            </TouchableOpacity>
           </Block>
-        )}
-      </Block>
+          <ScrollView
+            horizontal={true}
+            showsHorizontalScrollIndicator={false}
+            scrollEventThrottle={360}
+            pagingEnabled
+            onScroll={handleScrollByX}>
+            {shop.menuImage.map((e, idx) => (
+              <CachedImage
+                key={idx}
+                uri={e}
+                style={{
+                  borderRadius: 6,
+                  height: 260,
+                  width: width - sizes.padding * 2,
+                  resizeMode: 'cover',
+                }}
+              />
+            ))}
+          </ScrollView>
+          <Block style={styles.imageNum}>
+            <Text white bold size={13}>
+              {imageNum + ' / ' + shop.menuImage.length}
+            </Text>
+          </Block>
+          <Modal
+            visible={isVisible}
+            transparent={true}
+            onRequestClose={() => setIsVisible(false)}>
+            <ImageViewer
+              onClick={() => setIsVisible(false)}
+              imageUrls={shop.menuImage.map(e => {
+                return {url: e};
+              })}
+            />
+          </Modal>
+        </Block>
+      )}
+    </Block>
+  );
+  return (
+    <Block style={{marginBottom: 80}}>
+      <FlatList
+        ItemSeparatorComponent={itemSeparatorElement}
+        ListHeaderComponent={headerElement()}
+        ListFooterComponent={footerElement()}
+        data={shop.menus.slice(0, menuCnt)}
+        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
+        keyExtractor={(item, idx) => idx.toString()}
+      />
     </Block>
   );
 };

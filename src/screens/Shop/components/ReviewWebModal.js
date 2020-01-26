@@ -8,7 +8,7 @@ export default ReviewWebModal = props => {
   const {setwebViewVisible, page} = props;
   return (
     <SafeAreaView style={{flex: 1}}>
-      <CloseButton setwebViewVisible={setwebViewVisible}></CloseButton>
+      <CloseButton onPress={() => setwebViewVisible(false)}></CloseButton>
       <WebView source={{uri: page}}></WebView>
     </SafeAreaView>
   );

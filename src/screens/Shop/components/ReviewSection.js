@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, Modal, FlatList, Dimensions} from 'react-native';
+import {StyleSheet, Modal, FlatList} from 'react-native';
 
 import {Block, Text, Button, Divider} from 'app/src/components';
 
@@ -12,11 +12,10 @@ import ReviewWebModal from './ReviewWebModal';
 import {AntDesign} from '@expo/vector-icons';
 
 import {UserStoreContext} from 'app/src/store/user';
-import {colors, style, sizes} from 'app/src/styles';
+import {colors, sizes} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
 import {observer} from 'mobx-react-lite';
-const {width} = Dimensions.get('window');
 
 const ReviewSection = observer(({navigation, shop}) => {
   const {user} = useContext(UserStoreContext);
@@ -27,31 +26,43 @@ const ReviewSection = observer(({navigation, shop}) => {
   const [googleCnt, setGoogleCnt] = useState(5);
   const [naverCnt, setNaverCnt] = useState(5);
 
+  const itemSeparatorElement = () => (
+    <Block
+      style={{
+        marginVertical: 10,
+      }}></Block>
+  );
+
+  const emptyElement = () => (
+    <Block
+      style={{
+        justifyContent: 'center',
+        alignItems: 'center',
+        paddingVertical: sizes.padding,
+      }}>
+      <Text bold center h2 style={{marginBottom: 10}}>
+        등록된 후기가 없습니다.
+      </Text>
+      <Text center h4 style={{marginBottom: 20}}>
+        첫 후기를 작성하세요.
+      </Text>
+    </Block>
+  );
+
+  const headerElement = title => (
+    <Block style={{marginTop: 20, marginBottom: 30}}>
+      <Text h1 bold>
+        {`${title} 후기`}
+      </Text>
+    </Block>
+  );
+
   return (
-    <Block style={style.shop.categories}>
+    <Block>
       <FlatList
         key={'ReviewList'}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 10,
-            }}></Block>
-        )}
-        ListEmptyComponent={
-          <Block
-            style={{
-              justifyContent: 'center',
-              alignItems: 'center',
-              paddingVertical: sizes.padding,
-            }}>
-            <Text bold center h2 style={{marginBottom: 10}}>
-              등록된 후기가 없습니다.
-            </Text>
-            <Text center h4 style={{marginBottom: 20}}>
-              첫 후기를 작성하세요.
-            </Text>
-          </Block>
-        }
+        ItemSeparatorComponent={itemSeparatorElement}
+        ListEmptyComponent={emptyElement()}
         ListHeaderComponent={
           <Block style={{marginBottom: 30}}>
             <Text h1 bold>
@@ -87,19 +98,8 @@ const ReviewSection = observer(({navigation, shop}) => {
       />
       <Divider></Divider>
       <FlatList
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 10,
-            }}></Block>
-        )}
-        ListHeaderComponent={
-          <Block style={{marginBottom: 30}}>
-            <Text h1 bold>
-              구글 후기
-            </Text>
-          </Block>
-        }
+        ItemSeparatorComponent={itemSeparatorElement}
+        ListHeaderComponent={headerElement('구글')}
         ListFooterComponent={
           <Button
             border
@@ -120,20 +120,9 @@ const ReviewSection = observer(({navigation, shop}) => {
       />
       <Divider></Divider>
       <FlatList
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 10,
-            }}></Block>
-        )}
+        ItemSeparatorComponent={itemSeparatorElement}
         contentContainerStyle={{paddingBottom: 50}}
-        ListHeaderComponent={
-          <Block style={{marginBottom: 30}}>
-            <Text h1 bold>
-              소셜 후기
-            </Text>
-          </Block>
-        }
+        ListHeaderComponent={headerElement('소셜')}
         data={shop.blogs.filter(e => e.title != '').slice(0, naverCnt)}
         renderItem={({item}) => (
           <CardNaver

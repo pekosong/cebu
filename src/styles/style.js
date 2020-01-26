@@ -17,8 +17,14 @@ const style = {
     justifyContent: 'center',
   },
   header: {
-    paddingTop: Platform.OS === 'ios' ? sizes.base * 3 : sizes.base * 2.8,
+    flex: 0,
+    height: 80,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingTop: sizes.padding * 2.2,
     paddingHorizontal: sizes.padding,
+    zIndex: 100,
   },
   appBar: {
     flex: 0,

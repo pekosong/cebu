@@ -42,6 +42,7 @@ const HomeScreen = observer(props => {
   const [foodList, setFoodList] = useState([]);
   const [activityList, setActivityList] = useState([]);
   const [placeList, setPlaceList] = useState([]);
+  const [adultList, setAdultList] = useState([]);
 
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
   const [fadeAnim] = useState(new Animated.Value(0));
@@ -59,6 +60,7 @@ const HomeScreen = observer(props => {
         setFoodList(filterShopList('Food'));
         setActivityList(filterShopList('Activity'));
         setPlaceList(filterShopList('Place'));
+        setAdultList(filterShopList('Adult'));
         setIsLoaded(true);
       });
     } else if (shopStore.shopList.length !== 0) {
@@ -67,6 +69,7 @@ const HomeScreen = observer(props => {
       setFoodList(filterShopList('Food'));
       setActivityList(filterShopList('Activity'));
       setPlaceList(filterShopList('Place'));
+      setAdultList(filterShopList('Adult'));
       setIsLoaded(true);
     }
 
@@ -118,27 +121,15 @@ const HomeScreen = observer(props => {
         shadow
         style={[
           style.shadow,
+          styles.header,
           {
             opacity: fadeAnim,
-            paddingHorizontal: sizes.padding / 1.5,
-            paddingTop: 40,
-            zIndex: 1000,
-            position: 'absolute',
-            height: 86,
-            width,
-            backgroundColor: 'white',
-            marginBottom: 3,
           },
         ]}>
         <Block center row>
           <Image
             source={require('app/src/assets/icon.png')}
-            style={{
-              height: 26,
-              width: 36,
-              borderRadius: 5,
-              marginRight: 8,
-            }}></Image>
+            style={styles.logo}></Image>
           <Block>
             <Text h4 bold>
               hello,{' '}
@@ -171,54 +162,37 @@ const HomeScreen = observer(props => {
         style={{position: 'relative'}}>
         <Block
           style={{
-            height: height * 0.4,
+            height: height * 0.38,
           }}>
-          <Image
+          <CachedImage
+            uri={
+              'https://cdn.pixabay.com/photo/2014/06/11/15/52/palm-366843_960_720.jpg'
+            }
+            style={{
+              height: '100%',
+            }}></CachedImage>
+          {/* <Image
             source={require('app/src/assets/images/hello.jpg')}
             style={{
               height: '100%',
-              resizeMode: 'cover',
-            }}></Image>
-          <Block
-            style={{
-              position: 'absolute',
-              width: '100%',
-              height: '100%',
-              backgroundColor: 'rgba(0,0,0,0.3)',
-            }}></Block>
-          <Block
-            style={{
-              position: 'absolute',
-              width: width,
-              top: 70,
-              zIndex: 10,
-              borderRadius: 30,
-              paddingHorizontal: sizes.padding,
-            }}>
+            }}></Image> */}
+          <Block style={styles.overlap}></Block>
+          <Block style={styles.avatarContainer}>
             <Block center row space="between">
               <Block>
-                <Text size={23} white bold>
+                <Text size={20} white bold>
+                  Hello, Cebu
+                </Text>
+                <Text size={23} white bold style={{marginTop: 2}}>
                   이런 곳은 어때요?
                 </Text>
               </Block>
               <CachedImage
                 uri={'https://randomuser.me/api/portraits/men/19.jpg'}
-                style={{
-                  height: 60,
-                  width: 60,
-                  borderRadius: 30,
-                }}></CachedImage>
+                style={styles.avatar}></CachedImage>
             </Block>
           </Block>
-          <Block
-            style={{
-              width: width,
-              position: 'absolute',
-              top: (height * 0.5) / 3,
-              left: 0,
-              zIndex: 100,
-              padding: 5,
-            }}>
+          <Block style={styles.seachContainer}>
             <Search navigation={navigation} />
           </Block>
         </Block>
@@ -267,14 +241,7 @@ const HomeScreen = observer(props => {
           </Block>
         </Block>
       </Block> */}
-        <Block
-          middle
-          center
-          row
-          style={{
-            marginTop: 10,
-            flexWrap: 'wrap',
-          }}>
+        <Block style={styles.categoryContainer}>
           {categories.map((item, idx) => (
             <CardCategory
               key={idx}
@@ -303,6 +270,13 @@ const HomeScreen = observer(props => {
             category: 'Food',
             items: foodList,
           },
+
+          {
+            title: '명소',
+            subTitle: '세부 왔으면 그래도 여기는',
+            category: 'Place',
+            items: placeList,
+          },
           {
             title: '액티비티',
             subTitle: '하루 정도는 신나게',
@@ -310,10 +284,10 @@ const HomeScreen = observer(props => {
             items: activityList,
           },
           {
-            title: '명소',
-            subTitle: '세부 왔으면 그래도 여기는',
-            category: 'Place',
-            items: placeList,
+            title: '어른전용',
+            subTitle: '어른들만',
+            category: 'Adult',
+            items: adultList,
           },
         ].map((item, idx) => (
           <Block key={idx}>
@@ -346,7 +320,7 @@ const HomeScreen = observer(props => {
                   isLast={item.items.length - 1 == idx}></CardRect>
               ))}
             </ScrollView>
-            {idx !== 4 ? (
+            {idx !== 5 ? (
               <Divider></Divider>
             ) : (
               <Block style={{marginTop: 40}}></Block>
@@ -366,6 +340,56 @@ HomeScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    paddingHorizontal: sizes.padding / 1.5,
+    paddingTop: 40,
+    zIndex: 1000,
+    position: 'absolute',
+    height: 86,
+    width,
+    backgroundColor: 'white',
+    marginBottom: 3,
+  },
+  logo: {
+    height: 26,
+    width: 36,
+    borderRadius: 5,
+    marginRight: 8,
+  },
+  overlap: {
+    position: 'absolute',
+    width: '100%',
+    height: '100%',
+    backgroundColor: 'rgba(0,0,0,0.3)',
+  },
+  avatarContainer: {
+    position: 'absolute',
+    width: width,
+    top: 70,
+    zIndex: 10,
+    borderRadius: 30,
+    paddingHorizontal: sizes.padding,
+  },
+  avatar: {
+    height: 60,
+    width: 60,
+    borderRadius: 30,
+  },
+  seachContainer: {
+    width: width,
+    position: 'absolute',
+    top: (height * 0.35) / 2,
+    left: 0,
+    zIndex: 100,
+    padding: 5,
+  },
+  categoryContainer: {
+    flexDirection: 'row',
+    alignItems: 'center',
+    justifyContent: 'center',
+    marginTop: 10,
+    flexWrap: 'wrap',
+  },
   title: {
     marginHorizontal: sizes.padding,
     marginBottom: 6,

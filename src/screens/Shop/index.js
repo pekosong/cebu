@@ -3,9 +3,11 @@ import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
-import {sizes, colors} from 'app/src/styles';
+import {sizes, colors, style} from 'app/src/styles';
 
 import AppBar from './components/AppBar';
+import TabBar from './components/TabBar';
+
 import Header from './components/Header';
 import ShopTitle from './components/ShopTitle';
 import FloatButton from './components/FloatButton';
@@ -41,31 +43,8 @@ const SHOPCAT = {
   Place: '정보',
 };
 
-const {width, height} = Dimensions.get('window');
+const {width} = Dimensions.get('window');
 
-const TabBar = ({fadeAnim, xAnim, children, style}) => (
-  <Animated.View
-    style={[
-      styles.tabs,
-      {
-        top: style ? 0 : 90,
-        opacity: fadeAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-      },
-      style,
-    ]}>
-    {children}
-    <Animated.View
-      style={{
-        ...styles.bottomBar,
-        left: xAnim,
-      }}></Animated.View>
-  </Animated.View>
-);
 const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
   return (
     <TouchableOpacity
@@ -156,25 +135,32 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
 
-    if (e.nativeEvent.contentOffset.y > 250) {
+    if (e.nativeEvent.contentOffset.y > 260) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 50,
+        duration: 30,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 250) {
+    } else if (e.nativeEvent.contentOffset.y < 260) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 25,
+        duration: 15,
       }).start();
     }
   };
 
+  const opacity = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [1, 0],
+    extrapolate: 'clamp',
+    useNativeDriver: true,
+  });
+
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
-      <Header top={animatedScrollYValue} shop={shop}></Header>
+    <Block>
       <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
+      <Header top={animatedScrollYValue} shop={shop}></Header>
       <TabBar fadeAnim={fadeAnim} xAnim={xAnim}>
         <Block row flex={false}>
           {[0, 1, 2, 3].map(tab => (
@@ -203,21 +189,17 @@ export default ShopScreen = observer(({navigation}) => {
           },
         )}
         scrollEventThrottle={360}>
-        <ShopTitle shop={shop}></ShopTitle>
+        <ShopTitle shop={shop} />
         <Block
           style={{
-            paddingTop: 320,
+            paddingTop: 270,
           }}>
           <TabBar
             fadeAnim={fadeAnim}
             xAnim={xAnim}
+            inFlat
             style={{
-              opacity: fadeAnim.interpolate({
-                inputRange: [0, 1],
-                outputRange: [1, 0],
-                extrapolate: 'clamp',
-                useNativeDriver: true,
-              }),
+              opacity,
             }}>
             <Block row>
               {[0, 1, 2, 3].map(tab => (
@@ -232,7 +214,12 @@ export default ShopScreen = observer(({navigation}) => {
               ))}
             </Block>
           </TabBar>
-          <Block style={{paddingTop: 20, backgroundColor: 'white'}}>
+          <Block
+            style={{
+              paddingHorizontal: sizes.padding,
+              paddingTop: 40,
+              backgroundColor: 'white',
+            }}>
             {show === 0 && MENUS.includes(shop.category) && (
               <MenuSection shop={shop} isKorean={isKorean} />
             )}
@@ -259,7 +246,7 @@ export default ShopScreen = observer(({navigation}) => {
       {show === 0 && (
         <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
       )}
-    </>
+    </Block>
   );
 });
 
@@ -270,23 +257,8 @@ ShopScreen.navigationOptions = {
 };
 
 const styles = StyleSheet.create({
-  tabs: {
-    zIndex: 1000,
-    backgroundColor: '#fff',
-    paddingHorizontal: sizes.padding,
-    justifyContent: 'center',
-    borderBottomWidth: 0.4,
-    borderBottomColor: colors.gray2,
-  },
   tab: {
     width: (width - sizes.padding * 2) / 4,
-    paddingVertical: 12,
-  },
-  bottomBar: {
-    position: 'absolute',
-    bottom: 0,
-    borderWidth: 1,
-    borderColor: colors.black,
-    width: (width - sizes.padding * 2) / 4,
+    paddingVertical: 10,
   },
 });

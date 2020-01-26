@@ -10,30 +10,30 @@ import {AntDesign} from '@expo/vector-icons';
 const {width} = Dimensions.get('window');
 
 export default HeaderSection = ({shop}) => {
+  const {name, tags, review, reviewCnt, likes, branch} = shop;
   return (
     <Block style={styles.shopTitle}>
-      <Text h1 bold>
-        {shop.name}
+      <Text numberOfLines={1} h1 bold>
+        {name}
+        {branch && <Text h4>{'  ' + branch}</Text>}
       </Text>
       <Text primary bold>
-        {shop.tags.join(', ')}
+        {tags.join(', ')}
       </Text>
       <Block row center>
         <AntDesign size={20} color={colors.primary} name="star"></AntDesign>
         <Text h3 bold style={{marginLeft: 5}}>
-          {shop.review}
+          {review}
         </Text>
       </Block>
-      <Text>
-        {'리뷰 ' + convertComma(shop.reviewCnt) + ' · ' + '저장 ' + shop.likes}
-      </Text>
+      <Text>{'리뷰 ' + convertComma(reviewCnt) + ' · ' + '저장 ' + likes}</Text>
     </Block>
   );
 };
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: 160,
+    top: 110,
     position: 'absolute',
     height: 140,
     width: width - 60,

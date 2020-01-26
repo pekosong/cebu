@@ -1,8 +1,8 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import {StyleSheet, ScrollView, FlatList, Animated} from 'react-native';
+import {StyleSheet, ScrollView, FlatList, Animated, View} from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
-import {sizes} from 'app/src/styles';
+import {sizes, style} from 'app/src/styles';
 
 import SortModal from './components/SortModal';
 import FilterTab from './components/FilterTab';
@@ -15,6 +15,7 @@ import {observer} from 'mobx-react-lite';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 import Modal from 'react-native-modal';
+
 const MAP = {
   reviewCnt: '리뷰 많은 순',
   review: '평점 좋은 순',
@@ -53,20 +54,6 @@ export default CategoryScreen = observer(props => {
     setIsLoaded(true);
   }, []);
 
-  handleScrollByCategoryY = e => {
-    if (e.nativeEvent.contentOffset.y > 85) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 1,
-      }).start();
-    } else if (e.nativeEvent.contentOffset.y < 85) {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 1,
-      }).start();
-    }
-  };
-
   const filterList = [
     {
       isActive: isKorean,
@@ -87,6 +74,20 @@ export default CategoryScreen = observer(props => {
     {isActive: isCebu, setActive: setIsCebu, title: '세부시티'},
   ];
 
+  handleScrollByCategoryY = e => {
+    if (e.nativeEvent.contentOffset.y > 100) {
+      Animated.timing(fadeAnim, {
+        toValue: 1,
+        duration: 1,
+      }).start();
+    } else if (e.nativeEvent.contentOffset.y < 100) {
+      Animated.timing(fadeAnim, {
+        toValue: 0,
+        duration: 1,
+      }).start();
+    }
+  };
+
   const selectedList = () => {
     return selectedLists
       .sort((a, b) => {
@@ -106,21 +107,73 @@ export default CategoryScreen = observer(props => {
       .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e));
   };
 
+  const itemSeparatorElement = () => (
+    <Block
+      style={{
+        marginVertical: 12,
+      }}
+    />
+  );
+
+  const headerElement = () => (
+    <Block
+      style={{
+        paddingHorizontal: sizes.padding,
+        marginBottom: 16,
+      }}>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabs}>
+        {category.name.map((tab, idx) => (
+          <CategoryTab
+            key={idx}
+            tab={tab}
+            image={category.src[tab]}
+            tabName={tab}
+            isActive={catActive == tab}
+            handleTab={tab => setCatActive(tab)}
+            isLast={category.name.length - 1 === idx}
+          />
+        ))}
+      </ScrollView>
+      {navigation.getParam('category') !== 'Place' && (
+        <FilterTab filterList={filterList} />
+      )}
+    </Block>
+  );
+
+  const emptyElement = () => (
+    <Block middle>
+      <Block flex={false}>
+        <Text h1 bold center>
+          업체 추가 중
+        </Text>
+        <Text h3 center darkgray style={{marginTop: 10}}>
+          현재 업체를 준비 중에 있습니다.
+        </Text>
+      </Block>
+    </Block>
+  );
+
+  const footerElement = () => <Block style={{marginBottom: 50}}></Block>;
+
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <Block style={{flex: 1}}>
-      <Block
-        animated
-        center
-        row
-        space="between"
-        style={{
-          flex: 0,
-          paddingHorizontal: sizes.padding,
-          paddingTop: 50,
-          height: 80,
-        }}>
+    <Block>
+      <Modal
+        backdropOpacity={0.1}
+        animationInTiming={500}
+        useNativeDriver={true}
+        isVisible={showSort}
+        onBackdropPress={() => setShowSort(false)}>
+        <SortModal
+          sort={sort}
+          setSort={setSort}
+          setShowSort={setShowSort}></SortModal>
+      </Modal>
+      <Block style={style.header}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons size={30} name="ios-arrow-back" />
         </TouchableOpacity>
@@ -134,16 +187,6 @@ export default CategoryScreen = observer(props => {
         </Block>
       </Block>
       <FilterTab fadeAnim={fadeAnim} filterList={filterList} isTop />
-      <Modal
-        backdropOpacity={0.1}
-        animationInTiming={500}
-        useNativeDriver={true}
-        isVisible={showSort}>
-        <SortModal
-          sort={sort}
-          setSort={setSort}
-          setShowSort={setShowSort}></SortModal>
-      </Modal>
       <FlatList
         showsVerticalScrollIndicator={false}
         onScroll={Animated.event(
@@ -154,9 +197,8 @@ export default CategoryScreen = observer(props => {
             },
           },
         )}
-        disableVirtualization={false}
         contentContainerStyle={[{flexGrow: 1}]}
-        scrollEventThrottle={360}
+        scrollEventThrottle={1}
         showsVerticalScrollIndicator={false}
         removeClippedSubviews={true} // Unmount components when outside of window
         initialNumToRender={2} // Reduce initial render amount
@@ -165,53 +207,10 @@ export default CategoryScreen = observer(props => {
         windowSize={7}
         onEndReached={() => console.log('hello')}
         onEndReachedThreshold={0.1}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 12,
-            }}
-          />
-        )}
-        ListEmptyComponent={
-          <Block middle>
-            <Block flex={false}>
-              <Text h1 bold center>
-                업체 추가 중
-              </Text>
-              <Text h3 center darkgray style={{marginTop: 10}}>
-                현재 업체를 준비 중에 있습니다.
-              </Text>
-            </Block>
-          </Block>
-        }
-        ListHeaderComponent={
-          <Block
-            style={{
-              paddingHorizontal: sizes.padding,
-              marginBottom: 16,
-            }}>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={styles.tabs}>
-              {category.name.map((tab, idx) => (
-                <CategoryTab
-                  key={idx}
-                  tab={tab}
-                  image={category.src[tab]}
-                  tabName={tab}
-                  isActive={catActive == tab}
-                  handleTab={tab => setCatActive(tab)}
-                  isLast={category.name.length - 1 === idx}
-                />
-              ))}
-            </ScrollView>
-            {navigation.getParam('category') !== 'Place' && (
-              <FilterTab filterList={filterList} />
-            )}
-          </Block>
-        }
-        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
+        ItemSeparatorComponent={itemSeparatorElement}
+        ListEmptyComponent={emptyElement()}
+        ListHeaderComponent={headerElement()}
+        ListFooterComponent={footerElement()}
         data={selectedList()}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>

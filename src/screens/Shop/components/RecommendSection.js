@@ -4,14 +4,11 @@ import {StyleSheet, FlatList} from 'react-native';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 import {Block, Text, CardRecommend} from 'app/src/components';
-import {mocks} from 'app/src/constants';
-import {style} from 'app/src/styles';
 
 export default RecommendSection = ({navigation, shop}) => {
-  const shopList = useContext(ShopStoreContext)
-    .shopList.filter(e => e.id != shop.id)
-    .slice(0, 20);
-
+  const shopList = useContext(ShopStoreContext).shopList.filter(
+    e => e.id != shop.id,
+  );
   const getDistanceFromLatLonInKm = (lat1, lon1, lat2, lon2) => {
     var R = 6371; // Radius of the earth in km
     var dLat = deg2rad(lat2 - lat1); // deg2rad below
@@ -41,40 +38,40 @@ export default RecommendSection = ({navigation, shop}) => {
     ),
   }));
 
-  const sortedShop = distances.sort((a, b) => a.distance > b.distance);
+  const sortedShop = distances
+    .sort((a, b) => a.distance > b.distance)
+    .slice(0, 20);
+
+  const itemSeparatorElement = () => (
+    <Block
+      style={{
+        marginVertical: 8,
+      }}></Block>
+  );
+  const headerElement = () => (
+    <Text h1 bold style={{marginBottom: 30}}>
+      근처 추천 장소
+    </Text>
+  );
 
   return (
-    <Block style={[style.shop.categories]}>
-      <FlatList
-        key={'RecommendList'}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 8,
-            }}></Block>
-        )}
-        contentContainerStyle={{paddingBottom: 50}}
-        ListHeaderComponent={
-          <Text h1 bold style={{marginBottom: 30}}>
-            근처 추천 장소
-          </Text>
-        }
-        data={sortedShop}
-        renderItem={({item}) => (
-          <CardRecommend
-            item={item}
-            navigation={navigation}
-            isDistance={true}></CardRecommend>
-        )}
-        keyExtractor={(item, idx) => idx.toString()}
-      />
-    </Block>
+    <FlatList
+      ItemSeparatorComponent={itemSeparatorElement}
+      contentContainerStyle={{paddingBottom: 50}}
+      ListHeaderComponent={headerElement()}
+      data={sortedShop}
+      renderItem={({item}) => (
+        <CardRecommend
+          item={item}
+          navigation={navigation}
+          isDistance={true}></CardRecommend>
+      )}
+      keyExtractor={(item, idx) => idx.toString()}
+    />
   );
 };
 
-RecommendSection.defaultProps = {
-  recommendList: mocks.recommendList,
-};
+RecommendSection.defaultProps = {};
 
 RecommendSection.navigationOptions = {
   header: null,

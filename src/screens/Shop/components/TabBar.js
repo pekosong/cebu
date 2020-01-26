@@ -1,28 +1,35 @@
 import React from 'react';
-import {Animated} from 'react-native';
+import {Animated, StyleSheet, Dimensions} from 'react-native';
+import {sizes, colors} from 'app/src/styles';
+const {width} = Dimensions.get('window');
 
-const TabBar = ({fadeAnim, xAnim, children}) => (
-  <Animated.View
-    style={[
-      styles.tabs,
-      {
-        top: 90,
-        opacity: fadeAnim.interpolate({
-          inputRange: [0, 1],
-          outputRange: [0, 1],
-          extrapolate: 'clamp',
-          useNativeDriver: true,
-        }),
-      },
-    ]}>
-    {children}
+export default TabBar = ({fadeAnim, xAnim, children, style, inFlat}) => {
+  const opacity = fadeAnim.interpolate({
+    inputRange: [0, 1],
+    outputRange: [0, 1],
+    extrapolate: 'clamp',
+    useNativeDriver: true,
+  });
+  return (
     <Animated.View
-      style={{
-        ...styles.bottomBar,
-        left: xAnim,
-      }}></Animated.View>
-  </Animated.View>
-);
+      style={[
+        styles.tabs,
+        {
+          top: style ? 0 : 80,
+          position: inFlat ? 'relative' : 'absolute',
+          opacity,
+        },
+        style,
+      ]}>
+      {children}
+      <Animated.View
+        style={{
+          ...styles.bottomBar,
+          left: xAnim,
+        }}></Animated.View>
+    </Animated.View>
+  );
+};
 
 const styles = StyleSheet.create({
   tabs: {
@@ -32,10 +39,6 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     borderBottomWidth: 0.4,
     borderBottomColor: colors.gray2,
-  },
-  tab: {
-    width: (width - sizes.padding * 2) / 4,
-    paddingVertical: 12,
   },
   bottomBar: {
     position: 'absolute',

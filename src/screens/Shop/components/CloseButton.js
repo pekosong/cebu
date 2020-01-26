@@ -2,15 +2,11 @@ import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 
 import {Ionicons} from '@expo/vector-icons';
-// import {TouchableOpacity} from 'react-native-gesture-handler';
-import {Text} from 'app/src/components';
 import {colors} from 'app/src/styles';
 
-export default CloseButton = ({isKorean, setwebViewVisible}) => {
+export default CloseButton = ({onPress}) => {
   return (
-    <TouchableOpacity
-      onPress={() => setwebViewVisible(false)}
-      style={styles.container}>
+    <TouchableOpacity onPress={onPress} style={styles.container}>
       <Ionicons size={40} color={colors.accent} name="ios-close" />
     </TouchableOpacity>
   );
