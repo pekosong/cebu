@@ -112,9 +112,7 @@ const ReviewSection = observer(({navigation, shop}) => {
             </Text>
           </Button>
         }
-        data={shop.googles
-          .sort((a, b) => b.date.seconds - a.date.seconds)
-          .slice(0, googleCnt)}
+        data={shop.googles.slice(0, googleCnt)}
         renderItem={({item}) => <CardReview item={item} google></CardReview>}
         keyExtractor={(item, idx) => idx.toString()}
       />
