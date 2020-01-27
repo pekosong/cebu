@@ -603,7 +603,7 @@ const categories = [
   {
     id: 'Adult',
     name: '어른전용',
-    src: require('../assets/images/search/nail.jpg'),
+    src: require('../assets/images/category/adult.jpg'),
   },
 ];
 

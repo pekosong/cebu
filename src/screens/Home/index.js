@@ -119,13 +119,7 @@ const HomeScreen = observer(props => {
         space="between"
         animated
         shadow
-        style={[
-          style.shadow,
-          styles.header,
-          {
-            opacity: fadeAnim,
-          },
-        ]}>
+        style={[style.shadow, styles.header]}>
         <Block center row>
           <Image
             source={require('app/src/assets/icon.png')}
@@ -146,7 +140,11 @@ const HomeScreen = observer(props => {
             style={{color: colors.darkgray}}
           />
         </TouchableOpacity>
+        <CachedImage
+          uri={'https://randomuser.me/api/portraits/men/19.jpg'}
+          style={styles.avatar}></CachedImage>
       </Block>
+
       <ScrollView
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
@@ -161,75 +159,32 @@ const HomeScreen = observer(props => {
         vertical={true}
         style={{position: 'relative'}}>
         <Block
+          center
+          middle
           style={{
-            height: height * 0.4,
+            position: 'relative',
+            marginTop: 90,
+            height: height * 0.24,
+            padding: 10,
           }}>
           <CachedImage
             uri={
               'https://cdn.pixabay.com/photo/2016/11/29/03/19/beach-1867026_960_720.jpg'
             }
             style={{
+              borderRadius: 8,
+              width: width - 20,
               height: '100%',
             }}></CachedImage>
-          <Block style={styles.overlap}></Block>
-          <Block style={styles.avatarContainer}>
-            <Block center row space="between">
-              <Block>
-                <Text size={20} white bold>
-                  Hello, Cebu
-                </Text>
-                <Text size={23} white bold style={{marginTop: 2}}>
-                  이런 곳은 어때요?
-                </Text>
-              </Block>
-              <CachedImage
-                uri={'https://randomuser.me/api/portraits/men/19.jpg'}
-                style={styles.avatar}></CachedImage>
-            </Block>
-          </Block>
           <Block style={styles.seachContainer}>
             <Search navigation={navigation} />
           </Block>
-          <Block
-            row
-            right
-            style={{
-              flex: 0,
-              width: width * 0.5,
-              position: 'absolute',
-              bottom: 0,
-              right: 0,
-              marginTop: 4,
-              marginBottom: 6,
-              paddingRight: 10,
-            }}>
-            <Block center flex={false} style={{marginRight: 15}}>
-              <CachedImage
-                style={{height: 20, width: 24}}
-                uri={
-                  'https://ssl.gstatic.com/onebox/weather/64/partly_cloudy.png'
-                }></CachedImage>
-              <Text size={12} white>
-                30
-                <Text size={11} white>
-                  ℃ 맑음
-                </Text>
-              </Text>
-            </Block>
-            <Block center flex={false}>
-              <Text white style={{height: 20, paddingTop: 2}}>
-                환율
-              </Text>
-              <Text size={12} white>
-                {22.82 + ' '}
-                <Text white size={11}>
-                  (원/페소)
-                </Text>
-              </Text>
-            </Block>
-          </Block>
         </Block>
-
+        <Block style={{marginTop: 10, marginLeft: 12}}>
+          <Text h2 bold>
+            {'카테고리 '} <Text darkgray>카테고리 별 검색</Text>
+          </Text>
+        </Block>
         <Block style={styles.categoryContainer}>
           {categories.map((item, idx) => (
             <CardCategory
@@ -281,11 +236,9 @@ const HomeScreen = observer(props => {
         ].map((item, idx) => (
           <Block key={idx}>
             <Block center row space="between" style={styles.title}>
-              <Text h3 bold>
+              <Text h2 bold>
                 {item.title + '  '}
-                <Text h4 gray>
-                  {item.subTitle}
-                </Text>
+                <Text darkgray>{item.subTitle}</Text>
               </Text>
               <TouchableOpacity
                 onPress={() =>
@@ -293,7 +246,9 @@ const HomeScreen = observer(props => {
                     category: item.category,
                   })
                 }>
-                <Ionicons size={22} name="ios-arrow-forward" />
+                <Text accent bold>
+                  더보기
+                </Text>
               </TouchableOpacity>
             </Block>
             <ScrollView
@@ -346,10 +301,12 @@ const styles = StyleSheet.create({
     marginRight: 8,
   },
   overlap: {
+    margin: 10,
     position: 'absolute',
     width: '100%',
     height: '100%',
     backgroundColor: 'rgba(0,0,0,0.4)',
+    borderRadius: 6,
   },
   avatarContainer: {
     position: 'absolute',
@@ -360,17 +317,16 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
   },
   avatar: {
-    height: 60,
-    width: 60,
+    marginLeft: 10,
+    height: 30,
+    width: 30,
     borderRadius: 30,
   },
   seachContainer: {
-    width: width,
     position: 'absolute',
-    top: (height * 0.32) / 2,
-    left: 0,
+    width: width,
     zIndex: 100,
-    padding: 5,
+    padding: 100,
   },
   categoryContainer: {
     flexDirection: 'row',
@@ -381,7 +337,7 @@ const styles = StyleSheet.create({
   },
   title: {
     marginHorizontal: sizes.padding,
-    marginBottom: 6,
+    marginBottom: 8,
   },
 });
 

@@ -1,11 +1,5 @@
 import React from 'react';
-import {
-  StyleSheet,
-  TouchableOpacity,
-  Dimensions,
-  View,
-  Platform,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, Dimensions, View} from 'react-native';
 
 import Favorite from './Favorite';
 import Block from './Block';
@@ -69,7 +63,7 @@ export default CardShop = ({shop, navigation}) => {
       <Block style={styles.overlap}></Block>
       <Favorite shop={shop}></Favorite>
       <Block row>
-        {location && (
+        {location !== '' && (
           <Text h5 darkgray style={{marginTop: 6}}>
             {location}
           </Text>

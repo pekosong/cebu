@@ -109,32 +109,20 @@ export default Search = props => {
 
   return (
     <TouchableWithoutFeedback onPress={() => navigation.navigate('Search')}>
-      <Block flex={false} row center style={styles.header}>
-        <Block row center style={styles.search}>
-          <AntDesign
-            size={18}
-            name="search1"
-            style={{color: colors.darkgray}}
-          />
-          <Text size={16} darkgray style={{marginLeft: 10}}>
-            검색 해보세요
-          </Text>
-        </Block>
-        {renderSearch()}
+      <Block row center style={styles.search}>
+        <AntDesign size={18} name="search1" style={{color: colors.darkgray}} />
+        <Text size={16} darkgray style={{marginLeft: 10}}>
+          검색 해보세요
+        </Text>
       </Block>
     </TouchableWithoutFeedback>
   );
 };
 
 export const styles = StyleSheet.create({
-  header: {
-    marginTop: sizes.padding * 2.5,
-    marginBottom: 5,
-    paddingHorizontal: sizes.padding,
-  },
   search: {
     paddingVertical: 10,
-    paddingHorizontal: 20,
+    paddingHorizontal: 15,
     borderRadius: 20,
     backgroundColor: colors.white,
     shadowColor: '#000',
@@ -144,6 +132,6 @@ export const styles = StyleSheet.create({
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 5,
+    elevation: 4,
   },
 });
