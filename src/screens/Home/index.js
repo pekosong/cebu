@@ -182,7 +182,7 @@ const HomeScreen = observer(props => {
         </Block>
         <Block style={{marginTop: 10, marginLeft: 12}}>
           <Text h2 bold>
-            {'카테고리 '} <Text darkgray>카테고리 별 검색</Text>
+            {'카테고리'}
           </Text>
         </Block>
         <Block style={styles.categoryContainer}>
