@@ -135,15 +135,15 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
 
-    if (e.nativeEvent.contentOffset.y > 260) {
+    if (e.nativeEvent.contentOffset.y > 270) {
       Animated.timing(fadeAnim, {
         toValue: 1,
-        duration: 30,
+        duration: 10,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 260) {
+    } else if (e.nativeEvent.contentOffset.y < 270) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 15,
+        duration: 10,
       }).start();
     }
   };
@@ -159,8 +159,8 @@ export default ShopScreen = observer(({navigation}) => {
 
   return (
     <Block>
-      <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
       <Header top={animatedScrollYValue} shop={shop}></Header>
+      <AppBar navigation={navigation} shop={shop} fadeAnim={yAnim}></AppBar>
       <TabBar fadeAnim={fadeAnim} xAnim={xAnim}>
         <Block row flex={false}>
           {[0, 1, 2, 3].map(tab => (
@@ -199,7 +199,7 @@ export default ShopScreen = observer(({navigation}) => {
             xAnim={xAnim}
             inFlat
             style={{
-              opacity,
+              opacity: 1,
             }}>
             <Block row>
               {[0, 1, 2, 3].map(tab => (

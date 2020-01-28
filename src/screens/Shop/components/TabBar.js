@@ -15,9 +15,9 @@ export default TabBar = ({fadeAnim, xAnim, children, style, inFlat}) => {
       style={[
         styles.tabs,
         {
-          top: style ? 0 : 80,
+          top: style ? 0 : 85,
           position: inFlat ? 'relative' : 'absolute',
-          opacity,
+          opacity: inFlat ? 1 : opacity,
         },
         style,
       ]}>

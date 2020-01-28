@@ -18,7 +18,7 @@ const style = {
   },
   header: {
     flex: 0,
-    height: 80,
+    height: 85,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
@@ -49,12 +49,12 @@ const style = {
     backgroundColor: 'white',
     shadowColor: '#000',
     shadowOffset: {
-      width: 0,
-      height: 1,
+      width: 2,
+      height: 2,
     },
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
-    elevation: 1,
+    elevation: 2,
   },
 };
 

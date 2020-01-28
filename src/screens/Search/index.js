@@ -106,7 +106,13 @@ export default SearchScreen = observer(props => {
           searchText !== ''
             ? selectedLists.filter(e =>
                 searchText
-                  ? e.tags.includes(searchText) || e.name.includes(searchText)
+                  ? e.tags.includes(searchText) ||
+                    e.name.includes(searchText) ||
+                    (e.menus &&
+                      e.menus
+                        .map(e => e.name)
+                        .join()
+                        .includes(searchText))
                   : e,
               )
             : null

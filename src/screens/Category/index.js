@@ -46,9 +46,16 @@ export default CategoryScreen = observer(props => {
   const shops = useContext(ShopStoreContext).shopList;
 
   useEffect(() => {
-    const filterShops = (filteredShops = shops.filter(
-      e => e.category == navigation.getParam('category'),
-    ));
+    let filterShops;
+    if (navigation.getParam('category') === 'Food') {
+      filterShops = shops.filter(
+        e => e.category === 'Restaurant' && e.isDelivery,
+      );
+    } else {
+      filterShops = shops.filter(
+        e => e.category === navigation.getParam('category'),
+      );
+    }
     setCategory(mapCategory[navigation.getParam('category')]);
     setSelectedLists(filterShops);
     setIsLoaded(true);

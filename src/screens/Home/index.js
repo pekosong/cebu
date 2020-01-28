@@ -79,15 +79,15 @@ const HomeScreen = observer(props => {
   }, []);
 
   handleScrollByHomeY = e => {
-    if (e.nativeEvent.contentOffset.y > 80) {
+    if (e.nativeEvent.contentOffset.y > 40) {
       Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 40,
+        toValue: 6,
+        duration: 5,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 80) {
+    } else if (e.nativeEvent.contentOffset.y < 40) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 40,
+        duration: 5,
       }).start();
     }
   };
@@ -104,6 +104,11 @@ const HomeScreen = observer(props => {
   };
 
   const filterShopList = category => {
+    if (category === 'Food') {
+      return shuffleArray(shopStore.shopList)
+        .filter(e => e.category === 'Restaurant' && e.isDelivery)
+        .slice(0, 5);
+    }
     return shuffleArray(shopStore.shopList)
       .filter(e => e.category == category)
       .slice(0, 5);
@@ -119,7 +124,16 @@ const HomeScreen = observer(props => {
         space="between"
         animated
         shadow
-        style={[style.shadow, styles.header]}>
+        style={[
+          styles.header,
+          {
+            shadowOffset: {
+              width: fadeAnim,
+              height: fadeAnim,
+            },
+            elevation: fadeAnim,
+          },
+        ]}>
         <Block center row>
           <Image
             source={require('app/src/assets/icon.png')}
@@ -137,14 +151,13 @@ const HomeScreen = observer(props => {
           <AntDesign
             size={26}
             name="search1"
-            style={{color: colors.darkgray}}
+            style={{color: colors.darkgray, marginRight: 6}}
           />
         </TouchableOpacity>
         <CachedImage
           uri={'https://randomuser.me/api/portraits/men/19.jpg'}
           style={styles.avatar}></CachedImage>
       </Block>
-
       <ScrollView
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
