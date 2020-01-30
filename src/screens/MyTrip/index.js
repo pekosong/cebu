@@ -29,6 +29,16 @@ const MAP = {
   not: '예약불가',
 };
 
+const WEEKMAP = {
+  0: '일',
+  1: '월',
+  2: '화',
+  3: '수',
+  4: '목',
+  5: '금',
+  6: '토',
+};
+
 const {height} = Dimensions.get('window');
 
 const MyTripScreen = observer(props => {
@@ -64,6 +74,7 @@ const MyTripScreen = observer(props => {
   }, [user]);
 
   makeMonDay = day => {
+    const week = new Date(day).getDay();
     let _month = day.slice(5, 7);
     let _day = day.slice(8, 10);
 
@@ -74,7 +85,7 @@ const MyTripScreen = observer(props => {
       _day = _day.slice(1, 2);
     }
 
-    return `${_month}월 ${_day}일`;
+    return `${_month}월 ${_day}일 (${WEEKMAP[week]})`;
   };
 
   handleTripTab = tab => {
@@ -115,15 +126,16 @@ const MyTripScreen = observer(props => {
   };
 
   renderList = (day, idx) => {
-    lastItem = Object.values(selectedDates).length == idx + 1 ? true : false;
+    const isLast =
+      Object.values(selectedDates).length == idx + 1 ? true : false;
     let items = reservations.filter(e => e.date == day);
     let korDay = makeMonDay(day);
     let item = plans[day];
     return (
       <Block key={day} style={styles.categories}>
         {(items.length != 0 || active == '전체') && (
-          <Text h4 bold style={{marginBottom: 10}}>
-            {`${korDay}   Day ${item.nDay + 1}  `}
+          <Text h4 darkgray style={{marginBottom: 10}}>
+            {`${korDay} - Day ${item.nDay + 1}  `}
           </Text>
         )}
         {items.length != 0 ? (
@@ -190,18 +202,25 @@ const MyTripScreen = observer(props => {
                   등록된 일정이 없습니다.
                 </Text>
                 <Text center h4 darkgray style={{marginBottom: 20}}>
-                  {`${korDay}의 일정을 등록하세요.`}
+                  {`일정을 등록하세요.`}
                 </Text>
               </>
             )}
-            <Button border onPress={() => navigation.navigate('Home')}>
-              <Text bold accent center>
-                새로운 일정 등록
+            <Button
+              style={{
+                borderWidth: 1,
+                borderColor: colors.gray,
+                marginHorizontal: 60,
+                borderRadius: 20,
+              }}
+              onPress={() => navigation.navigate('Home')}>
+              <Text darkgray center>
+                일정 등록하기
               </Text>
             </Button>
           </Block>
         )}
-        {!lastItem && <Divider></Divider>}
+        {!isLast && <Divider></Divider>}
       </Block>
     );
   };

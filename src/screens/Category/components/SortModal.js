@@ -20,6 +20,8 @@ export default SortModal = ({sort, setSort, setShowSort}) => {
           flex: 0,
           backgroundColor: 'white',
           marginHorizontal: -sizes.padding,
+          borderTopLeftRadius: 20,
+          borderTopRightRadius: 20,
         }}>
         <Block
           onPress={() => {

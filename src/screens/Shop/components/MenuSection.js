@@ -48,83 +48,78 @@ export default MenuSection = ({shop, isKorean}) => {
     </Block>
   );
 
-  const footerElement = () => (
-    <Block>
-      <Button
-        border
-        onPress={() => setMenuCnt(menuCnt === 5 ? shop.menus.length : 5)}
-        style={{marginTop: 20}}>
-        <Text bold accent center>
-          {menuCnt === 5 ? '더 보기' : '닫기'}
-        </Text>
-      </Button>
-      {shop.menuImage.length !== 0 && (
-        <Block
-          style={{
-            marginTop: 20,
-            paddingTop: 20,
-            borderTopWidth: 0.5,
-            borderColor: colors.gray,
-          }}>
-          <Block row space="between" style={{marginTop: 10, marginBottom: 30}}>
-            <Text h1 bold>
-              메뉴판
-            </Text>
-            <TouchableOpacity onPress={() => setIsVisible(true)}>
-              <Text accent h3 bold>
-                크게보기
-              </Text>
-            </TouchableOpacity>
-          </Block>
-          <ScrollView
-            horizontal={true}
-            showsHorizontalScrollIndicator={false}
-            scrollEventThrottle={360}
-            pagingEnabled
-            onScroll={handleScrollByX}>
-            {shop.menuImage.map((e, idx) => (
-              <CachedImage
-                key={idx}
-                uri={e}
-                style={{
-                  borderRadius: 6,
-                  height: 260,
-                  width: width - sizes.padding * 2,
-                  resizeMode: 'cover',
-                }}
-              />
-            ))}
-          </ScrollView>
-          <Block style={styles.imageNum}>
-            <Text white bold size={13}>
-              {imageNum + ' / ' + shop.menuImage.length}
-            </Text>
-          </Block>
-          <Modal
-            visible={isVisible}
-            transparent={true}
-            onRequestClose={() => setIsVisible(false)}>
-            <ImageViewer
-              onClick={() => setIsVisible(false)}
-              imageUrls={shop.menuImage.map(e => {
-                return {url: e};
-              })}
-            />
-          </Modal>
-        </Block>
-      )}
-    </Block>
-  );
   return (
     <Block style={{marginBottom: 80}}>
       <FlatList
         ItemSeparatorComponent={itemSeparatorElement}
         ListHeaderComponent={headerElement()}
-        ListFooterComponent={footerElement()}
         data={shop.menus.slice(0, menuCnt)}
         renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
         keyExtractor={(item, idx) => idx.toString()}
       />
+      <Block>
+        <Button
+          border
+          onPress={() => setMenuCnt(menuCnt === 5 ? shop.menus.length : 5)}
+          style={{marginTop: 20}}>
+          <Text bold accent center>
+            {menuCnt === 5 ? '더 보기' : '닫기'}
+          </Text>
+        </Button>
+        {shop.menuImage.length !== 0 && (
+          <Block style={{position: 'relative'}}>
+            <Divider></Divider>
+            <Block
+              row
+              space="between"
+              style={{marginTop: 10, marginBottom: 30}}>
+              <Text h1 bold>
+                메뉴판
+              </Text>
+              <TouchableOpacity onPress={() => setIsVisible(true)}>
+                <Text accent h3 bold>
+                  크게보기
+                </Text>
+              </TouchableOpacity>
+            </Block>
+            <ScrollView
+              horizontal={true}
+              showsHorizontalScrollIndicator={false}
+              scrollEventThrottle={360}
+              pagingEnabled
+              onScroll={handleScrollByX}>
+              {shop.menuImage.map((e, idx) => (
+                <CachedImage
+                  key={idx}
+                  uri={e}
+                  style={{
+                    borderRadius: 6,
+                    height: 260,
+                    width: width - sizes.padding * 2,
+                    resizeMode: 'cover',
+                  }}
+                />
+              ))}
+            </ScrollView>
+            <Block style={styles.imageNum}>
+              <Text white bold size={13}>
+                {imageNum + ' / ' + shop.menuImage.length}
+              </Text>
+            </Block>
+            <Modal
+              visible={isVisible}
+              transparent={true}
+              onRequestClose={() => setIsVisible(false)}>
+              <ImageViewer
+                onClick={() => setIsVisible(false)}
+                imageUrls={shop.menuImage.map(e => {
+                  return {url: e};
+                })}
+              />
+            </Modal>
+          </Block>
+        )}
+      </Block>
     </Block>
   );
 };

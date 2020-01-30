@@ -29,7 +29,7 @@ export default CardRect = props => {
         }}>
         <CachedImage
           uri={
-            typeof item.preview === 'string' ? item.preview : item.preview[1]
+            typeof item.preview === 'string' ? item.preview : item.preview[0]
           }
           style={styles.imageStyle}></CachedImage>
         <Favorite

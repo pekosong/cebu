@@ -47,12 +47,12 @@ export default SearchScreen = observer(props => {
         ListEmptyComponent={
           <Block middle>
             <Block flex={false}>
-              <Text h2 bold center>
+              <Text h3 bold center>
                 검색어를 입력하세요
               </Text>
               <Block middle row style={{marginTop: 20}}>
-                <FilterButton text="업체명"></FilterButton>
-                <FilterButton text="장소명"></FilterButton>
+                <FilterButton text="치킨"></FilterButton>
+                <FilterButton text="삼겹살"></FilterButton>
                 <FilterButton text="배달"></FilterButton>
                 <FilterButton text="한식"></FilterButton>
                 <FilterButton text="비비큐"></FilterButton>

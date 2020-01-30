@@ -22,7 +22,7 @@ const style = {
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
-    paddingTop: sizes.padding * 2.2,
+    paddingTop: sizes.padding * 1.9,
     paddingHorizontal: sizes.padding,
     zIndex: 100,
   },
