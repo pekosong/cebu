@@ -27,6 +27,8 @@ export default CategoryScreen = observer(props => {
   const [catActive, setCatActive] = useState('전체');
   const [category, setCategory] = useState({});
 
+  const [showCount, setShowCount] = useState(8);
+
   const [selectedLists, setSelectedLists] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -111,7 +113,8 @@ export default CategoryScreen = observer(props => {
       .filter(e => (isPickup ? e.pickup : e))
       .filter(e => (!isMak ? e.location !== '막탄' : e))
       .filter(e => (!isCebu ? e.location !== '세부시티' : e))
-      .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e));
+      .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))
+      .slice(0, showCount);
   };
 
   const itemSeparatorElement = () => (
@@ -212,8 +215,10 @@ export default CategoryScreen = observer(props => {
         maxToRenderPerBatch={1} // Reduce number in each render batch
         updateCellsBatchingPeriod={100} // Increase time between renders
         windowSize={7}
-        onEndReached={() => console.log('hello')}
-        onEndReachedThreshold={0.1}
+        onEndReached={() => {
+          setShowCount(showCount + 8);
+        }}
+        onEndReachedThreshold={0.4}
         ItemSeparatorComponent={itemSeparatorElement}
         ListEmptyComponent={emptyElement()}
         ListHeaderComponent={headerElement()}

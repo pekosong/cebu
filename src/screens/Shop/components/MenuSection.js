@@ -54,7 +54,14 @@ export default MenuSection = ({shop, isKorean}) => {
         ItemSeparatorComponent={itemSeparatorElement}
         ListHeaderComponent={headerElement()}
         data={shop.menus.slice(0, menuCnt)}
-        renderItem={({item}) => <CardMenu item={item} isKorean={isKorean} />}
+        renderItem={({item, index}) => (
+          <CardMenu
+            shopId={shop.id}
+            item={item}
+            idx={index}
+            isKorean={isKorean}
+          />
+        )}
         keyExtractor={(item, idx) => idx.toString()}
       />
       <Block>

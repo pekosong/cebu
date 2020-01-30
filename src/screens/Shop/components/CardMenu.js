@@ -4,7 +4,7 @@ import {StyleSheet} from 'react-native';
 import {Block, Text, CachedImage} from 'app/src/components';
 import {convertComma} from 'app/src/utils';
 
-export default CardMenu = ({item, isKorean}) => {
+export default CardMenu = ({shopId, item, idx, isKorean}) => {
   return (
     <Block row space="between">
       <Block style={{marginRight: 20}}>
@@ -32,6 +32,10 @@ export default CardMenu = ({item, isKorean}) => {
             ? item.src
             : 'https://t1.daumcdn.net/cfile/tistory/2142033952F13BAB0E'
         }></CachedImage>
+      {/* <CachedImage
+        style={styles.imageStyle}
+        uri={`https://www.os1.co.kr/images/shops/${shopId}/menu_${idx +
+          1}.jpg`}></CachedImage> */}
     </Block>
   );
 };
