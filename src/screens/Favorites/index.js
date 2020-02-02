@@ -1,9 +1,16 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {FlatList, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 
-import {Block, Text, CardShop, CategoryTab, Loader} from 'app/src/components';
+import {
+  Block,
+  Button,
+  Text,
+  CardShop,
+  CategoryTab,
+  Loader,
+} from 'app/src/components';
 import {mocks} from 'app/src/constants';
-import {sizes, style} from 'app/src/styles';
+import {sizes, style, colors} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -40,7 +47,7 @@ const FavoritesScreen = observer(props => {
   const [selectedFavorites, setSelectedFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const {user} = useContext(UserStoreContext);
+  const {isLogin, user} = useContext(UserStoreContext);
   const {shopList} = useContext(ShopStoreContext);
 
   useEffect(() => {
@@ -69,6 +76,32 @@ const FavoritesScreen = observer(props => {
 
   if (!isLoaded) return <Loader></Loader>;
 
+  if (!isLogin)
+    return (
+      <Block center middle style={{padding: 80}}>
+        <Text size={40} bold center>
+          저장소
+        </Text>
+        <Text h4 center style={{marginTop: 30}}>
+          로그인 후 나만의 추천
+        </Text>
+        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+          리스트를 정리해보세요
+        </Text>
+        <Button
+          style={{
+            height: 60,
+            backgroundColor: colors.accent,
+            paddingHorizontal: 40,
+            borderRadius: 5,
+          }}
+          onPress={() => navigation.navigate('Login')}>
+          <Text h4 white bold center>
+            로그인 하러 가기
+          </Text>
+        </Button>
+      </Block>
+    );
   return (
     <SafeAreaView>
       <FlatList

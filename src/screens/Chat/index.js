@@ -141,9 +141,9 @@ const ChatScreen = observer(props => {
         locale="ko"
         placeholder="Message"
         dateFormat="ll"
-        bottomOffset={Platform.OS === 'android' ? 0 : 226}
+        bottomOffset={Platform.OS === 'android' ? 0 : 0}
       />
-      <KeyboardSpacer topSpacing={Platform.OS === 'android' ? 40 : 0} />
+      <KeyboardSpacer topSpacing={Platform.OS === 'android' ? 35 : 0} />
     </SafeAreaView>
   );
 });

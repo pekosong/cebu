@@ -37,7 +37,6 @@ const TripInfoScreen = observer(props => {
   const {navigation} = props;
   const [date, setDate] = useState({});
   const [dates, setDates] = useState([]);
-  const [hotel, setHotel] = useState('');
   const [loading, setLoading] = useState(false);
   const [step, setStep] = useState(1);
   const {user} = useContext(UserStoreContext);
@@ -97,12 +96,10 @@ const TripInfoScreen = observer(props => {
     Keyboard.dismiss();
 
     let plans = date;
-
     Object.keys(plans).forEach((key, idx) => {
-      plans[key] = {hotel, nDay: idx};
+      plans[key] = {nDay: idx};
     });
     const newCus = {
-      hotel,
       plans,
       date: new Date(),
     };
@@ -120,100 +117,61 @@ const TripInfoScreen = observer(props => {
   };
 
   renderSignUp = () => {
-    if (step == 1) {
-      return (
-        <Block>
-          <Block bottom padding={[0, sizes.padding]}>
-            <Text bold style={{fontSize: 40, paddingBottom: 40}}>
-              일정
-            </Text>
-          </Block>
-          <Calendar
-            style={{
-              width,
-              overflow: 'hidden',
-            }}
-            horizontal={true}
-            pagingEnabled={true}
-            calendarWidth={width}
-            onVisibleMonthsChange={months => {
-              console.log('now these months are visible', months);
-            }}
-            onDayPress={day => handleDate(day)}
-            monthFormat={'yyyy MM'}
-            hideExtraDays={true}
-            disableMonthChange={true}
-            onPressArrowLeft={substractMonth => substractMonth()}
-            onPressArrowRight={addMonth => addMonth()}
-            markedDates={date}
-            markingType="period"
-            theme={{
-              arrowColor: colors.accent,
-              todayTextColor: colors.accent,
-              mondayTextColor: colors.accent,
-              'stylesheet.day.period': {
-                base: {
-                  overflow: 'hidden',
-                  height: 34,
-                  alignItems: 'center',
-                  width: 38,
-                },
+    return (
+      <Block>
+        <Block bottom padding={[0, sizes.padding]}>
+          <Text bold style={{fontSize: 40, paddingBottom: 40}}>
+            일정
+          </Text>
+        </Block>
+        <Calendar
+          style={{
+            width,
+            overflow: 'hidden',
+          }}
+          horizontal={true}
+          pagingEnabled={true}
+          calendarWidth={width}
+          onVisibleMonthsChange={months => {
+            console.log('now these months are visible', months);
+          }}
+          onDayPress={day => handleDate(day)}
+          monthFormat={'yyyy MM'}
+          hideExtraDays={true}
+          disableMonthChange={true}
+          onPressArrowLeft={substractMonth => substractMonth()}
+          onPressArrowRight={addMonth => addMonth()}
+          markedDates={date}
+          markingType="period"
+          theme={{
+            arrowColor: colors.accent,
+            todayTextColor: colors.accent,
+            mondayTextColor: colors.accent,
+            'stylesheet.day.period': {
+              base: {
+                overflow: 'hidden',
+                height: 34,
+                alignItems: 'center',
+                width: 38,
               },
-            }}
-          />
+            },
+          }}
+        />
 
-          <Block top padding={[0, sizes.padding]}>
-            <Button
-              normal
-              onPress={() => {
-                setStep(step + 1);
-                setLoading(false);
-              }}>
-              <Text white center>
-                다음
-              </Text>
-            </Button>
-            <Button border style={styles.shadow}>
-              <Text center accent onPress={() => navigation.goBack()}>
-                뒤로
-              </Text>
-            </Button>
-          </Block>
-        </Block>
-      );
-    } else {
-      return (
-        <Block padding={[0, sizes.padding]}>
-          <Block middle>
-            <Text bold style={{fontSize: 40, paddingBottom: 40}}>
-              숙박
+        <Block top padding={[0, sizes.padding]}>
+          <Button normal onPress={() => handleSignUp()}>
+            <Text white center>
+              등록
             </Text>
-            <Input
-              label="Hotel"
-              style={[styles.input]}
-              defaultValue={hotel}
-              onChangeText={text => {
-                setHotel(text);
-              }}
-            />
-            <Button normal onPress={() => handleSignUp()}>
-              {loading ? (
-                <ActivityIndicator size="small" color="white" />
-              ) : (
-                <Text white center>
-                  등록
-                </Text>
-              )}
-            </Button>
-            <Button border style={styles.shadow}>
-              <Text center accent onPress={() => setStep(step - 1)}>
-                뒤로
-              </Text>
-            </Button>
-          </Block>
+          </Button>
+          <Button border style={styles.shadow}>
+            <Text center accent onPress={() => navigation.goBack()}>
+              뒤로
+            </Text>
+          </Button>
         </Block>
-      );
-    }
+      </Block>
+    );
   };
   return (
     <KeyboardAvoidingView style={style.full} behavior="padding">

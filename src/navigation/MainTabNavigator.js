@@ -25,6 +25,10 @@ import ReservationScreen from 'app/src/screens/Profile/ReservationScreen';
 import HelpScreen from 'app/src/screens/Profile/HelpScreen';
 import ProposalScreen from 'app/src/screens/Profile/ProposalScreen';
 
+import LoginScreen from 'app/src/screens/Auth/LoginScreen';
+import SignupScreen from 'app/src/screens/Auth/SignupScreen';
+import ForgotScreen from 'app/src/screens/Auth/ForgotScreen';
+
 import ShopScreen from 'app/src/screens/Shop';
 
 import TabBarIcon from 'app/src/components/TabBarIcon';
@@ -38,6 +42,9 @@ const SearchStack = createStackNavigator(
     Shop: ShopScreen,
     Chat: ChatScreen,
     Search: SearchScreen,
+    Login: LoginScreen,
+    Forgot: ForgotScreen,
+    Signup: SignupScreen,
   },
   {
     initialRouteName: 'Home',
@@ -72,6 +79,9 @@ const MyTripStack = createStackNavigator(
     MyTrip: MyTripScreen,
     Shop: ShopScreen,
     Chat: ChatScreen,
+    Login: LoginScreen,
+    Forgot: ForgotScreen,
+    Signup: SignupScreen,
   },
   {
     initialRouteName: 'MyTrip',
@@ -105,6 +115,9 @@ const FavoritesStack = createStackNavigator(
   {
     Favorites: FavoritesScreen,
     Shop: ShopScreen,
+    Login: LoginScreen,
+    Forgot: ForgotScreen,
+    Signup: SignupScreen,
   },
   {
     initialRouteName: 'Favorites',
@@ -138,6 +151,9 @@ const ChatStack = createStackNavigator(
     ChatLists: ChatListScreen,
     Chat: ChatScreen,
     Shop: ShopScreen,
+    Login: LoginScreen,
+    Forgot: ForgotScreen,
+    Signup: SignupScreen,
   },
   {
     initialRouteName: 'ChatLists',
@@ -179,6 +195,9 @@ const ProfileStack = createStackNavigator(
     Reservation: ReservationScreen,
     Help: HelpScreen,
     Proposal: ProposalScreen,
+    Login: LoginScreen,
+    Forgot: ForgotScreen,
+    Signup: SignupScreen,
   },
   {
     initialRouteName: 'Profile',

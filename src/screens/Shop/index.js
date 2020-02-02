@@ -1,5 +1,11 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
+import {
+  StyleSheet,
+  Animated,
+  TouchableOpacity,
+  Dimensions,
+  SafeAreaView,
+} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
@@ -126,12 +132,12 @@ export default ShopScreen = observer(({navigation}) => {
     if (e.nativeEvent.contentOffset.y > 130) {
       Animated.timing(yAnim, {
         toValue: 1,
-        duration: 50,
+        duration: 10,
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 130) {
       Animated.timing(yAnim, {
         toValue: 0,
-        duration: 80,
+        duration: 10,
       }).start();
     }
 
@@ -147,13 +153,6 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
   };
-
-  const opacity = fadeAnim.interpolate({
-    inputRange: [0, 1],
-    outputRange: [1, 0],
-    extrapolate: 'clamp',
-    useNativeDriver: true,
-  });
 
   if (!isLoaded) return <Loader></Loader>;
 

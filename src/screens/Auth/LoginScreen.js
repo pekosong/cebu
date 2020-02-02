@@ -12,7 +12,6 @@ import {login} from 'app/src/api/auth';
 import {streamUser, createUser} from 'app/src/api/user';
 
 import {observer} from 'mobx-react-lite';
-import {ShopStoreContext} from 'app/src/store/shop';
 import {UserStoreContext} from 'app/src/store/user';
 
 const EMAIL = '';
@@ -27,7 +26,6 @@ const LoginScreen = observer(props => {
   const [loading, setLoading] = useState(false);
 
   const userStore = useContext(UserStoreContext);
-  const shopStore = useContext(ShopStoreContext);
 
   handleLogin = () => {
     setLoading(true);
@@ -42,15 +40,11 @@ const LoginScreen = observer(props => {
     checkUser().then(() => {
       login(email, password)
         .then(() => {
-          userStore.getUser();
-          shopStore.getShopList().then(() => {
-            setIsError(false);
-            setLoading(false);
-            navigation.navigate('Home');
-          });
+          userStore.setUser(email);
+          navigation.goBack();
+          navigation.navigate('Home');
         })
         .catch(err => {
-          console.log(err.code);
           if (err.code == 'auth/invalid-email') {
             setError('정확한 이메일을 입력하세요.');
           } else if (err.code == 'auth/user-not-found') {
@@ -84,7 +78,7 @@ const LoginScreen = observer(props => {
             로그인
           </Text>
           <Input
-            label="Email"
+            label="이메일"
             style={[styles.input, isError && styles.hasErrors]}
             defaultValue={email}
             onChangeText={text => {
@@ -93,7 +87,7 @@ const LoginScreen = observer(props => {
           />
           <Input
             secure
-            label="Password"
+            label="비밀번호"
             style={[styles.input, isError && styles.hasErrors]}
             defaultValue={password}
             onChangeText={text => {
@@ -101,7 +95,7 @@ const LoginScreen = observer(props => {
             }}
           />
           {isError && <Text color={'red'}>{error}</Text>}
-          <Button gradient onPress={() => handleLogin()}>
+          <Button normal onPress={() => handleLogin()}>
             {loading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (
@@ -110,8 +104,13 @@ const LoginScreen = observer(props => {
               </Text>
             )}
           </Button>
+          <Button border onPress={() => navigation.navigate('Signup')}>
+            <Text bold accent center>
+              회원가입
+            </Text>
+          </Button>
           <Button shadow style={styles.shadow}>
-            <Text center semibold onPress={() => navigation.navigate('Auth')}>
+            <Text gray center semibold onPress={() => navigation.goBack()}>
               뒤로
             </Text>
           </Button>

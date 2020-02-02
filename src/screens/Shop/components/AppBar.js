@@ -1,8 +1,8 @@
 import React, {useContext} from 'react';
-import {StyleSheet, TouchableOpacity, Animated} from 'react-native';
+import {StyleSheet, TouchableOpacity, Animated, StatusBar} from 'react-native';
 
 import {Block} from 'app/src/components';
-import {fonts, style} from 'app/src/styles';
+import {fonts, style, sizes} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -130,6 +130,16 @@ const styles = StyleSheet.create({
     fontWeight: 'bold',
     fontSize: fonts.h3,
     marginLeft: 12,
+  },
+  header: {
+    flex: 0,
+    height: 85,
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    flexDirection: 'row',
+    paddingTop: sizes.padding * 1.9,
+    paddingHorizontal: sizes.padding,
+    zIndex: 100,
   },
 });
 

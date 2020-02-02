@@ -45,6 +45,7 @@ const PersonalScreen = observer(props => {
     setBirth(user.birth ? user.birth : '');
     setPhone(user.phone ? user.phone : '');
     setImage(user.image ? user.image : '');
+    console.log(image);
   }, []);
 
   getPermissionAsync = async () => {
@@ -199,11 +200,18 @@ const PersonalScreen = observer(props => {
                 </TouchableOpacity>
               </Block>
             </Block>
-            <CachedImage uri={image} style={styles.avatar} />
+            <CachedImage
+              uri={
+                image
+                  ? image
+                  : 'https://img.icons8.com/officel/80/000000/user-male-circle.png'
+              }
+              style={styles.avatar}
+            />
           </Block>
           <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
             <Text style={styles.textStyle}>이메일</Text>
-            <Text bold style={{fontSize: 20}}>
+            <Text bold style={{fontSize: 18}}>
               {email}
             </Text>
           </Block>
@@ -213,7 +221,7 @@ const PersonalScreen = observer(props => {
               defaultValue={name}
               placeholder="홍길동"
               onChangeText={e => setName(e)}
-              style={{fontSize: 20}}
+              style={{fontSize: 18}}
             />
           </Block>
           <Block style={styles.inputRow}>
@@ -222,7 +230,7 @@ const PersonalScreen = observer(props => {
               defaultValue={sex}
               placeholder="남/여"
               onChangeText={e => setSex(e)}
-              style={{fontSize: 20}}
+              style={{fontSize: 18}}
             />
           </Block>
           <Block style={styles.inputRow}>
@@ -231,16 +239,16 @@ const PersonalScreen = observer(props => {
               defaultValue={birth}
               placeholder="2001-01-01"
               onChangeText={e => setBirth(e)}
-              style={{fontSize: 20}}
+              style={{fontSize: 18}}
             />
           </Block>
           <Block style={[styles.inputRow]}>
             <Text style={styles.textStyle}>전화번호</Text>
             <TextInput
               defaultValue={phone}
-              placeholder="010-"
+              placeholder="010-0000-0000"
               onChangeText={e => setPhone(e)}
-              style={{fontSize: 20}}
+              style={{fontSize: 18}}
             />
           </Block>
         </ScrollView>

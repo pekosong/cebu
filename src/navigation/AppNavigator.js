@@ -4,8 +4,8 @@ import MainTabNavigator from './MainTabNavigator';
 import WelcomeNavigator from './WelcomeNavigator';
 
 const MainStack = createSwitchNavigator({
-  // Auth: WelcomeNavigator,
   Main: MainTabNavigator,
+  Auth: WelcomeNavigator,
 });
 
 export default createAppContainer(MainStack, {});

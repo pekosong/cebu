@@ -6,7 +6,7 @@ import {
   TouchableOpacity,
   SafeAreaView,
 } from 'react-native';
-import {Button, Block, Text} from 'app/src/components';
+import {Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
@@ -25,10 +25,6 @@ const NoticeScreen = observer(props => {
   const [noticePush, setNoticePush] = useState(false);
   const [noticeSms, setNoticeSms] = useState(false);
 
-  const [promotionEmail, setPromotionEmail] = useState(false);
-  const [promotionPush, setPromotionPush] = useState(false);
-  const [promotionSms, setPromotionSms] = useState(false);
-
   const {user} = useContext(UserStoreContext);
 
   useEffect(() => {
@@ -41,10 +37,6 @@ const NoticeScreen = observer(props => {
     setNoticeEmail(notice.notice.email);
     setNoticePush(notice.notice.push);
     setNoticeSms(notice.notice.sms);
-
-    setPromotionEmail(notice.promotion.email);
-    setPromotionPush(notice.promotion.push);
-    setPromotionSms(notice.promotion.sms);
   }, []);
 
   saveNotice = () => {
@@ -60,11 +52,6 @@ const NoticeScreen = observer(props => {
           email: noticeEmail,
           push: noticePush,
           sms: noticeSms,
-        },
-        promotion: {
-          email: promotionEmail,
-          push: promotionPush,
-          sms: promotionSms,
         },
       },
     };
@@ -151,33 +138,6 @@ const NoticeScreen = observer(props => {
           <Switch
             value={noticeSms}
             onValueChange={value => setNoticeSms(value)}
-          />
-        </Block>
-        <Text h2 bold style={{marginBottom: 10, marginTop: 30}}>
-          프로모션과 도움말
-        </Text>
-        <Text style={{marginBottom: 10}}>
-          새로운 이벤트, 할인 정보 등 기타 추천을 수신합니다
-        </Text>
-        <Block style={styles.inputRow}>
-          <Text h3>이메일</Text>
-          <Switch
-            value={promotionEmail}
-            onValueChange={value => setPromotionEmail(value)}
-          />
-        </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>푸시 알림</Text>
-          <Switch
-            value={promotionPush}
-            onValueChange={value => setPromotionPush(value)}
-          />
-        </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>문자 메시지</Text>
-          <Switch
-            value={promotionSms}
-            onValueChange={value => setPromotionSms(value)}
           />
         </Block>
       </ScrollView>

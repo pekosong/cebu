@@ -7,9 +7,9 @@ import {
   SafeAreaView,
 } from 'react-native';
 
-import {Block, Text, CachedImage, Loader} from 'app/src/components';
+import {Block, Button, Text, CachedImage, Loader} from 'app/src/components';
 
-import {sizes, style} from 'app/src/styles';
+import {sizes, style, colors} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
 import {shopApi, userApi} from 'app/src/api';
 
@@ -28,7 +28,7 @@ const ChatListScreen = observer(props => {
   const [chatList, setChatList] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const {user} = useContext(UserStoreContext);
+  const {isAdmin, isLogin, user} = useContext(UserStoreContext);
 
   useEffect(() => {
     let userUnsubscribe;
@@ -114,6 +114,21 @@ const ChatListScreen = observer(props => {
       </TouchableOpacity>
     );
   };
+
+  if (!isAdmin)
+    return (
+      <Block center middle style={{padding: 80}}>
+        <Text size={40} bold center>
+          메시지
+        </Text>
+        <Text h4 center style={{marginTop: 30}}>
+          메시지 기능은
+        </Text>
+        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+          현재 준비중에 있습니다.
+        </Text>
+      </Block>
+    );
 
   if (!isLoaded) return <Loader></Loader>;
 

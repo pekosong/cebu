@@ -38,6 +38,7 @@ const TripInfosScreen = observer(props => {
     profile[name] = text;
     setProfile(profile);
   };
+
   renderEdit = () => {
     <TextInput
       defaultValue={name}

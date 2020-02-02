@@ -53,7 +53,7 @@ const ForgotScreen = props => {
           />
           {isError ? <Text color={'red'}>{error}</Text> : null}
 
-          <Button gradient onPress={() => handleForgot()}>
+          <Button normal onPress={() => handleForgot()}>
             {loading ? (
               <ActivityIndicator size="small" color="white" />
             ) : (

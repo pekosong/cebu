@@ -52,7 +52,7 @@ const MyTripScreen = observer(props => {
   const [selectedDates, setSelectedDates] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const {user} = useContext(UserStoreContext);
+  const {isLogin, user} = useContext(UserStoreContext);
 
   useEffect(() => {
     if (Object.entries(user).length !== 0) {
@@ -227,6 +227,32 @@ const MyTripScreen = observer(props => {
 
   if (!isLoaded) return <Loader></Loader>;
 
+  if (!isLogin)
+    return (
+      <Block center middle style={{padding: 80}}>
+        <Text size={40} bold center>
+          내일정
+        </Text>
+        <Text h4 center style={{marginTop: 30}}>
+          로그인 후 나만의 여행
+        </Text>
+        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+          일정을 정리해보세요
+        </Text>
+        <Button
+          style={{
+            height: 60,
+            backgroundColor: colors.accent,
+            paddingHorizontal: 40,
+            borderRadius: 5,
+          }}
+          onPress={() => navigation.navigate('Login')}>
+          <Text h4 white bold center>
+            로그인 하러 가기
+          </Text>
+        </Button>
+      </Block>
+    );
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView

@@ -26,12 +26,10 @@ import {mocks} from 'app/src/constants';
 import {sizes, colors, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
-import {ShopStoreContext} from 'app/src/store/shop';
 import {UserStoreContext} from 'app/src/store/user';
+import {ShopStoreContext} from 'app/src/store/shop';
 
 const {width, height} = Dimensions.get('window');
-
-const EMAIL = 'peko22@naver.com';
 
 const HomeScreen = observer(props => {
   const {navigation, categories} = props;
@@ -47,12 +45,10 @@ const HomeScreen = observer(props => {
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const userStore = useContext(UserStoreContext);
   const shopStore = useContext(ShopStoreContext);
+  const {isLogin, user} = useContext(UserStoreContext);
 
   useEffect(() => {
-    userStore.email = EMAIL;
-    let unsubscribe = userStore.getUser();
     if (shopStore.shopList.length === 0) {
       shopStore.getShopList().then(() => {
         setRestaurantList(filterShopList('Restaurant'));
@@ -72,10 +68,6 @@ const HomeScreen = observer(props => {
       setAdultList(filterShopList('Adult'));
       setIsLoaded(true);
     }
-
-    return () => {
-      unsubscribe();
-    };
   }, []);
 
   handleScrollByHomeY = e => {
@@ -154,9 +146,20 @@ const HomeScreen = observer(props => {
             style={{color: colors.darkgray, marginRight: 6}}
           />
         </TouchableOpacity>
-        <CachedImage
-          uri={'https://randomuser.me/api/portraits/men/19.jpg'}
-          style={styles.avatar}></CachedImage>
+        {isLogin ? (
+          <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
+        ) : (
+          <TouchableOpacity
+            onPress={() => navigation.navigate('Login')}
+            style={{
+              backgroundColor: colors.accent,
+              paddingHorizontal: 6,
+              paddingVertical: 4,
+              borderRadius: 4,
+            }}>
+            <Text white>로그인</Text>
+          </TouchableOpacity>
+        )}
       </Block>
       <ScrollView
         onScroll={Animated.event(
@@ -330,7 +333,7 @@ const styles = StyleSheet.create({
     paddingHorizontal: sizes.padding,
   },
   avatar: {
-    marginLeft: 10,
+    marginLeft: 6,
     height: 30,
     width: 30,
     borderRadius: 30,

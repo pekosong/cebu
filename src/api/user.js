@@ -1,34 +1,6 @@
 import firebase from 'app/src/constants/store';
 
-const newCus = {
-  createAt: new Date(),
-  myfavorites: [],
-  plans: {},
-  sex: '',
-  phone: '',
-  name: '',
-  host: false,
-  shops: [],
-  birth: '',
-  notice: {
-    message: {
-      email: true,
-      push: true,
-      sms: true,
-    },
-    notice: {
-      email: true,
-      push: true,
-      sms: true,
-    },
-    promotion: {
-      email: true,
-      push: true,
-      sms: true,
-    },
-  },
-  image: 'https://randomuser.me/api/portraits/men/41.jpg',
-};
+import {USER} from '../model/user';
 
 const streamUserMsg = email => {
   return firebase
@@ -49,7 +21,7 @@ const createUser = email => {
     .firestore()
     .collection('users')
     .doc(email)
-    .set({...newCus, email});
+    .set({...USER, email});
 };
 
 const updateUser = (email, newProfile) => {

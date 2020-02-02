@@ -48,7 +48,7 @@ const helpList = [
 ];
 const ProfileScreen = observer(props => {
   const {navigation} = props;
-  const {user} = useContext(UserStoreContext);
+  const userStore = useContext(UserStoreContext);
 
   registerForPushNotificationsAsync = async () => {
     const {status: existingStatus} = await Permissions.getAsync(
@@ -75,12 +75,12 @@ const ProfileScreen = observer(props => {
     firebase
       .firestore()
       .collection('users')
-      .doc(user.email)
+      .doc(userStore.user.email)
       .update({token: token});
   };
 
   useEffect(() => {
-    registerForPushNotificationsAsync();
+    // registerForPushNotificationsAsync();
   }, []);
 
   handleLogout = () => {
@@ -88,7 +88,7 @@ const ProfileScreen = observer(props => {
       .auth()
       .signOut()
       .then(function() {
-        navigation.navigate('Auth');
+        userStore.logout();
       })
       .catch(function(err) {
         console.log(err);
@@ -119,7 +119,7 @@ const ProfileScreen = observer(props => {
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
         style={style.appBar}>
-        <Text h1 bold style={{marginBottom: 20}}>
+        <Text h1 bold style={{marginBottom: 20, backgroundColor: '#fff'}}>
           내정보
         </Text>
         <Block margin={[10, 0]}>
@@ -139,7 +139,7 @@ const ProfileScreen = observer(props => {
               style={{color: colors.black}}></AntDesign>
           </WideText>
         ))}
-        {user.host && (
+        {userStore.user.host && (
           <>
             <Block style={{marginTop: 30, marginBottom: 10}}>
               <Text h2 bold>
@@ -186,22 +186,41 @@ const ProfileScreen = observer(props => {
             name="dingding"
             style={{color: colors.black}}></AntDesign>
         </WideText>
-        <TouchableOpacity onPress={() => handleLogout()}>
-          <Block
-            row
-            space="between"
-            style={{
-              marginVertical: 30,
-            }}>
-            <Text h3 primary>
-              로그아웃
-            </Text>
-            <AntDesign
-              size={26}
-              name="logout"
-              style={{color: colors.primary}}></AntDesign>
-          </Block>
-        </TouchableOpacity>
+        {userStore.isLogin ? (
+          <TouchableOpacity onPress={() => handleLogout()}>
+            <Block
+              row
+              space="between"
+              style={{
+                marginVertical: 30,
+              }}>
+              <Text h3 primary>
+                로그아웃
+              </Text>
+              <AntDesign
+                size={26}
+                name="logout"
+                style={{color: colors.primary}}></AntDesign>
+            </Block>
+          </TouchableOpacity>
+        ) : (
+          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
+            <Block
+              row
+              space="between"
+              style={{
+                marginVertical: 30,
+              }}>
+              <Text h3 primary>
+                로그인
+              </Text>
+              <AntDesign
+                size={26}
+                name="logout"
+                style={{color: colors.primary}}></AntDesign>
+            </Block>
+          </TouchableOpacity>
+        )}
       </ScrollView>
     </SafeAreaView>
   );

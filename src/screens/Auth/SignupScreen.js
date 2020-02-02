@@ -55,7 +55,7 @@ const SignupScreen = props => {
             회원 가입
           </Text>
           <Input
-            label="Email"
+            label="이메일"
             style={[styles.input, isError && styles.hasErrors]}
             defaultValue={email}
             onChangeText={text => {
@@ -64,7 +64,7 @@ const SignupScreen = props => {
           />
           <Input
             secure
-            label="Password"
+            label="비밀번호"
             style={[styles.input, isError && styles.hasErrors]}
             defaultValue={password}
             onChangeText={text => {
@@ -73,7 +73,7 @@ const SignupScreen = props => {
           />
           <Input
             secure
-            label="Confirm Password"
+            label="비밀번호 확인"
             style={[styles.input, isError && styles.hasErrors]}
             defaultValue={confirmPassword}
             onChangeText={text => {
@@ -83,7 +83,7 @@ const SignupScreen = props => {
           {isError && <Text color={'red'}>{error}</Text>}
 
           <Button
-            gradient
+            normal
             onPress={() => {
               signUp();
             }}>
