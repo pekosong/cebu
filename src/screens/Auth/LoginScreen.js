@@ -30,16 +30,20 @@ const LoginScreen = observer(props => {
 
   const userStore = useContext(UserStoreContext);
 
-  useEffect(async () => {
+  useEffect(() => {
+    getEmail();
+  }, []);
+
+  getEmail = async () => {
     const remember_ = await AsyncStorage.getItem('isRemember');
     const email_ = await AsyncStorage.getItem('email');
-    if (remember_ === "true") {
-      setIsRemember(true)
-    } else{
+    if (remember_ === 'true') {
+      setIsRemember(true);
+    } else {
       setIsRemember(false);
     }
     setEmail(email_);
-  }, []);
+  };
 
   handleLogin = () => {
     setLoading(true);
@@ -54,8 +58,15 @@ const LoginScreen = observer(props => {
     checkUser().then(() => {
       login(email, password)
         .then(async () => {
-          await AsyncStorage.setItem('isRemember', 'true');
-          await AsyncStorage.setItem('email', email);
+          if (isRemember) {
+            await AsyncStorage.setItem('email', email);
+          } else {
+            await AsyncStorage.removeItem('email');
+          }
+          await AsyncStorage.setItem(
+            'isRemember',
+            isRemember ? 'true' : 'false',
+          );
           userStore.setUser(email);
           navigation.goBack();
           navigation.navigate('Home');
@@ -142,7 +153,6 @@ const LoginScreen = observer(props => {
           <Button>
             <Text
               gray
-              caption
               center
               style={{textDecorationLine: 'underline'}}
               onPress={() => navigation.navigate('Forgot')}>
@@ -165,6 +175,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
+    fontSize: 16,
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: colors.gray2,

@@ -57,7 +57,8 @@ export default CardRect = props => {
         <Block row center style={{flex: 0, marginTop: 2}}>
           <AntDesign size={13} name="star" style={{color: colors.primary}} />
           <Text size={13} darkgray style={{marginLeft: 3}}>
-            {`${item.review} · 리뷰 ${convertComma(item.reviewCnt)}`}
+            {`${item.review} · 리뷰 ${item.reviewCnt &&
+              convertComma(item.reviewCnt)}`}
           </Text>
         </Block>
       </Block>

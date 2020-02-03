@@ -56,7 +56,7 @@ const SignupScreen = props => {
           </Text>
           <Input
             label="이메일"
-            style={[styles.input, isError && styles.hasErrors]}
+            style={[styles.input, isError && styles.hasErrors, {fontSize: 16}]}
             defaultValue={email}
             onChangeText={text => {
               setEmail(text);
@@ -116,6 +116,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
   },
   input: {
+    fontSize: 16,
     borderRadius: 0,
     borderWidth: 0,
     borderBottomColor: colors.gray2,

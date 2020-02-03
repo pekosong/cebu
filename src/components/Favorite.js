@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
+import {LoginModal} from 'app/src/components';
 
 import {colors} from 'app/src/styles';
 import {AntDesign} from '@expo/vector-icons';
@@ -7,12 +8,14 @@ import {AntDesign} from '@expo/vector-icons';
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {updateFavorite} from 'app/src/api/user';
+import Modal from 'react-native-modal';
 
 export default Favorite = observer(props => {
   const {shop, style} = props;
   const [myfavorites, setMyfavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const {user} = useContext(UserStoreContext);
+  const {isLogin, user} = useContext(UserStoreContext);
+  const [showModal, setShowModal] = useState(false);
 
   useEffect(() => {
     if (user.myfavorites) {
@@ -40,7 +43,7 @@ export default Favorite = observer(props => {
 
   return (
     <TouchableOpacity
-      onPress={() => handleFavorite(shop)}
+      onPress={() => (isLogin ? handleFavorite(shop) : setShowModal(true))}
       style={{position: 'absolute', top: 10, right: 10, zIndex: 10, ...style}}>
       {isLoaded && (
         <AntDesign
@@ -59,6 +62,14 @@ export default Favorite = observer(props => {
           }}
         />
       )}
+      <Modal
+        backdropOpacity={0.1}
+        animationInTiming={500}
+        useNativeDriver={true}
+        isVisible={showModal}
+        onBackdropPress={() => setShowModal(false)}>
+        <LoginModal text="로그인이 필요합니다"></LoginModal>
+      </Modal>
     </TouchableOpacity>
   );
 });

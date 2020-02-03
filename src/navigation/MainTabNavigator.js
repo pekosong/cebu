@@ -45,6 +45,7 @@ const SearchStack = createStackNavigator(
     Login: LoginScreen,
     Forgot: ForgotScreen,
     Signup: SignupScreen,
+    Personal: PersonalScreen,
   },
   {
     initialRouteName: 'Home',
@@ -82,6 +83,8 @@ const MyTripStack = createStackNavigator(
     Login: LoginScreen,
     Forgot: ForgotScreen,
     Signup: SignupScreen,
+    TripInfos: TripInfosScreen,
+    TripInfo: TripInfoScreen,
   },
   {
     initialRouteName: 'MyTrip',

@@ -102,6 +102,32 @@ const FavoritesScreen = observer(props => {
         </Button>
       </Block>
     );
+  if (user.myfavorites.length === 0)
+    return (
+      <Block center middle style={{padding: 80}}>
+        <Text size={40} bold center>
+          저장소
+        </Text>
+        <Text darkgray h4 center style={{marginTop: 30}}>
+          저장 정보가 없습니다
+        </Text>
+        <Text darkgray h4 center style={{marginTop: 5, marginBottom: 30}}>
+          리스트를 등록하세요
+        </Text>
+        <Button
+          style={{
+            height: 60,
+            backgroundColor: colors.accent,
+            paddingHorizontal: 40,
+            borderRadius: 5,
+          }}
+          onPress={() => navigation.navigate('Home')}>
+          <Text h4 white bold center>
+            검색하러 가기
+          </Text>
+        </Button>
+      </Block>
+    );
   return (
     <SafeAreaView>
       <FlatList

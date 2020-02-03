@@ -1,5 +1,5 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
-import {StyleSheet, ScrollView, FlatList, Animated, View} from 'react-native';
+import {StyleSheet, ScrollView, FlatList, Animated} from 'react-native';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
 import {sizes, style} from 'app/src/styles';

@@ -99,7 +99,7 @@ const AppBar = observer(props => {
         {shop.name}
       </Animated.Text>
       <Block row right>
-        <ChatIcon
+        {/* <ChatIcon
           handlePress={() =>
             navigation.navigate('Chat', {
               email: user.email,
@@ -108,7 +108,7 @@ const AppBar = observer(props => {
             })
           }
           fadeAnim={fadeAnim}
-        />
+        /> */}
         <FavoriteIcon
           handlePress={() => handleFavorite(shop)}
           fadeAnim={fadeAnim}

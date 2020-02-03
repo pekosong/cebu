@@ -147,7 +147,9 @@ const HomeScreen = observer(props => {
           />
         </TouchableOpacity>
         {isLogin ? (
-          <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
+          <TouchableOpacity onPress={() => navigation.navigate('Personal')}>
+            <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
+          </TouchableOpacity>
         ) : (
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}

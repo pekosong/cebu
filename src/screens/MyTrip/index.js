@@ -253,6 +253,33 @@ const MyTripScreen = observer(props => {
         </Button>
       </Block>
     );
+
+  if (Object.keys(user.plans).length === 0)
+    return (
+      <Block center middle style={{padding: 80}}>
+        <Text size={40} bold center>
+          내일정
+        </Text>
+        <Text darkgray h4 center style={{marginTop: 30}}>
+          일정이 등록되지 않았습니다
+        </Text>
+        <Text darkgray h4 center style={{marginTop: 5, marginBottom: 30}}>
+          세부에서의 일정을 등록해보세요
+        </Text>
+        <Button
+          style={{
+            height: 60,
+            backgroundColor: colors.accent,
+            paddingHorizontal: 40,
+            borderRadius: 5,
+          }}
+          onPress={() => navigation.navigate('TripInfos')}>
+          <Text h4 white bold center>
+            일정등록하러 가기
+          </Text>
+        </Button>
+      </Block>
+    );
   return (
     <SafeAreaView style={{flex: 1}}>
       <ScrollView
