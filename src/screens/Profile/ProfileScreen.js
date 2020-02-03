@@ -48,7 +48,7 @@ const helpList = [
 ];
 const ProfileScreen = observer(props => {
   const {navigation} = props;
-  const userStore = useContext(UserStoreContext);
+  const {isLogin, user, logout} = useContext(UserStoreContext);
 
   registerForPushNotificationsAsync = async () => {
     const {status: existingStatus} = await Permissions.getAsync(
@@ -75,7 +75,7 @@ const ProfileScreen = observer(props => {
     firebase
       .firestore()
       .collection('users')
-      .doc(userStore.user.email)
+      .doc(user.email)
       .update({token: token});
   };
 
@@ -88,7 +88,7 @@ const ProfileScreen = observer(props => {
       .auth()
       .signOut()
       .then(function() {
-        userStore.logout();
+        logout();
       })
       .catch(function(err) {
         console.log(err);
@@ -122,24 +122,28 @@ const ProfileScreen = observer(props => {
         <Text h1 bold style={{marginBottom: 20, backgroundColor: '#fff'}}>
           내정보
         </Text>
-        <Block margin={[10, 0]}>
-          <Text h2 bold>
-            계정 관리
-          </Text>
-        </Block>
-        {profileList.map((item, idx) => (
-          <WideText
-            item={item}
-            key={idx}
-            onPress={() => navigation.navigate(item.navigation)}>
-            <Text h3>{item.title}</Text>
-            <AntDesign
-              size={26}
-              name={item.icon}
-              style={{color: colors.black}}></AntDesign>
-          </WideText>
-        ))}
-        {userStore.user.host && (
+        {isLogin && (
+          <>
+            <Block margin={[10, 0]}>
+              <Text h2 bold>
+                계정 관리
+              </Text>
+            </Block>
+            {profileList.map((item, idx) => (
+              <WideText
+                item={item}
+                key={idx}
+                onPress={() => navigation.navigate(item.navigation)}>
+                <Text h3>{item.title}</Text>
+                <AntDesign
+                  size={26}
+                  name={item.icon}
+                  style={{color: colors.black}}></AntDesign>
+              </WideText>
+            ))}
+          </>
+        )}
+        {user.host && (
           <>
             <Block style={{marginTop: 30, marginBottom: 10}}>
               <Text h2 bold>
@@ -162,7 +166,7 @@ const ProfileScreen = observer(props => {
             ))}
           </>
         )}
-        <Block style={{marginTop: 30, marginBottom: 10}}>
+        <Block style={{marginTop: isLogin ? 30 : 0, marginBottom: 10}}>
           <Text h2 bold>
             지원
           </Text>
@@ -186,7 +190,7 @@ const ProfileScreen = observer(props => {
             name="dingding"
             style={{color: colors.black}}></AntDesign>
         </WideText>
-        {userStore.isLogin ? (
+        {isLogin && (
           <TouchableOpacity onPress={() => handleLogout()}>
             <Block
               row
@@ -196,23 +200,6 @@ const ProfileScreen = observer(props => {
               }}>
               <Text h3 primary>
                 로그아웃
-              </Text>
-              <AntDesign
-                size={26}
-                name="logout"
-                style={{color: colors.primary}}></AntDesign>
-            </Block>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity onPress={() => navigation.navigate('Login')}>
-            <Block
-              row
-              space="between"
-              style={{
-                marginVertical: 30,
-              }}>
-              <Text h3 primary>
-                로그인
               </Text>
               <AntDesign
                 size={26}

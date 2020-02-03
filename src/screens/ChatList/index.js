@@ -121,10 +121,10 @@ const ChatListScreen = observer(props => {
         <Text size={40} bold center>
           메시지
         </Text>
-        <Text h4 center style={{marginTop: 30}}>
+        <Text darkgray h4 center style={{marginTop: 30}}>
           메시지 기능은
         </Text>
-        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+        <Text darkgray h4 center style={{marginTop: 5, marginBottom: 30}}>
           현재 준비중에 있습니다.
         </Text>
       </Block>

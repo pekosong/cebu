@@ -82,10 +82,10 @@ const FavoritesScreen = observer(props => {
         <Text size={40} bold center>
           저장소
         </Text>
-        <Text h4 center style={{marginTop: 30}}>
+        <Text darkgray h4 center style={{marginTop: 30}}>
           로그인 후 나만의 추천
         </Text>
-        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+        <Text darkgray h4 center style={{marginTop: 5, marginBottom: 30}}>
           리스트를 정리해보세요
         </Text>
         <Button

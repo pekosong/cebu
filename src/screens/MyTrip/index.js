@@ -233,10 +233,10 @@ const MyTripScreen = observer(props => {
         <Text size={40} bold center>
           내일정
         </Text>
-        <Text h4 center style={{marginTop: 30}}>
+        <Text darkgray h4 center style={{marginTop: 30}}>
           로그인 후 나만의 여행
         </Text>
-        <Text h4 center style={{marginTop: 5, marginBottom: 30}}>
+        <Text darkgray h4 center style={{marginTop: 5, marginBottom: 30}}>
           일정을 정리해보세요
         </Text>
         <Button

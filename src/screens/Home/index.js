@@ -152,12 +152,13 @@ const HomeScreen = observer(props => {
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
             style={{
-              backgroundColor: colors.accent,
+              borderWidth: 1,
+              borderColor: colors.accent,
               paddingHorizontal: 6,
-              paddingVertical: 4,
+              paddingVertical: 3,
               borderRadius: 4,
             }}>
-            <Text white>로그인</Text>
+            <Text accent>로그인</Text>
           </TouchableOpacity>
         )}
       </Block>

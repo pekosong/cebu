@@ -51,7 +51,7 @@ const ForgotScreen = props => {
               setEmail(text);
             }}
           />
-          {isError ? <Text color={'red'}>{error}</Text> : null}
+          {isError && <Text color={'red'}>{error}</Text>}
 
           <Button normal onPress={() => handleForgot()}>
             {loading ? (
@@ -63,7 +63,7 @@ const ForgotScreen = props => {
             )}
           </Button>
           <Button shadow style={styles.shadow}>
-            <Text center semibold onPress={() => navigation.goBack()}>
+            <Text center gray onPress={() => navigation.goBack()}>
               뒤로
             </Text>
           </Button>

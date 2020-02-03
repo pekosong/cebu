@@ -91,12 +91,12 @@ const SignupScreen = props => {
               <ActivityIndicator size="small" color="white" />
             ) : (
               <Text bold white center>
-                가입 신청
+                가입
               </Text>
             )}
           </Button>
           <Button shadow style={styles.shadow}>
-            <Text center semibold onPress={() => navigation.goBack()}>
+            <Text center gray onPress={() => navigation.goBack()}>
               뒤로
             </Text>
           </Button>

@@ -1,8 +1,10 @@
-import React, {useState, useContext} from 'react';
+import React, {useState, useContext, useEffect} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   ActivityIndicator,
+  Switch,
+  AsyncStorage,
 } from 'react-native';
 
 import {Button, Block, Input, Text} from 'app/src/components';
@@ -22,10 +24,22 @@ const LoginScreen = observer(props => {
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
   const [error, setError] = useState(null);
+  const [isRemember, setIsRemember] = useState(false);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
 
   const userStore = useContext(UserStoreContext);
+
+  useEffect(async () => {
+    const remember_ = await AsyncStorage.getItem('isRemember');
+    const email_ = await AsyncStorage.getItem('email');
+    if (remember_ === "true") {
+      setIsRemember(true)
+    } else{
+      setIsRemember(false);
+    }
+    setEmail(email_);
+  }, []);
 
   handleLogin = () => {
     setLoading(true);
@@ -39,7 +53,9 @@ const LoginScreen = observer(props => {
 
     checkUser().then(() => {
       login(email, password)
-        .then(() => {
+        .then(async () => {
+          await AsyncStorage.setItem('isRemember', 'true');
+          await AsyncStorage.setItem('email', email);
           userStore.setUser(email);
           navigation.goBack();
           navigation.navigate('Home');
@@ -94,6 +110,15 @@ const LoginScreen = observer(props => {
               setPassword(text);
             }}
           />
+          <Block center right row style={{flex: 0, marginBottom: 10}}>
+            <Text gray style={{marginRight: 5}}>
+              이메일 저장
+            </Text>
+            <Switch
+              value={isRemember}
+              onValueChange={value => setIsRemember(value)}
+            />
+          </Block>
           {isError && <Text color={'red'}>{error}</Text>}
           <Button normal onPress={() => handleLogin()}>
             {loading ? (
