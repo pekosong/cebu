@@ -1,6 +1,8 @@
 import React from 'react';
 import {Dimensions} from 'react-native';
-import {Block, Text} from 'app/src/components';
+import Block from './Block';
+import Text from './Text';
+
 import {sizes, colors} from 'app/src/styles';
 
 const {width} = Dimensions.get('window');

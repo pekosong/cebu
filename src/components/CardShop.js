@@ -5,8 +5,6 @@ import Favorite from './Favorite';
 import Block from './Block';
 import Text from './Text';
 
-import FastImage from 'react-native-fast-image';
-
 import {colors, sizes} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 import {AntDesign} from '@expo/vector-icons';

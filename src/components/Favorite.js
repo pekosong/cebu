@@ -1,6 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-import {LoginModal} from 'app/src/components';
+import LoginModal from './LoginModal';
 
 import {colors} from 'app/src/styles';
 import {AntDesign} from '@expo/vector-icons';

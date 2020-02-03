@@ -23,7 +23,8 @@ class ShopStore {
       .then(querySnapshot => {
         const shops = [];
         querySnapshot.forEach(doc => {
-          shops.push(doc.data());
+          const shop = doc.data();
+          if (shop['preview'] !== '') shops.push(doc.data());
         });
         this.shopList = shops;
       });
