@@ -61,7 +61,7 @@ export default CardShop = ({shop, navigation}) => {
         style={styles.image}
       />
       <Block style={styles.overlap}></Block>
-      <Favorite shop={shop}></Favorite>
+      <Favorite shop={shop} navigation={navigation}></Favorite>
       <Block row>
         {location !== '' && (
           <Text h5 darkgray style={{marginTop: 6}}>

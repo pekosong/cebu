@@ -1,35 +1,12 @@
 import React, {useState} from 'react';
-import {
-  StyleSheet,
-  FlatList,
-  ScrollView,
-  Dimensions,
-  Modal,
-} from 'react-native';
-import ImageViewer from 'react-native-image-zoom-viewer';
-import {TouchableOpacity} from 'react-native-gesture-handler';
+import {StyleSheet, FlatList} from 'react-native';
 
-import {Block, Button, Text, CachedImage, Divider} from 'app/src/components';
+import {Block, Button, Text} from 'app/src/components';
 import CardMenu from './CardMenu';
-
-import {sizes} from 'app/src/styles';
-import {colors} from '../../../styles';
-
-const {width} = Dimensions.get('window');
+import MenuImage from './MenuImage';
 
 export default MenuSection = ({shop, isKorean}) => {
-  const [imageNum, setImageNum] = useState(1);
-  const [isVisible, setIsVisible] = useState(false);
   const [menuCnt, setMenuCnt] = useState(5);
-
-  handleScrollByX = e => {
-    if (e.nativeEvent.contentOffset.x % (width - sizes.padding * 2) == 0) {
-      setImageNum(
-        parseInt(e.nativeEvent.contentOffset.x / (width - sizes.padding * 2)) +
-          1,
-      );
-    }
-  };
 
   const itemSeparatorElement = () => (
     <Block
@@ -53,6 +30,7 @@ export default MenuSection = ({shop, isKorean}) => {
       <FlatList
         ItemSeparatorComponent={itemSeparatorElement}
         ListHeaderComponent={headerElement()}
+        contentContainerStyle={{paddingBottom: 20}}
         data={shop.menus.slice(0, menuCnt)}
         renderItem={({item, index}) => (
           <CardMenu
@@ -73,59 +51,7 @@ export default MenuSection = ({shop, isKorean}) => {
             {menuCnt === 5 ? '더 보기' : '닫기'}
           </Text>
         </Button>
-        {shop.menuImage.length !== 0 && (
-          <Block style={{position: 'relative'}}>
-            <Divider></Divider>
-            <Block
-              row
-              space="between"
-              style={{marginTop: 10, marginBottom: 30}}>
-              <Text h1 bold>
-                메뉴판
-              </Text>
-              <TouchableOpacity onPress={() => setIsVisible(true)}>
-                <Text accent h3 bold>
-                  크게보기
-                </Text>
-              </TouchableOpacity>
-            </Block>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              scrollEventThrottle={360}
-              pagingEnabled
-              onScroll={handleScrollByX}>
-              {shop.menuImage.map((e, idx) => (
-                <CachedImage
-                  key={idx}
-                  uri={e}
-                  style={{
-                    borderRadius: 6,
-                    height: 260,
-                    width: width - sizes.padding * 2,
-                    resizeMode: 'cover',
-                  }}
-                />
-              ))}
-            </ScrollView>
-            <Block style={styles.imageNum}>
-              <Text white bold size={13}>
-                {imageNum + ' / ' + shop.menuImage.length}
-              </Text>
-            </Block>
-            <Modal
-              visible={isVisible}
-              transparent={true}
-              onRequestClose={() => setIsVisible(false)}>
-              <ImageViewer
-                onClick={() => setIsVisible(false)}
-                imageUrls={shop.menuImage.map(e => {
-                  return {url: e};
-                })}
-              />
-            </Modal>
-          </Block>
-        )}
+        <MenuImage shop={shop}></MenuImage>
       </Block>
     </Block>
   );
@@ -137,17 +63,4 @@ MenuSection.navigationOptions = {
   header: null,
 };
 
-const styles = StyleSheet.create({
-  imageNum: {
-    zIndex: 100,
-    justifyContent: 'center',
-    alignItems: 'center',
-    position: 'absolute',
-    bottom: 10,
-    right: 10,
-    backgroundColor: 'rgba(0, 0, 0, 0.6)',
-    borderRadius: 10,
-    paddingVertical: 3,
-    paddingHorizontal: 8,
-  },
-});
+const styles = StyleSheet.create({});

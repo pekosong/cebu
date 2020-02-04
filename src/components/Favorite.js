@@ -11,7 +11,7 @@ import {updateFavorite} from 'app/src/api/user';
 import Modal from 'react-native-modal';
 
 export default Favorite = observer(props => {
-  const {shop, style} = props;
+  const {shop, style, navigation} = props;
   const [myfavorites, setMyfavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
   const {isLogin, user} = useContext(UserStoreContext);
@@ -25,7 +25,7 @@ export default Favorite = observer(props => {
   }, [user]);
 
   handleFavorite = async shop => {
-    oldfavorites = user.myfavorites.map(e => e.id);
+    const oldfavorites = user.myfavorites.map(e => e.id);
     newShop = {
       id: shop.id,
       name: shop.name,
@@ -63,12 +63,16 @@ export default Favorite = observer(props => {
         />
       )}
       <Modal
-        backdropOpacity={0.1}
+        backdropOpacity={0.2}
         animationInTiming={500}
         useNativeDriver={true}
         isVisible={showModal}
         onBackdropPress={() => setShowModal(false)}>
-        <LoginModal text="로그인이 필요합니다"></LoginModal>
+        <LoginModal
+          text="로그인이 필요합니다"
+          subText="로그인 후 나의 저장소에 저장하세요"
+          setShowModal={setShowModal}
+          navigation={navigation}></LoginModal>
       </Modal>
     </TouchableOpacity>
   );

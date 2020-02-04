@@ -3,6 +3,7 @@ import {StyleSheet, FlatList} from 'react-native';
 
 import {Block, Text} from 'app/src/components';
 import CardMassage from './CardMassage';
+import MenuImage from './MenuImage';
 
 import {style} from 'app/src/styles';
 
@@ -10,9 +11,7 @@ export default MassageSection = ({shop, isKorean}) => {
   const itemSeparatorElement = () => (
     <Block
       style={{
-        borderBottomWidth: 0.2,
-        borderBottomColor: '#eee',
-        marginVertical: 25,
+        marginVertical: 15,
       }}></Block>
   );
   const headerElement = () => (
@@ -24,14 +23,17 @@ export default MassageSection = ({shop, isKorean}) => {
   );
 
   return (
-    <FlatList
-      ItemSeparatorComponent={itemSeparatorElement}
-      contentContainerStyle={{paddingBottom: 50}}
-      ListHeaderComponent={headerElement()}
-      data={shop.menus}
-      renderItem={({item}) => <CardMassage item={item} isKorean={isKorean} />}
-      keyExtractor={item => item.name}
-    />
+    <Block style={{marginBottom: 80}}>
+      <FlatList
+        ItemSeparatorComponent={itemSeparatorElement}
+        contentContainerStyle={{paddingBottom: 20}}
+        ListHeaderComponent={headerElement()}
+        data={shop.menus}
+        renderItem={({item}) => <CardMassage item={item} isKorean={isKorean} />}
+        keyExtractor={item => item.name}
+      />
+      <MenuImage shop={shop}></MenuImage>
+    </Block>
   );
 };
 

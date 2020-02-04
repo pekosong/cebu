@@ -37,7 +37,8 @@ export default CardRect = props => {
             id: item.id,
             name: item.name,
             preview: item.source,
-          }}></Favorite>
+          }}
+          navigation={navigation}></Favorite>
         <Block style={styles.overlap}></Block>
       </Block>
       <Block

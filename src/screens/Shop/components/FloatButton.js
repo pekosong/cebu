@@ -41,7 +41,11 @@ export default FloatButton = observer(({navigation, shop}) => {
         useNativeDriver={true}
         isVisible={showModal}
         onBackdropPress={() => setShowModal(false)}>
-        <LoginModal text="로그인이 필요합니다"></LoginModal>
+        <LoginModal
+          text="로그인이 필요합니다"
+          subText="로그인 후 내 여행 정보에 저장하세요"
+          setShowModal={setShowModal}
+          navigation={navigation}></LoginModal>
       </Modal_>
       <Modal_
         backdropOpacity={0.1}
@@ -49,7 +53,12 @@ export default FloatButton = observer(({navigation, shop}) => {
         useNativeDriver={true}
         isVisible={showPlan}
         onBackdropPress={() => setShowPlan(false)}>
-        <LoginModal text="여행정보를 등록하세요"></LoginModal>
+        <LoginModal
+          text="여행정보 등록이 필요합니다"
+          subText="나만의 여행 정보를 등록해보세요"
+          setShowModal={setShowPlan}
+          navigation={navigation}
+          isTrip={true}></LoginModal>
       </Modal_>
     </TouchableOpacity>
   );

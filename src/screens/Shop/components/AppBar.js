@@ -1,13 +1,14 @@
-import React, {useContext} from 'react';
-import {StyleSheet, TouchableOpacity, Animated, StatusBar} from 'react-native';
+import React, {useState, useContext} from 'react';
+import {StyleSheet, TouchableOpacity, Animated} from 'react-native';
 
-import {Block} from 'app/src/components';
+import {Block, LoginModal} from 'app/src/components';
 import {fonts, style, sizes} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {updateFavorite} from 'app/src/api/user';
 
+import Modal from 'react-native-modal';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 const ChatIcon = ({handlePress, fadeAnim}) => {
@@ -51,7 +52,8 @@ const FavoriteIcon = ({handlePress, fadeAnim, onOff}) => {
 
 const AppBar = observer(props => {
   const {navigation, shop, fadeAnim} = props;
-  const {user} = useContext(UserStoreContext);
+  const {isLogin, user} = useContext(UserStoreContext);
+  const [showModal, setShowModal] = useState(false);
 
   handleFavorite = async shop => {
     oldfavorites = user.myfavorites.map(e => e.id);
@@ -110,10 +112,24 @@ const AppBar = observer(props => {
           fadeAnim={fadeAnim}
         /> */}
         <FavoriteIcon
-          handlePress={() => handleFavorite(shop)}
+          handlePress={() =>
+            isLogin ? handleFavorite(shop) : setShowModal(true)
+          }
           fadeAnim={fadeAnim}
           onOff={user.myfavorites.map(e => e.id).indexOf(shop.id) == -1}
         />
+        <Modal
+          backdropOpacity={0.2}
+          animationInTiming={500}
+          useNativeDriver={true}
+          isVisible={showModal}
+          onBackdropPress={() => setShowModal(false)}>
+          <LoginModal
+            text="로그인이 필요합니다"
+            subText="로그인 후 나의 저장소에 저장하세요"
+            setShowModal={setShowModal}
+            navigation={navigation}></LoginModal>
+        </Modal>
       </Block>
     </Animated.View>
   );

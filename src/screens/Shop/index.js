@@ -1,15 +1,9 @@
 import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
-import {
-  StyleSheet,
-  Animated,
-  TouchableOpacity,
-  Dimensions,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
 
-import {sizes, colors, style} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 
 import AppBar from './components/AppBar';
 import TabBar from './components/TabBar';
@@ -98,6 +92,8 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
   );
 };
 
+const HEIGHT = 280;
+
 export default ShopScreen = observer(({navigation}) => {
   const {user} = useContext(UserStoreContext);
 
@@ -141,12 +137,12 @@ export default ShopScreen = observer(({navigation}) => {
       }).start();
     }
 
-    if (e.nativeEvent.contentOffset.y > 270) {
+    if (e.nativeEvent.contentOffset.y > HEIGHT) {
       Animated.timing(fadeAnim, {
         toValue: 1,
         duration: 10,
       }).start();
-    } else if (e.nativeEvent.contentOffset.y < 270) {
+    } else if (e.nativeEvent.contentOffset.y < HEIGHT) {
       Animated.timing(fadeAnim, {
         toValue: 0,
         duration: 10,
@@ -158,7 +154,7 @@ export default ShopScreen = observer(({navigation}) => {
 
   return (
     <Block>
-      <Header top={animatedScrollYValue} shop={shop}></Header>
+      <Header top={animatedScrollYValue} shop={shop} HEIGHT={HEIGHT}></Header>
       <AppBar navigation={navigation} shop={shop} fadeAnim={yAnim}></AppBar>
       <TabBar fadeAnim={fadeAnim} xAnim={xAnim}>
         <Block row flex={false}>
@@ -188,10 +184,10 @@ export default ShopScreen = observer(({navigation}) => {
           },
         )}
         scrollEventThrottle={360}>
-        <ShopTitle shop={shop} />
+        <ShopTitle shop={shop} HEIGHT={HEIGHT} />
         <Block
           style={{
-            paddingTop: 270,
+            paddingTop: HEIGHT,
           }}>
           <TabBar
             fadeAnim={fadeAnim}
@@ -216,7 +212,7 @@ export default ShopScreen = observer(({navigation}) => {
           <Block
             style={{
               paddingHorizontal: sizes.padding,
-              paddingTop: 40,
+              paddingTop: 30,
               backgroundColor: 'white',
             }}>
             {show === 0 && MENUS.includes(shop.category) && (
@@ -235,15 +231,15 @@ export default ShopScreen = observer(({navigation}) => {
               <ReviewSection shop={shop} navigation={navigation} />
             )}
             {show === 2 && (
-              <ShopInfoSection navigation={navigation} shop={shop} />
+              <ShopInfoSection shop={shop} navigation={navigation} />
             )}
             {show === 3 && (
-              <RecommendSection navigation={navigation} shop={shop} />
+              <RecommendSection shop={shop} navigation={navigation} />
             )}
           </Block>
         </Block>
       </Animated.ScrollView>
-      <FloatButton navigation={navigation} shop={shop} user={user} />
+      <FloatButton shop={shop} navigation={navigation} />
       {show === 0 && (
         <ExchangeButton isKorean={isKorean} setIsKorean={setIsKorean} />
       )}
