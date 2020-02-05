@@ -16,14 +16,14 @@ import {
   CachedImage,
   Divider,
 } from 'app/src/components';
-import {Ionicons, AntDesign} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
 import CardActivity from './components/CardActivity';
 
 import {mocks} from 'app/src/constants';
-import {sizes, colors, style} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
@@ -153,13 +153,7 @@ const HomeScreen = observer(props => {
         ) : (
           <TouchableOpacity
             onPress={() => navigation.navigate('Login')}
-            style={{
-              borderWidth: 1,
-              borderColor: colors.accent,
-              paddingHorizontal: 6,
-              paddingVertical: 3,
-              borderRadius: 4,
-            }}>
+            style={styles.login}>
             <Text accent>로그인</Text>
           </TouchableOpacity>
         )}
@@ -177,25 +171,13 @@ const HomeScreen = observer(props => {
         showsVerticalScrollIndicator={false}
         vertical={true}
         style={{position: 'relative'}}>
-        <Block
-          center
-          middle
-          style={{
-            position: 'relative',
-            marginTop: 90,
-            height: height * 0.24,
-            padding: 10,
-          }}>
+        <Block center middle style={styles.imageContainer}>
           <CachedImage
             uri={
               'https://cdn.pixabay.com/photo/2016/11/29/03/19/beach-1867026_960_720.jpg'
             }
-            style={{
-              borderRadius: 8,
-              width: width - 20,
-              height: '100%',
-            }}></CachedImage>
-          <Block style={styles.seachContainer}>
+            style={styles.image}></CachedImage>
+          <Block style={styles.searchContainer}>
             <Search navigation={navigation} />
           </Block>
         </Block>
@@ -319,6 +301,24 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     marginRight: 8,
   },
+  login: {
+    borderWidth: 1,
+    borderColor: colors.accent,
+    paddingHorizontal: 6,
+    paddingVertical: 3,
+    borderRadius: 4,
+  },
+  image: {
+    borderRadius: 8,
+    width: width - 20,
+    height: '100%',
+  },
+  imageContainer: {
+    position: 'relative',
+    marginTop: 90,
+    height: height * 0.24,
+    padding: 10,
+  },
   overlap: {
     margin: 10,
     position: 'absolute',
@@ -327,21 +327,13 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(0,0,0,0.4)',
     borderRadius: 6,
   },
-  avatarContainer: {
-    position: 'absolute',
-    width: width,
-    top: 70,
-    zIndex: 10,
-    borderRadius: 30,
-    paddingHorizontal: sizes.padding,
-  },
   avatar: {
     marginLeft: 6,
     height: 30,
     width: 30,
     borderRadius: 30,
   },
-  seachContainer: {
+  searchContainer: {
     position: 'absolute',
     width: width,
     zIndex: 100,

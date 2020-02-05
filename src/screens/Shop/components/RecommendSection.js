@@ -1,4 +1,4 @@
-import React, {useContext} from 'react';
+import React, {useState, useContext} from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 
 import {ShopStoreContext} from 'app/src/store/shop';
@@ -6,6 +6,7 @@ import {ShopStoreContext} from 'app/src/store/shop';
 import {Block, Text, CardRecommend} from 'app/src/components';
 
 export default RecommendSection = ({navigation, shop}) => {
+  const [showCount, setShowCount] = useState(15);
   const shopList = useContext(ShopStoreContext).shopList.filter(
     e => e.id != shop.id,
   );
@@ -40,7 +41,7 @@ export default RecommendSection = ({navigation, shop}) => {
 
   const sortedShop = distances
     .sort((a, b) => a.distance > b.distance)
-    .slice(0, 20);
+    .slice(0, showCount);
 
   const itemSeparatorElement = () => (
     <Block
@@ -59,6 +60,10 @@ export default RecommendSection = ({navigation, shop}) => {
       ItemSeparatorComponent={itemSeparatorElement}
       contentContainerStyle={{paddingBottom: 50}}
       ListHeaderComponent={headerElement()}
+      windowSize={7}
+      onEndReached={() => {
+        setShowCount(showCount + 15);
+      }}
       data={sortedShop}
       renderItem={({item}) => (
         <CardRecommend

@@ -97,25 +97,23 @@ export default CategoryScreen = observer(props => {
     }
   };
 
-  const selectedList = () => {
-    return selectedLists
-      .sort((a, b) => {
-        if (sort === 'review') {
-          return b.review - a.review;
-        } else if (sort === 'reviewCnt') {
-          return b.reviewCnt - a.reviewCnt;
-        } else {
-          return b.like - a.like;
-        }
-      })
-      .filter(e => (isKorean ? e.korean : e))
-      .filter(e => (isBaby ? e.baby : e))
-      .filter(e => (isPickup ? e.pickup : e))
-      .filter(e => (!isMak ? e.location !== '막탄' : e))
-      .filter(e => (!isCebu ? e.location !== '세부시티' : e))
-      .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))
-      .slice(0, showCount);
-  };
+  const selectedList = selectedLists
+    .sort((a, b) => {
+      if (sort === 'review') {
+        return b.review - a.review;
+      } else if (sort === 'reviewCnt') {
+        return b.reviewCnt - a.reviewCnt;
+      } else {
+        return b.like - a.like;
+      }
+    })
+    .filter(e => (isKorean ? e.korean : e))
+    .filter(e => (isBaby ? e.baby : e))
+    .filter(e => (isPickup ? e.pickup : e))
+    .filter(e => (!isMak ? e.location !== '막탄' : e))
+    .filter(e => (!isCebu ? e.location !== '세부시티' : e))
+    .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))
+    .slice(0, showCount);
 
   const itemSeparatorElement = () => (
     <Block
@@ -223,7 +221,7 @@ export default CategoryScreen = observer(props => {
         ListEmptyComponent={emptyElement()}
         ListHeaderComponent={headerElement()}
         ListFooterComponent={footerElement()}
-        data={selectedList()}
+        data={selectedList}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
         )}
