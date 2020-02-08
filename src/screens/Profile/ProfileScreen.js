@@ -185,13 +185,15 @@ const ProfileScreen = observer(props => {
               style={{color: colors.black}}></AntDesign>
           </WideText>
         ))}
-        <WideText onPress={() => handleNotification()}>
-          <Text h3>알림 테스트</Text>
-          <AntDesign
-            size={26}
-            name="dingding"
-            style={{color: colors.black}}></AntDesign>
-        </WideText>
+        {user.host && (
+          <WideText onPress={() => handleNotification()}>
+            <Text h3>알림 테스트</Text>
+            <AntDesign
+              size={26}
+              name="dingding"
+              style={{color: colors.black}}></AntDesign>
+          </WideText>
+        )}
         {isLogin && (
           <TouchableOpacity onPress={() => handleLogout()}>
             <Block

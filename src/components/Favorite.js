@@ -64,7 +64,7 @@ export default Favorite = observer(props => {
       )}
       <Modal
         backdropOpacity={0.2}
-        animationInTiming={500}
+        animationInTiming={200}
         useNativeDriver={true}
         isVisible={showModal}
         onBackdropPress={() => setShowModal(false)}>

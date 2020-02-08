@@ -37,7 +37,7 @@ export default FloatButton = observer(({navigation, shop}) => {
       </Modal>
       <Modal_
         backdropOpacity={0.1}
-        animationInTiming={500}
+        animationInTiming={200}
         useNativeDriver={true}
         isVisible={showModal}
         onBackdropPress={() => setShowModal(false)}>

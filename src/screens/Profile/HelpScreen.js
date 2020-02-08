@@ -1,12 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Switch,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
-import {Button, Block, Text} from 'app/src/components';
+import {StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
+import {Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
@@ -79,54 +73,20 @@ const HeloScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        showsVerticalScrollIndicator={false}
-        style={style.appBar}>
-        <Block style={{backgroundColor: colors.white}}>
-          <Block center row space="between">
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => saveNotice()}>
-              <Text bold h3>
-                저장
-              </Text>
-            </TouchableOpacity>
-          </Block>
-          <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
-            도움
-          </Text>
-        </Block>
-        <Text h2 bold style={{marginBottom: 10}}>
-          메시지
+    <SafeAreaView style={{flex: 1}}>
+      <Block style={style.appBar}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
+        </TouchableOpacity>
+      </Block>
+      <Block center middle>
+        <Text size={40} bold center>
+          도움
         </Text>
-        <Text style={{marginBottom: 10}}>
-          예약 요청을 포함한 호스트와 게스트 간 메시지 수신
+        <Text darkgray h4 center style={{marginTop: 20}}>
+          저장 정보가 없습니다
         </Text>
-        <Block style={styles.inputRow}>
-          <Text h3>이메일</Text>
-          <Switch
-            value={messageEmail}
-            onValueChange={value => setMessageEmail(value)}
-          />
-        </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>푸쉬알림</Text>
-          <Switch
-            value={messagePush}
-            onValueChange={value => setMessagePush(value)}
-          />
-        </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>문자메시지</Text>
-          <Switch
-            value={messageSms}
-            onValueChange={value => setMessageSms(value)}
-          />
-        </Block>
-      </ScrollView>
+      </Block>
     </SafeAreaView>
   );
 });
@@ -135,18 +95,6 @@ HeloScreen.navigationOptions = {
   header: null,
 };
 HeloScreen.defaultProps = {};
-const styles = StyleSheet.create({
-  inputRow: {
-    flexDirection: 'row',
-    justifyContent: 'space-between',
-    alignItems: 'center',
-    paddingVertical: 15,
-    borderBottomWidth: 0.6,
-    borderBottomColor: colors.gray2,
-  },
-  inputs: {
-    paddingHorizontal: sizes.padding,
-  },
-});
+const styles = StyleSheet.create({});
 
 export default HeloScreen;

@@ -19,6 +19,7 @@ export default LoginModal = ({
       style={{
         flex: 1,
         position: 'absolute',
+        paddingLeft: sizes.padding * 0.5,
         width: width - sizes.padding * 2,
       }}>
       <Block
@@ -47,7 +48,7 @@ export default LoginModal = ({
           <TouchableOpacity
             style={{flex: 1, paddingVertical: 8}}
             onPress={() => setShowModal(false)}>
-            <Text center h4 bold>
+            <Text center h4 gray bold>
               취소
             </Text>
           </TouchableOpacity>
@@ -59,7 +60,7 @@ export default LoginModal = ({
                 ? navigation.navigate('TripInfos')
                 : navigation.navigate('Login');
             }}>
-            <Text center h4 bold>
+            <Text center h4 darkgray bold>
               {isTrip ? '여행정보 등록' : '로그인'}
             </Text>
           </TouchableOpacity>

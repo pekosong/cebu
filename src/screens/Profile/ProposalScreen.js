@@ -16,27 +16,20 @@ const ProposalScreen = observer(props => {
   useEffect(() => {}, []);
 
   return (
-    <SafeAreaView>
-      <ScrollView
-        stickyHeaderIndices={[0]}
-        showsVerticalScrollIndicator={false}
-        style={style.appBar}>
-        <Block style={{backgroundColor: colors.white}}>
-          <Block center row space="between">
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => saveNotice()}>
-              <Text bold h3>
-                저장
-              </Text>
-            </TouchableOpacity>
-          </Block>
-          <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
-            의견 남기기
-          </Text>
-        </Block>
-      </ScrollView>
+    <SafeAreaView style={{flex: 1}}>
+      <Block style={style.appBar}>
+        <TouchableOpacity onPress={() => navigation.goBack()}>
+          <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
+        </TouchableOpacity>
+      </Block>
+      <Block center middle>
+        <Text size={40} bold center>
+          의견 남기기
+        </Text>
+        <Text darkgray h4 center style={{marginTop: 20}}>
+          저장 정보가 없습니다
+        </Text>
+      </Block>
     </SafeAreaView>
   );
 });

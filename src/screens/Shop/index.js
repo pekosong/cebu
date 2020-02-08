@@ -25,7 +25,7 @@ import RecommendSection from './components/RecommendSection';
 import {observer} from 'mobx-react-lite';
 import {streamShop} from 'app/src/api/shop';
 
-const HEIGHT = 280;
+const HEIGHT = 300;
 
 const MENUS = ['Restaurant', 'Food', 'Adult'];
 
