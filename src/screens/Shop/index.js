@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, createRef, useContext} from 'react';
+import React, {useState, useEffect, useRef, createRef} from 'react';
 import {StyleSheet, Animated, TouchableOpacity, Dimensions} from 'react-native';
 
 import {Block, Text, Loader} from 'app/src/components';
@@ -23,8 +23,9 @@ import ShopInfoSection from './components/ShopInfoSection';
 import RecommendSection from './components/RecommendSection';
 
 import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
 import {streamShop} from 'app/src/api/shop';
+
+const HEIGHT = 280;
 
 const MENUS = ['Restaurant', 'Food', 'Adult'];
 
@@ -53,7 +54,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
       onPress={() => {
         if (shopScroll.current) {
           shopScroll.current.getNode().scrollTo({
-            y: 280,
+            y: HEIGHT,
             animated: true,
           });
         }
@@ -92,11 +93,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
   );
 };
 
-const HEIGHT = 280;
-
 export default ShopScreen = observer(({navigation}) => {
-  const {user} = useContext(UserStoreContext);
-
   const [shop, setShop] = useState({});
   const [show, setShow] = useState(0);
 
@@ -106,7 +103,6 @@ export default ShopScreen = observer(({navigation}) => {
   const [isKorean, setIsKorean] = useState(false);
 
   const [fadeAnim] = useState(new Animated.Value(0));
-  const [yAnim] = useState(new Animated.Value(0));
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
   const [xAnim] = useState(new Animated.Value(sizes.padding));
 
@@ -124,38 +120,12 @@ export default ShopScreen = observer(({navigation}) => {
     };
   }, []);
 
-  handleScrollByShopY = e => {
-    if (e.nativeEvent.contentOffset.y > 130) {
-      Animated.timing(yAnim, {
-        toValue: 1,
-        duration: 10,
-      }).start();
-    } else if (e.nativeEvent.contentOffset.y < 130) {
-      Animated.timing(yAnim, {
-        toValue: 0,
-        duration: 10,
-      }).start();
-    }
-
-    if (e.nativeEvent.contentOffset.y > HEIGHT) {
-      Animated.timing(fadeAnim, {
-        toValue: 1,
-        duration: 10,
-      }).start();
-    } else if (e.nativeEvent.contentOffset.y < HEIGHT) {
-      Animated.timing(fadeAnim, {
-        toValue: 0,
-        duration: 10,
-      }).start();
-    }
-  };
-
   if (!isLoaded) return <Loader></Loader>;
 
   return (
     <Block>
       <Header top={animatedScrollYValue} shop={shop} HEIGHT={HEIGHT}></Header>
-      <AppBar navigation={navigation} shop={shop} fadeAnim={yAnim}></AppBar>
+      <AppBar navigation={navigation} shop={shop} fadeAnim={fadeAnim}></AppBar>
       <TabBar fadeAnim={fadeAnim} xAnim={xAnim}>
         <Block row flex={false}>
           {[0, 1, 2, 3].map(tab => (
@@ -178,8 +148,18 @@ export default ShopScreen = observer(({navigation}) => {
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
           {
-            listener: event => {
-              handleScrollByShopY(event);
+            listener: e => {
+              if (e.nativeEvent.contentOffset.y > HEIGHT - 5) {
+                Animated.timing(fadeAnim, {
+                  toValue: 1,
+                  duration: 0,
+                }).start();
+              } else if (e.nativeEvent.contentOffset.y < HEIGHT - 5) {
+                Animated.timing(fadeAnim, {
+                  toValue: 0,
+                  duration: 0,
+                }).start();
+              }
             },
           },
         )}
@@ -187,7 +167,7 @@ export default ShopScreen = observer(({navigation}) => {
         <ShopTitle shop={shop} HEIGHT={HEIGHT} />
         <Block
           style={{
-            paddingTop: HEIGHT,
+            paddingTop: HEIGHT + 80,
           }}>
           <TabBar
             fadeAnim={fadeAnim}

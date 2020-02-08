@@ -74,12 +74,12 @@ const HomeScreen = observer(props => {
     if (e.nativeEvent.contentOffset.y > 40) {
       Animated.timing(fadeAnim, {
         toValue: 6,
-        duration: 5,
+        duration: 0,
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 40) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 5,
+        duration: 0,
       }).start();
     }
   };
@@ -128,16 +128,8 @@ const HomeScreen = observer(props => {
         ]}>
         <Block center row>
           <Image
-            source={require('app/src/assets/icon.png')}
+            source={require('app/src/assets/icon_wide.png')}
             style={styles.logo}></Image>
-          <Block>
-            <Text h4 bold>
-              hello,{' '}
-              <Text primary h3 bold>
-                Cebu
-              </Text>
-            </Text>
-          </Block>
         </Block>
         <TouchableOpacity onPress={() => navigation.navigate('Search')}>
           <AntDesign
@@ -293,13 +285,14 @@ const styles = StyleSheet.create({
     height: 86,
     width,
     backgroundColor: 'white',
-    marginBottom: 3,
+    marginBottom: 10,
   },
   logo: {
-    height: 26,
-    width: 36,
-    borderRadius: 5,
-    marginRight: 8,
+    height: 100,
+    width: 120,
+    borderRadius: 10,
+    marginLeft: -10,
+    resizeMode: 'contain',
   },
   login: {
     borderWidth: 1,

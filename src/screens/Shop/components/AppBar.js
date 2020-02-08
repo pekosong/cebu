@@ -1,5 +1,5 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, TouchableOpacity, Animated} from 'react-native';
+import {StyleSheet, TouchableOpacity, Animated, Dimensions} from 'react-native';
 
 import {Block, LoginModal} from 'app/src/components';
 import {fonts, style, sizes} from 'app/src/styles';
@@ -10,7 +10,7 @@ import {updateFavorite} from 'app/src/api/user';
 
 import Modal from 'react-native-modal';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-
+const {width} = Dimensions.get('window');
 const ChatIcon = ({handlePress, fadeAnim}) => {
   return (
     <TouchableOpacity
@@ -89,7 +89,7 @@ const AppBar = observer(props => {
   return (
     <Animated.View
       style={{
-        ...style.header,
+        ...styles.header,
         backgroundColor,
       }}>
       <TouchableOpacity onPressIn={() => navigation.goBack()}>
@@ -150,12 +150,15 @@ const styles = StyleSheet.create({
   header: {
     flex: 0,
     height: 85,
+    width: width,
     alignItems: 'center',
     justifyContent: 'space-between',
     flexDirection: 'row',
     paddingTop: sizes.padding * 1.9,
     paddingHorizontal: sizes.padding,
     zIndex: 100,
+    position: 'absolute',
+    top: 0,
   },
 });
 

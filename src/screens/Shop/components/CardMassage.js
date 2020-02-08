@@ -9,9 +9,11 @@ export default CardMassage = ({item, isKorean}) => {
   return (
     <Block style={[style.shadow, {margin: 2, padding: 12, borderRadius: 6}]}>
       <Text h1>{item.name}</Text>
-      <Text gray style={{marginTop: 6, lineHeight: 20}}>
-        {item.desc}
-      </Text>
+      {item.desc !== '' && (
+        <Text gray style={{marginTop: 6, lineHeight: 20}}>
+          {item.desc}
+        </Text>
+      )}
       <Block
         style={{
           borderColor: colors.gray2,

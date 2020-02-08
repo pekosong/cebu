@@ -59,41 +59,22 @@ const TripInfosScreen = observer(props => {
         showsVerticalScrollIndicator={false}
         style={style.appBar}>
         <Block style={{backgroundColor: colors.white}}>
-          <Block center row space="between">
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => saveNotice()}>
-              <Text bold h3>
-                저장
-              </Text>
-            </TouchableOpacity>
-          </Block>
+          <TouchableOpacity onPress={() => navigation.goBack()}>
+            <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
+          </TouchableOpacity>
           <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
             내 여행 정보
           </Text>
         </Block>
         {Object.entries(plans).length != 0 ? (
           <Block>
-            <Block
-              space="between"
-              row
-              style={{...styles.plan, borderBottomWidth: 0}}>
-              <Text h2 bold>
-                일정
-              </Text>
-              <Text h2 bold>
-                호텔
-              </Text>
-            </Block>
             {Object.keys(plans).map((key, idx) => {
               return (
-                <Block space="between" row key={idx} style={styles.plan}>
-                  <Text h3>
+                <Block key={idx} style={styles.plan}>
+                  <Text h2 darkgray>
                     {key}
                     {' (' + NUMTOWEEK[moment(key).day()] + ')'}
                   </Text>
-                  <Text h3>{plans[key].hotel}</Text>
                 </Block>
               );
             })}
@@ -128,13 +109,12 @@ TripInfosScreen.navigationOptions = {
   header: null,
 };
 TripInfosScreen.defaultProps = {};
+
 const styles = StyleSheet.create({
-  inputs: {
-    paddingHorizontal: sizes.padding,
-    marginVertical: 10,
-  },
   plan: {
-    paddingVertical: 15,
+    paddingTop: 10,
+    paddingBottom: 8,
+    marginBottom: 10,
     borderBottomWidth: 0.6,
     borderBottomColor: colors.gray2,
   },

@@ -1,5 +1,12 @@
 import React, {useState} from 'react';
-import {StyleSheet, Dimensions, ScrollView, Linking, Modal} from 'react-native';
+import {
+  StyleSheet,
+  Dimensions,
+  ScrollView,
+  Linking,
+  Modal,
+  Image,
+} from 'react-native';
 import ImageViewer from 'react-native-image-zoom-viewer';
 
 import {Block, Text, CachedImage, Divider} from 'app/src/components';
@@ -167,7 +174,12 @@ export default ShopInfoSection = ({shop, navigation}) => {
               coordinate={{
                 latitude: parseFloat(shop.latitude),
                 longitude: parseFloat(shop.longitude),
-              }}></MapView.Marker>
+              }}>
+              <Image
+                style={{height: 50, width: 50}}
+                source={require('app/src/assets/images/placeholder/restaurant.png')}
+              />
+            </MapView.Marker>
           </MapView>
           <Block style={styles.mapDesc}>
             <CachedImage

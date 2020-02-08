@@ -5,10 +5,18 @@ import {Block, CachedImage} from 'app/src/components';
 
 const {width} = Dimensions.get('window');
 
-export default HeaderSection = ({shop, HEIGHT}) => {
+export default HeaderSection = ({top, shop, HEIGHT}) => {
   const {preview} = shop;
+
+  const top_ = top.interpolate({
+    inputRange: [0, 300],
+    outputRange: [0, -100],
+    extrapolate: 'clamp',
+    useNativeDriver: true,
+  });
+
   return (
-    <Block>
+    <Block animated style={{top: top_}}>
       <CachedImage
         key={typeof preview === 'string' ? preview : preview[2]}
         uri={typeof preview === 'string' ? preview : preview[2]}

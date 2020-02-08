@@ -49,6 +49,7 @@ function cacheImages(images) {
 async function loadResourcesAsync() {
   const imageAssets = cacheImages([
     require('app/src/assets/icon.png'),
+    require('app/src/assets/icon_wide.png'),
     require('app/src/assets/images/hello.jpg'),
     require('app/src/assets/images/search/restaurant.jpg'),
     require('app/src/assets/images/category/local.jpg'),
@@ -80,6 +81,10 @@ async function loadResourcesAsync() {
     require('app/src/assets/images/category/karaoke.jpg'),
     require('app/src/assets/images/category/show.jpeg'),
     require('app/src/assets/images/category/pc.jpg'),
+    require('app/src/assets/images/placeholder/food.png'),
+    require('app/src/assets/images/placeholder/person.png'),
+    require('app/src/assets/images/placeholder/massage.png'),
+    require('app/src/assets/images/placeholder/restaurant.png'),
   ]);
 
   await Promise.all([...imageAssets]);

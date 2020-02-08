@@ -3,6 +3,7 @@ import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
 import {Block, Text, WideText} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
+
 import {AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
@@ -51,6 +52,7 @@ const ProfileScreen = observer(props => {
   const {isLogin, user, logout} = useContext(UserStoreContext);
 
   registerForPushNotificationsAsync = async () => {
+    console.log('푸쉬 등록');
     const {status: existingStatus} = await Permissions.getAsync(
       Permissions.NOTIFICATIONS,
     );
@@ -78,7 +80,6 @@ const ProfileScreen = observer(props => {
       .doc(user.email)
       .update({token: token});
   };
-
   useEffect(() => {
     // registerForPushNotificationsAsync();
   }, []);
@@ -96,6 +97,7 @@ const ProfileScreen = observer(props => {
   };
 
   handleNotification = async () => {
+    console.log('pushed');
     let response = await fetch('https://exp.host/--/api/v2/push/send', {
       method: 'POST',
       headers: {

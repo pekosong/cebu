@@ -12,7 +12,7 @@ const {width} = Dimensions.get('window');
 export default HeaderSection = ({shop, HEIGHT}) => {
   const {name, tags, review, reviewCnt, likes, branch} = shop;
   return (
-    <Block style={[styles.shopTitle, {top: HEIGHT - 160}]}>
+    <Block style={[styles.shopTitle, {top: HEIGHT - 90}]}>
       <Text numberOfLines={1} h1 bold>
         {name}
         {branch && <Text h4>{'  ' + branch}</Text>}
@@ -33,7 +33,6 @@ export default HeaderSection = ({shop, HEIGHT}) => {
 
 const styles = StyleSheet.create({
   shopTitle: {
-    top: 110,
     position: 'absolute',
     width: width - 60,
     justifyContent: 'center',

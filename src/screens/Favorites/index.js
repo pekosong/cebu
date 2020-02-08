@@ -20,10 +20,10 @@ const cateSrc = {
   All: require('app/src/assets/images/search/all.jpg'),
   Restaurant: require('app/src/assets/images/search/restaurant.jpg'),
   Massage: require('app/src/assets/images/search/massage.jpg'),
-  Nail: require('app/src/assets/images/search/nail.jpg'),
   Activity: require('app/src/assets/images/search/seasports.jpg'),
   Place: require('app/src/assets/images/search/activity.jpg'),
   Food: require('app/src/assets/images/search/food.jpg'),
+  Adult: require('app/src/assets/images/category/show.jpeg'),
 };
 
 const cateMap = {
@@ -33,7 +33,7 @@ const cateMap = {
   Massage: '스파',
   Activity: '액티비티',
   Place: '명소',
-  Bar: '술집',
+  Adult: '어른전용',
   Nail: '네일',
 };
 

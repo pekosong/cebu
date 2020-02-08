@@ -1,10 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  useRef,
-  useContext,
-  useReducer,
-} from 'react';
+import React, {useState, useEffect, useContext, useReducer} from 'react';
 import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
 import Block from './Block';
@@ -128,9 +122,8 @@ export default ReservationModal = observer(props => {
     const {email, name, phone, sex, image} = user;
     let reservation = {
       email,
-      name,
-      phone,
-      sex,
+      name: name ? name : '',
+      phone: phone ? phone : '',
       date,
       time,
       people,
