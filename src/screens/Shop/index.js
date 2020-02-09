@@ -25,7 +25,7 @@ import RecommendSection from './components/RecommendSection';
 import {observer} from 'mobx-react-lite';
 import {streamShop} from 'app/src/api/shop';
 
-const HEIGHT = 300;
+const HEIGHT = 250;
 
 const MENUS = ['Restaurant', 'Food', 'Adult'];
 
@@ -165,58 +165,51 @@ export default ShopScreen = observer(({navigation}) => {
         )}
         scrollEventThrottle={360}>
         <ShopTitle shop={shop} HEIGHT={HEIGHT} />
+        <TabBar
+          fadeAnim={fadeAnim}
+          xAnim={xAnim}
+          inFlat
+          style={{
+            marginTop: HEIGHT + 80,
+          }}>
+          <Block row>
+            {[0, 1, 2, 3].map(tab => (
+              <ShopTab
+                key={tab}
+                tab={tab}
+                shop={shop}
+                isActive={show == tab}
+                setShow={setShow}
+                shopScroll={shopScroll}
+                xAnim={xAnim}></ShopTab>
+            ))}
+          </Block>
+        </TabBar>
         <Block
           style={{
-            paddingTop: HEIGHT + 80,
+            paddingHorizontal: sizes.padding,
+            paddingTop: 30,
+            backgroundColor: 'white',
           }}>
-          <TabBar
-            fadeAnim={fadeAnim}
-            xAnim={xAnim}
-            inFlat
-            style={{
-              opacity: 1,
-            }}>
-            <Block row>
-              {[0, 1, 2, 3].map(tab => (
-                <ShopTab
-                  key={tab}
-                  tab={tab}
-                  shop={shop}
-                  isActive={show == tab}
-                  setShow={setShow}
-                  shopScroll={shopScroll}
-                  xAnim={xAnim}></ShopTab>
-              ))}
-            </Block>
-          </TabBar>
-          <Block
-            style={{
-              paddingHorizontal: sizes.padding,
-              paddingTop: 30,
-              backgroundColor: 'white',
-            }}>
-            {show === 0 && MENUS.includes(shop.category) && (
-              <MenuSection shop={shop} isKorean={isKorean} />
-            )}
-            {show === 0 && shop.category === 'Massage' && (
-              <MassageSection shop={shop} isKorean={isKorean} />
-            )}
-            {show === 0 && shop.category === 'Activity' && (
-              <ProgramSection shop={shop} />
-            )}
-            {show === 0 && shop.category === 'Place' && (
-              <PlaceSection shop={shop} isKorean={isKorean} />
-            )}
-            {show === 1 && (
-              <ReviewSection shop={shop} navigation={navigation} />
-            )}
-            {show === 2 && (
-              <ShopInfoSection shop={shop} navigation={navigation} />
-            )}
-            {show === 3 && (
-              <RecommendSection shop={shop} navigation={navigation} />
-            )}
-          </Block>
+          {show === 0 && MENUS.includes(shop.category) && (
+            <MenuSection shop={shop} isKorean={isKorean} />
+          )}
+          {show === 0 && shop.category === 'Massage' && (
+            <MassageSection shop={shop} isKorean={isKorean} />
+          )}
+          {show === 0 && shop.category === 'Activity' && (
+            <ProgramSection shop={shop} />
+          )}
+          {show === 0 && shop.category === 'Place' && (
+            <PlaceSection shop={shop} isKorean={isKorean} />
+          )}
+          {show === 1 && <ReviewSection shop={shop} navigation={navigation} />}
+          {show === 2 && (
+            <ShopInfoSection shop={shop} navigation={navigation} />
+          )}
+          {show === 3 && (
+            <RecommendSection shop={shop} navigation={navigation} />
+          )}
         </Block>
       </Animated.ScrollView>
       <FloatButton shop={shop} navigation={navigation} />

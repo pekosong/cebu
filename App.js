@@ -5,8 +5,7 @@ import {AppLoading} from 'expo';
 import * as Font from 'expo-font';
 import {Asset} from 'expo-asset';
 import AppNavigator from './src/navigation/AppNavigator';
-
-import {Block} from './src/components';
+import {SafeAreaProvider} from 'react-native-safe-area-context';
 
 // YellowBox.ignoreWarnings(['Warning: ...']);
 // console.ignoredYellowBox = ['Setting a timer'];
@@ -24,10 +23,10 @@ export default function App(props) {
     );
   } else {
     return (
-      <Block style={styles.container}>
+      <SafeAreaProvider style={styles.container}>
         {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
         <AppNavigator />
-      </Block>
+      </SafeAreaProvider>
     );
   }
 }

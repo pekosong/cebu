@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, FlatList, SafeAreaView, TextInput} from 'react-native';
+import {StyleSheet, FlatList, TextInput} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
 import {Block, Loader, Text, CardRecommend} from 'app/src/components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
@@ -30,7 +32,7 @@ export default SearchScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <FlatList
         style={{flex: 1, paddingHorizontal: sizes.padding}}
         disableVirtualization={false}

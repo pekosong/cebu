@@ -4,6 +4,7 @@ import {StyleSheet, FlatList} from 'react-native';
 import {Block, Button, Text} from 'app/src/components';
 import CardMenu from './CardMenu';
 import MenuImage from './MenuImage';
+import DeliveryInfo from './DeliveryInfo';
 
 export default MenuSection = ({shop, isKorean}) => {
   const [menuCnt, setMenuCnt] = useState(5);
@@ -17,7 +18,7 @@ export default MenuSection = ({shop, isKorean}) => {
       }}></Block>
   );
 
-  const headerElement = () => (
+  const headerElement = (
     <Block row space="between" style={{marginBottom: 30}}>
       <Text h1 bold>
         대표 메뉴
@@ -27,9 +28,12 @@ export default MenuSection = ({shop, isKorean}) => {
 
   return (
     <Block style={{marginBottom: 80}}>
+      {shop.minPrice !== 0 && (
+        <DeliveryInfo shop={shop} isKorean={isKorean}></DeliveryInfo>
+      )}
       <FlatList
         ItemSeparatorComponent={itemSeparatorElement}
-        ListHeaderComponent={headerElement()}
+        ListHeaderComponent={headerElement}
         contentContainerStyle={{paddingBottom: 20}}
         data={shop.menus.slice(0, menuCnt)}
         renderItem={({item, index}) => (

@@ -1,6 +1,12 @@
 import React, {useState, useContext} from 'react';
-import {StyleSheet, TouchableOpacity, Animated, Dimensions} from 'react-native';
-
+import {
+  StyleSheet,
+  TouchableOpacity,
+  Animated,
+  Dimensions,
+  Platform,
+} from 'react-native';
+import {StatusBar} from 'react-native';
 import {Block, LoginModal} from 'app/src/components';
 import {fonts, style, sizes} from 'app/src/styles';
 
@@ -30,6 +36,8 @@ const ChatIcon = ({handlePress, fadeAnim}) => {
     </TouchableOpacity>
   );
 };
+
+const statusHeight = StatusBar.currentHeight;
 
 const FavoriteIcon = ({handlePress, fadeAnim, onOff}) => {
   const color = fadeAnim.interpolate({
@@ -89,6 +97,7 @@ const AppBar = observer(props => {
   return (
     <Animated.View
       style={{
+        ...style.header,
         ...styles.header,
         backgroundColor,
       }}>
@@ -148,13 +157,9 @@ const styles = StyleSheet.create({
     marginLeft: 12,
   },
   header: {
-    flex: 0,
     height: 85,
     width: width,
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flexDirection: 'row',
-    paddingTop: sizes.padding * 1.9,
+    paddingTop: Platform.OS === 'ios' ? sizes.padding * 2.3 : statusHeight,
     paddingHorizontal: sizes.padding,
     zIndex: 100,
     position: 'absolute',

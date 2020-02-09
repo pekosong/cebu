@@ -53,6 +53,7 @@ export default SortModal = ({sort, setSort, setShowSort}) => {
           </Block>
         </Block>
         {[
+          {label: '기본 순', value: 'random'},
           {label: '리뷰 많은 순', value: 'reviewCnt'},
           {label: '평점 좋은 순', value: 'review'},
           {label: '저장 많은 순', value: 'like'},

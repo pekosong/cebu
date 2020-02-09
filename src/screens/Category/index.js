@@ -1,5 +1,7 @@
 import React, {useState, useEffect, useRef, useContext} from 'react';
 import {StyleSheet, ScrollView, FlatList, Animated} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
 import {sizes, style} from 'app/src/styles';
@@ -17,6 +19,7 @@ import {ShopStoreContext} from 'app/src/store/shop';
 import Modal from 'react-native-modal';
 
 const MAP = {
+  random: '기본 순',
   reviewCnt: '리뷰 많은 순',
   review: '평점 좋은 순',
   like: '저장 많은 순',
@@ -97,23 +100,36 @@ export default CategoryScreen = observer(props => {
     }
   };
 
-  const selectedList = selectedLists
-    .sort((a, b) => {
+  function shuffle(arr) {
+    for (let i = arr.length - 1; i > 0; i--) {
+      const j = Math.floor(Math.random() * (i + 1));
+      [arr[i], arr[j]] = [arr[j], arr[i]];
+    }
+    return arr;
+  }
+
+  const selectedList = () => {
+    let sotedLists = selectedLists;
+    sotedLists = sotedLists.sort((a, b) => {
       if (sort === 'review') {
         return b.review - a.review;
       } else if (sort === 'reviewCnt') {
         return b.reviewCnt - a.reviewCnt;
+      } else if (sort === 'revlikesiew') {
+        return b.likes - a.likes;
       } else {
-        return b.like - a.like;
+        return;
       }
-    })
-    .filter(e => (isKorean ? e.korean : e))
-    .filter(e => (isBaby ? e.baby : e))
-    .filter(e => (isPickup ? e.pickup : e))
-    .filter(e => (!isMak ? e.location !== '막탄' : e))
-    .filter(e => (!isCebu ? e.location !== '세부시티' : e))
-    .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))
-    .slice(0, showCount);
+    });
+    return sotedLists
+      .filter(e => (isKorean ? e.korean : e))
+      .filter(e => (isBaby ? e.baby : e))
+      .filter(e => (isPickup ? e.pickup : e))
+      .filter(e => (!isMak ? e.location !== '막탄' : e))
+      .filter(e => (!isCebu ? e.location !== '세부시티' : e))
+      .filter(e => (catActive !== '전체' ? e.tags.includes(catActive) : e))
+      .slice(0, showCount);
+  };
 
   const itemSeparatorElement = () => (
     <Block
@@ -151,7 +167,7 @@ export default CategoryScreen = observer(props => {
     </Block>
   );
 
-  const emptyElement = () => (
+  const emptyElement = (
     <Block middle>
       <Block flex={false}>
         <Text h1 bold center>
@@ -164,12 +180,12 @@ export default CategoryScreen = observer(props => {
     </Block>
   );
 
-  const footerElement = () => <Block style={{marginBottom: 50}}></Block>;
+  const footerElement = <Block style={{marginBottom: 50}}></Block>;
 
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <Block>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <Modal
         backdropOpacity={0.1}
         animationInTiming={500}
@@ -218,16 +234,16 @@ export default CategoryScreen = observer(props => {
         }}
         onEndReachedThreshold={0.4}
         ItemSeparatorComponent={itemSeparatorElement}
-        ListEmptyComponent={emptyElement()}
-        ListHeaderComponent={headerElement()}
-        ListFooterComponent={footerElement()}
-        data={selectedList}
+        ListEmptyComponent={emptyElement}
+        ListHeaderComponent={headerElement}
+        ListFooterComponent={footerElement}
+        data={selectedList()}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>
         )}
         keyExtractor={item => item.id}
       />
-    </Block>
+    </SafeAreaView>
   );
 });
 

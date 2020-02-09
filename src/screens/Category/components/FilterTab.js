@@ -1,5 +1,5 @@
 import React from 'react';
-import {StyleSheet, Dimensions} from 'react-native';
+import {StyleSheet, Dimensions, StatusBar, Platform} from 'react-native';
 import {Block, Text} from 'app/src/components';
 import FilterButton from './FilterButton';
 import {sizes} from 'app/src/styles';
@@ -45,7 +45,7 @@ const styles = StyleSheet.create({
   filterTap: {
     flex: 0,
     position: 'absolute',
-    top: 80,
+    top: Platform.OS === 'ios' ? 80 : 45 + StatusBar.currentHeight,
     height: 45,
     width: width,
     paddingHorizontal: sizes.padding,

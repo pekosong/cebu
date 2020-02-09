@@ -7,6 +7,7 @@ import {
   Image,
   Animated,
 } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   Search,
@@ -20,17 +21,15 @@ import {AntDesign} from '@expo/vector-icons';
 
 import CardCategory from './components/CardCategory';
 import CardRect from './components/CardRect';
-import CardActivity from './components/CardActivity';
 
 import {mocks} from 'app/src/constants';
-import {sizes, colors} from 'app/src/styles';
+import {sizes, colors, style} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {ShopStoreContext} from 'app/src/store/shop';
 
 const {width, height} = Dimensions.get('window');
-
 const HomeScreen = observer(props => {
   const {navigation, categories} = props;
   const [isLoaded, setIsLoaded] = useState(false);
@@ -74,12 +73,12 @@ const HomeScreen = observer(props => {
     if (e.nativeEvent.contentOffset.y > 40) {
       Animated.timing(fadeAnim, {
         toValue: 6,
-        duration: 0,
+        duration: 100,
       }).start();
     } else if (e.nativeEvent.contentOffset.y < 40) {
       Animated.timing(fadeAnim, {
         toValue: 0,
-        duration: 0,
+        duration: 100,
       }).start();
     }
   };
@@ -109,15 +108,11 @@ const HomeScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <Block
-        row
-        center
-        space="between"
         animated
-        shadow
         style={[
-          styles.header,
+          style.header,
           {
             shadowOffset: {
               width: fadeAnim,
@@ -126,29 +121,29 @@ const HomeScreen = observer(props => {
             elevation: fadeAnim,
           },
         ]}>
-        <Block center row>
-          <Image
-            source={require('app/src/assets/icon_wide.png')}
-            style={styles.logo}></Image>
+        <Image
+          source={require('app/src/assets/icon_wide.png')}
+          style={styles.logo}></Image>
+        <Block center row right>
+          <TouchableOpacity onPress={() => navigation.navigate('Search')}>
+            <AntDesign
+              size={26}
+              name="search1"
+              style={{color: colors.darkgray, marginRight: 6}}
+            />
+          </TouchableOpacity>
+          {isLogin ? (
+            <TouchableOpacity onPress={() => navigation.navigate('Personal')}>
+              <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
+            </TouchableOpacity>
+          ) : (
+            <TouchableOpacity
+              onPress={() => navigation.navigate('Login')}
+              style={styles.login}>
+              <Text accent>로그인</Text>
+            </TouchableOpacity>
+          )}
         </Block>
-        <TouchableOpacity onPress={() => navigation.navigate('Search')}>
-          <AntDesign
-            size={26}
-            name="search1"
-            style={{color: colors.darkgray, marginRight: 6}}
-          />
-        </TouchableOpacity>
-        {isLogin ? (
-          <TouchableOpacity onPress={() => navigation.navigate('Personal')}>
-            <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
-          </TouchableOpacity>
-        ) : (
-          <TouchableOpacity
-            onPress={() => navigation.navigate('Login')}
-            style={styles.login}>
-            <Text accent>로그인</Text>
-          </TouchableOpacity>
-        )}
       </Block>
       <ScrollView
         onScroll={Animated.event(
@@ -162,7 +157,7 @@ const HomeScreen = observer(props => {
         scrollEventThrottle={360}
         showsVerticalScrollIndicator={false}
         vertical={true}
-        style={{position: 'relative'}}>
+        style={{flex: 1}}>
         <Block center middle style={styles.imageContainer}>
           <CachedImage
             uri={
@@ -265,7 +260,7 @@ const HomeScreen = observer(props => {
           </Block>
         ))}
       </ScrollView>
-    </>
+    </SafeAreaView>
   );
 });
 
@@ -277,18 +272,7 @@ HomeScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
-  header: {
-    paddingHorizontal: sizes.padding / 1.5,
-    paddingTop: 40,
-    zIndex: 1000,
-    position: 'absolute',
-    height: 86,
-    width,
-    backgroundColor: 'white',
-    marginBottom: 10,
-  },
   logo: {
-    height: 100,
     width: 120,
     borderRadius: 10,
     marginLeft: -10,
@@ -307,8 +291,6 @@ const styles = StyleSheet.create({
     height: '100%',
   },
   imageContainer: {
-    position: 'relative',
-    marginTop: 90,
     height: height * 0.24,
     padding: 10,
   },

@@ -4,13 +4,15 @@ import {
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
-  SafeAreaView,
   TouchableOpacity,
 } from 'react-native';
-import {Button, Block, Text, CachedImage} from 'app/src/components';
+import SafeAreaView from 'react-native-safe-area-view';
+
+import AppBar from './components/AppBar';
+import {Block, Text, CachedImage} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
-import {Ionicons, AntDesign} from '@expo/vector-icons';
+import {AntDesign} from '@expo/vector-icons';
 
 import {observer} from 'mobx-react-lite';
 import {updateUser} from 'app/src/api/user';
@@ -148,31 +150,18 @@ const PersonalScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView
           stickyHeaderIndices={[0]}
           showsVerticalScrollIndicator={false}
-          style={style.appBar}>
-          <Block style={{backgroundColor: colors.white}}>
-            <Block center row space="between">
-              <TouchableOpacity onPress={() => navigation.goBack()}>
-                <Ionicons
-                  size={30}
-                  color={colors.black}
-                  name="ios-arrow-back"
-                />
-              </TouchableOpacity>
-              <TouchableOpacity onPress={() => savePerson()}>
-                <Text bold h3>
-                  {progress ? progress : '저장'}
-                </Text>
-              </TouchableOpacity>
-            </Block>
-            <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
-              내 정보
-            </Text>
-          </Block>
+          style={style.scrollTab}>
+          <AppBar
+            title={'내 정보'}
+            goBack={navigation.goBack}
+            progress={progress ? progress : '저장'}
+            func={savePerson}
+          />
           <Block style={{marginBottom: 20}}>
             <Block row space="between">
               <Block flex={1}>

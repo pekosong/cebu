@@ -1,13 +1,8 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  FlatList,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, TouchableOpacity, FlatList} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
-import {Block, Button, Text, CachedImage, Loader} from 'app/src/components';
+import {Block, Text, CachedImage, Loader} from 'app/src/components';
 
 import {sizes, style, colors} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
@@ -133,7 +128,7 @@ const ChatListScreen = observer(props => {
   if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <FlatList
         style={style.appBar}
         showsVerticalScrollIndicator={false}

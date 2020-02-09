@@ -1,10 +1,7 @@
 import React, {useEffect} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
 import {Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
@@ -16,8 +13,8 @@ const ProposalScreen = observer(props => {
   useEffect(() => {}, []);
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Block style={style.appBar}>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
+      <Block style={style.scrollTab}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </TouchableOpacity>

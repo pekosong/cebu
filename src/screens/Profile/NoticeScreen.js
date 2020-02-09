@@ -1,14 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  Switch,
-  TouchableOpacity,
-  SafeAreaView,
-} from 'react-native';
+import {StyleSheet, ScrollView, Switch} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
+import AppBar from './components/AppBar';
 import {Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
-import {Ionicons} from '@expo/vector-icons';
 
 import {observer} from 'mobx-react-lite';
 import {updateUser} from 'app/src/api/user';
@@ -66,26 +62,17 @@ const NoticeScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
-        style={style.appBar}>
-        <Block style={{backgroundColor: colors.white}}>
-          <Block center row space="between">
-            <TouchableOpacity onPress={() => navigation.goBack()}>
-              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => saveNotice()}>
-              <Text bold h3>
-                저장
-              </Text>
-            </TouchableOpacity>
-          </Block>
-          <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
-            알림 설정
-          </Text>
-        </Block>
+        style={style.scrollTab}>
+        <AppBar
+          title={'알림 설정'}
+          goBack={navigation.goBack}
+          progress={'저장'}
+          func={saveNotice}
+        />
         <Text h2 bold style={{marginBottom: 10}}>
           메시지
         </Text>

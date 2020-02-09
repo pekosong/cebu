@@ -1,7 +1,9 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {StyleSheet, TouchableOpacity, SafeAreaView} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
 import {Block, Text} from 'app/src/components';
-import {colors, sizes, style} from 'app/src/styles';
+import {colors, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
 import {observer} from 'mobx-react-lite';
@@ -73,8 +75,8 @@ const HeloScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
-      <Block style={style.appBar}>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
+      <Block style={style.scrollTab}>
         <TouchableOpacity onPress={() => navigation.goBack()}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </TouchableOpacity>

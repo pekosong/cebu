@@ -1,5 +1,6 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {FlatList, StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {FlatList, StyleSheet, ScrollView} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   Block,
@@ -74,7 +75,7 @@ const FavoritesScreen = observer(props => {
     setActive(tab);
   };
 
-  if (!isLoaded) return <Loader></Loader>;
+  if (!isLoaded) return <Loader />;
 
   if (!isLogin)
     return (
@@ -102,6 +103,7 @@ const FavoritesScreen = observer(props => {
         </Button>
       </Block>
     );
+
   if (user.myfavorites.length === 0)
     return (
       <Block center middle style={{padding: 80}}>
@@ -128,43 +130,49 @@ const FavoritesScreen = observer(props => {
         </Button>
       </Block>
     );
+
+  const itemSeparatorElement = () => (
+    <Block
+      style={{
+        marginVertical: 12,
+      }}
+    />
+  );
+  const headerElement = (
+    <Block style={[style.scrollTab, {marginBottom: 20}]}>
+      <Block style={{flex: 0, height: 40}}>
+        <Text h1 bold>
+          저장소
+        </Text>
+      </Block>
+      <ScrollView
+        horizontal={true}
+        showsHorizontalScrollIndicator={false}
+        style={styles.tabs}>
+        {tabs.map((tab, idx) => (
+          <CategoryTab
+            key={idx}
+            tab={tab}
+            tabName={cateMap[tab]}
+            image={cateSrc[tab]}
+            isActive={active == tab}
+            handleTab={handleTab}
+            isLast={tabs.length - 1 === idx}></CategoryTab>
+        ))}
+      </ScrollView>
+    </Block>
+  );
+  const footerElement = <Block style={{marginBottom: 50}}></Block>;
+
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <FlatList
         bounces={true}
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
-        ItemSeparatorComponent={() => (
-          <Block
-            style={{
-              marginVertical: 12,
-            }}></Block>
-        )}
-        ListHeaderComponent={
-          <Block style={[style.scrollTab, {marginBottom: 20}]}>
-            <Block style={{flex: 0, height: 40}}>
-              <Text h1 bold>
-                저장소
-              </Text>
-            </Block>
-            <ScrollView
-              horizontal={true}
-              showsHorizontalScrollIndicator={false}
-              style={styles.tabs}>
-              {tabs.map((tab, idx) => (
-                <CategoryTab
-                  key={idx}
-                  tab={tab}
-                  tabName={cateMap[tab]}
-                  image={cateSrc[tab]}
-                  isActive={active == tab}
-                  handleTab={handleTab}
-                  isLast={tabs.length - 1 === idx}></CategoryTab>
-              ))}
-            </ScrollView>
-          </Block>
-        }
-        ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
+        ItemSeparatorComponent={itemSeparatorElement}
+        ListHeaderComponent={headerElement}
+        ListFooterComponent={footerElement}
         data={selectedFavorites}
         renderItem={({item}) => (
           <CardShop shop={item} navigation={navigation}></CardShop>

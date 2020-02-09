@@ -1,14 +1,10 @@
 import React, {useState, useEffect, useContext} from 'react';
-import {
-  StyleSheet,
-  ScrollView,
-  SafeAreaView,
-  TextInput,
-  TouchableOpacity,
-} from 'react-native';
+import {StyleSheet, ScrollView, TextInput} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
+import AppBar from './components/AppBar';
 import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
-import {Ionicons} from '@expo/vector-icons';
 import moment from 'moment';
 
 import {observer} from 'mobx-react-lite';
@@ -53,19 +49,12 @@ const TripInfosScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
-        style={style.appBar}>
-        <Block style={{backgroundColor: colors.white}}>
-          <TouchableOpacity onPress={() => navigation.goBack()}>
-            <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
-          </TouchableOpacity>
-          <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
-            내 여행 정보
-          </Text>
-        </Block>
+        style={style.scrollTab}>
+        <AppBar title={'내 여행 정보'} goBack={navigation.goBack} />
         {Object.entries(plans).length != 0 ? (
           <Block>
             {Object.keys(plans).map((key, idx) => {

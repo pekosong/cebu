@@ -69,7 +69,6 @@ const LoginScreen = observer(props => {
           );
           userStore.setUser(email);
           navigation.goBack();
-          navigation.navigate('Home');
         })
         .catch(err => {
           if (err.code == 'auth/invalid-email') {

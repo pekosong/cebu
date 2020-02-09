@@ -10,7 +10,7 @@ export default HeaderSection = ({top, shop, HEIGHT}) => {
 
   const top_ = top.interpolate({
     inputRange: [0, 300],
-    outputRange: [0, -100],
+    outputRange: [-50, -150],
     extrapolate: 'clamp',
     useNativeDriver: true,
   });
@@ -21,7 +21,7 @@ export default HeaderSection = ({top, shop, HEIGHT}) => {
         key={typeof preview === 'string' ? preview : preview[2]}
         uri={typeof preview === 'string' ? preview : preview[2]}
         style={{
-          height: HEIGHT,
+          height: HEIGHT + 50,
         }}
       />
       <Block
@@ -30,7 +30,7 @@ export default HeaderSection = ({top, shop, HEIGHT}) => {
           top: 0,
           left: 0,
           width: width,
-          height: HEIGHT,
+          height: HEIGHT + 50,
           backgroundColor: 'rgba(0,0,0,0.2)',
         }}></Block>
     </Block>

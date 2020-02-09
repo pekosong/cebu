@@ -4,8 +4,8 @@ import {
   StyleSheet,
   TouchableOpacity,
   Dimensions,
-  SafeAreaView,
 } from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
 
 import {
   Block,
@@ -280,12 +280,13 @@ const MyTripScreen = observer(props => {
         </Button>
       </Block>
     );
+
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}>
-        <Block style={style.scrollTab}>
+        <Block style={[style.scrollTab, {marginBottom: 20}]}>
           <Block style={{flex: 0, height: 40}}>
             <Text h1 bold>
               내일정
@@ -301,8 +302,7 @@ const MyTripScreen = observer(props => {
             )}
           </ScrollView>
         </Block>
-        <Block
-          style={{paddingTop: sizes.base * 2, marginBottom: 40, zIndex: -1}}>
+        <Block style={{marginBottom: 40, zIndex: -1}}>
           {Object.values(selectedDates).map((day, idx) => renderList(day, idx))}
         </Block>
       </ScrollView>

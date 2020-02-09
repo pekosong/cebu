@@ -1,5 +1,7 @@
 import React, {useEffect, useContext} from 'react';
-import {StyleSheet, ScrollView, SafeAreaView} from 'react-native';
+import {StyleSheet, ScrollView} from 'react-native';
+import SafeAreaView from 'react-native-safe-area-view';
+
 import {Block, Text, WideText} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
@@ -116,11 +118,11 @@ const ProfileScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView>
+    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
-        style={style.appBar}>
+        style={style.scrollTab}>
         <Text h1 bold style={{marginBottom: 20, backgroundColor: '#fff'}}>
           내정보
         </Text>
