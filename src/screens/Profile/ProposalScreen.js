@@ -1,5 +1,5 @@
 import React, {useEffect} from 'react';
-import {StyleSheet, ScrollView, TouchableOpacity} from 'react-native';
+import {StyleSheet, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 import qs from 'qs';
 import {Linking} from 'react-native';
