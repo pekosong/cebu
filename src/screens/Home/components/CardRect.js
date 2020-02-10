@@ -1,7 +1,7 @@
 import React from 'react';
-import {StyleSheet, TouchableOpacity, Image, Dimensions} from 'react-native';
+import {View, StyleSheet, TouchableOpacity, Dimensions} from 'react-native';
 
-import {Favorite, Block, Text, CachedImage} from 'app/src/components';
+import {Favorite, Text, CachedImage} from 'app/src/components';
 
 import {sizes, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
@@ -19,44 +19,30 @@ export default CardRect = props => {
         })
       }
       style={[styles.container, isLast && {marginRight: sizes.padding * 2}]}>
-      <Block
-        style={{
-          flex: 0,
-          height: '65%',
-          position: 'relative',
-          borderTopLeftRadius: 6,
-          borderTopRightRadius: 6,
-        }}>
+      <View style={styles.imageContainer}>
         <CachedImage
           uri={
             typeof item.preview === 'string' ? item.preview : item.preview[0]
           }
           style={styles.imageStyle}></CachedImage>
         <Favorite shop={item} navigation={navigation}></Favorite>
-        <Block style={styles.overlap}></Block>
-      </Block>
-      <Block
-        middle
-        style={{
-          padding: 8,
-          backgroundColor: colors.white,
-          borderBottomLeftRadius: 6,
-          borderBottomRightRadius: 6,
-        }}>
+        <View style={styles.overlap}></View>
+      </View>
+      <View style={styles.textContainer}>
         <Text bold numberOfLines={1} size={14}>
           {item.name + ' '}
           <Text gray caption>
             {item.tags[0]}
           </Text>
         </Text>
-        <Block row center style={{flex: 0, marginTop: 2}}>
+        <View style={styles.descContainer}>
           <AntDesign size={13} name="star" style={{color: colors.primary}} />
           <Text size={13} darkgray style={{marginLeft: 3}}>
             {`${item.review} · 리뷰 ${item.reviewCnt &&
               convertComma(item.reviewCnt)}`}
           </Text>
-        </Block>
-      </Block>
+        </View>
+      </View>
     </TouchableOpacity>
   );
 };
@@ -78,6 +64,13 @@ export const styles = StyleSheet.create({
     elevation: 1,
     borderRadius: 6,
   },
+  imageContainer: {
+    flex: 0,
+    height: '65%',
+    position: 'relative',
+    borderTopLeftRadius: 6,
+    borderTopRightRadius: 6,
+  },
   imageStyle: {
     width: '100%',
     height: '100%',
@@ -93,5 +86,19 @@ export const styles = StyleSheet.create({
     borderRadius: 3,
     borderTopLeftRadius: 6,
     borderTopRightRadius: 6,
+  },
+  textContainer: {
+    flex: 1,
+    justifyContent: 'center',
+    padding: 8,
+    backgroundColor: colors.white,
+    borderBottomLeftRadius: 6,
+    borderBottomRightRadius: 6,
+  },
+  descContainer: {
+    flex: 0,
+    flexDirection: 'row',
+    alignItems: 'center',
+    marginTop: 2,
   },
 });

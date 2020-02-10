@@ -1,46 +1,46 @@
 import React from 'react';
-import {StyleSheet} from 'react-native';
+import {StyleSheet, View} from 'react-native';
 
-import {Block, Text} from 'app/src/components';
+import {Text} from 'app/src/components';
 import {colors, style} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
 export default CardMassage = ({item, isKorean}) => {
   return (
-    <Block style={[style.shadow, styles.container]}>
+    <View style={[style.shadow, styles.container]}>
       <Text h1>{item.name}</Text>
       {item.desc !== '' && (
         <Text gray style={styles.descStyle}>
           {item.desc}
         </Text>
       )}
-      <Block style={styles.divider} />
-      <Block>
+      <View style={styles.divider} />
+      <View>
         {item.plans
           .filter(e => e.time)
           .map((e, idx) => (
-            <Block
+            <View
               key={idx}
               style={{
-                ...styles.priceContainer,
+                ...styles.descContainer,
                 marginBottom:
                   item.plans.filter(e => e.time).length - 1 === idx ? 0 : 8,
               }}>
               <Text left h3>
                 {`${e.time}분`}
               </Text>
-              <Block row right center>
+              <View style={styles.priceContainer}>
                 <Text h2 accent bold>{`${convertComma(
                   isKorean ? e.price * 22 : e.price,
                 )} `}</Text>
                 <Text h4 style={styles.priceStyle}>
                   {isKorean ? '원' : '페소'}
                 </Text>
-              </Block>
-            </Block>
+              </View>
+            </View>
           ))}
-      </Block>
-    </Block>
+      </View>
+    </View>
   );
 };
 
@@ -54,7 +54,7 @@ export const styles = StyleSheet.create({
     marginTop: 6,
     lineHeight: 20,
   },
-  priceContainer: {
+  descContainer: {
     flexDirection: 'row',
     alignItems: 'center',
     paddingBottom: 8,
@@ -62,6 +62,12 @@ export const styles = StyleSheet.create({
   priceStyle: {
     color: colors.darkgray,
     marginTop: 3,
+  },
+  priceContainer: {
+    flex: 1,
+    justifyContent: 'flex-end',
+    flexDirection: 'row',
+    alignItems: 'center',
   },
   rightBorder: {
     borderRightWidth: 1,

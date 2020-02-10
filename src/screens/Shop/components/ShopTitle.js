@@ -1,7 +1,7 @@
 import React from 'react';
-import {Dimensions, StyleSheet} from 'react-native';
+import {Dimensions, StyleSheet, View} from 'react-native';
 
-import {Block, Text} from 'app/src/components';
+import {Text} from 'app/src/components';
 import {sizes, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
@@ -12,7 +12,7 @@ const {width} = Dimensions.get('window');
 export default HeaderSection = ({shop, HEIGHT}) => {
   const {name, tags, review, reviewCnt, likes, branch} = shop;
   return (
-    <Block style={[styles.shopTitle, {top: HEIGHT - 80}]}>
+    <View style={[styles.shopTitle, {top: HEIGHT - 80}]}>
       <Text numberOfLines={1} h1 bold>
         {name}
         {branch && <Text h4>{'  ' + branch}</Text>}
@@ -20,14 +20,14 @@ export default HeaderSection = ({shop, HEIGHT}) => {
       <Text primary bold style={{marginTop: 5}}>
         {tags.join(', ')}
       </Text>
-      <Block row center style={{marginVertical: 5}}>
-        <AntDesign size={20} color={colors.primary} name="star"></AntDesign>
+      <View style={styles.descContainer}>
+        <AntDesign size={20} color={colors.primary} name="star" />
         <Text h3 bold style={{marginLeft: 5}}>
           {review}
         </Text>
-      </Block>
+      </View>
       <Text>{'리뷰 ' + convertComma(reviewCnt) + ' · ' + '저장 ' + likes}</Text>
-    </Block>
+    </View>
   );
 };
 
@@ -35,7 +35,6 @@ const styles = StyleSheet.create({
   shopTitle: {
     position: 'absolute',
     width: width - 60,
-    justifyContent: 'center',
     alignItems: 'center',
     backgroundColor: 'white',
     borderRadius: 6,
@@ -52,4 +51,5 @@ const styles = StyleSheet.create({
     elevation: 2,
     zIndex: 11000,
   },
+  descContainer: {marginVertical: 5, flexDirection: 'row'},
 });

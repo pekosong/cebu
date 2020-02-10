@@ -5,9 +5,10 @@ import {
   Animated,
   Dimensions,
   Platform,
+  View,
 } from 'react-native';
 import {StatusBar} from 'react-native';
-import {Block, LoginModal} from 'app/src/components';
+import {LoginModal} from 'app/src/components';
 import {fonts, style, sizes} from 'app/src/styles';
 
 import {observer} from 'mobx-react-lite';
@@ -77,7 +78,10 @@ const AppBar = observer(props => {
     if (oldfavorites.includes(shop.id)) {
       const idx = user.myfavorites.map(e => e.id).indexOf(shop.id);
       newfavorites.splice(idx, 1);
-      const shopLikes = {id: shop.id, likes: shop.likes - 1};
+      const shopLikes = {
+        id: shop.id,
+        likes: shop.likes > 0 ? shop.likes - 1 : 0,
+      };
       updateShop(shopLikes);
     } else {
       newfavorites.push(newShop);
@@ -116,7 +120,7 @@ const AppBar = observer(props => {
       <Animated.Text style={[styles.font, {opacity: fadeAnim}]}>
         {shop.name}
       </Animated.Text>
-      <Block row right>
+      <View>
         {/* <ChatIcon
           handlePress={() =>
             navigation.navigate('Chat', {
@@ -146,7 +150,7 @@ const AppBar = observer(props => {
             setShowModal={setShowModal}
             navigation={navigation}></LoginModal>
         </Modal>
-      </Block>
+      </View>
     </Animated.View>
   );
 });

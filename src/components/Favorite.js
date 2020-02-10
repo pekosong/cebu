@@ -39,7 +39,7 @@ export default Favorite = observer(props => {
     if (oldfavorites.includes(shop.id)) {
       const idx = user.myfavorites.map(e => e.id).indexOf(shop.id);
       newfavorites.splice(idx, 1);
-      const shopLikes = {id: shop.id, likes: likes - 1};
+      const shopLikes = {id: shop.id, likes: likes > 0 ? likes - 1 : 0};
       updateShop(shopLikes);
     } else {
       newfavorites.push(newShop);
