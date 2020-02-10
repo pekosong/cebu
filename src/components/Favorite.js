@@ -8,6 +8,8 @@ import {AntDesign} from '@expo/vector-icons';
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {updateFavorite} from 'app/src/api/user';
+import {updateShop, getShop} from 'app/src/api/shop';
+
 import Modal from 'react-native-modal';
 
 export default Favorite = observer(props => {
@@ -24,26 +26,32 @@ export default Favorite = observer(props => {
     }
   }, [user]);
 
-  handleFavorite = async shop => {
+  handleShopFavorite = async shop => {
     const oldfavorites = user.myfavorites.map(e => e.id);
     newShop = {
       id: shop.id,
       name: shop.name,
       src: shop.preview,
     };
+    const currentShop = await getShop(shop.id);
+    const likes = currentShop.data().likes;
     let newfavorites = user.myfavorites;
     if (oldfavorites.includes(shop.id)) {
       const idx = user.myfavorites.map(e => e.id).indexOf(shop.id);
       newfavorites.splice(idx, 1);
+      const shopLikes = {id: shop.id, likes: likes - 1};
+      updateShop(shopLikes);
     } else {
       newfavorites.push(newShop);
+      const shopLikes = {id: shop.id, likes: likes + 1};
+      updateShop(shopLikes);
     }
     updateFavorite(user.email, newfavorites);
   };
 
   return (
     <TouchableOpacity
-      onPress={() => (isLogin ? handleFavorite(shop) : setShowModal(true))}
+      onPress={() => (isLogin ? handleShopFavorite(shop) : setShowModal(true))}
       style={{position: 'absolute', top: 10, right: 10, zIndex: 10, ...style}}>
       {isLoaded && (
         <AntDesign

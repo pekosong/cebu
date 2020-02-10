@@ -13,10 +13,13 @@ import {fonts, style, sizes} from 'app/src/styles';
 import {observer} from 'mobx-react-lite';
 import {UserStoreContext} from 'app/src/store/user';
 import {updateFavorite} from 'app/src/api/user';
+import {updateShop} from 'app/src/api/shop';
 
 import Modal from 'react-native-modal';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
+
 const {width} = Dimensions.get('window');
+
 const ChatIcon = ({handlePress, fadeAnim}) => {
   return (
     <TouchableOpacity
@@ -74,8 +77,12 @@ const AppBar = observer(props => {
     if (oldfavorites.includes(shop.id)) {
       const idx = user.myfavorites.map(e => e.id).indexOf(shop.id);
       newfavorites.splice(idx, 1);
+      const shopLikes = {id: shop.id, likes: shop.likes - 1};
+      updateShop(shopLikes);
     } else {
       newfavorites.push(newShop);
+      const shopLikes = {id: shop.id, likes: shop.likes + 1};
+      updateShop(shopLikes);
     }
     updateFavorite(user.email, newfavorites);
   };

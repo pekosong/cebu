@@ -14,6 +14,14 @@ const streamShop = shopId => {
     .doc(shopId);
 };
 
+const getShop = shopId => {
+  return firebase
+    .firestore()
+    .collection('shops')
+    .doc(shopId)
+    .get();
+};
+
 const updateShop = shop => {
   return firebase
     .firestore()
@@ -49,6 +57,7 @@ const updateShopReservation = (shopId, shopReservations) => {
 export {
   streamShopMsg,
   streamShop,
+  getShop,
   updateShop,
   downloadShopList,
   updateMessages,

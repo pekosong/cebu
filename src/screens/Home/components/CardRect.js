@@ -32,13 +32,7 @@ export default CardRect = props => {
             typeof item.preview === 'string' ? item.preview : item.preview[0]
           }
           style={styles.imageStyle}></CachedImage>
-        <Favorite
-          shop={{
-            id: item.id,
-            name: item.name,
-            preview: item.source,
-          }}
-          navigation={navigation}></Favorite>
+        <Favorite shop={item} navigation={navigation}></Favorite>
         <Block style={styles.overlap}></Block>
       </Block>
       <Block

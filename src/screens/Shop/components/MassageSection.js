@@ -5,16 +5,15 @@ import {Block, Text} from 'app/src/components';
 import CardMassage from './CardMassage';
 import MenuImage from './MenuImage';
 
-import {style} from 'app/src/styles';
-
 export default MassageSection = ({shop, isKorean}) => {
   const itemSeparatorElement = () => (
     <Block
       style={{
         marginVertical: 15,
-      }}></Block>
+      }}
+    />
   );
-  const headerElement = () => (
+  const headerElement = (
     <Block row space="between" style={{marginBottom: 30}}>
       <Text h1 bold>
         프로그램
@@ -27,10 +26,10 @@ export default MassageSection = ({shop, isKorean}) => {
       <FlatList
         ItemSeparatorComponent={itemSeparatorElement}
         contentContainerStyle={{paddingBottom: 20}}
-        ListHeaderComponent={headerElement()}
+        ListHeaderComponent={headerElement}
         data={shop.menus}
         renderItem={({item}) => <CardMassage item={item} isKorean={isKorean} />}
-        keyExtractor={item => item.name}
+        keyExtractor={(item, idx) => item.name + idx}
       />
       <MenuImage shop={shop}></MenuImage>
     </Block>
