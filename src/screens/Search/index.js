@@ -2,7 +2,13 @@ import React, {useState, useEffect, useContext} from 'react';
 import {StyleSheet, FlatList, TextInput} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
-import {Block, Loader, Text, CardRecommend} from 'app/src/components';
+import {
+  Block,
+  Loader,
+  Text,
+  CardRecommend,
+  FilterTab,
+} from 'app/src/components';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
@@ -22,12 +28,39 @@ export default SearchScreen = observer(props => {
   const [search, setSearch] = useState('');
   const [searchText, setSearchText] = useState('');
 
+  const [isKorean, setIsKorean] = useState(false);
+  const [isPickup, setIsPickup] = useState(false);
+  const [isBaby, setIsBaby] = useState(false);
+
+  const [isMak, setIsMak] = useState(true);
+  const [isCebu, setIsCebu] = useState(true);
+
   const shops = useContext(ShopStoreContext).shopList;
 
   useEffect(() => {
     setSelectedLists(shops);
     setIsLoaded(true);
   }, []);
+
+  const filterList = [
+    {
+      isActive: isKorean,
+      setActive: setIsKorean,
+      title: '한국어',
+    },
+    {isActive: isPickup, setActive: setIsPickup, title: '픽업'},
+    {
+      isActive: isBaby,
+      setActive: setIsBaby,
+      title: '애기',
+    },
+    {
+      isActive: isMak,
+      setActive: setIsMak,
+      title: '막탄',
+    },
+    {isActive: isCebu, setActive: setIsCebu, title: '세부시티'},
+  ];
 
   if (!isLoaded) return <Loader></Loader>;
 
@@ -49,23 +82,29 @@ export default SearchScreen = observer(props => {
         ListEmptyComponent={
           <Block middle>
             <Block flex={false}>
-              <Text h3 bold center>
+              <Text h2 bold center>
                 검색어를 입력하세요
               </Text>
-              <Block middle row style={{marginTop: 20}}>
-                <FilterButton text="치킨"></FilterButton>
-                <FilterButton text="삼겹살"></FilterButton>
-                <FilterButton text="배달"></FilterButton>
-                <FilterButton text="한식"></FilterButton>
-                <FilterButton text="비비큐"></FilterButton>
-                <FilterButton text="중식"></FilterButton>
+              <Text h4 gray center style={{marginTop: 10, marginBottom: 20}}>
+                이런 검색어는 어떠세요?
+              </Text>
+              <Block middle row>
+                {['치킨', '삼겹살', '한식', '비비큐', '중식'].map(
+                  (text, idx) => (
+                    <FilterButton
+                      key={idx}
+                      text={text}
+                      setSearch={setSearch}
+                      setSearchText={setSearchText}
+                    />
+                  ),
+                )}
               </Block>
             </Block>
           </Block>
         }
         ListHeaderComponent={
-          <Block
-            style={[style.scrollTab, {paddingHorizontal: 0, marginBottom: 20}]}>
+          <Block style={[style.scrollTab, {paddingHorizontal: 0}]}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
@@ -101,22 +140,33 @@ export default SearchScreen = observer(props => {
                 )}
               </Block>
             </Block>
+            <Block center style={{marginTop: 10}}>
+              <FilterTab filterList={filterList} />
+            </Block>
           </Block>
         }
         ListFooterComponent={<Block style={{marginBottom: 50}}></Block>}
         data={
-          searchText !== ''
-            ? selectedLists.filter(e =>
-                searchText
-                  ? e.tags.includes(searchText) ||
-                    e.name.includes(searchText) ||
-                    (e.menus &&
-                      e.menus
-                        .map(e => e.name)
-                        .join()
-                        .includes(searchText))
-                  : e,
-              )
+          searchText.toUpperCase() !== ''
+            ? selectedLists
+                .filter(e =>
+                  searchText.toUpperCase()
+                    ? e.tags
+                        .map(e => e.toUpperCase())
+                        .includes(searchText.toUpperCase()) ||
+                      e.name.toUpperCase().includes(searchText.toUpperCase()) ||
+                      (e.menus &&
+                        e.menus
+                          .map(e => e.name.toUpperCase())
+                          .join()
+                          .includes(searchText.toUpperCase()))
+                    : e,
+                )
+                .filter(e => (isKorean ? e.korean : e))
+                .filter(e => (isBaby ? e.baby : e))
+                .filter(e => (isPickup ? e.pickup : e))
+                .filter(e => (!isMak ? e.location !== '막탄' : e))
+                .filter(e => (!isCebu ? e.location !== '세부시티' : e))
             : null
         }
         renderItem={({item}) => (
@@ -150,8 +200,7 @@ const styles = StyleSheet.create({
     marginLeft: 12,
     marginRight: 2,
     paddingVertical: 3,
-
-    borderRadius: 20,
+    borderRadius: 6,
     backgroundColor: '#eee',
     shadowColor: '#000',
     shadowOffset: {

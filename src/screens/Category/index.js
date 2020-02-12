@@ -3,11 +3,17 @@ import {StyleSheet, ScrollView, FlatList, Animated} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {Ionicons, AntDesign} from '@expo/vector-icons';
-import {CardShop, CategoryTab, Block, Loader, Text} from 'app/src/components';
+import {
+  CardShop,
+  CategoryTab,
+  Block,
+  Loader,
+  Text,
+  FilterTab,
+} from 'app/src/components';
 import {sizes, style} from 'app/src/styles';
 
 import SortModal from './components/SortModal';
-import FilterTab from './components/FilterTab';
 
 import {mapCategory} from './categoryList.js';
 

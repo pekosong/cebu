@@ -1,21 +1,17 @@
 import React from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
-
-import {Text} from 'app/src/components';
+import Text from './Text';
 import {colors} from 'app/src/styles';
 
-export default FilterButton = ({text, setSearch, setSearchText}) => {
+export default FilterButton = ({text, isActive, setActive}) => {
   return (
     <TouchableOpacity
-      onPress={() => {
-        setSearch(text);
-        setSearchText(text);
-      }}
+      onPress={() => setActive(!isActive)}
       style={[
         styles.container,
         {
-          borderColor: colors.gray,
-          backgroundColor: colors.white,
+          borderColor: isActive ? colors.white : colors.gray,
+          backgroundColor: isActive ? colors.black : colors.white,
         },
       ]}>
       <Text
@@ -23,7 +19,7 @@ export default FilterButton = ({text, setSearch, setSearchText}) => {
         center
         style={{
           fontWeight: 'bold',
-          color: colors.gray,
+          color: isActive ? colors.white : colors.gray,
         }}>
         {text}
       </Text>
@@ -40,11 +36,11 @@ FilterButton.navigationOptions = {
 const styles = StyleSheet.create({
   container: {
     flex: 0,
-    paddingVertical: 5,
-    paddingHorizontal: 8,
+    paddingVertical: 4,
+    paddingHorizontal: 7,
     borderWidth: 1,
     borderRadius: 14,
-    marginRight: 4,
+    marginRight: 3,
     alignItems: 'center',
     justifyContent: 'center',
   },

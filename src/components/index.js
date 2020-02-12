@@ -17,6 +17,9 @@ import WideText from './WideText';
 import FullImageSlider from './FullImageSlider';
 import CachedImage from './CachedImage';
 
+import FilterButton from './FilterButton';
+import FilterTab from './FilterTab';
+
 import Favorite from './Favorite';
 
 import LoginModal from './LoginModal';
@@ -31,6 +34,8 @@ export {
   CardRecommend,
   CategoryTab,
   Favorite,
+  FilterButton,
+  FilterTab,
   Input,
   Text,
   Divider,

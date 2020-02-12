@@ -28,7 +28,7 @@ export default CardRecommend = ({item, navigation, isDistance}) => {
             typeof shop.preview === 'string' ? shop.preview : shop.preview[0]
           }></CachedImage>
         <Block middle>
-          <Block row center space="between" style={{flex: 0, marginBottom: 6}}>
+          <Block row center space="between" style={{flex: 0, marginBottom: 5}}>
             <Text numberOfLines={1} h4 bold style={{width: 190}}>
               {shop.name + '  '}
               <Text size={12} gray>
@@ -68,6 +68,7 @@ export default CardRecommend = ({item, navigation, isDistance}) => {
               </Text>
             </Block>
           </Block>
+
           <Block row center space="between" style={{flex: 0}}>
             <Block row center>
               <AntDesign
@@ -90,6 +91,11 @@ export default CardRecommend = ({item, navigation, isDistance}) => {
               </Block>
             )}
           </Block>
+          {shop.location !== '' && (
+            <Text size={12} darkgray numberOfLines={1} style={{marginTop: 5}}>
+              {shop.location} {shop.branch && '/ ' + shop.branch}
+            </Text>
+          )}
         </Block>
       </Block>
     </TouchableOpacity>
