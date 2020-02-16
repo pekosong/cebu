@@ -29,8 +29,6 @@ const hostList = [
     navigation: 'Reservation',
     icon: 'inbox',
   },
-  {title: '고객 정보', navigation: '', icon: 'addusergroup'},
-  {title: '이벤트 등록', navigation: '', icon: 'Safety'},
 ];
 
 const helpList = [

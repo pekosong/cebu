@@ -25,6 +25,7 @@ const style = {
     paddingHorizontal: sizes.padding,
     zIndex: 1,
     backgroundColor: 'white',
+    paddingVertical: 3,
   },
   scrollTab: {
     flex: 0,
