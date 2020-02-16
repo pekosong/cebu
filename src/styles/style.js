@@ -32,7 +32,6 @@ const style = {
     paddingHorizontal: sizes.padding,
     backgroundColor: colors.white,
     paddingBottom: 10,
-    borderBottomColor: colors.gray2,
     marginTop: 10,
   },
   shop: {

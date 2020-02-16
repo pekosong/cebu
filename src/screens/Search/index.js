@@ -12,7 +12,7 @@ import {
 import {TouchableOpacity} from 'react-native-gesture-handler';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 
-import {sizes, style, colors} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 
 import {useSelector} from 'react-redux';
 
@@ -103,11 +103,7 @@ export default SearchScreen = props => {
           </Block>
         }
         ListHeaderComponent={
-          <Block
-            style={[
-              style.scrollTab,
-              {marginTop: 0, paddingTop: 10, paddingHorizontal: 0},
-            ]}>
+          <Block style={styles.header}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />
@@ -195,6 +191,11 @@ const styles = StyleSheet.create({
     marginTop: 10,
     marginHorizontal: -sizes.padding,
     paddingHorizontal: sizes.padding,
+  },
+  header: {
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    marginBottom: 10,
   },
   search: {
     height: 30,

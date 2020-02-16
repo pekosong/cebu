@@ -138,8 +138,8 @@ const FavoritesScreen = props => {
     />
   );
   const headerElement = (
-    <Block style={[style.scrollTab, {marginBottom: 20}]}>
-      <Block style={{flex: 0, height: 40}}>
+    <Block style={styles.header}>
+      <Block style={{flex: 0, height: 35}}>
         <Text h1 bold>
           저장소
         </Text>
@@ -193,6 +193,12 @@ FavoritesScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    paddingHorizontal: sizes.padding,
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    marginBottom: 10,
+  },
   tabs: {
     flex: 0,
     flexDirection: 'row',

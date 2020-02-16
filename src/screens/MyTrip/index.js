@@ -208,12 +208,7 @@ const MyTripScreen = props => {
               </>
             )}
             <Button
-              style={{
-                borderWidth: 1,
-                borderColor: colors.gray,
-                marginHorizontal: 60,
-                borderRadius: 20,
-              }}
+              style={styles.planButton}
               onPress={() => navigation.navigate('Home')}>
               <Text darkgray center>
                 일정 등록하기
@@ -239,12 +234,7 @@ const MyTripScreen = props => {
           일정을 정리해보세요
         </Text>
         <Button
-          style={{
-            height: 60,
-            backgroundColor: colors.accent,
-            paddingHorizontal: 40,
-            borderRadius: 5,
-          }}
+          style={styles.button}
           onPress={() => navigation.navigate('Login')}>
           <Text h4 white bold center>
             로그인 하러 가기
@@ -268,12 +258,7 @@ const MyTripScreen = props => {
           세부에서의 일정을 등록해보세요
         </Text>
         <Button
-          style={{
-            height: 60,
-            backgroundColor: colors.accent,
-            paddingHorizontal: 40,
-            borderRadius: 5,
-          }}
+          style={styles.button}
           onPress={() => navigation.navigate('TripInfos')}>
           <Text h4 white bold center>
             일정등록하러 가기
@@ -287,12 +272,8 @@ const MyTripScreen = props => {
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}>
-        <Block
-          style={[
-            style.scrollTab,
-            {marginTop: 0, paddingTop: 10, marginBottom: 20},
-          ]}>
-          <Block style={{flex: 0, height: 40}}>
+        <Block style={styles.header}>
+          <Block style={{flex: 0, height: 35}}>
             <Text h1 bold>
               내일정
             </Text>
@@ -326,10 +307,28 @@ MyTripScreen.defaultProps = {
 };
 
 const styles = StyleSheet.create({
+  header: {
+    paddingHorizontal: sizes.padding,
+    backgroundColor: colors.white,
+    paddingVertical: 10,
+    marginBottom: 10,
+  },
   avatarChat: {
     width: sizes.base * 6,
     height: sizes.base * 4,
     borderRadius: 3,
+  },
+  button: {
+    height: 60,
+    backgroundColor: colors.accent,
+    paddingHorizontal: 40,
+    borderRadius: 5,
+  },
+  planButton: {
+    borderWidth: 1,
+    borderColor: colors.gray,
+    marginHorizontal: 60,
+    borderRadius: 30,
   },
   tag: {
     flex: 0,
