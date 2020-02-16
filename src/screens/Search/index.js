@@ -103,7 +103,11 @@ export default SearchScreen = props => {
           </Block>
         }
         ListHeaderComponent={
-          <Block style={[style.scrollTab, {paddingHorizontal: 0}]}>
+          <Block
+            style={[
+              style.scrollTab,
+              {marginTop: 0, paddingTop: 10, paddingHorizontal: 0},
+            ]}>
             <Block center row space="between">
               <TouchableOpacity onPress={() => navigation.goBack()}>
                 <Ionicons size={30} name="ios-arrow-back" />

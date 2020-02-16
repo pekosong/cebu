@@ -31,7 +31,7 @@
     "android": {
       "googleServicesFile": "./google-services.json",
       "package": "com.os1.cebu",
-      "versionCode": 9,
+      "versionCode": 10,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBJZ_NlQuoa_YnOPdwH0iFk3B2vhzimE2Y"
