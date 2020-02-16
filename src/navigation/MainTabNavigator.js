@@ -18,6 +18,7 @@ import FavoritesScreen from 'app/src/screens/Favorites';
 import ProfileScreen from 'app/src/screens/Profile/ProfileScreen';
 import PersonalScreen from 'app/src/screens/Profile/PersonalScreen';
 import NoticeScreen from 'app/src/screens/Profile/NoticeScreen';
+import NoticeTestScreen from 'app/src/screens/Profile/NoticeTestScreen';
 import TripInfosScreen from 'app/src/screens/Profile/TripInfosScreen';
 import TripInfoScreen from 'app/src/screens/Profile/TripInfoScreen';
 import MyShopScreen from 'app/src/screens/Profile/MyShopScreen';
@@ -51,7 +52,9 @@ const SearchStack = createStackNavigator(
   },
   {
     initialRouteName: 'Home',
-    transitionConfig: () => fromRight(500),
+    transitionConfig: ({navigation}) => {
+      return fromRight(500);
+    },
   },
 );
 SearchStack.navigationOptions = ({navigation}) => {
@@ -194,6 +197,7 @@ const ProfileStack = createStackNavigator(
     Profile: ProfileScreen,
     Personal: PersonalScreen,
     Notice: NoticeScreen,
+    NoticeTest: NoticeTestScreen,
     TripInfos: TripInfosScreen,
     TripInfo: TripInfoScreen,
     MyShop: MyShopScreen,
@@ -230,11 +234,11 @@ const tabNavigator = createBottomTabNavigator(
       activeTintColor: theme.colors.black,
       inactiveTintColor: theme.colors.gray,
       labelStyle: {
-        fontSize: 12,
+        fontSize: 10,
       },
       style: {
-        height: 55,
-        paddingTop: 15,
+        height: 52,
+        paddingTop: 13,
         paddingBottom: 5,
         paddingHorizontal: 10,
         backgroundColor: 'white',

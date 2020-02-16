@@ -8,8 +8,6 @@ import {Block, Text, Button} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
-
 async function sendEmail(to, subject, body, options = {}) {
   const {cc, bcc} = options;
 
@@ -37,7 +35,7 @@ async function sendEmail(to, subject, body, options = {}) {
   return Linking.openURL(url);
 }
 
-const ProposalScreen = observer(props => {
+const ProposalScreen = props => {
   const {navigation} = props;
 
   useEffect(() => {}, []);
@@ -78,7 +76,7 @@ const ProposalScreen = observer(props => {
       </Block>
     </SafeAreaView>
   );
-});
+};
 
 ProposalScreen.navigationOptions = {
   header: null,

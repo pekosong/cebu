@@ -7,6 +7,9 @@ import {Asset} from 'expo-asset';
 import AppNavigator from './src/navigation/AppNavigator';
 import {SafeAreaProvider} from 'react-native-safe-area-context';
 
+import {Provider} from 'react-redux';
+import store from './src/redux/store';
+
 // YellowBox.ignoreWarnings(['Warning: ...']);
 // console.ignoredYellowBox = ['Setting a timer'];
 
@@ -24,8 +27,10 @@ export default function App(props) {
   } else {
     return (
       <SafeAreaProvider style={styles.container}>
-        {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
-        <AppNavigator />
+        <Provider store={store}>
+          {Platform.OS === 'ios' && <StatusBar barStyle="default" />}
+          <AppNavigator />
+        </Provider>
       </SafeAreaProvider>
     );
   }

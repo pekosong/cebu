@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -10,13 +10,15 @@ import SafeAreaView from 'react-native-safe-area-view';
 
 import AppBar from './components/AppBar';
 import {Block, Text, CachedImage} from 'app/src/components';
+import SnackBar from 'react-native-snackbar-component';
+
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {AntDesign} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
 import {updateUser} from 'app/src/api/user';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -24,7 +26,7 @@ import * as Permissions from 'expo-permissions';
 
 import uuidv1 from 'uuid/v1';
 
-const PersonalScreen = observer(props => {
+const PersonalScreen = props => {
   const {navigation} = props;
   const [name, setName] = useState('');
   const [sex, setSex] = useState('');
@@ -33,11 +35,12 @@ const PersonalScreen = observer(props => {
   const [phone, setPhone] = useState('');
 
   const [image, setImage] = useState('');
-  const [saved, setSaved] = useState(false);
+  const [show, setShow] = useState(false);
   const [profile, setProfile] = useState({});
   const [progress, setProgress] = useState(null);
 
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     setProfile(user);
@@ -47,7 +50,6 @@ const PersonalScreen = observer(props => {
     setBirth(user.birth ? user.birth : '');
     setPhone(user.phone ? user.phone : '');
     setImage(user.image ? user.image : '');
-    console.log(image);
   }, []);
 
   getPermissionAsync = async () => {
@@ -141,8 +143,9 @@ const PersonalScreen = observer(props => {
     };
     updateUser(email, newProfile)
       .then(() => {
+        dispatch(allActions.userActions.updateUser(newProfile));
         setProfile(newProfile);
-        setSaved(true);
+        setShow(true);
       })
       .catch(err => {
         console.log(err);
@@ -151,100 +154,106 @@ const PersonalScreen = observer(props => {
 
   return (
     <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
-      <KeyboardAvoidingView behavior="padding">
-        <ScrollView
-          stickyHeaderIndices={[0]}
-          showsVerticalScrollIndicator={false}
-          style={style.scrollTab}>
-          <AppBar
-            title={'내 정보'}
-            goBack={navigation.goBack}
-            progress={progress ? progress : '저장'}
-            func={savePerson}
-          />
-          <Block style={{marginBottom: 20}}>
-            <Block row space="between">
-              <Block flex={1}>
-                <Text style={styles.textStyle}>사진</Text>
-              </Block>
-              <Block right row flex={2}>
-                <TouchableOpacity onPress={_cameraImage}>
-                  <AntDesign
-                    size={30}
-                    name={'camera'}
-                    style={{
-                      color: colors.black,
-                      marginRight: 10,
-                    }}
-                  />
-                </TouchableOpacity>
-                <TouchableOpacity onPress={_pickImage}>
-                  <AntDesign
-                    size={30}
-                    name={'picture'}
-                    style={{
-                      color: colors.black,
-                    }}
-                  />
-                </TouchableOpacity>
-              </Block>
+      <ScrollView
+        stickyHeaderIndices={[0]}
+        showsVerticalScrollIndicator={false}
+        style={style.scrollTab}>
+        <AppBar
+          title={'내 정보'}
+          goBack={navigation.goBack}
+          progress={progress ? progress : '저장'}
+          func={savePerson}
+        />
+        <Block style={{marginBottom: 20}}>
+          <Block row space="between">
+            <Block flex={1}>
+              <Text style={styles.textStyle}>사진</Text>
             </Block>
-            <CachedImage
-              uri={
-                image
-                  ? image
-                  : 'https://img.icons8.com/officel/80/000000/user-male-circle.png'
-              }
-              style={styles.avatar}
-            />
+            <Block right row flex={2}>
+              <TouchableOpacity onPress={_cameraImage}>
+                <AntDesign
+                  size={30}
+                  name={'camera'}
+                  style={{
+                    color: colors.black,
+                    marginRight: 10,
+                  }}
+                />
+              </TouchableOpacity>
+              <TouchableOpacity onPress={_pickImage}>
+                <AntDesign
+                  size={30}
+                  name={'picture'}
+                  style={{
+                    color: colors.black,
+                  }}
+                />
+              </TouchableOpacity>
+            </Block>
           </Block>
-          <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
-            <Text style={styles.textStyle}>이메일</Text>
-            <Text bold style={{fontSize: 18}}>
-              {email}
-            </Text>
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text style={styles.textStyle}>이름</Text>
-            <TextInput
-              defaultValue={name}
-              placeholder="홍길동"
-              onChangeText={e => setName(e)}
-              style={{fontSize: 18}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text style={styles.textStyle}>성별</Text>
-            <TextInput
-              defaultValue={sex}
-              placeholder="남/여"
-              onChangeText={e => setSex(e)}
-              style={{fontSize: 18}}
-            />
-          </Block>
-          <Block style={styles.inputRow}>
-            <Text style={styles.textStyle}>생년월일</Text>
-            <TextInput
-              defaultValue={birth}
-              placeholder="2001-01-01"
-              onChangeText={e => setBirth(e)}
-              style={{fontSize: 18}}
-            />
-          </Block>
-          <Block style={[styles.inputRow]}>
-            <Text style={styles.textStyle}>전화번호</Text>
-            <TextInput
-              defaultValue={phone}
-              placeholder="010-0000-0000"
-              onChangeText={e => setPhone(e)}
-              style={{fontSize: 18}}
-            />
-          </Block>
-        </ScrollView>
-      </KeyboardAvoidingView>
+          <CachedImage
+            uri={
+              image
+                ? image
+                : 'https://img.icons8.com/officel/80/000000/user-male-circle.png'
+            }
+            style={styles.avatar}
+          />
+        </Block>
+        <Block style={{...styles.inputRow, borderBottomWidth: 0}}>
+          <Text style={styles.textStyle}>이메일</Text>
+          <Text bold style={{fontSize: 18}}>
+            {email}
+          </Text>
+        </Block>
+        <Block style={styles.inputRow}>
+          <Text style={styles.textStyle}>이름</Text>
+          <TextInput
+            defaultValue={name}
+            placeholder="홍길동"
+            onChangeText={e => setName(e)}
+            style={{fontSize: 18}}
+          />
+        </Block>
+        <Block style={styles.inputRow}>
+          <Text style={styles.textStyle}>성별</Text>
+          <TextInput
+            defaultValue={sex}
+            placeholder="남/여"
+            onChangeText={e => setSex(e)}
+            style={{fontSize: 18}}
+          />
+        </Block>
+        <Block style={styles.inputRow}>
+          <Text style={styles.textStyle}>생년월일</Text>
+          <TextInput
+            defaultValue={birth}
+            placeholder="2001-01-01"
+            onChangeText={e => setBirth(e)}
+            style={{fontSize: 18}}
+          />
+        </Block>
+        <Block style={[styles.inputRow, {marginBottom: 40}]}>
+          <Text style={styles.textStyle}>전화번호</Text>
+          <TextInput
+            defaultValue={phone}
+            placeholder="010-0000-0000"
+            onChangeText={e => setPhone(e)}
+            style={{fontSize: 18}}
+          />
+        </Block>
+      </ScrollView>
+      <SnackBar
+        visible={show}
+        textMessage="저장 완료"
+        accentColor="white"
+        backgroundColor={colors.black}
+        actionHandler={() => setShow(!show)}
+        actionText="닫기"
+      />
     </SafeAreaView>
   );
-});
+};
 
 PersonalScreen.navigationOptions = {
   header: null,

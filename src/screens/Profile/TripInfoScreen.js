@@ -1,21 +1,19 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
   Keyboard,
-  ActivityIndicator,
   Dimensions,
 } from 'react-native';
 
-import {Button, Block, Input, Text} from 'app/src/components';
+import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Calendar, LocaleConfig} from 'react-native-calendars';
 
 import moment from 'moment';
 
-import {observer} from 'mobx-react-lite';
-import {updateUser} from 'app/src/api/user';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 const {width} = Dimensions.get('window');
 
@@ -33,13 +31,13 @@ LocaleConfig.locales['kor'] = {
 };
 LocaleConfig.defaultLocale = 'kor';
 
-const TripInfoScreen = observer(props => {
+const TripInfoScreen = props => {
   const {navigation} = props;
   const [date, setDate] = useState({});
   const [dates, setDates] = useState([]);
-  const [loading, setLoading] = useState(false);
-  const [step, setStep] = useState(1);
-  const {user} = useContext(UserStoreContext);
+
+  const {user} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   _getDates = (start, stop) => {
     let startDate = new Date(start.year, start.month - 1, start.day);
@@ -83,7 +81,6 @@ const TripInfoScreen = observer(props => {
         }
         option['color'] = colors.accent;
         option['textColor'] = colors.white;
-
         newDate[e] = option;
       });
       setDate(newDate);
@@ -91,29 +88,15 @@ const TripInfoScreen = observer(props => {
     }
   };
 
-  handleSignUp = () => {
-    setLoading(true);
+  handleTripSave = () => {
     Keyboard.dismiss();
-
     let plans = date;
     Object.keys(plans).forEach((key, idx) => {
       plans[key] = {nDay: idx};
     });
-    const newCus = {
-      plans,
-      date: new Date(),
-    };
-
-    updateUser(user.email, newCus)
-      .then(() => {
-        console.log('Document successfully written!');
-        setLoading(false);
-        navigation.goBack();
-      })
-      .catch(err => {
-        console.log(err);
-        setLoading(false);
-      });
+    const newUser = {...user, plans};
+    dispatch(allActions.userActions.updateUser(newUser));
+    navigation.goBack();
   };
 
   renderSignUp = () => {
@@ -159,7 +142,7 @@ const TripInfoScreen = observer(props => {
         />
 
         <Block top padding={[0, sizes.padding]}>
-          <Button normal onPress={() => handleSignUp()}>
+          <Button normal onPress={() => handleTripSave()}>
             <Text white center>
               등록
             </Text>
@@ -178,7 +161,7 @@ const TripInfoScreen = observer(props => {
       {renderSignUp()}
     </KeyboardAvoidingView>
   );
-});
+};
 
 TripInfoScreen.navigationOptions = {
   header: null,

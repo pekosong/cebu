@@ -22,7 +22,6 @@ import ReviewSection from './components/ReviewSection';
 import ShopInfoSection from './components/ShopInfoSection';
 import RecommendSection from './components/RecommendSection';
 
-import {observer} from 'mobx-react-lite';
 import {streamShop} from 'app/src/api/shop';
 
 const HEIGHT = 300;
@@ -93,7 +92,7 @@ const ShopTab = ({tab, isActive, setShow, shopScroll, shop, xAnim}) => {
   );
 };
 
-export default ShopScreen = observer(({navigation}) => {
+export default ShopScreen = ({navigation}) => {
   const [shop, setShop] = useState({});
   const [show, setShow] = useState(0);
 
@@ -218,7 +217,7 @@ export default ShopScreen = observer(({navigation}) => {
       )}
     </Block>
   );
-});
+};
 
 ShopScreen.defaultProps = {};
 

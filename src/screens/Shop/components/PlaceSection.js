@@ -2,7 +2,7 @@ import React from 'react';
 import {StyleSheet, Dimensions} from 'react-native';
 
 import {Block, Text, Divider, CachedImage} from 'app/src/components';
-import {sizes, colors, style} from 'app/src/styles';
+import {sizes, colors} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
 const {width} = Dimensions.get('window');

@@ -1,15 +1,14 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, TouchableOpacity, FlatList} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
 import {Block, Text, CachedImage, Loader} from 'app/src/components';
 
-import {sizes, style, colors} from 'app/src/styles';
+import {sizes, style} from 'app/src/styles';
 import {msg2Chat, makeYM} from 'app/src/utils';
 import {shopApi, userApi} from 'app/src/api';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
 const MAP = {
   wait: '예약요청',
@@ -18,12 +17,12 @@ const MAP = {
   not: '예약불가',
 };
 
-const ChatListScreen = observer(props => {
+const ChatListScreen = props => {
   const {navigation} = props;
   const [chatList, setChatList] = useState([]);
   const [shopReservations, setShopReservations] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
-  const {isAdmin, isLogin, user} = useContext(UserStoreContext);
+  const {isAdmin, user} = useSelector(state => state.user);
 
   useEffect(() => {
     let userUnsubscribe;
@@ -143,7 +142,7 @@ const ChatListScreen = observer(props => {
       />
     </SafeAreaView>
   );
-});
+};
 
 ChatListScreen.navigationOptions = {
   header: null,

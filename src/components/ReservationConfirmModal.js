@@ -15,7 +15,6 @@ import Divider from './Divider';
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
 import {streamUser, updateUserReservation} from 'app/src/api/user';
 import {streamShop, updateShopReservation} from 'app/src/api/shop';
 
@@ -26,7 +25,7 @@ const MAP = {
   not: '예약불가',
 };
 
-const ReservationConfirmModal = observer(props => {
+const ReservationConfirmModal = props => {
   const {setVisible, reservation} = props;
 
   const [userReservations, setUserReservations] = useState([]);
@@ -201,7 +200,7 @@ const ReservationConfirmModal = observer(props => {
       {renderConfirmPage()}
     </Block>
   );
-});
+};
 
 export const styles = StyleSheet.create({
   input: {

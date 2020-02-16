@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   ScrollView,
   StyleSheet,
@@ -19,8 +19,7 @@ import {
 import {mocks} from 'app/src/constants';
 import {colors, sizes, style} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
 const MAP = {
   wait: '예약확인중',
@@ -41,7 +40,7 @@ const WEEKMAP = {
 
 const {height} = Dimensions.get('window');
 
-const MyTripScreen = observer(props => {
+const MyTripScreen = props => {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
@@ -52,24 +51,26 @@ const MyTripScreen = observer(props => {
   const [selectedDates, setSelectedDates] = useState({});
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const {isLogin, user} = useContext(UserStoreContext);
+  const {loggedIn, user} = useSelector(state => state.user);
 
   useEffect(() => {
-    if (Object.entries(user).length !== 0) {
-      let myPlans = user.plans;
-      let days = {};
+    if (loggedIn) {
+      if (Object.entries(user).length !== 0) {
+        let myPlans = user.plans;
+        let days = {};
 
-      Object.keys(myPlans).forEach((key, idx) => {
-        days[idx + 1] = key;
-      });
+        Object.keys(myPlans).forEach((key, idx) => {
+          days[idx + 1] = key;
+        });
 
-      setActive('전체');
-      setDates(days);
-      setSelectedDates(days);
-      setTabs(['전체'].concat(Object.keys(days)));
-      setReservations(user.reservations);
-      setPlans(myPlans);
-      setIsLoaded(true);
+        setActive('전체');
+        setDates(days);
+        setSelectedDates(days);
+        setTabs(['전체'].concat(Object.keys(days)));
+        setReservations(user.reservations);
+        setPlans(myPlans);
+        setIsLoaded(true);
+      }
     }
   }, [user]);
 
@@ -225,9 +226,7 @@ const MyTripScreen = observer(props => {
     );
   };
 
-  if (!isLoaded) return <Loader></Loader>;
-
-  if (!isLogin)
+  if (!loggedIn)
     return (
       <Block center middle style={{padding: 80}}>
         <Text size={40} bold center>
@@ -253,6 +252,8 @@ const MyTripScreen = observer(props => {
         </Button>
       </Block>
     );
+
+  if (!isLoaded) return <Loader></Loader>;
 
   if (Object.keys(user.plans).length === 0)
     return (
@@ -286,7 +287,11 @@ const MyTripScreen = observer(props => {
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}>
-        <Block style={[style.scrollTab, {marginBottom: 20}]}>
+        <Block
+          style={[
+            style.scrollTab,
+            {marginTop: 0, paddingTop: 10, marginBottom: 20},
+          ]}>
           <Block style={{flex: 0, height: 40}}>
             <Text h1 bold>
               내일정
@@ -308,7 +313,7 @@ const MyTripScreen = observer(props => {
       </ScrollView>
     </SafeAreaView>
   );
-});
+};
 
 MyTripScreen.navigationOptions = {
   header: null,

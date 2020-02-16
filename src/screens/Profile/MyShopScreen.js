@@ -1,26 +1,24 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   ScrollView,
   TextInput,
   KeyboardAvoidingView,
   Switch,
-  ActivityIndicator,
   Dimensions,
   Animated,
   TouchableWithoutFeedback,
   SafeAreaView,
 } from 'react-native';
-import {Button, Block, Text, CachedImage} from 'app/src/components';
+import {Button, Block, Text, CachedImage, Loader} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import firebase from 'app/src/constants/store';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-import {observer} from 'mobx-react-lite';
 import {streamShop, updateShop} from 'app/src/api/shop';
 
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
 import * as ImagePicker from 'expo-image-picker';
 import Constants from 'expo-constants';
@@ -29,10 +27,10 @@ import uuidv1 from 'uuid/v1';
 
 const {width} = Dimensions.get('window');
 
-const MyShopScreen = observer(props => {
+const MyShopScreen = props => {
   const {navigation} = props;
 
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
 
   const [name, setName] = useState('');
   const [engName, setEngName] = useState('');
@@ -298,40 +296,21 @@ const MyShopScreen = observer(props => {
     );
   };
 
-  if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
+    <SafeAreaView>
       <KeyboardAvoidingView behavior="padding">
         <ScrollView>
           <Block style={style.header}>
-            <Block row center space="between">
-              <Button onPress={() => navigation.goBack()}>
-                <Block center row>
-                  <Ionicons
-                    size={30}
-                    color={colors.black}
-                    name="ios-arrow-back"
-                  />
-                </Block>
-              </Button>
-              <TouchableOpacity onPress={() => saveShop()}>
-                <Text bold h3>
-                  {progress ? progress : '저장'}
-                </Text>
-              </TouchableOpacity>
-            </Block>
-            <Text h1 bold style={{marginTop: 10, marginBottom: 30}}>
-              매장 정보
-            </Text>
+            <Button onPress={() => navigation.goBack()}>
+              <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
+            </Button>
+            <TouchableOpacity onPress={() => saveShop()}>
+              <Text bold h3>
+                {progress ? progress : '저장'}
+              </Text>
+            </TouchableOpacity>
           </Block>
 
           <Block style={styles.inputs}>
@@ -609,9 +588,9 @@ const MyShopScreen = observer(props => {
           </Block>
         </ScrollView>
       </KeyboardAvoidingView>
-    </>
+    </SafeAreaView>
   );
-});
+};
 
 MyShopScreen.navigationOptions = {
   header: null,

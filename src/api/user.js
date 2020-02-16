@@ -9,19 +9,19 @@ const streamUserMsg = email => {
     .where('email', '==', email);
 };
 
-const streamUser = email => {
+const getUser = email => {
   return firebase
     .firestore()
     .collection('users')
     .doc(email);
 };
 
-const createUser = email => {
+const createUser = (email, uid, token) => {
   return firebase
     .firestore()
     .collection('users')
     .doc(email)
-    .set({...USER, email});
+    .set({...USER, email, uid, token});
 };
 
 const updateUser = (email, newProfile) => {
@@ -67,7 +67,7 @@ const updateUserReservation = (email, userReservations) => {
 
 export {
   streamUserMsg,
-  streamUser,
+  getUser,
   createUser,
   updateUser,
   updateFavorite,

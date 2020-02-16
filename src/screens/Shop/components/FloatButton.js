@@ -1,24 +1,25 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Modal, TouchableOpacity} from 'react-native';
 
 import {PlanModal, LoginModal} from 'app/src/components';
 import {colors} from 'app/src/styles';
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 import {AntDesign} from '@expo/vector-icons';
+
 import {default as Modal_} from 'react-native-modal';
 
-export default FloatButton = observer(({navigation, shop}) => {
+export default FloatButton = ({navigation, shop}) => {
   const [visible, setVisible] = useState(false);
   const [showModal, setShowModal] = useState(false);
   const [showPlan, setShowPlan] = useState(false);
 
-  const {isLogin, user} = useContext(UserStoreContext);
+  const {loggedIn, user} = useSelector(state => state.user);
+
   return (
     <TouchableOpacity
       style={styles.container}
       onPress={() =>
-        !isLogin
+        !loggedIn
           ? setShowModal(true)
           : Object.entries(user.plans).length != 0
           ? setVisible(true)
@@ -62,7 +63,7 @@ export default FloatButton = observer(({navigation, shop}) => {
       </Modal_>
     </TouchableOpacity>
   );
-});
+};
 
 FloatButton.defaultProps = {};
 

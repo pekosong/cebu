@@ -1,0 +1,89 @@
+{
+  "project_info": {
+    "project_number": "31520463311",
+    "firebase_url": "https://cabu-c030d.firebaseio.com",
+    "project_id": "cabu-c030d",
+    "storage_bucket": "cabu-c030d.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31520463311:android:9521457d5c0ff92e0c1aba",
+        "android_client_info": {
+          "package_name": "com.cebua.os1"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31520463311-1j9llld12e4hqle4i7it0j6fqdmuuguq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoqz75jPdLPTiz1IfYBMYet6pxilgGeTY"
+        },
+        {
+          "current_key": "AIzaSyCuIV-5DDRcR_c7ngW0FWP2ONKtx2tCjBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31520463311-1j9llld12e4hqle4i7it0j6fqdmuuguq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "31520463311-5igq8u64kr09q6me86e9jb77t75qrr5m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cebua.os1"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:31520463311:android:0c9903db124980ff0c1aba",
+        "android_client_info": {
+          "package_name": "com.os1.cebu"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "31520463311-1j9llld12e4hqle4i7it0j6fqdmuuguq.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDoqz75jPdLPTiz1IfYBMYet6pxilgGeTY"
+        },
+        {
+          "current_key": "AIzaSyCuIV-5DDRcR_c7ngW0FWP2ONKtx2tCjBs"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "31520463311-1j9llld12e4hqle4i7it0j6fqdmuuguq.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "31520463311-5igq8u64kr09q6me86e9jb77t75qrr5m.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.cebua.os1"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

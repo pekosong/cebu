@@ -4,12 +4,16 @@ import {
   KeyboardAvoidingView,
   Keyboard,
   ActivityIndicator,
+  Platform,
 } from 'react-native';
 
+import {createUser} from 'app/src/api/user';
 import {Button, Block, Input, Text} from 'app/src/components';
-
 import {sizes, colors} from 'app/src/styles';
 import {sign} from 'app/src/api/auth';
+
+import {Notifications} from 'expo';
+import * as Permissions from 'expo-permissions';
 
 const SignupScreen = props => {
   const {navigation} = props;
@@ -34,7 +38,10 @@ const SignupScreen = props => {
     }
 
     sign(email, password)
-      .then(user => {
+      .then(async user => {
+        const uid = user.user.uid;
+        const token = await registerForPushNotificationsAsync();
+        await createUser(email, uid, token);
         setError('');
         setIsError(false);
         navigation.navigate('Login');
@@ -45,6 +52,38 @@ const SignupScreen = props => {
         setIsError(true);
         setLoading(false);
       });
+  };
+
+  registerForPushNotificationsAsync = async () => {
+    const {status: existingStatus} = await Permissions.getAsync(
+      Permissions.NOTIFICATIONS,
+    );
+    let finalStatus = existingStatus;
+
+    // only ask if permissions have not already been determined, because
+    // iOS won't necessarily prompt the user a second time.
+    if (existingStatus !== 'granted') {
+      // Android remote notification permissions are granted during the app
+      // install, so this will only ask on iOS
+      const {status} = await Permissions.askAsync(Permissions.NOTIFICATIONS);
+      finalStatus = status;
+    }
+
+    // Stop here if the user did not grant permissions
+    if (finalStatus !== 'granted') {
+      return;
+    }
+
+    if (Platform.OS === 'android') {
+      Notifications.createChannelAndroidAsync('notification', {
+        name: 'Notification Msg',
+        sound: true,
+      });
+    }
+    // Get the token that uniquely identifies this device
+
+    const token = await Notifications.getExpoPushTokenAsync();
+    return token;
   };
 
   return (

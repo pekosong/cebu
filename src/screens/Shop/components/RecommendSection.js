@@ -1,16 +1,15 @@
-import React, {useState, useContext} from 'react';
+import React from 'react';
 import {StyleSheet, FlatList} from 'react-native';
 
-import {ShopStoreContext} from 'app/src/store/shop';
+import {useSelector} from 'react-redux';
 
 import {Block, Text, CardRecommend} from 'app/src/components';
 import {sortByDistance} from 'app/src/utils';
 
 export default RecommendSection = ({navigation, shop}) => {
-  const shopList = useContext(ShopStoreContext).shopList.filter(
+  const shopList = useSelector(state => state.shop).filter(
     e => e.id != shop.id,
   );
-
   const sortedShop = sortByDistance(shopList, shop)
     .sort((a, b) => a.distance > b.distance)
     .slice(0, 20);

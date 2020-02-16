@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {
   StyleSheet,
   ScrollView,
@@ -25,12 +25,13 @@ import CardRect from './components/CardRect';
 import {mocks} from 'app/src/constants';
 import {sizes, colors, style} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
-import {ShopStoreContext} from 'app/src/store/shop';
+import {downloadShopList} from 'app/src/api/shop';
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 const {width, height} = Dimensions.get('window');
-const HomeScreen = observer(props => {
+
+const HomeScreen = props => {
   const {navigation, categories} = props;
   const [isLoaded, setIsLoaded] = useState(false);
 
@@ -44,27 +45,30 @@ const HomeScreen = observer(props => {
   const animatedScrollYValue = useRef(new Animated.Value(0)).current;
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const shopStore = useContext(ShopStoreContext);
-  const {isLogin, user} = useContext(UserStoreContext);
+  const {loggedIn, user} = useSelector(state => state.user);
+  const shopList = useSelector(state => state.shop);
+  const dispatch = useDispatch();
 
   useEffect(() => {
-    if (shopStore.shopList.length === 0) {
-      shopStore.getShopList().then(() => {
-        setRestaurantList(filterShopList('Restaurant'));
-        setMassageList(filterShopList('Massage'));
-        setFoodList(filterShopList('Food'));
-        setActivityList(filterShopList('Activity'));
-        setPlaceList(filterShopList('Place'));
-        setAdultList(filterShopList('Adult'));
+    if (shopList.length === 0) {
+      downloadShopList().then(shops => {
+        dispatch(allActions.shopActions.setShop(shops));
+        console.log(shopList.length);
+        setRestaurantList(filterShopList(shops, 'Restaurant'));
+        setMassageList(filterShopList(shops, 'Massage'));
+        setFoodList(filterShopList(shops, 'Food'));
+        setActivityList(filterShopList(shops, 'Activity'));
+        setPlaceList(filterShopList(shops, 'Place'));
+        setAdultList(filterShopList(shops, 'Adult'));
         setIsLoaded(true);
       });
-    } else if (shopStore.shopList.length !== 0) {
-      setRestaurantList(filterShopList('Restaurant'));
-      setMassageList(filterShopList('Massage'));
-      setFoodList(filterShopList('Food'));
-      setActivityList(filterShopList('Activity'));
-      setPlaceList(filterShopList('Place'));
-      setAdultList(filterShopList('Adult'));
+    } else {
+      setRestaurantList(filterShopList(shopList, 'Restaurant'));
+      setMassageList(filterShopList(shopList, 'Massage'));
+      setFoodList(filterShopList(shopList, 'Food'));
+      setActivityList(filterShopList(shopList, 'Activity'));
+      setPlaceList(filterShopList(shopList, 'Place'));
+      setAdultList(filterShopList(shopList, 'Adult'));
       setIsLoaded(true);
     }
   }, []);
@@ -94,13 +98,13 @@ const HomeScreen = observer(props => {
     return array;
   };
 
-  const filterShopList = category => {
+  const filterShopList = (shopList, category) => {
     if (category === 'Food') {
-      return shuffleArray(shopStore.shopList)
+      return shuffleArray(shopList)
         .filter(e => e.category === 'Restaurant' && e.isDelivery)
         .slice(0, 5);
     }
-    return shuffleArray(shopStore.shopList)
+    return shuffleArray(shopList)
       .filter(e => e.category == category)
       .slice(0, 5);
   };
@@ -132,7 +136,7 @@ const HomeScreen = observer(props => {
               style={{color: colors.darkgray, marginRight: 6}}
             />
           </TouchableOpacity>
-          {isLogin ? (
+          {loggedIn ? (
             <TouchableOpacity onPress={() => navigation.navigate('Personal')}>
               <CachedImage uri={user.image} style={styles.avatar}></CachedImage>
             </TouchableOpacity>
@@ -262,7 +266,7 @@ const HomeScreen = observer(props => {
       </ScrollView>
     </SafeAreaView>
   );
-});
+};
 
 HomeScreen.navigationOptions = {
   header: null,
@@ -274,9 +278,9 @@ HomeScreen.defaultProps = {
 const styles = StyleSheet.create({
   logo: {
     width: 120,
+    height: '100%',
     borderRadius: 10,
     marginLeft: -10,
-    resizeMode: 'contain',
   },
   login: {
     borderWidth: 1,

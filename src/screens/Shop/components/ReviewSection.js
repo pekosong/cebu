@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, Modal, FlatList} from 'react-native';
 
 import {Block, Text, Button, Divider} from 'app/src/components';
@@ -11,14 +11,14 @@ import ReviewWebModal from './ReviewWebModal';
 
 import {AntDesign} from '@expo/vector-icons';
 
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
+
 import {colors, sizes} from 'app/src/styles';
 import {convertComma} from 'app/src/utils';
 
-import {observer} from 'mobx-react-lite';
+const ReviewSection = ({navigation, shop}) => {
+  const {user} = useSelector(state => state.user);
 
-const ReviewSection = observer(({navigation, shop}) => {
-  const {user} = useContext(UserStoreContext);
   const [newReviewVisible, setNewReviewVisible] = useState(false);
   const [webViewVisible, setwebViewVisible] = useState(false);
   const [page, setPage] = useState('');
@@ -149,7 +149,7 @@ const ReviewSection = observer(({navigation, shop}) => {
       </Modal>
     </Block>
   );
-});
+};
 
 ReviewSection.defaultProps = {};
 

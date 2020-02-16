@@ -1,11 +1,4 @@
-import React, {
-  useState,
-  useEffect,
-  Fragment,
-  useRef,
-  useContext,
-  useReducer,
-} from 'react';
+import React, {useState, useEffect, Fragment, useRef, useReducer} from 'react';
 import {
   Platform,
   StyleSheet,
@@ -23,8 +16,8 @@ import CachedImage from './CachedImage';
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from '../store/user';
+import {useSelector} from 'react-redux';
+
 import {updateUserReservation} from '../api/user';
 import {updateShopReservation} from '../api/shop';
 
@@ -75,7 +68,7 @@ const reservationReducer = (state, action) => {
   }
 };
 
-export default ReservationModal = observer(props => {
+export default ReservationModal = props => {
   const {shop, navigation, setVisible} = props;
   const [myReservations, setMyReservations] = useState([]);
 
@@ -101,8 +94,7 @@ export default ReservationModal = observer(props => {
   const [loading, setLoading] = useState(false);
 
   const editPage = useRef(null);
-
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     let reservation = navigation.getParam('todo');
@@ -624,7 +616,7 @@ export default ReservationModal = observer(props => {
       {edit ? renderEditPage() : renderConfirmPage()}
     </Block>
   );
-});
+};
 
 export const styles = StyleSheet.create({
   timeStyle: {

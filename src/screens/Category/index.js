@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useRef, useContext} from 'react';
+import React, {useState, useEffect, useRef} from 'react';
 import {StyleSheet, ScrollView, FlatList, Animated} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -12,16 +12,11 @@ import {
   FilterTab,
 } from 'app/src/components';
 import {sizes, style} from 'app/src/styles';
-
 import SortModal from './components/SortModal';
-
 import {mapCategory} from './categoryList.js';
-
 import {TouchableOpacity} from 'react-native-gesture-handler';
 
-import {observer} from 'mobx-react-lite';
-import {ShopStoreContext} from 'app/src/store/shop';
-
+import {useSelector} from 'react-redux';
 import Modal from 'react-native-modal';
 
 const MAP = {
@@ -31,7 +26,7 @@ const MAP = {
   like: '저장 많은 순',
 };
 
-export default CategoryScreen = observer(props => {
+export default CategoryScreen = props => {
   const {navigation} = props;
   const [catActive, setCatActive] = useState('전체');
   const [category, setCategory] = useState({});
@@ -54,7 +49,7 @@ export default CategoryScreen = observer(props => {
   const animatedScrollCategoryYValue = useRef(new Animated.Value(0)).current;
   const [fadeAnim] = useState(new Animated.Value(0));
 
-  const shops = useContext(ShopStoreContext).shopList;
+  const shops = useSelector(state => state.shop);
 
   useEffect(() => {
     let filterShops;
@@ -251,7 +246,7 @@ export default CategoryScreen = observer(props => {
       />
     </SafeAreaView>
   );
-});
+};
 
 CategoryScreen.navigationOptions = {
   header: null,

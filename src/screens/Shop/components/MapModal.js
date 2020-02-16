@@ -1,10 +1,11 @@
-import React, {useContext} from 'react';
+import React from 'react';
 import {StyleSheet, Image} from 'react-native';
 
 import {Block, CachedImage, Text} from 'app/src/components';
 
 import CloseButton from './CloseButton';
-import {ShopStoreContext} from 'app/src/store/shop';
+import {useSelector} from 'react-redux';
+
 import MapView from 'react-native-maps';
 import {colors} from 'app/src/styles';
 import {sortByDistance} from 'app/src/utils';
@@ -13,7 +14,7 @@ import {AntDesign} from '@expo/vector-icons';
 
 export default MapModal = props => {
   const {setIsMapVisible, shop, navigation} = props;
-  const {shopList} = useContext(ShopStoreContext);
+  const shopList = useSelector(state => state.shop);
 
   const sortedShop = sortByDistance(shopList, shop)
     .sort((a, b) => a.distance > b.distance)

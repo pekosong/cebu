@@ -9,18 +9,18 @@ const AppBar = props => {
   const {title, goBack, progress, func, styles} = props;
 
   return (
-    <Block style={{backgroundColor: colors.red, ...styles}}>
+    <Block style={{backgroundColor: 'white', ...styles}}>
       <Block center row space="between">
         <TouchableOpacity onPress={() => goBack()}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </TouchableOpacity>
-        <TouchableOpacity onPress={() => func()}>
+        <TouchableOpacity onPress={func}>
           <Text bold h3>
             {progress}
           </Text>
         </TouchableOpacity>
       </Block>
-      <Text h1 bold style={{marginTop: 10, marginBottom: 20}}>
+      <Text h1 bold style={{marginTop: 10, marginBottom: 10}}>
         {title}
       </Text>
     </Block>

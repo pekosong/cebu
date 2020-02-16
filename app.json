@@ -5,7 +5,7 @@
     "privacy": "public",
     "sdkVersion": "36.0.0",
     "platforms": ["ios", "android", "web"],
-    "version": "1.0.4",
+    "version": "1.0.5",
     "orientation": "portrait",
     "icon": "./src/assets/icon.png",
     "splash": {
@@ -24,9 +24,14 @@
         "googleMapsApiKey": "AIzaSyC9ynj-JUZBPOvYD47yVPwEJWMd1H-vQMU"
       }
     },
+    "notification": {
+      "icon": "./src/assets/icon.png",
+      "color": "#f1f2f6"
+    },
     "android": {
+      "googleServicesFile": "./google-services.json",
       "package": "com.os1.cebu",
-      "versionCode": 8,
+      "versionCode": 9,
       "config": {
         "googleMaps": {
           "apiKey": "AIzaSyBJZ_NlQuoa_YnOPdwH0iFk3B2vhzimE2Y"

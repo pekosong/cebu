@@ -1,11 +1,10 @@
-import React, {useState, useEffect, useContext, Fragment} from 'react';
+import React, {useState, useEffect, Fragment} from 'react';
 import {
   StyleSheet,
   ScrollView,
   TouchableOpacity,
   SafeAreaView,
   Platform,
-  ActivityIndicator,
   Modal,
 } from 'react-native';
 import {
@@ -15,13 +14,13 @@ import {
   CachedImage,
   Divider,
   ReservationConfirmModal,
+  Loader,
 } from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
 import {streamShop} from 'app/src/api/shop';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
 const MAP = {
   wait: '예약요청',
@@ -40,10 +39,10 @@ const WEEKMAP = {
   7: '일',
 };
 
-const ReservationScreen = observer(props => {
+const ReservationScreen = props => {
   const {navigation} = props;
 
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
 
   const [dates, setDates] = useState([]);
   const [reservations, setReservations] = useState([]);
@@ -102,98 +101,88 @@ const ReservationScreen = observer(props => {
       const reservation = selectedReservations.filter(e => e.date == day);
       const maxLength = reservation.length - 1;
 
-      return days.indexOf(day) != -1 ? (
-        <Fragment key={idx}>
-          <Block row>
-            <Block center flex={false}>
-              <Text h4 bold>
-                {`${new Date(day).getMonth() + 1}월 ${new Date(
-                  day,
-                ).getDate()}일`}
-              </Text>
-              <Text h4 bold style={{marginTop: 3}}>
-                {`(${WEEKMAP[new Date(day).getDay()]})`}
-              </Text>
-            </Block>
-            <Block>
-              {reservation.map((e, eIdx) => {
-                return (
-                  <Fragment key={eIdx}>
-                    <TouchableOpacity
-                      onPress={() => {
-                        setReservation(e);
-                        setVisible(true);
-                      }}>
-                      <Block row>
-                        <Block style={{paddingHorizontal: 10}}>
-                          <Block row>
-                            <CachedImage
-                              uri={e.image}
-                              style={styles.avatarChat}></CachedImage>
-                            <Block style={{marginLeft: 10}}>
-                              <Text bold accent style={{marginBottom: 3}}>
-                                {e.name}
-                              </Text>
-                              <Text bold>{e.phone}</Text>
+      return (
+        days.indexOf(day) != -1 && (
+          <Fragment key={idx}>
+            <Block row>
+              <Block center flex={false}>
+                <Text h4 bold>
+                  {`${new Date(day).getMonth() + 1}월 ${new Date(
+                    day,
+                  ).getDate()}일`}
+                </Text>
+                <Text h4 bold style={{marginTop: 3}}>
+                  {`(${WEEKMAP[new Date(day).getDay()]})`}
+                </Text>
+              </Block>
+              <Block>
+                {reservation.map((e, eIdx) => {
+                  return (
+                    <Fragment key={eIdx}>
+                      <TouchableOpacity
+                        onPress={() => {
+                          setReservation(e);
+                          setVisible(true);
+                        }}>
+                        <Block row>
+                          <Block style={{paddingHorizontal: 10}}>
+                            <Block row>
+                              <CachedImage
+                                uri={e.image}
+                                style={styles.avatarChat}></CachedImage>
+                              <Block style={{marginLeft: 10}}>
+                                <Text bold accent style={{marginBottom: 3}}>
+                                  {e.name}
+                                </Text>
+                                <Text bold>{e.phone}</Text>
+                              </Block>
                             </Block>
+                            <Text bold style={{marginTop: 5}}>
+                              예약시간: {e.time}, 예약인원: {e.people}명
+                            </Text>
                           </Block>
-                          <Text bold style={{marginTop: 5}}>
-                            예약시간: {e.time}, 예약인원: {e.people}명
-                          </Text>
+                          <Block flex={false}>
+                            <Text
+                              bold
+                              h4
+                              style={{
+                                color:
+                                  e.status == 'not'
+                                    ? colors.primary
+                                    : colors.accent,
+                              }}>
+                              {MAP[e.status]}
+                            </Text>
+                          </Block>
                         </Block>
-                        <Block flex={false}>
-                          <Text
-                            bold
-                            h4
-                            style={{
-                              color:
-                                e.status == 'not'
-                                  ? colors.primary
-                                  : colors.accent,
-                            }}>
-                            {MAP[e.status]}
-                          </Text>
-                        </Block>
-                      </Block>
-                    </TouchableOpacity>
-                    <Block
-                      style={{
-                        marginBottom: maxLength == eIdx ? 0 : 10,
-                        borderBottomWidth: maxLength == eIdx ? 0 : 0.5,
-                        borderBottomColor: colors.gray2,
-                        paddingBottom: maxLength == eIdx ? 0 : 10,
-                      }}></Block>
-                  </Fragment>
-                );
-              })}
+                      </TouchableOpacity>
+                      <Block
+                        style={{
+                          marginBottom: maxLength == eIdx ? 0 : 10,
+                          borderBottomWidth: maxLength == eIdx ? 0 : 0.5,
+                          borderBottomColor: colors.gray2,
+                          paddingBottom: maxLength == eIdx ? 0 : 10,
+                        }}></Block>
+                    </Fragment>
+                  );
+                })}
+              </Block>
             </Block>
-          </Block>
-          <Divider style={{marginLeft: 0, marginRight: 0}}></Divider>
-        </Fragment>
-      ) : null;
+            <Divider style={{marginLeft: 0, marginRight: 0}}></Divider>
+          </Fragment>
+        )
+      );
     });
 
-  if (!isLoaded) {
-    return (
-      <Block style={style.full}>
-        <ActivityIndicator
-          size="large"
-          color={colors.accent}></ActivityIndicator>
-      </Block>
-    );
-  }
+  if (!isLoaded) return <Loader></Loader>;
 
   return (
-    <>
-      <Block
-        style={{
-          flex: 0,
-          ...style.header,
-        }}>
+    <SafeAreaView>
+      <Block style={style.header}>
         <Button onPress={() => navigation.goBack()} style={{width: 30}}>
           <Ionicons size={30} color={colors.black} name="ios-arrow-back" />
         </Button>
-        <Text h1 bold style={{marginBottom: 20}}>
+        <Text h3 bold>
           예약 관리
         </Text>
       </Block>
@@ -219,9 +208,9 @@ const ReservationScreen = observer(props => {
           setVisible={setVisible}
         />
       </Modal>
-    </>
+    </SafeAreaView>
   );
-});
+};
 
 ReservationScreen.navigationOptions = {
   header: null,

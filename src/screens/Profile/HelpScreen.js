@@ -1,4 +1,4 @@
-import React, {useEffect, useContext} from 'react';
+import React, {useEffect} from 'react';
 import {StyleSheet, TouchableOpacity} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -6,13 +6,8 @@ import {Block, Text} from 'app/src/components';
 import {colors, style} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
-
-const HeloScreen = observer(props => {
+const HeloScreen = props => {
   const {navigation} = props;
-
-  const {user} = useContext(UserStoreContext);
 
   useEffect(() => {}, []);
 
@@ -33,7 +28,7 @@ const HeloScreen = observer(props => {
       </Block>
     </SafeAreaView>
   );
-});
+};
 
 HeloScreen.navigationOptions = {
   header: null,

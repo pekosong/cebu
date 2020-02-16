@@ -22,18 +22,17 @@ const style = {
     justifyContent: 'space-between',
     alignItems: 'center',
     height: 46,
-    paddingTop: 5,
     paddingHorizontal: sizes.padding,
     zIndex: 1,
     backgroundColor: 'white',
   },
   scrollTab: {
     flex: 0,
-    paddingTop: sizes.base,
     paddingHorizontal: sizes.padding,
     backgroundColor: colors.white,
     paddingBottom: 10,
     borderBottomColor: colors.gray2,
+    marginTop: 10,
   },
   shop: {
     categories: {

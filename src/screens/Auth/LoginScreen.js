@@ -1,4 +1,4 @@
-import React, {useState, useContext, useEffect} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   KeyboardAvoidingView,
@@ -11,15 +11,17 @@ import {Button, Block, Input, Text} from 'app/src/components';
 import {colors, sizes} from 'app/src/styles';
 
 import {login} from 'app/src/api/auth';
-import {streamUser, createUser} from 'app/src/api/user';
+import {getUser} from 'app/src/api/user';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 const EMAIL = '';
 const PASSWORD = '';
 
-const LoginScreen = observer(props => {
+const LoginScreen = props => {
+  const dispatch = useDispatch();
+
   const {navigation} = props;
   const [email, setEmail] = useState(EMAIL);
   const [password, setPassword] = useState(PASSWORD);
@@ -27,8 +29,6 @@ const LoginScreen = observer(props => {
   const [isRemember, setIsRemember] = useState(false);
   const [isError, setIsError] = useState(false);
   const [loading, setLoading] = useState(false);
-
-  const userStore = useContext(UserStoreContext);
 
   useEffect(() => {
     getEmail();
@@ -47,7 +47,6 @@ const LoginScreen = observer(props => {
 
   handleLogin = () => {
     setLoading(true);
-
     if ((email == '') | (password == '')) {
       setError('모두 입력하세요');
       setIsError(true);
@@ -55,47 +54,33 @@ const LoginScreen = observer(props => {
       return;
     }
 
-    checkUser().then(() => {
-      login(email, password)
-        .then(async () => {
-          if (isRemember) {
-            await AsyncStorage.setItem('email', email);
-          } else {
-            await AsyncStorage.removeItem('email');
-          }
-          await AsyncStorage.setItem(
-            'isRemember',
-            isRemember ? 'true' : 'false',
-          );
-          userStore.setUser(email);
-          navigation.goBack();
-        })
-        .catch(err => {
-          if (err.code == 'auth/invalid-email') {
-            setError('정확한 이메일을 입력하세요.');
-          } else if (err.code == 'auth/user-not-found') {
-            setError('이메일을 확인할 수 없습니다.');
-          } else if (err.code == 'auth/wrong-password') {
-            setError('비밀번호가 유효하지 않습니다.');
-          } else {
-            setError(err.message);
-          }
-          setIsError(true);
-          setLoading(false);
-        });
-    });
+    login(email, password)
+      .then(async () => {
+        if (isRemember) {
+          await AsyncStorage.setItem('email', email);
+        } else {
+          await AsyncStorage.removeItem('email');
+        }
+        await AsyncStorage.setItem('isRemember', isRemember ? 'true' : 'false');
+        const doc = await getUser(email).get();
+        dispatch(allActions.userActions.setUser(doc.data()));
+        navigation.goBack();
+      })
+      .catch(err => {
+        if (err.code == 'auth/invalid-email') {
+          setError('정확한 이메일을 입력하세요.');
+        } else if (err.code == 'auth/user-not-found') {
+          setError('이메일을 확인할 수 없습니다.');
+        } else if (err.code == 'auth/wrong-password') {
+          setError('비밀번호가 유효하지 않습니다.');
+        } else {
+          setError(err.message);
+        }
+        setIsError(true);
+        setLoading(false);
+      });
   };
 
-  checkUser = () => {
-    return streamUser(email)
-      .get()
-      .then(e => {
-        if (e.data() == undefined) {
-          return createUser(email);
-        }
-      })
-      .catch(err => console.log(err));
-  };
   return (
     <KeyboardAvoidingView style={styles.login} behavior="padding">
       <Block padding={[0, sizes.padding]}>
@@ -162,7 +147,7 @@ const LoginScreen = observer(props => {
       </Block>
     </KeyboardAvoidingView>
   );
-});
+};
 
 LoginScreen.navigationOptions = {
   header: null,

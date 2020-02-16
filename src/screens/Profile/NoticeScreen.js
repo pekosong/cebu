@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, ScrollView, Switch} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -6,11 +6,13 @@ import AppBar from './components/AppBar';
 import {Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
 import {updateUser} from 'app/src/api/user';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
-const NoticeScreen = observer(props => {
+import SnackBar from 'react-native-snackbar-component';
+
+const NoticeScreen = props => {
   const {navigation} = props;
 
   const [messageEmail, setMessageEmail] = useState(false);
@@ -21,11 +23,13 @@ const NoticeScreen = observer(props => {
   const [noticePush, setNoticePush] = useState(false);
   const [noticeSms, setNoticeSms] = useState(false);
 
-  const {user} = useContext(UserStoreContext);
+  const [show, setShow] = useState(false);
+
+  const {user} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     const {notice} = user;
-
     setMessageEmail(notice.message.email);
     setMessagePush(notice.message.push);
     setMessageSms(notice.message.sms);
@@ -54,6 +58,8 @@ const NoticeScreen = observer(props => {
 
     updateUser(user.email, newUser)
       .then(() => {
+        dispatch(allActions.userActions.updateUser(newUser));
+        setShow(true);
         console.log('done');
       })
       .catch(err => {
@@ -62,7 +68,9 @@ const NoticeScreen = observer(props => {
   };
 
   return (
-    <SafeAreaView forceInset={{top: 'always'}} style={{flex: 1}}>
+    <SafeAreaView
+      forceInset={{top: 'always'}}
+      style={{flex: 1, backgroundColor: 'whie'}}>
       <ScrollView
         stickyHeaderIndices={[0]}
         showsVerticalScrollIndicator={false}
@@ -73,19 +81,10 @@ const NoticeScreen = observer(props => {
           progress={'저장'}
           func={saveNotice}
         />
-        <Text h2 bold style={{marginBottom: 10}}>
+        <Text h2 bold style={{marginTop: 20, marginBottom: 10}}>
           메시지
         </Text>
-        <Text style={{marginBottom: 10}}>
-          예약 요청을 포함한 호스트와 게스트 간 메시지 수신
-        </Text>
-        <Block style={styles.inputRow}>
-          <Text h3>이메일</Text>
-          <Switch
-            value={messageEmail}
-            onValueChange={value => setMessageEmail(value)}
-          />
-        </Block>
+        <Text>예약 요청을 포함한 호스트와 게스트 간 메시지 수신</Text>
         <Block style={styles.inputRow}>
           <Text h3>푸쉬알림</Text>
           <Switch
@@ -93,26 +92,11 @@ const NoticeScreen = observer(props => {
             onValueChange={value => setMessagePush(value)}
           />
         </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>문자메시지</Text>
-          <Switch
-            value={messageSms}
-            onValueChange={value => setMessageSms(value)}
-          />
-        </Block>
+
         <Text h2 bold style={{marginBottom: 10, marginTop: 30}}>
           알림
         </Text>
-        <Text style={{marginBottom: 10}}>
-          예약 알림, 후기 작성 요청, 요금 설정 관련 기타 알림
-        </Text>
-        <Block style={styles.inputRow}>
-          <Text h3>이메일</Text>
-          <Switch
-            value={noticeEmail}
-            onValueChange={value => setNoticeEmail(value)}
-          />
-        </Block>
+        <Text>예약 알림, 후기 작성 요청, 요금 설정 관련 기타 알림</Text>
         <Block style={styles.inputRow}>
           <Text h3>푸시 알림</Text>
           <Switch
@@ -120,17 +104,18 @@ const NoticeScreen = observer(props => {
             onValueChange={value => setNoticePush(value)}
           />
         </Block>
-        <Block style={styles.inputRow}>
-          <Text h3>문자 메시지</Text>
-          <Switch
-            value={noticeSms}
-            onValueChange={value => setNoticeSms(value)}
-          />
-        </Block>
       </ScrollView>
+      <SnackBar
+        visible={show}
+        textMessage="저장 완료"
+        accentColor="white"
+        backgroundColor={colors.black}
+        actionHandler={() => setShow(!show)}
+        actionText="닫기"
+      />
     </SafeAreaView>
   );
-});
+};
 
 NoticeScreen.navigationOptions = {
   header: null,

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {FlatList, StyleSheet, ScrollView} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -13,9 +13,7 @@ import {
 import {mocks} from 'app/src/constants';
 import {sizes, style, colors} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
-import {ShopStoreContext} from 'app/src/store/shop';
+import {useSelector} from 'react-redux';
 
 const cateSrc = {
   All: require('app/src/assets/images/search/all.jpg'),
@@ -38,7 +36,7 @@ const cateMap = {
   Nail: '네일',
 };
 
-const FavoritesScreen = observer(props => {
+const FavoritesScreen = props => {
   const {navigation} = props;
   const [tabs, setTabs] = useState([]);
   const [active, setActive] = useState('');
@@ -48,21 +46,22 @@ const FavoritesScreen = observer(props => {
   const [selectedFavorites, setSelectedFavorites] = useState([]);
   const [isLoaded, setIsLoaded] = useState(false);
 
-  const {isLogin, user} = useContext(UserStoreContext);
-  const {shopList} = useContext(ShopStoreContext);
+  const {loggedIn, user} = useSelector(state => state.user);
+  const shopList = useSelector(state => state.shop);
 
   useEffect(() => {
-    const favorites = user.myfavorites.map(e => e.id);
-    const favoritesList = shopList.filter(e => favorites.indexOf(e.id) != -1);
-    const category = new Set(
-      ['All'].concat(favoritesList.map(e => e.category)),
-    );
-    setFavorites(favoritesList);
-    setSelectedFavorites(favoritesList);
-    setActive('All');
-    setTabs(Array.from(category));
-    setIsLoaded(true);
-
+    if (loggedIn) {
+      const favorites = user.myfavorites.map(e => e.id);
+      const favoritesList = shopList.filter(e => favorites.indexOf(e.id) != -1);
+      const category = new Set(
+        ['All'].concat(favoritesList.map(e => e.category)),
+      );
+      setFavorites(favoritesList);
+      setSelectedFavorites(favoritesList);
+      setActive('All');
+      setTabs(Array.from(category));
+      setIsLoaded(true);
+    }
     return () => {};
   }, [user]);
 
@@ -75,9 +74,7 @@ const FavoritesScreen = observer(props => {
     setActive(tab);
   };
 
-  if (!isLoaded) return <Loader />;
-
-  if (!isLogin)
+  if (!loggedIn)
     return (
       <Block center middle style={{padding: 80}}>
         <Text size={40} bold center>
@@ -103,6 +100,8 @@ const FavoritesScreen = observer(props => {
         </Button>
       </Block>
     );
+
+  if (!isLoaded) return <Loader />;
 
   if (user.myfavorites.length === 0)
     return (
@@ -181,7 +180,7 @@ const FavoritesScreen = observer(props => {
       />
     </SafeAreaView>
   );
-});
+};
 
 FavoritesScreen.navigationOptions = {
   header: null,

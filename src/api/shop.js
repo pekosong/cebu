@@ -32,7 +32,18 @@ const updateShop = shop => {
 
 const downloadShopList = () => {
   console.log('실행됨');
-  return firebase.firestore().collection('shops');
+  return firebase
+    .firestore()
+    .collection('shops')
+    .get()
+    .then(querySnapshot => {
+      const shops = [];
+      querySnapshot.forEach(doc => {
+        const shop = doc.data();
+        if (shop['preview'] !== '') shops.push(doc.data());
+      });
+      return shops;
+    });
 };
 
 const updateMessages = (shop, messages) => {

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {StyleSheet, FlatList, TextInput} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -14,12 +14,11 @@ import {Ionicons, AntDesign} from '@expo/vector-icons';
 
 import {sizes, style, colors} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
-import {ShopStoreContext} from 'app/src/store/shop';
+import {useSelector} from 'react-redux';
 
 import FilterButton from './components/FilterButton';
 
-export default SearchScreen = observer(props => {
+export default SearchScreen = props => {
   const {navigation} = props;
 
   const [selectedLists, setSelectedLists] = useState([]);
@@ -35,7 +34,7 @@ export default SearchScreen = observer(props => {
   const [isMak, setIsMak] = useState(true);
   const [isCebu, setIsCebu] = useState(true);
 
-  const shops = useContext(ShopStoreContext).shopList;
+  const shops = useSelector(state => state.shop);
 
   useEffect(() => {
     setSelectedLists(shops);
@@ -178,7 +177,7 @@ export default SearchScreen = observer(props => {
       />
     </SafeAreaView>
   );
-});
+};
 
 SearchScreen.navigationOptions = {
   header: null,

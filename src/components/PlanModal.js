@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext, useReducer} from 'react';
+import React, {useState, useEffect, useReducer} from 'react';
 import {Platform, StyleSheet, TouchableOpacity, ScrollView} from 'react-native';
 
 import Block from './Block';
@@ -8,9 +8,8 @@ import Button from './Button';
 import {colors, sizes} from 'app/src/styles';
 import {Ionicons} from '@expo/vector-icons';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from '../store/user';
-import {updateUserReservation} from '../api/user';
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 const TIMES = [
   '08:00',
@@ -62,7 +61,7 @@ const reservationReducer = (state, action) => {
   }
 };
 
-export default ReservationModal = observer(props => {
+export default ReservationModal = props => {
   const {shop, navigation, setVisible} = props;
   const [myReservations, setMyReservations] = useState([]);
 
@@ -84,7 +83,8 @@ export default ReservationModal = observer(props => {
   const [errMsg, setErrMsg] = useState('');
   const [isEdit, setIsEdit] = useState(false);
 
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
+  const dispatch = useDispatch();
 
   useEffect(() => {
     let reservation = navigation.getParam('todo');
@@ -143,7 +143,8 @@ export default ReservationModal = observer(props => {
       e => e.reservationId != reservationId,
     );
     userReservations.push(reservation);
-    updateUserReservation(user.email, userReservations);
+    const newUser = {...user, reservations: userReservations};
+    dispatch(allActions.userActions.updateUser(newUser));
     setVisible(false);
   };
 
@@ -151,7 +152,8 @@ export default ReservationModal = observer(props => {
     const userReservations = user.reservations.filter(
       e => e.reservationId != reservationId,
     );
-    updateUserReservation(user.email, userReservations);
+    const newUser = {...user, reservations: userReservations};
+    dispatch(allActions.userActions.updateUser(newUser));
     setVisible(false);
   };
 
@@ -328,7 +330,7 @@ export default ReservationModal = observer(props => {
       </Block>
     </Block>
   );
-});
+};
 
 export const styles = StyleSheet.create({
   dateStyle: {

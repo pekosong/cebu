@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState, useEffect} from 'react';
 import {
   StyleSheet,
   Platform,
@@ -15,13 +15,11 @@ import firebase from 'app/src/constants/store';
 import {chatApi} from 'app/src/api/';
 
 import {Ionicons} from '@expo/vector-icons';
-
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
 import 'moment/locale/ko';
 
-const ChatScreen = observer(props => {
+const ChatScreen = props => {
   const {navigation} = props;
 
   const [title, setTitle] = useState('');
@@ -31,8 +29,7 @@ const ChatScreen = observer(props => {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [docId, setDocId] = useState('');
-
-  const {user} = useContext(UserStoreContext);
+  const {user} = useSelector(state => state.user);
 
   useEffect(() => {
     const shopId = navigation.getParam('shopId');
@@ -146,7 +143,7 @@ const ChatScreen = observer(props => {
       <KeyboardSpacer topSpacing={Platform.OS === 'android' ? 35 : 0} />
     </SafeAreaView>
   );
-});
+};
 
 ChatScreen.defaultProps = {};
 

@@ -1,4 +1,4 @@
-import React, {useState, useEffect, useContext} from 'react';
+import React, {useState} from 'react';
 import {StyleSheet, ScrollView, TextInput} from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -7,14 +7,13 @@ import {Button, Block, Text} from 'app/src/components';
 import {colors, sizes, style} from 'app/src/styles';
 import moment from 'moment';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
+import {useSelector} from 'react-redux';
 
-const TripInfosScreen = observer(props => {
+const TripInfosScreen = props => {
   const {navigation} = props;
   const [editing, setEditing] = useState(null);
-  const [plans, setPlans] = useState({});
-  const {user} = useContext(UserStoreContext);
+
+  const {user} = useSelector(state => state.user);
 
   const NUMTOWEEK = {
     0: '일',
@@ -25,10 +24,6 @@ const TripInfosScreen = observer(props => {
     5: '금',
     6: '토',
   };
-
-  useEffect(() => {
-    setPlans(user.plans);
-  }, [user]);
 
   handleEdit = (name, text) => {
     profile[name] = text;
@@ -55,9 +50,9 @@ const TripInfosScreen = observer(props => {
         showsVerticalScrollIndicator={false}
         style={style.scrollTab}>
         <AppBar title={'내 여행 정보'} goBack={navigation.goBack} />
-        {Object.entries(plans).length != 0 ? (
+        {Object.entries(user.plans).length != 0 ? (
           <Block>
-            {Object.keys(plans).map((key, idx) => {
+            {Object.keys(user.plans).map((key, idx) => {
               return (
                 <Block key={idx} style={styles.plan}>
                   <Text h2 darkgray>
@@ -84,7 +79,7 @@ const TripInfosScreen = observer(props => {
         }}>
         <Button normal onPress={() => navigation.navigate('TripInfo')}>
           <Text white center>
-            {Object.entries(plans).length != 0
+            {Object.entries(user.plans).length != 0
               ? '여행 정보 변경'
               : '새로운 여행 등록'}
           </Text>
@@ -92,7 +87,7 @@ const TripInfosScreen = observer(props => {
       </Block>
     </SafeAreaView>
   );
-});
+};
 
 TripInfosScreen.navigationOptions = {
   header: null,

@@ -45,6 +45,7 @@
     "react-native-safe-area-context": "0.6.0",
     "react-native-safe-area-view": "^1.0.0",
     "react-native-slider": "^0.11.0",
+    "react-native-snackbar-component": "^1.1.2",
     "react-native-snap-carousel": "^3.8.4",
     "react-native-star-rating": "^1.1.0",
     "react-native-tab-view": "^2.11.0",

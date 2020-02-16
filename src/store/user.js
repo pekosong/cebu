@@ -1,6 +1,6 @@
 import {observable, action} from 'mobx';
 import {createContext} from 'react';
-import {streamUser} from 'app/src/api/user';
+import {getUser} from './node_modules/app/src/api/user';
 import {USER} from '../model/user';
 
 class UserStore {
@@ -10,7 +10,7 @@ class UserStore {
   @observable email = 'b@naver.com';
 
   @action setUser = email => {
-    return streamUser(email).onSnapshot(
+    return getUser(email).onSnapshot(
       doc => {
         this.isLogin = true;
         this.user = doc.data();

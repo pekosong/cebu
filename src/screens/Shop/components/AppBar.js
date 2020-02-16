@@ -1,4 +1,4 @@
-import React, {useState, useContext} from 'react';
+import React, {useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -11,10 +11,10 @@ import {StatusBar} from 'react-native';
 import {LoginModal} from 'app/src/components';
 import {fonts, style, sizes} from 'app/src/styles';
 
-import {observer} from 'mobx-react-lite';
-import {UserStoreContext} from 'app/src/store/user';
-import {updateFavorite} from 'app/src/api/user';
 import {updateShop} from 'app/src/api/shop';
+
+import {useSelector, useDispatch} from 'react-redux';
+import allActions from 'app/src/redux/actions';
 
 import Modal from 'react-native-modal';
 import {Ionicons, AntDesign} from '@expo/vector-icons';
@@ -62,14 +62,16 @@ const FavoriteIcon = ({handlePress, fadeAnim, onOff}) => {
   );
 };
 
-const AppBar = observer(props => {
+const AppBar = props => {
   const {navigation, shop, fadeAnim} = props;
-  const {isLogin, user} = useContext(UserStoreContext);
   const [showModal, setShowModal] = useState(false);
 
+  const {loggedIn, user} = useSelector(state => state.user);
+  const dispatch = useDispatch();
+
   handleFavorite = async shop => {
-    oldfavorites = user.myfavorites.map(e => e.id);
-    newShop = {
+    const oldfavorites = user.myfavorites.map(e => e.id);
+    const newShop = {
       id: shop.id,
       name: shop.name,
       src: shop.preview,
@@ -88,7 +90,8 @@ const AppBar = observer(props => {
       const shopLikes = {id: shop.id, likes: shop.likes + 1};
       updateShop(shopLikes);
     }
-    updateFavorite(user.email, newfavorites);
+    const newUser = {...user, newfavorites};
+    dispatch(allActions.userActions.updateUser(newUser));
   };
 
   const backgroundColor = fadeAnim.interpolate({
@@ -133,7 +136,7 @@ const AppBar = observer(props => {
         /> */}
         <FavoriteIcon
           handlePress={() =>
-            isLogin ? handleFavorite(shop) : setShowModal(true)
+            loggedIn ? handleFavorite(shop) : setShowModal(true)
           }
           fadeAnim={fadeAnim}
           onOff={user.myfavorites.map(e => e.id).indexOf(shop.id) == -1}
@@ -153,7 +156,7 @@ const AppBar = observer(props => {
       </View>
     </Animated.View>
   );
-});
+};
 
 AppBar.defaultProps = {};
 
