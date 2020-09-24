@@ -6,6 +6,7 @@ import {
   Dimensions,
   Image,
   Animated,
+  RefreshControl,
 } from 'react-native';
 import SafeAreaView from 'react-native-safe-area-view';
 
@@ -34,6 +35,7 @@ const {width, height} = Dimensions.get('window');
 const HomeScreen = props => {
   const {navigation, categories} = props;
   const [isLoaded, setIsLoaded] = useState(false);
+  const [refreshing, setRefreshing] = useState(false);
 
   const [restaurantList, setRestaurantList] = useState([]);
   const [massageList, setMassageList] = useState([]);
@@ -51,17 +53,7 @@ const HomeScreen = props => {
 
   useEffect(() => {
     if (shopList.length === 0) {
-      downloadShopList().then(shops => {
-        dispatch(allActions.shopActions.setShop(shops));
-        console.log(shopList.length);
-        setRestaurantList(filterShopList(shops, 'Restaurant'));
-        setMassageList(filterShopList(shops, 'Massage'));
-        setFoodList(filterShopList(shops, 'Food'));
-        setActivityList(filterShopList(shops, 'Activity'));
-        setPlaceList(filterShopList(shops, 'Place'));
-        setAdultList(filterShopList(shops, 'Adult'));
-        setIsLoaded(true);
-      });
+      onRefresh();
     } else {
       setRestaurantList(filterShopList(shopList, 'Restaurant'));
       setMassageList(filterShopList(shopList, 'Massage'));
@@ -72,6 +64,21 @@ const HomeScreen = props => {
       setIsLoaded(true);
     }
   }, []);
+
+  onRefresh = () => {
+    setRefreshing(true);
+    downloadShopList().then(shops => {
+      dispatch(allActions.shopActions.setShop(shops));
+      setRestaurantList(filterShopList(shops, 'Restaurant'));
+      setMassageList(filterShopList(shops, 'Massage'));
+      setFoodList(filterShopList(shops, 'Food'));
+      setActivityList(filterShopList(shops, 'Activity'));
+      setPlaceList(filterShopList(shops, 'Place'));
+      setAdultList(filterShopList(shops, 'Adult'));
+      setIsLoaded(true);
+      setRefreshing(false);
+    });
+  };
 
   handleScrollByHomeY = e => {
     if (e.nativeEvent.contentOffset.y > 40) {
@@ -150,6 +157,9 @@ const HomeScreen = props => {
         </Block>
       </Block>
       <ScrollView
+        refreshControl={
+          <RefreshControl refreshing={refreshing} onRefresh={onRefresh} />
+        }
         onScroll={Animated.event(
           [{nativeEvent: {contentOffset: {y: animatedScrollYValue}}}],
           {

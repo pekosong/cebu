@@ -79,7 +79,7 @@ export default CardShop = ({shop, navigation}) => {
           {name}
         </Text>
         <Text h5 primary style={{marginLeft: 6}}>
-          {tags.join(', ')}
+          {tags.slice(0, 3).join(', ')}
         </Text>
       </Block>
       <Block row center>
